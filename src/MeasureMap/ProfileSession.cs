@@ -87,9 +87,13 @@ namespace MeasureMap
             var profile = new ProfileResult();
             var stopwatch = new Stopwatch();
 
-            var process = Process.GetCurrentProcess();
-            //process.ProcessorAffinity = new IntPtr(2); // Uses the second Core or Processor for the Test
-            //process.PriorityClass = ProcessPriorityClass.High; // Prevents "Normal" processes from interrupting Threads
+            if (!IsRunningOnMono())
+            {
+                var process = Process.GetCurrentProcess();
+                process.ProcessorAffinity = new IntPtr(2); // Uses the second Core or Processor for the Test
+                process.PriorityClass = ProcessPriorityClass.High; // Prevents "Normal" processes from interrupting Threads
+            }
+
             Thread.CurrentThread.Priority = ThreadPriority.Highest; // Prevents "Normal" Threads from interrupting this thread
 
             // clean up
@@ -123,6 +127,11 @@ namespace MeasureMap
             Trace.WriteLine(string.Format("Running Task for {0} iterations with an Average of {1} Milliseconds", _iterations, profile.AverageMilliseconds));
 
             return profile;
+        }
+
+        private static bool IsRunningOnMono()
+        {
+            return Type.GetType("Mono.Runtime") != null;
         }
     }
 }
