@@ -91,7 +91,7 @@ namespace MeasureMap
             {
                 var process = Process.GetCurrentProcess();
                 //process.ProcessorAffinity = new IntPtr(2); // Uses the second Core or Processor for the Test
-                //process.PriorityClass = ProcessPriorityClass.High; // Prevents "Normal" processes from interrupting Threads
+                process.PriorityClass = ProcessPriorityClass.High; // Prevents "Normal" processes from interrupting Threads
             }
 
             Thread.CurrentThread.Priority = ThreadPriority.Highest; // Prevents "Normal" Threads from interrupting this thread
