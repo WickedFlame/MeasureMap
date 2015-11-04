@@ -41,6 +41,9 @@ configuration: Release
 #  - Debug
 #  - Release
 
+before_build:
+  - nuget restore
+
 build:
   parallel: true                  # enable MSBuild parallel builds
   project: MeasureMap.sln      # path to Visual Studio solution or project
