@@ -10,19 +10,21 @@ namespace MeasureMap
     /// </summary>
     public class ProfileSession : ISession
     {
+        private static readonly bool IsRunningOnMono;
+
         private readonly List<Func<ProfileResult, bool>> _conditions;
         private int _iterations = 1;
         private Action _task;
+
+        static ProfileSession()
+        {
+            IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
+        }
 
         private ProfileSession()
         {
             _iterations = 1;
             _conditions = new List<Func<ProfileResult, bool>>();
-        }
-
-        public static ProfileSession StartSession()
-        {
-            return new ProfileSession();
         }
 
         public int Iterations
@@ -32,7 +34,12 @@ namespace MeasureMap
                 return _iterations;
             }
         }
-
+        
+        public static ProfileSession StartSession()
+        {
+            return new ProfileSession();
+        }
+        
         /// <summary>
         /// Sets the amount of iterations that the profileing session should run the task
         /// </summary>
@@ -123,20 +130,26 @@ namespace MeasureMap
 
             return profile;
         }
-
-        private static bool IsRunningOnMono()
-        {
-            return Type.GetType("Mono.Runtime") != null;
-        }
         
         private void SetProcessor()
         {
-            //if (!IsRunningOnMono())
-            //{
+            if (!IsRunningOnMono)
+            {
                 var process = Process.GetCurrentProcess();
-                //process.ProcessorAffinity = new IntPtr(2); // Uses the second Core or Processor for the Test
-                process.PriorityClass = ProcessPriorityClass.High; // Prevents "Normal" processes from interrupting Threads
-            //}
+
+                try
+                {
+                    // Uses the second Core or Processor for the Test
+                    process.ProcessorAffinity = new IntPtr(2);
+                }
+                catch (Exception)
+                {
+                    Trace.WriteLine("Could not set Task to run on second Core or Processor");
+                }
+
+                // Prevents "Normal" processes from interrupting Threads
+                process.PriorityClass = ProcessPriorityClass.High; 
+            }
         }
     }
 }
