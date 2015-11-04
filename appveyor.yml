@@ -1,0 +1,10 @@
+language: csharp
+solution: MeasureMap.sln
+ 
+install:
+  - sudo apt-get install nunit-console
+  - nuget restore MeasureMap.sln
+ 
+script:
+  - xbuild /p:Configuration=Release MeasureMap.sln
+  - nunit-console ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
