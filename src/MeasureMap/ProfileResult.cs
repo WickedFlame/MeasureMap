@@ -3,10 +3,16 @@ using System.Linq;
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// Represents the result of a profiled session
+    /// </summary>
     public class ProfileResult
     {
         private readonly List<Iteration> _iterations;
 
+        /// <summary>
+        /// Creates a result of the profiled session
+        /// </summary>
         public ProfileResult()
         {
             _iterations = new List<Iteration>();

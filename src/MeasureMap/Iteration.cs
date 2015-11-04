@@ -2,8 +2,16 @@
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// Marks a iteration of a run Task
+    /// </summary>
     public class Iteration
     {
+        /// <summary>
+        /// Creates a object containing information on the iteration
+        /// </summary>
+        /// <param name="ticks">Ticks the Task took to run</param>
+        /// <param name="duration">The duration the Task took to run</param>
         public Iteration(long ticks, TimeSpan duration)
         {
             TimeStamp = DateTime.Now;
@@ -21,6 +29,9 @@ namespace MeasureMap
         /// </summary>
         public TimeSpan Duration { get; private set; }
 
+        /// <summary>
+        /// The timestamp of when the iteration was run
+        /// </summary>
         public DateTime TimeStamp { get; private set; }
 
         public override string ToString()

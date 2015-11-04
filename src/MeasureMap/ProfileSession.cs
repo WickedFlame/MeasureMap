@@ -27,6 +27,9 @@ namespace MeasureMap
             _conditions = new List<Func<ProfileResult, bool>>();
         }
 
+        /// <summary>
+        /// Gets the amount of iterations that the Task will be run
+        /// </summary>
         public int Iterations
         {
             get
@@ -35,6 +38,10 @@ namespace MeasureMap
             }
         }
         
+        /// <summary>
+        /// Creates a new Session for profiling performance
+        /// </summary>
+        /// <returns></returns>
         public static ProfileSession StartSession()
         {
             return new ProfileSession();
