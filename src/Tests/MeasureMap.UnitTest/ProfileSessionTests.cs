@@ -128,11 +128,6 @@ namespace MeasureMap.UnitTest
                 .RunSession());
         }
 
-
-
-
-
-
         private void Task()
         {
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
