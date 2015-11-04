@@ -87,15 +87,15 @@ namespace MeasureMap
             var profile = new ProfileResult();
             var stopwatch = new Stopwatch();
 
-            var process = Process.GetCurrentProcess();
-            process.ProcessorAffinity = new IntPtr(2); // Uses the second Core or Processor for the Test
-            process.PriorityClass = ProcessPriorityClass.High; // Prevents "Normal" processes from interrupting Threads
+            //var process = Process.GetCurrentProcess();
+            //process.ProcessorAffinity = new IntPtr(2); // Uses the second Core or Processor for the Test
+            //process.PriorityClass = ProcessPriorityClass.High; // Prevents "Normal" processes from interrupting Threads
             Thread.CurrentThread.Priority = ThreadPriority.Highest; // Prevents "Normal" Threads from interrupting this thread
 
             // clean up
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
-            //GC.Collect();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
 
             Trace.WriteLine(string.Format("Running Task for {0} iterations for Perfomance Analysis Benchmark", _iterations));
             for (int i = 0; i < _iterations; i++)
