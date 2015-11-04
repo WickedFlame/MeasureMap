@@ -6,5 +6,5 @@ install:
   - nuget restore MeasureMap.sln
  
 script:
-  - xbuild MeasureMap.sln
+  - xbuild /p:Configuration=Release MeasureMap.sln
   - nunit-console ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
