@@ -1,8 +1,10 @@
 language: csharp
 solution: MeasureMap.sln
+ 
 install:
+  - sudo apt-get install nunit-console
   - nuget restore MeasureMap.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+ 
 script:
-  - xbuild /p:Configuration=Release MeasureMap.sln
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
+  - xbuild MeasureMap.sln
+  - nunit-console ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
