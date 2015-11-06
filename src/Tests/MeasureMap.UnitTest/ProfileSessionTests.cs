@@ -10,7 +10,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_StartSessionTest()
         {
-            var session = PerformanceProfileSession.StartSession();
+            var session = ProfilerSession.StartSession();
 
             Assert.IsNotNull(session);
         }
@@ -18,7 +18,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_WithoutSetIterations()
         {
-            var session = PerformanceProfileSession.StartSession();
+            var session = ProfilerSession.StartSession();
 
             Assert.AreEqual(1, session.Iterations);
         }
@@ -26,7 +26,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_SetIterations()
         {
-            var session = PerformanceProfileSession.StartSession()
+            var session = ProfilerSession.StartSession()
                 .SetIterations(12);
 
             Assert.AreEqual(12, session.Iterations);
@@ -36,7 +36,7 @@ namespace MeasureMap.UnitTest
         public void ProfileSession_AddTask()
         {
             var result = string.Empty;
-            var session = PerformanceProfileSession.StartSession()
+            var session = ProfilerSession.StartSession()
                 .Task(() => result = "passed");
 
             // TODO: is it neccesary to run the session just to check if a task is set???
@@ -49,7 +49,7 @@ namespace MeasureMap.UnitTest
         public void ProfileSession_RunSessionOnce()
         {
             int count = 0;
-            var result = PerformanceProfileSession.StartSession()
+            var result = ProfilerSession.StartSession()
                 .Task(() => count++)
                 .RunSession();
 
@@ -61,7 +61,7 @@ namespace MeasureMap.UnitTest
         public void ProfileSession_RunSessionMultipleTimes()
         {
             int count = 0;
-            var result = PerformanceProfileSession.StartSession()
+            var result = ProfilerSession.StartSession()
                 .Task(() => count++)
                 .SetIterations(20)
                 .RunSession();
@@ -73,7 +73,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_AverageMillisecond()
         {
-            var result = PerformanceProfileSession.StartSession()
+            var result = ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(200)
                 .RunSession();
@@ -84,7 +84,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_AverageTicks()
         {
-            var result = PerformanceProfileSession.StartSession()
+            var result = ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(200)
                 .RunSession();
@@ -95,7 +95,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_TrueCondition()
         {
-            PerformanceProfileSession.StartSession()
+            ProfilerSession.StartSession()
                 .Task(Task)
                 .AddCondition(pr => pr.Iterations.Count() == 1)
                 .RunSession();
@@ -104,7 +104,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_MultipleTrueCondition()
         {
-            PerformanceProfileSession.StartSession()
+            ProfilerSession.StartSession()
                 .Task(Task)
                 .AddCondition(pr => pr.Iterations.Count() == 1)
                 .AddCondition(pr => pr.AverageMilliseconds > 0)
@@ -114,7 +114,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_FalseCondition()
         {
-            Assert.Throws<MeasureMap.AssertionException>(() => PerformanceProfileSession.StartSession()
+            Assert.Throws<MeasureMap.AssertionException>(() => ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(2)
                 .AddCondition(pr => pr.Iterations.Count() == 1)
@@ -124,7 +124,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_WithoutTask()
         {
-            Assert.Throws<ArgumentNullException>(() => PerformanceProfileSession.StartSession()
+            Assert.Throws<ArgumentNullException>(() => ProfilerSession.StartSession()
                 .RunSession());
         }
 

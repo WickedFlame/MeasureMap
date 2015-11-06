@@ -14,7 +14,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void MemoryProfileSession_StartSessionTest()
         {
-            var session = MemoryProfileSession.StartSession();
+            var session = ProfilerSession.StartSession();
 
             Assert.IsNotNull(session);
         }
@@ -22,7 +22,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void MemoryProfileSession_AddTask()
         {
-            var session = MemoryProfileSession.StartSession()
+            var session = ProfilerSession.StartSession()
                 .Task(() =>
                 {
                     // allocate some memory
@@ -38,7 +38,7 @@ namespace MeasureMap.UnitTest
         public void MemoryProfileSession_RunSessionOnce()
         {
             int count = 0;
-            var result = MemoryProfileSession.StartSession()
+            var result = ProfilerSession.StartSession()
                 .Task(() => count++)
                 .RunSession();
 
@@ -50,7 +50,7 @@ namespace MeasureMap.UnitTest
         public void MemoryProfileSession_RunSessionMultipleTimes()
         {
             int count = 0;
-            var result = MemoryProfileSession.StartSession()
+            var result = ProfilerSession.StartSession()
                 .Task(() => count++)
                 .SetIterations(20)
                 .RunSession();
@@ -62,7 +62,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void MemoryProfileSession_AllocateMemory()
         {
-            var result = MemoryProfileSession.StartSession()
+            var result = ProfilerSession.StartSession()
                 .Task(() =>
                 {
                     var list = new List<byte[]>();
@@ -76,7 +76,7 @@ namespace MeasureMap.UnitTest
 
             //Thread.Sleep(TimeSpan.FromSeconds(10));
 
-            Assert.IsTrue(result.Increase < 50000L, result.Increase.ToString());
+            Assert.IsTrue(result.Increase < 70000L, result.Increase.ToString());
         }
     }
 }
