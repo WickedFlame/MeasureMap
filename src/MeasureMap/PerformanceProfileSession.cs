@@ -8,23 +8,16 @@ namespace MeasureMap
     /// <summary>
     /// TODO: Memorytests: http://www.codeproject.com/Articles/5171/Advanced-Unit-Testing-Part-IV-Fixture-Setup-Teardo
     /// </summary>
-    public class ProfileSession : ISession
+    public class PerformanceProfileSession : ProfilerSession
     {
-        private static readonly bool IsRunningOnMono;
-
-        private readonly List<Func<ProfileResult, bool>> _conditions;
+        private readonly List<Func<PerformanceResult, bool>> _conditions;
         private int _iterations = 1;
         private Action _task;
 
-        static ProfileSession()
-        {
-            IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
-        }
-
-        private ProfileSession()
+        private PerformanceProfileSession()
         {
             _iterations = 1;
-            _conditions = new List<Func<ProfileResult, bool>>();
+            _conditions = new List<Func<PerformanceResult, bool>>();
         }
 
         /// <summary>
@@ -41,10 +34,10 @@ namespace MeasureMap
         /// <summary>
         /// Creates a new Session for profiling performance
         /// </summary>
-        /// <returns></returns>
-        public static ProfileSession StartSession()
+        /// <returns>A profiler session</returns>
+        public static PerformanceProfileSession StartSession()
         {
-            return new ProfileSession();
+            return new PerformanceProfileSession();
         }
         
         /// <summary>
@@ -52,7 +45,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The current profiling session</returns>
-        public ProfileSession SetIterations(int iterations)
+        public PerformanceProfileSession SetIterations(int iterations)
         {
             _iterations = iterations;
 
@@ -64,7 +57,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="task">The Task</param>
         /// <returns>The current profiling session</returns>
-        public ProfileSession Task(Action task)
+        public PerformanceProfileSession Task(Action task)
         {
             _task = task;
 
@@ -76,7 +69,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="condition">The condition that will be checked</param>
         /// <returns>The current profiling session</returns>
-        public ProfileSession AddCondition(Func<ProfileResult, bool> condition)
+        public PerformanceProfileSession AddCondition(Func<PerformanceResult, bool> condition)
         {
             _conditions.Add(condition);
 
@@ -87,7 +80,7 @@ namespace MeasureMap
         /// Starts the profiling session
         /// </summary>
         /// <returns>The resulting profile</returns>
-        public ProfileResult RunSession()
+        public PerformanceResult RunSession()
         {
             if (_task == null)
             {
@@ -98,17 +91,12 @@ namespace MeasureMap
             Trace.WriteLine("Running Task once for warmup on Performance Analysis Benchmark");
             _task();
 
-            var profile = new ProfileResult();
+            var profile = new PerformanceResult();
             var stopwatch = new Stopwatch();
 
             SetProcessor();
-            
-            Thread.CurrentThread.Priority = ThreadPriority.Highest; // Prevents "Normal" Threads from interrupting this thread
-
-            // clean up
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
+            SetThreadPriority();
+            ClearGarbageCollector();
 
             Trace.WriteLine(string.Format("Running Task for {0} iterations for Perfomance Analysis Benchmark", _iterations));
             for (int i = 0; i < _iterations; i++)
@@ -122,7 +110,7 @@ namespace MeasureMap
 
                 Trace.WriteLine(string.Format("Task ran for {0} Ticks {1} Milliseconds", stopwatch.ElapsedTicks, stopwatch.ElapsedMilliseconds));
 
-                profile.Add(new Iteration(stopwatch.ElapsedTicks, stopwatch.Elapsed));
+                profile.Add(new PerformanceIteration(stopwatch.ElapsedTicks, stopwatch.Elapsed));
             }
 
             foreach (var condition in _conditions)
@@ -136,27 +124,6 @@ namespace MeasureMap
             Trace.WriteLine(string.Format("Running Task for {0} iterations with an Average of {1} Milliseconds", _iterations, profile.AverageMilliseconds));
 
             return profile;
-        }
-        
-        private void SetProcessor()
-        {
-            if (!IsRunningOnMono)
-            {
-                var process = Process.GetCurrentProcess();
-
-                try
-                {
-                    // Uses the second Core or Processor for the Test
-                    process.ProcessorAffinity = new IntPtr(2);
-                }
-                catch (Exception)
-                {
-                    Trace.WriteLine("Could not set Task to run on second Core or Processor");
-                }
-
-                // Prevents "Normal" processes from interrupting Threads
-                process.PriorityClass = ProcessPriorityClass.High; 
-            }
         }
     }
 }

@@ -44,10 +44,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertionException.cs" />
-    <Compile Include="ISession.cs" />
-    <Compile Include="Iteration.cs" />
+    <Compile Include="PerformanceIteration.cs" />
+    <Compile Include="MemoryIteration.cs" />
+    <Compile Include="MemoryProfileSession.cs" />
+    <Compile Include="MemoryResult.cs" />
+    <Compile Include="PerformanceResult.cs" />
     <Compile Include="ProfileResult.cs" />
-    <Compile Include="ProfileSession.cs" />
+    <Compile Include="PerformanceProfileSession.cs" />
+    <Compile Include="ProfilerSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

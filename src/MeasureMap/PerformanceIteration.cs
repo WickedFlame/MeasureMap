@@ -5,14 +5,14 @@ namespace MeasureMap
     /// <summary>
     /// Marks a iteration of a run Task
     /// </summary>
-    public class Iteration
+    public class PerformanceIteration
     {
         /// <summary>
         /// Creates a object containing information on the iteration
         /// </summary>
         /// <param name="ticks">Ticks the Task took to run</param>
         /// <param name="duration">The duration the Task took to run</param>
-        public Iteration(long ticks, TimeSpan duration)
+        public PerformanceIteration(long ticks, TimeSpan duration)
         {
             TimeStamp = DateTime.Now;
             Ticks = ticks;

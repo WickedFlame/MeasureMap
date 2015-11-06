@@ -6,22 +6,22 @@ namespace MeasureMap
     /// <summary>
     /// Represents the result of a profiled session
     /// </summary>
-    public class ProfileResult
+    public class ProfileResult<T>
     {
-        private readonly List<Iteration> _iterations;
+        private readonly List<T> _iterations;
 
         /// <summary>
         /// Creates a result of the profiled session
         /// </summary>
         public ProfileResult()
         {
-            _iterations = new List<Iteration>();
+            _iterations = new List<T>();
         }
 
         /// <summary>
         /// The iterations that were run
         /// </summary>
-        public IEnumerable<Iteration> Iterations
+        public IEnumerable<T> Iterations
         {
             get
             {
@@ -29,29 +29,8 @@ namespace MeasureMap
             }
         }
 
-        /// <summary>
-        /// Gets the average Milliseconds that all iterations took to run the task
-        /// </summary>
-        public long AverageMilliseconds
-        {
-            get
-            {
-                return _iterations.Select(i => i.Duration.Milliseconds).Sum() / _iterations.Count;
-            }
-        }
 
-        /// <summary>
-        /// Gets the average Ticks that all iterations took to run the task
-        /// </summary>
-        public long AverageTicks
-        {
-            get
-            {
-                return _iterations.Select(i => i.Ticks).Sum() / _iterations.Count;
-            }
-        }
-
-        internal void Add(Iteration iteration)
+        internal void Add(T iteration)
         {
             _iterations.Add(iteration);
         }
