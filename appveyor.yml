@@ -16,8 +16,8 @@ branches:
 # Do not build on tags (GitHub only)
 skip_tags: true
 
-cache:
-  - packages -> **\packages.config
+#cache:
+#  - packages -> **\packages.config
 
 install:
 #  - sudo apt-get install nunit-console
