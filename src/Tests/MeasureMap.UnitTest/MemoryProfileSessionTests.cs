@@ -65,18 +65,19 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(() =>
                 {
+                    // create some objects to allocate memory
                     var list = new List<byte[]>();
                     for (int i = 0; i < 10000; i++)
                     {
-                        list.Add(new byte[1024]); // Change the size here.
+                        list.Add(new byte[1024]);
                     }
                 })
                 .SetIterations(1000)
                 .RunSession();
 
-            //Thread.Sleep(TimeSpan.FromSeconds(10));
+            Thread.Sleep(TimeSpan.FromSeconds(5));
 
-            Assert.IsTrue(result.Increase < 70000L, result.Increase.ToString());
+            Assert.IsTrue(result.Increase < 80000L, result.Increase.ToString());
         }
     }
 }
