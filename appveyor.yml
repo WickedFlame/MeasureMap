@@ -97,7 +97,3 @@ test_script:
 
 # to disable automatic tests 
 #test: off
-
-#nuget:
-#  account_feed: true
-#  project_feed: true
