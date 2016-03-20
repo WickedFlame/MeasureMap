@@ -128,6 +128,22 @@ namespace MeasureMap.UnitTest
                 .RunSession());
         }
 
+        [Test]
+        public void ProfileSession_Trace()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(Task)
+                .SetIterations(10)
+                .RunSession()
+                .Trace();
+
+            Assert.That(result.Contains("Duration Total"));
+            Assert.That(result.Contains("Average Time"));
+            Assert.That(result.Contains("Memory Initial size"));
+            Assert.That(result.Contains("Memory End size"));
+            Assert.That(result.Contains("Memory Increase"));
+        }
+
         private void Task()
         {
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
