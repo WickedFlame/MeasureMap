@@ -115,8 +115,8 @@ namespace MeasureMap
             result += $"\t\tMemory End size:\t\t{EndSize}\n";
             result += $"\t\tMemory Increase:\t\t{Increase}\n";
 
-            Console.WriteLine(result);
-            System.Diagnostics.Debug.WriteLine(result);
+            //Console.WriteLine(result);
+            System.Diagnostics.Trace.WriteLine(result);
 
             return result;
         }
