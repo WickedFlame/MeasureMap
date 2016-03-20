@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MeasureMap
@@ -52,6 +53,28 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Gets the average time each iteration took
+        /// </summary>
+        public TimeSpan AverageTime
+        {
+            get
+            {
+                return TimeSpan.FromTicks(AverageTicks);
+            }
+        }
+
+        /// <summary>
+        /// Gets the total time for all iterations
+        /// </summary>
+        public TimeSpan TotalTime
+        {
+            get
+            {
+                return TimeSpan.FromTicks(Iterations.Select(i => i.Ticks).Sum());
+            }
+        }
+
+        /// <summary>
         /// The initial memory size
         /// </summary>
         public long InitialSize
@@ -76,6 +99,26 @@ namespace MeasureMap
             {
                 return EndSize - InitialSize;
             }
+        }
+
+        /// <summary>
+        /// Trace the result to the Console
+        /// </summary>
+        public string Trace()
+        {
+            var result = "\n### MeasureMap - Profiler result for Profilesession:\n";
+            result += $"\tDuration ========================================\n";
+            result += $"\t\tDuration Total:\t\t\t{TotalTime.ToString()}\n";
+            result += $"\t\tAverage Time:\t\t\t{AverageTime}\n";
+            result += $"\tMemory ==========================================\n";
+            result += $"\t\tMemory Initial size:\t{InitialSize}\n";
+            result += $"\t\tMemory End size:\t\t{EndSize}\n";
+            result += $"\t\tMemory Increase:\t\t{Increase}\n";
+
+            Console.WriteLine(result);
+            System.Diagnostics.Debug.WriteLine(result);
+
+            return result;
         }
 
         internal void Add(ProfileIteration iteration)

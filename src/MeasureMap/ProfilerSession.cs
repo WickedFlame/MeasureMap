@@ -91,11 +91,11 @@ namespace MeasureMap
         {
             if (_task == null)
             {
-                throw new ArgumentNullException("task", "The Task that has to be processed is null or not set.");
+                throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
             // warmup
-            Trace.WriteLine("Running Task once for warmup on Performance Analysis Benchmark");
+            Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
             _task();
 
             var profile = new ProfilerResult();
@@ -105,7 +105,7 @@ namespace MeasureMap
             SetThreadPriority();
             ForceGarbageCollector();
 
-            Trace.WriteLine(string.Format("Running Task for {0} iterations for Perfomance Analysis Benchmark", _iterations));
+            Trace.WriteLine($"Running Task for {_iterations} iterations for Perfomance Analysis Benchmark");
 
             profile.InitialSize = GC.GetTotalMemory(true);
 
@@ -134,11 +134,11 @@ namespace MeasureMap
             {
                 if (!condition(profile))
                 {
-                    throw new AssertionException(string.Format("Condition failed: {0}", condition.ToString()));
+                    throw new AssertionException($"Condition failed: {condition}");
                 }
             }
 
-            Trace.WriteLine(string.Format("Running Task for {0} iterations with an Average of {1} Milliseconds", _iterations, profile.AverageMilliseconds));
+            Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
 
             return profile;
         }
@@ -159,7 +159,7 @@ namespace MeasureMap
                 }
                 catch (Exception)
                 {
-                    Trace.WriteLine("Could not set Task to run on second Core or Processor");
+                    Trace.WriteLine($"Could not set Task to run on second Core or Processor");
                 }
 
                 // Prevents "Normal" processes from interrupting Threads
