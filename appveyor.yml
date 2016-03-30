@@ -70,9 +70,9 @@ build:
 #---------------------------------#
 
 test:
-#  assemblies:
-#    - asm1.dll
-#    - asm2.dll
+  # assemblies to test - optional
+  assemblies:
+    - '**\*.UnitTest.dll'
 
 #  categories:
 #    - UI
