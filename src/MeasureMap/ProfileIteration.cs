@@ -28,33 +28,38 @@ namespace MeasureMap
         /// <summary>
         /// Gets the Ticks that the iteration took to run the Task
         /// </summary>
-        public long Ticks { get; private set; }
+        public long Ticks { get; }
 
         /// <summary>
         /// Gets the Milliseconds that the iteration took to run the Task
         /// </summary>
-        public TimeSpan Duration { get; private set; }
+        public TimeSpan Duration { get; }
 
         /// <summary>
         /// The timestamp of when the iteration was run
         /// </summary>
-        public DateTime TimeStamp { get; private set; }
+        public DateTime TimeStamp { get; }
 
         /// <summary>
         /// The memory size after execution
         /// </summary>
-        public long AfterExecution { get; private set; }
+        public long AfterExecution { get; }
 
         /// <summary>
         /// The memory size after GC
         /// </summary>
-        public long AfterGarbageCollection { get; private set; }
+        public long AfterGarbageCollection { get; }
 
         /// <summary>
         /// The initial memory size
         /// </summary>
+        public long InitialSize { get; }
 
-        public long InitialSize { get; private set; }
+        /// <summary>
+        /// Gets or sets the data that is returned by the Task. If no data is returned, the iteration is contained
+        /// </summary>
+        public object Data { get; set; }
+
         public override string ToString()
         {
             return "Ticks: " + Ticks + " mS: " + Duration;

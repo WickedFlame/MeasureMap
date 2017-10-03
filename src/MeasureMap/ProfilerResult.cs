@@ -26,6 +26,28 @@ namespace MeasureMap
         public IEnumerable<ProfileIteration> Iterations => _iterations;
 
         /// <summary>
+        /// Gets the fastest iterations
+        /// </summary>
+        public ProfileIteration Fastest
+        {
+            get
+            {
+                return Iterations.OrderBy(i => i.Ticks).FirstOrDefault();
+            }
+        }
+
+        /// <summary>
+        /// Gets the slowest iterations
+        /// </summary>
+        public ProfileIteration Slowest
+        {
+            get
+            {
+                return Iterations.OrderByDescending(i => i.Ticks).FirstOrDefault(); 
+            }
+        }
+
+        /// <summary>
         /// Gets the average Milliseconds that all iterations took to run the task
         /// </summary>
         public long AverageMilliseconds
@@ -62,6 +84,8 @@ namespace MeasureMap
                 return TimeSpan.FromTicks(Iterations.Select(i => i.Ticks).Sum());
             }
         }
+
+        
 
         /// <summary>
         /// The initial memory size
@@ -113,6 +137,8 @@ namespace MeasureMap
             sb.AppendLine($"\t\tAverage Time:\t\t\t{AverageTime}");
             sb.AppendLine($"\t\tAverage Milliseconds:\t\t{AverageMilliseconds}");
             sb.AppendLine($"\t\tAverage Ticks:\t\t\t{AverageTicks}");
+            sb.AppendLine($"\t\tFastest:\t\t\t{TimeSpan.FromTicks(Fastest.Ticks)}");
+            sb.AppendLine($"\t\tSlowest:\t\t\t{TimeSpan.FromTicks(Slowest.Ticks)}");
             sb.AppendLine($"\tMemory ==========================================");
             sb.AppendLine($"\t\tMemory Initial size:\t\t{InitialSize}");
             sb.AppendLine($"\t\tMemory End size:\t\t{EndSize}");

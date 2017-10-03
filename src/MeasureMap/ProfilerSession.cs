@@ -79,6 +79,18 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Sets the Task that will be profiled passing the current iteration index as parameter
+        /// </summary>
+        /// <param name="task">The task to execute</param>
+        /// <returns>The current profiling session</returns>
+        public ProfilerSession Task(Action<int> task)
+        {
+            _task = new IteratedTaskRunner(task);
+
+            return this;
+        }
+
+        /// <summary>
         /// Adds a condition to the profiling session
         /// </summary>
         /// <param name="condition">The condition that will be checked</param>
@@ -103,7 +115,7 @@ namespace MeasureMap
 
             // warmup
             Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
-            _task.Run();
+            _task.Run(0);
 
             var profile = new ProfilerResult();
             var stopwatch = new Stopwatch();
@@ -123,15 +135,20 @@ namespace MeasureMap
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                _task.Run();
+                var output = _task.Run(i);
 
                 stopwatch.Stop();
 
                 var after = GC.GetTotalMemory(false);
                 ForceGarbageCollector();
                 var afterCollect = GC.GetTotalMemory(true);
-                
-                profile.Add(new ProfileIteration(stopwatch.ElapsedTicks, stopwatch.Elapsed, initial, after, afterCollect));
+
+                var iteration = new ProfileIteration(stopwatch.ElapsedTicks, stopwatch.Elapsed, initial, after, afterCollect)
+                {
+                    Data = output
+                };
+
+                profile.Add(iteration);
             }
 
             ForceGarbageCollector();

@@ -58,6 +58,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="IteratedTaskTests.cs" />
     <Compile Include="MemoryProfileSessionTests.cs" />
     <Compile Include="GenericTaskTests.cs" />
     <Compile Include="ProfileSessionTests.cs" />

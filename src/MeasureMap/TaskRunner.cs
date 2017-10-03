@@ -4,7 +4,7 @@ namespace MeasureMap
 {
     public interface ITaskRunner
     {
-        void Run();
+        object Run(int iteration);
     }
 
     public class TaskRunner : ITaskRunner
@@ -16,9 +16,10 @@ namespace MeasureMap
             _task = task;
         }
 
-        public void Run()
+        public object Run(int iteration)
         {
             _task();
+            return iteration;
         }
     }
 
@@ -33,9 +34,10 @@ namespace MeasureMap
             _parameter = GetObject();
         }
 
-        public void Run()
+        public object Run(int iteration)
         {
             _parameter = _task(_parameter);
+            return _parameter;
         }
 
         private T GetObject()
@@ -53,6 +55,22 @@ namespace MeasureMap
             {
                 throw new InvalidOperationException($"The object of Type {typeof(T).Name} does not contain a parameterless constructor", e);
             }
+        }
+    }
+
+    public class IteratedTaskRunner : ITaskRunner
+    {
+        private readonly Action<int> _task;
+
+        public IteratedTaskRunner(Action<int> task)
+        {
+            _task = task;
+        }
+
+        public object Run(int iteration)
+        {
+            _task(iteration);
+            return iteration;
         }
     }
 }

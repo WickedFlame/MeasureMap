@@ -144,6 +144,40 @@ namespace MeasureMap.UnitTest
             Assert.That(result.Contains("Memory Increase"));
         }
 
+        [Test]
+        public void ProfileSession_Fastest()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(i =>
+                {
+                    if (i != 0)
+                    {
+                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
+                    }
+                })
+                .SetIterations(10)
+                .RunSession();
+
+            Assert.That((int)result.Fastest.Data == 0);
+        }
+
+        [Test]
+        public void ProfileSession_Slowest()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(i =>
+                {
+                    if (i == 9)
+                    {
+                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
+                    }
+                })
+                .SetIterations(10)
+                .RunSession();
+
+            Assert.That((int)result.Slowest.Data == 9);
+        }
+
         private void Task()
         {
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
