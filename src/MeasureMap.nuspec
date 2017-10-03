@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
   <metadata>
     <id>MeasureMap</id>
-    <version>0.2.0-RC02</version>
+    <version>0.2.0-RC03</version>
     <title>MeasureMap</title>
     <authors>Christian Walpen</authors>
     <owners>Christian Walpen</owners>

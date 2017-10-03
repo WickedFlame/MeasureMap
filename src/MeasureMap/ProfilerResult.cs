@@ -111,10 +111,10 @@ namespace MeasureMap
             sb.AppendLine($"\tDuration ========================================");
             sb.AppendLine($"\t\tDuration Total:\t\t\t{TotalTime.ToString()}");
             sb.AppendLine($"\t\tAverage Time:\t\t\t{AverageTime}");
-            sb.AppendLine($"\t\tAverage Milliseconds:\t{AverageMilliseconds}");
+            sb.AppendLine($"\t\tAverage Milliseconds:\t\t{AverageMilliseconds}");
             sb.AppendLine($"\t\tAverage Ticks:\t\t\t{AverageTicks}");
             sb.AppendLine($"\tMemory ==========================================");
-            sb.AppendLine($"\t\tMemory Initial size:\t{InitialSize}");
+            sb.AppendLine($"\t\tMemory Initial size:\t\t{InitialSize}");
             sb.AppendLine($"\t\tMemory End size:\t\t{EndSize}");
             sb.AppendLine($"\t\tMemory Increase:\t\t{Increase}");
             
