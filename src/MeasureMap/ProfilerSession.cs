@@ -12,7 +12,7 @@ namespace MeasureMap
     {
         private readonly List<Func<ProfilerResult, bool>> _conditions;
         private int _iterations = 1;
-        private Action _task;
+        private ITaskRunner _task;
 
         private static readonly bool IsRunningOnMono;
 
@@ -30,14 +30,8 @@ namespace MeasureMap
         /// <summary>
         /// Gets the amount of iterations that the Task will be run
         /// </summary>
-        public int Iterations
-        {
-            get
-            {
-                return _iterations;
-            }
-        }
-        
+        public int Iterations => _iterations;
+
         /// <summary>
         /// Creates a new Session for profiling performance
         /// </summary>
@@ -60,13 +54,26 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Adds the Task that will be profiled
+        /// Sets the Task that will be profiled
         /// </summary>
         /// <param name="task">The Task</param>
         /// <returns>The current profiling session</returns>
         public ProfilerSession Task(Action task)
         {
-            _task = task;
+            _task = new TaskRunner(task);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the Task that will be profiled
+        /// </summary>
+        /// <typeparam name="T">The return and parameter value</typeparam>
+        /// <param name="task">The task to execute</param>
+        /// <returns>The current profiling session</returns>
+        public ProfilerSession Task<T>(Func<T,T> task)
+        {
+            _task = new TaskRunner<T>(task);
 
             return this;
         }
@@ -96,7 +103,7 @@ namespace MeasureMap
 
             // warmup
             Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
-            _task();
+            _task.Run();
 
             var profile = new ProfilerResult();
             var stopwatch = new Stopwatch();
@@ -116,7 +123,7 @@ namespace MeasureMap
                 stopwatch.Reset();
                 stopwatch.Start();
 
-                _task();
+                _task.Run();
 
                 stopwatch.Stop();
 
