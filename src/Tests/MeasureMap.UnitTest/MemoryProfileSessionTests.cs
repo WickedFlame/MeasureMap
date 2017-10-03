@@ -77,7 +77,7 @@ namespace MeasureMap.UnitTest
 
             Thread.Sleep(TimeSpan.FromSeconds(5));
 
-            Assert.IsTrue(result.Increase < 80000L, result.Increase.ToString());
+            Assert.IsTrue(result.Increase < 200000L && result.Increase > 30000L, result.Increase.ToString());
         }
     }
 }

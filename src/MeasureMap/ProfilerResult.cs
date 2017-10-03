@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace MeasureMap
 {
@@ -22,14 +23,8 @@ namespace MeasureMap
         /// <summary>
         /// The iterations that were run
         /// </summary>
-        public IEnumerable<ProfileIteration> Iterations
-        {
-            get
-            {
-                return _iterations;
-            }
-        }
-        
+        public IEnumerable<ProfileIteration> Iterations => _iterations;
+
         /// <summary>
         /// Gets the average Milliseconds that all iterations took to run the task
         /// </summary>
@@ -55,13 +50,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the average time each iteration took
         /// </summary>
-        public TimeSpan AverageTime
-        {
-            get
-            {
-                return TimeSpan.FromTicks(AverageTicks);
-            }
-        }
+        public TimeSpan AverageTime => TimeSpan.FromTicks(AverageTicks);
 
         /// <summary>
         /// Gets the total time for all iterations
@@ -93,27 +82,14 @@ namespace MeasureMap
         /// <summary>
         /// The increase in memory size
         /// </summary>
-        public long Increase
-        {
-            get
-            {
-                return EndSize - InitialSize;
-            }
-        }
+        public long Increase => EndSize - InitialSize;
 
         /// <summary>
         /// Trace the result to the Console
         /// </summary>
         public string Trace()
         {
-            var result = "\n### MeasureMap - Profiler result for Profilesession:\n";
-            result += $"\tDuration ========================================\n";
-            result += $"\t\tDuration Total:\t\t\t{TotalTime.ToString()}\n";
-            result += $"\t\tAverage Time:\t\t\t{AverageTime}\n";
-            result += $"\tMemory ==========================================\n";
-            result += $"\t\tMemory Initial size:\t{InitialSize}\n";
-            result += $"\t\tMemory End size:\t\t{EndSize}\n";
-            result += $"\t\tMemory Increase:\t\t{Increase}\n";
+            var result = ToString();
 
             //Console.WriteLine(result);
             System.Diagnostics.Trace.WriteLine(result);
@@ -124,6 +100,21 @@ namespace MeasureMap
         internal void Add(ProfileIteration iteration)
         {
             _iterations.Add(iteration);
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("### MeasureMap - Profiler result for Profilesession:");
+            sb.AppendLine($"\tDuration ========================================");
+            sb.AppendLine($"\t\tDuration Total:\t\t\t{TotalTime.ToString()}");
+            sb.AppendLine($"\t\tAverage Time:\t\t\t{AverageTime}");
+            sb.AppendLine($"\tMemory ==========================================");
+            sb.AppendLine($"\t\tMemory Initial size:\t{InitialSize}");
+            sb.AppendLine($"\t\tMemory End size:\t\t{EndSize}");
+            sb.AppendLine($"\t\tMemory Increase:\t\t{Increase}");
+            
+            return sb.ToString();
         }
     }
 }
