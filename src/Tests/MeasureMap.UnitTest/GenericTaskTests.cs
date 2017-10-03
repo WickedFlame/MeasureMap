@@ -47,7 +47,7 @@ namespace MeasureMap.UnitTest
         public void GenericTask_NewObject()
         {
             var output = 0;
-            ProfilerSession.StartSession()
+            var session = ProfilerSession.StartSession()
                 .Task<Item>(i =>
                 {
                     // do something
@@ -62,6 +62,8 @@ namespace MeasureMap.UnitTest
                 })
                 .SetIterations(20)
                 .RunSession();
+
+            session.Trace();
 
             Assert.AreEqual(output, 20);
         }

@@ -106,9 +106,13 @@ namespace MeasureMap
         {
             var sb = new StringBuilder();
             sb.AppendLine("### MeasureMap - Profiler result for Profilesession:");
+            sb.AppendLine($"\tSetup ========================================");
+            sb.AppendLine($"\t\tIterations:\t\t\t{Iterations.Count()}");
             sb.AppendLine($"\tDuration ========================================");
             sb.AppendLine($"\t\tDuration Total:\t\t\t{TotalTime.ToString()}");
             sb.AppendLine($"\t\tAverage Time:\t\t\t{AverageTime}");
+            sb.AppendLine($"\t\tAverage Milliseconds:\t{AverageMilliseconds}");
+            sb.AppendLine($"\t\tAverage Ticks:\t\t\t{AverageTicks}");
             sb.AppendLine($"\tMemory ==========================================");
             sb.AppendLine($"\t\tMemory Initial size:\t{InitialSize}");
             sb.AppendLine($"\t\tMemory End size:\t\t{EndSize}");
