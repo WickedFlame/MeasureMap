@@ -54,7 +54,7 @@ namespace MeasureMap
         {
             get
             {
-                return Iterations.Select(i => i.Duration.Milliseconds).Sum() / Iterations.Count();
+                return Iterations.Select(i => (int)i.Duration.TotalMilliseconds).Sum() / Iterations.Count();
             }
         }
 
