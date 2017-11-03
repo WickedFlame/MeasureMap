@@ -14,13 +14,6 @@ namespace MeasureMap
         private int _iterations = 1;
         private ITaskRunner _task;
 
-        private static readonly bool IsRunningOnMono;
-
-        static ProfilerSession()
-        {
-            IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
-        }
-
         private ProfilerSession()
         {
             _iterations = 1;
@@ -112,47 +105,9 @@ namespace MeasureMap
             {
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
-
-            // warmup
-            Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
-            _task.Run(0);
-
-            var profile = new ProfilerResult();
-            var stopwatch = new Stopwatch();
-
-            SetProcessor();
-            SetThreadPriority();
-            ForceGarbageCollector();
-
-            Trace.WriteLine($"Running Task for {_iterations} iterations for Perfomance Analysis Benchmark");
-
-            profile.InitialSize = GC.GetTotalMemory(true);
-
-            for (int i = 0; i < _iterations; i++)
-            {
-                var initial = GC.GetTotalMemory(true);
-
-                stopwatch.Reset();
-                stopwatch.Start();
-
-                var output = _task.Run(i);
-
-                stopwatch.Stop();
-
-                var after = GC.GetTotalMemory(false);
-                ForceGarbageCollector();
-                var afterCollect = GC.GetTotalMemory(true);
-
-                var iteration = new ProfileIteration(stopwatch.ElapsedTicks, stopwatch.Elapsed, initial, after, afterCollect)
-                {
-                    Data = output
-                };
-
-                profile.Add(iteration);
-            }
-
-            ForceGarbageCollector();
-            profile.EndSize = GC.GetTotalMemory(true);
+            
+            var worker = new Worker();
+            var profile = worker.Run(_task, _iterations);
 
             foreach (var condition in _conditions)
             {
@@ -165,50 +120,6 @@ namespace MeasureMap
             Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
 
             return profile;
-        }
-
-        /// <summary>
-        /// Sets the process to run on second core with high priority
-        /// </summary>
-        protected void SetProcessor()
-        {
-            if (!IsRunningOnMono)
-            {
-                var process = Process.GetCurrentProcess();
-
-                try
-                {
-                    // Uses the second Core or Processor for the Test
-                    process.ProcessorAffinity = new IntPtr(2);
-                }
-                catch (Exception)
-                {
-                    Trace.WriteLine($"Could not set Task to run on second Core or Processor");
-                }
-
-                // Prevents "Normal" processes from interrupting Threads
-                process.PriorityClass = ProcessPriorityClass.High;
-            }
-        }
-
-        /// <summary>
-        /// Forces the GC to run
-        /// </summary>
-        protected void ForceGarbageCollector()
-        {
-            // clean up
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
-        }
-
-        /// <summary>
-        /// Sets the thread priority to highest
-        /// </summary>
-        protected void SetThreadPriority()
-        {
-            // Prevents "Normal" Threads from interrupting this thread
-            Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }
     }
 }

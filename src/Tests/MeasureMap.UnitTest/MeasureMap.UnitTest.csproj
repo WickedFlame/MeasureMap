@@ -63,6 +63,7 @@
     <Compile Include="GenericTaskTests.cs" />
     <Compile Include="ProfileSessionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MeasureMap\MeasureMap.csproj">
