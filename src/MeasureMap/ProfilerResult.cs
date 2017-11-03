@@ -107,44 +107,10 @@ namespace MeasureMap
         /// The increase in memory size
         /// </summary>
         public long Increase => EndSize - InitialSize;
-
-        /// <summary>
-        /// Trace the result to the Console
-        /// </summary>
-        public string Trace()
-        {
-            var result = ToString();
-
-            //Console.WriteLine(result);
-            System.Diagnostics.Trace.WriteLine(result);
-
-            return result;
-        }
-
+        
         internal void Add(ProfileIteration iteration)
         {
             _iterations.Add(iteration);
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("### MeasureMap - Profiler result for Profilesession:");
-            sb.AppendLine($"\tSetup ========================================");
-            sb.AppendLine($"\t\tIterations:\t\t\t{Iterations.Count()}");
-            sb.AppendLine($"\tDuration ========================================");
-            sb.AppendLine($"\t\tDuration Total:\t\t\t{TotalTime.ToString()}");
-            sb.AppendLine($"\t\tAverage Time:\t\t\t{AverageTime}");
-            sb.AppendLine($"\t\tAverage Milliseconds:\t\t{AverageMilliseconds}");
-            sb.AppendLine($"\t\tAverage Ticks:\t\t\t{AverageTicks}");
-            sb.AppendLine($"\t\tFastest:\t\t\t{TimeSpan.FromTicks(Fastest.Ticks)}");
-            sb.AppendLine($"\t\tSlowest:\t\t\t{TimeSpan.FromTicks(Slowest.Ticks)}");
-            sb.AppendLine($"\tMemory ==========================================");
-            sb.AppendLine($"\t\tMemory Initial size:\t\t{InitialSize}");
-            sb.AppendLine($"\t\tMemory End size:\t\t{EndSize}");
-            sb.AppendLine($"\t\tMemory Increase:\t\t{Increase}");
-            
-            return sb.ToString();
         }
     }
 }
