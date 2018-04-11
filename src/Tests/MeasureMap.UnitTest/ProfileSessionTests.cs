@@ -51,7 +51,7 @@ namespace MeasureMap.UnitTest
             int count = 0;
             var result = ProfilerSession.StartSession()
                 .Task(() => count++)
-                .RunSession();
+                .RunSingleSession();
 
             // the task is rune once more to be able to initialize properly
             Assert.AreEqual(result.Iterations.Count() + 1, count);
@@ -64,7 +64,7 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(() => count++)
                 .SetIterations(20)
-                .RunSession();
+                .RunSingleSession();
 
             // the task is rune once more to be able to initialize properly
             Assert.AreEqual(result.Iterations.Count() + 1, count);
@@ -76,7 +76,7 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(200)
-                .RunSession();
+                .RunSingleSession();
 
             Assert.IsTrue(result.AverageMilliseconds > 0);
         }
@@ -87,7 +87,7 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(200)
-                .RunSession();
+                .RunSingleSession();
 
             Assert.IsTrue(result.AverageMilliseconds > 0);
         }
@@ -98,7 +98,7 @@ namespace MeasureMap.UnitTest
             ProfilerSession.StartSession()
                 .Task(Task)
                 .AddCondition(pr => pr.Iterations.Count() == 1)
-                .RunSession();
+                .RunSingleSession();
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(10)
-                .RunSession()
+                .RunSingleSession()
                 .Trace();
 
             Assert.That(result.Contains("Duration Total"));
@@ -156,7 +156,7 @@ namespace MeasureMap.UnitTest
                     }
                 })
                 .SetIterations(10)
-                .RunSession();
+                .RunSingleSession();
 
             Assert.That((int)result.Fastest.Data == 0);
         }
@@ -173,7 +173,7 @@ namespace MeasureMap.UnitTest
                     }
                 })
                 .SetIterations(10)
-                .RunSession();
+                .RunSingleSession();
 
             Assert.That((int)result.Slowest.Data == 9);
         }

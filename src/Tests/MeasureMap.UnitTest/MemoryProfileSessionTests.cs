@@ -40,7 +40,7 @@ namespace MeasureMap.UnitTest
             int count = 0;
             var result = ProfilerSession.StartSession()
                 .Task(() => count++)
-                .RunSession();
+                .RunSingleSession();
 
             // the task is rune once more to be able to initialize properly
             Assert.AreEqual(result.Iterations.Count() + 1, count);
@@ -53,7 +53,7 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(() => count++)
                 .SetIterations(20)
-                .RunSession();
+                .RunSingleSession();
 
             // the task is rune once more to be able to initialize properly
             Assert.AreEqual(result.Iterations.Count() + 1, count);
@@ -73,7 +73,7 @@ namespace MeasureMap.UnitTest
                     }
                 })
                 .SetIterations(1000)
-                .RunSession();
+                .RunSingleSession();
 
             Thread.Sleep(TimeSpan.FromSeconds(5));
 

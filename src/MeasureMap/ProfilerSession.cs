@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace MeasureMap
@@ -13,11 +15,13 @@ namespace MeasureMap
         private readonly List<Func<ProfilerResult, bool>> _conditions;
         private int _iterations = 1;
         private ITaskRunner _task;
+        private ITaskExecutor _executor;
 
         private ProfilerSession()
         {
             _iterations = 1;
             _conditions = new List<Func<ProfilerResult, bool>>();
+            _executor = new SingleTaskExecutor();
         }
 
         /// <summary>
@@ -42,6 +46,19 @@ namespace MeasureMap
         public ProfilerSession SetIterations(int iterations)
         {
             _iterations = iterations;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the amount of threads that the profiling sessions should run in.
+        /// All iterations are run on every thread.
+        /// </summary>
+        /// <param name="thredCount">The amount of threads that the task is run on</param>
+        /// <returns>The current profiling session</returns>
+        public ProfilerSession RunOnThreads(int thredCount)
+        {
+            _executor = new ThreadedTaskExecutor(thredCount);
 
             return this;
         }
@@ -96,30 +113,68 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Starts the profiling session
+        /// Starts the profiling session on a single thread
         /// </summary>
         /// <returns>The resulting profile</returns>
-        public ProfilerResult RunSession()
+        public ProfilerResult RunSingleSession()
         {
             if (_task == null)
             {
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
-            
-            var worker = new Worker();
-            var profile = worker.Run(_task, _iterations);
+
+            var executor = new SingleTaskExecutor();
+            var profiles = executor.Execute(_task, _iterations);
 
             foreach (var condition in _conditions)
             {
-                if (!condition(profile))
+                foreach (var profile in profiles)
                 {
-                    throw new AssertionException($"Condition failed: {condition}");
+                    if (!condition(profile))
+                    {
+                        throw new AssertionException($"Condition failed: {condition}");
+                    }
                 }
             }
 
-            Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
+            //Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
 
-            return profile;
+            return profiles.FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Starts the profiling session
+        /// </summary>
+        /// <returns>The resulting profile</returns>
+        public ProfilerResultCollection RunSession()
+        {
+            if (_task == null)
+            {
+                throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
+            }
+
+            var sw = new Stopwatch();
+            sw.Start();
+            
+            var profiles = _executor.Execute(_task, _iterations);
+
+            sw.Stop();
+            profiles.Elapsed = sw.Elapsed;
+
+            foreach (var condition in _conditions)
+            {
+                foreach (var profile in profiles)
+                {
+                    if (!condition(profile))
+                    {
+                        throw new AssertionException($"Condition failed: {condition}");
+                    }
+                }
+            }
+
+            //Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
+
+            return profiles;
         }
     }
 }

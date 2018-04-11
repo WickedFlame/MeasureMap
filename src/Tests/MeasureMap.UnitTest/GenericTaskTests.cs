@@ -16,6 +16,7 @@ namespace MeasureMap.UnitTest
                 {
                     // do something
                     output = i;
+                    System.Threading.Thread.Sleep(50);
                     return ++i;
                 })
                 .SetIterations(20)
@@ -61,7 +62,7 @@ namespace MeasureMap.UnitTest
                     return item;
                 })
                 .SetIterations(20)
-                .RunSession();
+                .RunSingleSession();
 
             session.Trace();
 
