@@ -121,4 +121,4 @@ artifacts:
 #      secure: FYWX6NfjZIVw==
 #    skip_symbols: false
 #    symbol_server: https://your.symbol.server/feed
-#    artifact: Scribe.nupkg
+#    artifact: MeasureMap.nupkg
