@@ -46,14 +46,17 @@ namespace MeasureMap
     public class ThreadedTaskExecutor : ITaskExecutor
     {
         private readonly int _threadCount;
+        private readonly bool _threadAffinity;
 
         /// <summary>
         /// Creates a new threaded task executor
         /// </summary>
         /// <param name="threadCount">The amount of threads to run the task</param>
-        public ThreadedTaskExecutor(int threadCount)
+        /// <param name="threadAffinity">Defines if the Threads should be priorized</param>
+        public ThreadedTaskExecutor(int threadCount, bool threadAffinity = true)
         {
             _threadCount = threadCount;
+            _threadAffinity = threadAffinity;
         }
 
         /// <summary>
@@ -66,9 +69,9 @@ namespace MeasureMap
         {
             var threads = new List<System.Threading.Tasks.Task<ProfilerResult>>();
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < _threadCount; i++)
             {
-                var thread = ThreadHelper.QueueTask(i, threadIndex =>
+                var thread = ThreadHelper.QueueTask(i, _threadAffinity, threadIndex =>
                 {
                     var worker = new Worker();
                     var p = worker.Run(task, iterations);

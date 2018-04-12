@@ -8,7 +8,7 @@ namespace MeasureMap
     /// <summary>
     /// Represents the result of a profiled session
     /// </summary>
-    public class ProfilerResult 
+    public class ProfilerResult : IProfilerResult
     {
         private readonly List<ProfileIteration> _iterations;
 

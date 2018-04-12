@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertionException.cs" />
+    <Compile Include="IProfilerResult.cs" />
     <Compile Include="ProfileIteration.cs" />
     <Compile Include="ProfilerResultCollection.cs" />
     <Compile Include="ProfilerResultExtensions.cs" />

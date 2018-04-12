@@ -55,10 +55,11 @@ namespace MeasureMap
         /// All iterations are run on every thread.
         /// </summary>
         /// <param name="thredCount">The amount of threads that the task is run on</param>
+        /// <param name="threadAffinity">Defines if the threads should be priorized</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession RunOnThreads(int thredCount)
+        public ProfilerSession SetThreads(int thredCount, bool threadAffinity = true)
         {
-            _executor = new ThreadedTaskExecutor(thredCount);
+            _executor = new ThreadedTaskExecutor(thredCount, threadAffinity);
 
             return this;
         }
@@ -116,7 +117,7 @@ namespace MeasureMap
         /// Starts the profiling session on a single thread
         /// </summary>
         /// <returns>The resulting profile</returns>
-        public ProfilerResult RunSingleSession()
+        public ProfilerResult RunSession()
         {
             if (_task == null)
             {
@@ -146,7 +147,7 @@ namespace MeasureMap
         /// Starts the profiling session
         /// </summary>
         /// <returns>The resulting profile</returns>
-        public ProfilerResultCollection RunSession()
+        public ProfilerResultCollection RunSessions()
         {
             if (_task == null)
             {

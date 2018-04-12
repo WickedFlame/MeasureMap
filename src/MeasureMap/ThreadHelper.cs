@@ -11,17 +11,23 @@ namespace MeasureMap
 {
     internal static class ThreadHelper
     {
-        public static Task<ProfilerResult> QueueTask(int index, Func<int, ProfilerResult> action)
+        public static Task<ProfilerResult> QueueTask(int index, bool threadAffinity, Func<int, ProfilerResult> action)
         {
             var task = new Task<ProfilerResult>(() =>
             {
-                Thread.BeginThreadAffinity();
-                var affinity = GetAffinity(index + 1, Environment.ProcessorCount);
-                GetCurrentThread().ProcessorAffinity = new IntPtr(1 << affinity);
+                if (threadAffinity)
+                {
+                    Thread.BeginThreadAffinity();
+                    var affinity = GetAffinity(index + 1, Environment.ProcessorCount);
+                    GetCurrentThread().ProcessorAffinity = new IntPtr(1 << affinity);
+                }
 
                 var result = action.Invoke(index);
 
-                Thread.EndThreadAffinity();
+                if (threadAffinity)
+                {
+                    Thread.EndThreadAffinity();
+                }
 
                 return result;
             });

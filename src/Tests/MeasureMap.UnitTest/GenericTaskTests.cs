@@ -62,7 +62,7 @@ namespace MeasureMap.UnitTest
                     return item;
                 })
                 .SetIterations(20)
-                .RunSingleSession();
+                .RunSession();
 
             session.Trace();
 
