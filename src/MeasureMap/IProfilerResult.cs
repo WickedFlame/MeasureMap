@@ -10,14 +10,14 @@ namespace MeasureMap
         long AverageTicks { get; }
 
         TimeSpan AverageTime { get; }
-
-        long EndSize { get; set; }
-
+        
         ProfileIteration Fastest { get; }
 
         long Increase { get; }
 
-        long InitialSize { get; set; }
+        long InitialSize { get; }
+
+        long EndSize { get; }
 
         IEnumerable<ProfileIteration> Iterations { get; }
 

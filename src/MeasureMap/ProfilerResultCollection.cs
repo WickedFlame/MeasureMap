@@ -81,18 +81,12 @@ namespace MeasureMap
         /// <summary>
         /// The initial memory size
         /// </summary>
-        public long InitialSize
-        {
-            get; set;
-        }
+        public long InitialSize => _results.Select(r => r.InitialSize).Min();
 
         /// <summary>
         /// The memory size after measure
         /// </summary>
-        public long EndSize
-        {
-            get; set;
-        }
+        public long EndSize => _results.Select(r => r.EndSize).Max();
 
         /// <summary>
         /// The increase in memory size

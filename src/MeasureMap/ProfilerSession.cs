@@ -101,6 +101,12 @@ namespace MeasureMap
             return this;
         }
 
+        public ProfilerSession Task(Action<ProfilerOptions> task)
+        {
+            throw new NotImplementedException();
+            return this;
+        }
+
         /// <summary>
         /// Adds a condition to the profiling session
         /// </summary>
@@ -112,42 +118,12 @@ namespace MeasureMap
 
             return this;
         }
-
-        /// <summary>
-        /// Starts the profiling session on a single thread
-        /// </summary>
-        /// <returns>The resulting profile</returns>
-        public ProfilerResult RunSession()
-        {
-            if (_task == null)
-            {
-                throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
-            }
-
-            var executor = new SingleTaskExecutor();
-            var profiles = executor.Execute(_task, _iterations);
-
-            foreach (var condition in _conditions)
-            {
-                foreach (var profile in profiles)
-                {
-                    if (!condition(profile))
-                    {
-                        throw new AssertionException($"Condition failed: {condition}");
-                    }
-                }
-            }
-
-            //Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
-
-            return profiles.FirstOrDefault();
-        }
-
+        
         /// <summary>
         /// Starts the profiling session
         /// </summary>
         /// <returns>The resulting profile</returns>
-        public ProfilerResultCollection RunSessions()
+        public IProfilerResult RunSession()
         {
             if (_task == null)
             {

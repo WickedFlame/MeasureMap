@@ -17,12 +17,14 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(i =>
                 {
-                    Trace.WriteLine($"Iteration {i}");
+                    Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
-                .RunSessions();
+                .RunSession();
 
-            Assert.That(result.Count() == 1);
+            Assert.IsInstanceOf<ProfilerResultCollection>(result);
+
+            Assert.That(((ProfilerResultCollection)result).Count() == 1);
             Assert.That(result.Iterations.Count() == 10);
         }
 
@@ -32,13 +34,13 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(i =>
                 {
-                    Trace.WriteLine($"Iteration {i}");
+                    Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
                 .SetThreads(1, false)
-                .RunSessions();
+                .RunSession();
 
-            Assert.That(result.Count() == 1);
+            Assert.That(((ProfilerResultCollection)result).Count() == 1);
             Assert.That(result.Iterations.Count() == 10);
         }
 
@@ -48,14 +50,36 @@ namespace MeasureMap.UnitTest
             var result = ProfilerSession.StartSession()
                 .Task(i =>
                 {
-                    Trace.WriteLine($"Iteration {i}");
+                    Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
                 .SetThreads(10, false)
-                .RunSessions();
+                .RunSession();
 
-            Assert.That(result.Count() == 10);
+            Assert.That(((ProfilerResultCollection)result).Count() == 10);
             Assert.That(result.Iterations.Count() == 100);
+        }
+
+        [Test]
+        public void ThreadedProfiler_MultipleThreads_ReturnValues()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(i =>
+                {
+                    Trace.WriteLine($"Iteration {(int)i}");
+                })
+                .SetIterations(10)
+                .SetThreads(10, false)
+                .RunSession();
+
+            Assert.That(((ProfilerResultCollection)result).All(r => r.AverageTime.Ticks > 0));
+            Assert.That(((ProfilerResultCollection)result).All(r => r.EndSize > 0));
+            Assert.That(((ProfilerResultCollection)result).All(r => r.AverageTicks > 0));
+            Assert.That(((ProfilerResultCollection)result).All(r => r.AverageMilliseconds > 0));
+            Assert.That(((ProfilerResultCollection)result).All(r => r.Fastest != null));
+            Assert.That(((ProfilerResultCollection)result).All(r => r.Increase != 0));
+            Assert.That(((ProfilerResultCollection)result).All(r => r.InitialSize > 0));
+            Assert.That(((ProfilerResultCollection)result).All(r => r.TotalTime.Ticks > 0));
         }
     }
 }

@@ -12,7 +12,7 @@ namespace MeasureMap
         /// <summary>
         /// Trace the result to the Console
         /// </summary>
-        public static string Trace(this ProfilerResult profilerResult, string header = "### MeasureMap - Profiler result for Profilesession")
+        public static string Trace(this IProfilerResult profilerResult, string header = "### MeasureMap - Profiler result for Profilesession")
         {
             var sb = new StringBuilder();
             if (!string.IsNullOrEmpty(header))
