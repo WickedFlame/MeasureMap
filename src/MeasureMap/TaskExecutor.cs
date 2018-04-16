@@ -53,7 +53,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="threadCount">The amount of threads to run the task</param>
         /// <param name="threadAffinity">Defines if the Threads should be priorized</param>
-        public ThreadedTaskExecutor(int threadCount, bool threadAffinity = true)
+        public ThreadedTaskExecutor(int threadCount, bool threadAffinity = false)
         {
             _threadCount = threadCount;
             _threadAffinity = threadAffinity;

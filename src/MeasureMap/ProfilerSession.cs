@@ -57,7 +57,7 @@ namespace MeasureMap
         /// <param name="thredCount">The amount of threads that the task is run on</param>
         /// <param name="threadAffinity">Defines if the threads should be priorized</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession SetThreads(int thredCount, bool threadAffinity = true)
+        public ProfilerSession SetThreads(int thredCount, bool threadAffinity = false)
         {
             _executor = new ThreadedTaskExecutor(thredCount, threadAffinity);
 
@@ -101,9 +101,10 @@ namespace MeasureMap
             return this;
         }
 
-        public ProfilerSession Task(Action<ProfilerOptions> task)
+        public ProfilerSession Task(Action<int, ProfilerOptions> task)
         {
-            throw new NotImplementedException();
+            _task = new OptionsTaskRunner(task);
+
             return this;
         }
 
@@ -148,9 +149,7 @@ namespace MeasureMap
                     }
                 }
             }
-
-            //Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
-
+            
             return profiles;
         }
     }

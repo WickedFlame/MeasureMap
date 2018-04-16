@@ -38,10 +38,10 @@ namespace MeasureMap
         [DllImport("kernel32.dll")]
         private static extern int GetCurrentThreadId();
 
-        private static ProcessThread GetCurrentThread()
+        public static ProcessThread GetCurrentThread()
         {
             var id = GetCurrentThreadId();
-            var process = (from ProcessThread th in System.Diagnostics.Process.GetCurrentProcess().Threads
+            var process = (from ProcessThread th in Process.GetCurrentProcess().Threads
                            where th.Id == id
                            select th).Single();
 
