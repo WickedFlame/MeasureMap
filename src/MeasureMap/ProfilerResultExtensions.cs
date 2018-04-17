@@ -13,6 +13,12 @@ namespace MeasureMap
         /// Trace the result to the Console
         /// </summary>
         public static string Trace(this ProfilerResult profilerResult, string header = "### MeasureMap - Profiler result for Profilesession")
+            => Trace(profilerResult, false, header);
+
+        /// <summary>
+        /// Trace the result to the Console
+        /// </summary>
+        public static string Trace(this ProfilerResult profilerResult, bool fullTrace, string header = "### MeasureMap - Profiler result for Profilesession")
         {
             var sb = new StringBuilder();
             if (!string.IsNullOrEmpty(header))
@@ -35,14 +41,16 @@ namespace MeasureMap
             sb.AppendLine($"\t\tMemory End size:\t\t{profilerResult.EndSize}");
             sb.AppendLine($"\t\tMemory Increase:\t\t{profilerResult.Increase}");
 
-            sb.AppendLine($"##### Iterations");
-            sb.AppendLine("Timestamp | Duration | Init size | End size");
-            sb.AppendLine("--- | --- | ---: | ---:");
-            foreach(var iteration in profilerResult.Iterations)
+            if (fullTrace)
             {
-                sb.AppendLine($"{iteration.TimeStamp} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution}");
+                sb.AppendLine($"##### Iterations");
+                sb.AppendLine("Timestamp | Duration | Init size | End size");
+                sb.AppendLine("--- | --- | ---: | ---:");
+                foreach (var iteration in profilerResult.Iterations)
+                {
+                    sb.AppendLine($"{iteration.TimeStamp} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution}");
+                }
             }
-
 
             var result = sb.ToString();
             
