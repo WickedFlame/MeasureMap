@@ -198,7 +198,7 @@ namespace MeasureMap.UnitTest
 
         private void Task()
         {
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.002));
         }
     }
 }
