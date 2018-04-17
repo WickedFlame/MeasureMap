@@ -48,9 +48,9 @@ namespace MeasureMap.UnitTest
             var worker = new Worker();
             var result = worker.Run(runner, 10);
 
-            Assert.That(result.InitialSize > 0);
-            Assert.That(result.EndSize > 0);
-            Assert.That(result.Increase > 0);
+            Assert.That(result.InitialSize > 0, () => "InitialSize is smaller than 0");
+            Assert.That(result.EndSize > 0, () => "EndSize is smaller than 0");
+            Assert.That(result.Increase != 0, () => "Increase is 0");
         }
     }
 }
