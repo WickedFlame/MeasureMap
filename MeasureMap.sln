@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureMap", "src\MeasureMap\MeasureMap.csproj", "{C0FF0ECF-0747-4F41-B945-E540E9B4B8E4}"
 EndProject
@@ -11,7 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureMap.UnitTest", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7F400B48-F2E5-4471-A53C-49FDF388285B}"
 	ProjectSection(SolutionItems) = preProject
+		.travis.yml = .travis.yml
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
 		src\MeasureMap.nuspec = src\MeasureMap.nuspec
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
@@ -34,5 +38,8 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FBAFDA1F-5D25-4FA5-8B72-E9B17E73F0DB} = {06705C2B-0E3E-458F-B5BD-57F1AE614DFB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {701F9A9C-845C-4FB4-934A-82B138457A1B}
 	EndGlobalSection
 EndGlobal
