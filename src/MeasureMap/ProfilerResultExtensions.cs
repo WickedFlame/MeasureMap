@@ -20,6 +20,7 @@ namespace MeasureMap
                 sb.AppendLine(header);
             }
 
+            sb.AppendLine($"##### Summary");
             sb.AppendLine($"\tSetup ========================================");
             sb.AppendLine($"\t\tIterations:\t\t\t{profilerResult.Iterations.Count()}");
             sb.AppendLine($"\tDuration ========================================");
@@ -33,6 +34,15 @@ namespace MeasureMap
             sb.AppendLine($"\t\tMemory Initial size:\t\t{profilerResult.InitialSize}");
             sb.AppendLine($"\t\tMemory End size:\t\t{profilerResult.EndSize}");
             sb.AppendLine($"\t\tMemory Increase:\t\t{profilerResult.Increase}");
+
+            sb.AppendLine($"##### Iterations");
+            sb.AppendLine("Timestamp | Duration | Init size | End size");
+            sb.AppendLine("--- | --- | ---: | ---:");
+            foreach(var iteration in profilerResult.Iterations)
+            {
+                sb.AppendLine($"{iteration.TimeStamp} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution}");
+            }
+
 
             var result = sb.ToString();
             
