@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace MeasureMap
@@ -13,11 +15,13 @@ namespace MeasureMap
         private readonly List<Func<ProfilerResult, bool>> _conditions;
         private int _iterations = 1;
         private ITaskRunner _task;
+        private ITaskExecutor _executor;
 
         private ProfilerSession()
         {
             _iterations = 1;
             _conditions = new List<Func<ProfilerResult, bool>>();
+            _executor = new TaskExecutor();
         }
 
         /// <summary>
@@ -42,6 +46,20 @@ namespace MeasureMap
         public ProfilerSession SetIterations(int iterations)
         {
             _iterations = iterations;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the amount of threads that the profiling sessions should run in.
+        /// All iterations are run on every thread.
+        /// </summary>
+        /// <param name="thredCount">The amount of threads that the task is run on</param>
+        /// <param name="threadAffinity">Defines if the threads should be priorized</param>
+        /// <returns>The current profiling session</returns>
+        public ProfilerSession SetThreads(int thredCount, bool threadAffinity = true)
+        {
+            _executor = new MultyTaskExecutor(thredCount, threadAffinity);
 
             return this;
         }
@@ -83,6 +101,13 @@ namespace MeasureMap
             return this;
         }
 
+        public ProfilerSession Task(Action<int, ProfilerOptions> task)
+        {
+            _task = new OptionsTaskRunner(task);
+
+            return this;
+        }
+
         /// <summary>
         /// Adds a condition to the profiling session
         /// </summary>
@@ -94,32 +119,38 @@ namespace MeasureMap
 
             return this;
         }
-
+        
         /// <summary>
         /// Starts the profiling session
         /// </summary>
         /// <returns>The resulting profile</returns>
-        public ProfilerResult RunSession()
+        public IProfilerResult RunSession()
         {
             if (_task == null)
             {
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
+
+            var sw = new Stopwatch();
+            sw.Start();
             
-            var worker = new Worker();
-            var profile = worker.Run(_task, _iterations);
+            var profiles = _executor.Execute(_task, _iterations);
+
+            sw.Stop();
+            profiles.Elapsed = sw.Elapsed;
 
             foreach (var condition in _conditions)
             {
-                if (!condition(profile))
+                foreach (var profile in profiles)
                 {
-                    throw new AssertionException($"Condition failed: {condition}");
+                    if (!condition(profile))
+                    {
+                        throw new AssertionException($"Condition failed: {condition}");
+                    }
                 }
             }
-
-            Trace.WriteLine($"Running Task for {_iterations} iterations with an Average of { profile.AverageMilliseconds} Milliseconds");
-
-            return profile;
+            
+            return profiles;
         }
     }
 }

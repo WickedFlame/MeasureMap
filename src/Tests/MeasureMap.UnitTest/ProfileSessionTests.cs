@@ -178,9 +178,27 @@ namespace MeasureMap.UnitTest
             Assert.That((int)result.Slowest.Data == 9);
         }
 
+        [Test]
+        public void ProfileSession_OptionsRunner()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task((i, o) =>
+                {
+
+                    System.Diagnostics.Trace.WriteLine(o.ThreadId);
+                    System.Diagnostics.Trace.WriteLine(o.ProcessId);
+                    System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
+                })
+                .SetIterations(2)
+                .SetThreads(10)
+                .RunSession();
+
+            Assert.That(result.Iterations.All(i => i.Data.GetType() == typeof(ProfilerOptions)));
+        }
+
         private void Task()
         {
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.002));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace MeasureMap
 {
@@ -71,6 +72,28 @@ namespace MeasureMap
         {
             _task(iteration);
             return iteration;
+        }
+    }
+
+    public class OptionsTaskRunner : ITaskRunner
+    {
+        private readonly Action<int, ProfilerOptions> _task;
+
+        public OptionsTaskRunner(Action<int, ProfilerOptions> task)
+        {
+            _task = task;
+        }
+
+        public object Run(int iteration)
+        {
+            var parameter = new ProfilerOptions
+            {
+                Iteration = iteration,
+                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
+                ProcessId = Process.GetCurrentProcess().Id
+            };
+            _task(iteration, parameter);
+            return parameter;
         }
     }
 }

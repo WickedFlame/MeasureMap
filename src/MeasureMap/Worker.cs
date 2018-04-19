@@ -9,13 +9,6 @@ namespace MeasureMap
     /// </summary>
     public class Worker
     {
-        private static readonly bool IsRunningOnMono;
-
-        static Worker()
-        {
-            IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
-        }
-
         /// <summary>
         /// Runs the provided task for the iteration count
         /// </summary>
@@ -35,9 +28,7 @@ namespace MeasureMap
 
             stopwatch.Stop();
             profile.Warmup = stopwatch.Elapsed;
-
-            SetProcessor();
-            SetThreadPriority();
+            
             ForceGarbageCollector();
 
             Trace.WriteLine($"Running Task for {iterations} iterations for Perfomance Analysis Benchmark");
@@ -72,31 +63,7 @@ namespace MeasureMap
 
             return profile;
         }
-
-        /// <summary>
-        /// Sets the process to run on second core with high priority
-        /// </summary>
-        protected void SetProcessor()
-        {
-            if (!IsRunningOnMono)
-            {
-                var process = Process.GetCurrentProcess();
-
-                try
-                {
-                    // Uses the second Core or Processor for the Test
-                    process.ProcessorAffinity = new IntPtr(2);
-                }
-                catch (Exception)
-                {
-                    Trace.WriteLine($"Could not set Task to run on second Core or Processor");
-                }
-
-                // Prevents "Normal" processes from interrupting Threads
-                process.PriorityClass = ProcessPriorityClass.High;
-            }
-        }
-
+        
         /// <summary>
         /// Forces the GC to run
         /// </summary>
@@ -106,15 +73,6 @@ namespace MeasureMap
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
-        }
-
-        /// <summary>
-        /// Sets the thread priority to highest
-        /// </summary>
-        protected void SetThreadPriority()
-        {
-            // Prevents "Normal" Threads from interrupting this thread
-            Thread.CurrentThread.Priority = ThreadPriority.Highest;
         }
     }
 }

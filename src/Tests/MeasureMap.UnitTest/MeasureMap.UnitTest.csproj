@@ -63,6 +63,8 @@
     <Compile Include="GenericTaskTests.cs" />
     <Compile Include="ProfileSessionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThreadedProfilerTests.cs" />
+    <Compile Include="ThreadedTaskExecutorTests.cs" />
     <Compile Include="WorkerTests.cs" />
   </ItemGroup>
   <ItemGroup>
