@@ -4,6 +4,9 @@
 
 Simple Framework that helps easily create Performance Benchmarks.
 
+ProfileSession is always the starting point of each Benchmark test.
+This builds the profiler and allows execution of the Task. 
+
 Execute the Task for n iterations where n is 200 in this example.
 ```csharp
 var result = ProfileSession.StartSession()
