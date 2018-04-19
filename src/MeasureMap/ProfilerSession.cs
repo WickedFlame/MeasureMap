@@ -21,7 +21,7 @@ namespace MeasureMap
         {
             _iterations = 1;
             _conditions = new List<Func<ProfilerResult, bool>>();
-            _executor = new SingleTaskExecutor();
+            _executor = new TaskExecutor();
         }
 
         /// <summary>
@@ -57,9 +57,9 @@ namespace MeasureMap
         /// <param name="thredCount">The amount of threads that the task is run on</param>
         /// <param name="threadAffinity">Defines if the threads should be priorized</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession SetThreads(int thredCount, bool threadAffinity = false)
+        public ProfilerSession SetThreads(int thredCount, bool threadAffinity = true)
         {
-            _executor = new ThreadedTaskExecutor(thredCount, threadAffinity);
+            _executor = new MultyTaskExecutor(thredCount, threadAffinity);
 
             return this;
         }

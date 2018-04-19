@@ -20,7 +20,7 @@ namespace MeasureMap
     /// <summary>
     /// A single threaded task executor
     /// </summary>
-    public class SingleTaskExecutor : ITaskExecutor
+    public class TaskExecutor : ITaskExecutor
     {
         /// <summary>
         /// Executes the task on a single thread
@@ -30,6 +30,9 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public ProfilerResultCollection Execute(ITaskRunner task, int iterations)
         {
+            ThreadHelper.SetProcessor();
+            ThreadHelper.SetThreadPriority();
+
             var worker = new Worker();
             var p = worker.Run(task, iterations);
 
@@ -43,7 +46,7 @@ namespace MeasureMap
     /// <summary>
     /// A threaded task executor
     /// </summary>
-    public class ThreadedTaskExecutor : ITaskExecutor
+    public class MultyTaskExecutor : ITaskExecutor
     {
         private readonly int _threadCount;
         private readonly bool _threadAffinity;
@@ -53,7 +56,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="threadCount">The amount of threads to run the task</param>
         /// <param name="threadAffinity">Defines if the Threads should be priorized</param>
-        public ThreadedTaskExecutor(int threadCount, bool threadAffinity = false)
+        public MultyTaskExecutor(int threadCount, bool threadAffinity = false)
         {
             _threadCount = threadCount;
             _threadAffinity = threadAffinity;
