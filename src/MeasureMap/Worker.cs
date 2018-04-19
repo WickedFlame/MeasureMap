@@ -24,12 +24,17 @@ namespace MeasureMap
         /// <returns></returns>
         public ProfilerResult Run(ITaskRunner task, int iterations)
         {
-            // warmup
-            Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
-            task.Run(0);
-
             var profile = new ProfilerResult();
             var stopwatch = new Stopwatch();
+
+            // warmup
+            Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
+            stopwatch.Start();
+
+            task.Run(0);
+
+            stopwatch.Stop();
+            profile.Warmup = stopwatch.Elapsed;
 
             SetProcessor();
             SetThreadPriority();

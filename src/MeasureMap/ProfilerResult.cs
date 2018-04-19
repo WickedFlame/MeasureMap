@@ -107,7 +107,12 @@ namespace MeasureMap
         /// The increase in memory size
         /// </summary>
         public long Increase => EndSize - InitialSize;
-        
+
+        /// <summary>
+        /// Duration of the warmup
+        /// </summary>
+        public TimeSpan Warmup { get; set; }
+
         internal void Add(ProfileIteration iteration)
         {
             _iterations.Add(iteration);

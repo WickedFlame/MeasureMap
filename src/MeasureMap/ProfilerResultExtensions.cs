@@ -27,6 +27,8 @@ namespace MeasureMap
             }
 
             sb.AppendLine($"##### Summary");
+            sb.AppendLine($"\tWarmup ========================================");
+            sb.AppendLine($"\t\tDuration Warmup:\t\t\t{profilerResult.Warmup.ToString()}");
             sb.AppendLine($"\tSetup ========================================");
             sb.AppendLine($"\t\tIterations:\t\t\t{profilerResult.Iterations.Count()}");
             sb.AppendLine($"\tDuration ========================================");
