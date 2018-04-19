@@ -15,13 +15,13 @@ namespace MeasureMap
         private readonly List<Func<ProfilerResult, bool>> _conditions;
         private int _iterations = 1;
         private ITaskRunner _task;
-        private ITaskExecutor _executor;
+        private IThreadRunner _executor;
 
         private ProfilerSession()
         {
             _iterations = 1;
             _conditions = new List<Func<ProfilerResult, bool>>();
-            _executor = new TaskExecutor();
+            _executor = new ThreadRunner();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public ProfilerSession SetThreads(int thredCount, bool threadAffinity = true)
         {
-            _executor = new MultyTaskExecutor(thredCount, threadAffinity);
+            _executor = new MultyThreadRunner(thredCount, threadAffinity);
 
             return this;
         }

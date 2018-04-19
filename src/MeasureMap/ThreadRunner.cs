@@ -6,7 +6,7 @@ namespace MeasureMap
     /// <summary>
     /// defines a mechanism to execute the task
     /// </summary>
-    public interface ITaskExecutor
+    public interface IThreadRunner
     {
         /// <summary>
         /// Executes the task
@@ -20,7 +20,7 @@ namespace MeasureMap
     /// <summary>
     /// A single threaded task executor
     /// </summary>
-    public class TaskExecutor : ITaskExecutor
+    public class ThreadRunner : IThreadRunner
     {
         /// <summary>
         /// Executes the task on a single thread
@@ -46,7 +46,7 @@ namespace MeasureMap
     /// <summary>
     /// A threaded task executor
     /// </summary>
-    public class MultyTaskExecutor : ITaskExecutor
+    public class MultyThreadRunner : IThreadRunner
     {
         private readonly int _threadCount;
         private readonly bool _threadAffinity;
@@ -56,7 +56,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="threadCount">The amount of threads to run the task</param>
         /// <param name="threadAffinity">Defines if the Threads should be priorized</param>
-        public MultyTaskExecutor(int threadCount, bool threadAffinity = false)
+        public MultyThreadRunner(int threadCount, bool threadAffinity = false)
         {
             _threadCount = threadCount;
             _threadAffinity = threadAffinity;
