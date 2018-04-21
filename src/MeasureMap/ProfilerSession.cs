@@ -17,6 +17,8 @@ namespace MeasureMap
         private ITaskRunner _task;
         private IThreadRunner _executor;
 
+        private ITaskExecutor _executionChain = new TaskExecutor();
+
         private ProfilerSession()
         {
             _iterations = 1;
@@ -101,6 +103,11 @@ namespace MeasureMap
             return this;
         }
 
+        /// <summary>
+        /// Sets the Task that will be profiled passing the currnt iteration index and the ProfilerOptions as parameter
+        /// </summary>
+        /// <param name="task">The task to execute</param>
+        /// <returns>The current profiling session</returns>
         public ProfilerSession Task(Action<int, ProfilerOptions> task)
         {
             _task = new OptionsTaskRunner(task);
@@ -131,10 +138,13 @@ namespace MeasureMap
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
+            _executionChain.SetNext(_executor);
+
             var sw = new Stopwatch();
             sw.Start();
-            
-            var profiles = _executor.Execute(_task, _iterations);
+
+            //var profiles = _executor.Execute(_task, _iterations);
+            var profiles = _executionChain.Execute(_task, _iterations);
 
             sw.Stop();
             profiles.Elapsed = sw.Elapsed;
