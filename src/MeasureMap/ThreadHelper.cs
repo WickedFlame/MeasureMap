@@ -16,9 +16,9 @@ namespace MeasureMap
             IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
         }
 
-        public static Task<ProfilerResult> QueueTask(int index, bool threadAffinity, Func<int, ProfilerResult> action)
+        public static Task<Result> QueueTask(int index, bool threadAffinity, Func<int, Result> action)
         {
-            var task = new Task<ProfilerResult>(() =>
+            var task = new Task<Result>(() =>
             {
                 SetThreadAffinity(index, threadAffinity);
                 SetThreadPriority();

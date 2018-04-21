@@ -15,25 +15,25 @@ namespace MeasureMap
         /// <param name="task">The task that has to be run</param>
         /// <param name="iterations">The amount of iterations to run the task</param>
         /// <returns></returns>
-        public ProfilerResult Run(ITaskRunner task, int iterations)
+        public Result Run(ITaskRunner task, int iterations)
         {
-            var profile = new ProfilerResult();
+            var result = new Result();
             var stopwatch = new Stopwatch();
 
-            // warmup
-            Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
-            stopwatch.Start();
+            //// warmup
+            //Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
+            //stopwatch.Start();
 
-            task.Run(0);
+            //task.Run(0);
 
-            stopwatch.Stop();
-            profile.Warmup = stopwatch.Elapsed;
-            
+            //stopwatch.Stop();
+            //profile.Warmup = stopwatch.Elapsed;
+
             ForceGarbageCollector();
 
             Trace.WriteLine($"Running Task for {iterations} iterations for Perfomance Analysis Benchmark");
 
-            profile.InitialSize = GC.GetTotalMemory(true);
+            result.InitialSize = GC.GetTotalMemory(true);
 
             for (int i = 0; i < iterations; i++)
             {
@@ -55,13 +55,13 @@ namespace MeasureMap
                     Data = output
                 };
 
-                profile.Add(iteration);
+                result.Add(iteration);
             }
 
             ForceGarbageCollector();
-            profile.EndSize = GC.GetTotalMemory(true);
+            result.EndSize = GC.GetTotalMemory(true);
 
-            return profile;
+            return result;
         }
         
         /// <summary>

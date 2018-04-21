@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace MeasureMap
 {
+    /// <summary>
+    /// Chainofresponsibility for executing tasks
+    /// </summary>
     public interface ITaskExecutor
     {
         /// <summary>
@@ -20,9 +18,12 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        ProfilerResultCollection Execute(ITaskRunner task, int iterations);
+        IProfilerResult Execute(ITaskRunner task, int iterations);
     }
 
+    /// <summary>
+    /// Baseclass for Chainofresponsibility for executing tasks
+    /// </summary>
     public class TaskExecutor : ITaskExecutor
     {
         private ITaskExecutor _next;
@@ -42,7 +43,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public virtual ProfilerResultCollection Execute(ITaskRunner task, int iterations)
+        public virtual IProfilerResult Execute(ITaskRunner task, int iterations)
         {
             return _next.Execute(task, iterations);
         }

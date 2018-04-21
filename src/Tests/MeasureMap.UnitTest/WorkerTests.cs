@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
@@ -20,7 +18,7 @@ namespace MeasureMap.UnitTest
             var result = worker.Run(runner, 10);
 
             Assert.That(result.Iterations.Count() == 10);
-            Assert.That(i == 11);
+            Assert.That(i == 10);
         }
 
         [Test]

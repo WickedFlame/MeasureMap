@@ -21,7 +21,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override ProfilerResultCollection Execute(ITaskRunner task, int iterations)
+        public override IProfilerResult Execute(ITaskRunner task, int iterations)
         {
             ThreadHelper.SetProcessor();
             ThreadHelper.SetThreadPriority();
@@ -29,7 +29,7 @@ namespace MeasureMap
             var worker = new Worker();
             var p = worker.Run(task, iterations);
 
-            return new ProfilerResultCollection
+            return new ProfilerResult
             {
                 p
             };
@@ -61,9 +61,9 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override ProfilerResultCollection Execute(ITaskRunner task, int iterations)
+        public override IProfilerResult Execute(ITaskRunner task, int iterations)
         {
-            var threads = new List<System.Threading.Tasks.Task<ProfilerResult>>();
+            var threads = new List<System.Threading.Tasks.Task<Result>>();
 
             for (int i = 0; i < _threadCount; i++)
             {
@@ -86,7 +86,7 @@ namespace MeasureMap
 
             var results = threads.Select(s => s.Result);
 
-            var collectîon = new ProfilerResultCollection();
+            var collectîon = new ProfilerResult();
             foreach (var result in results)
             {
                 collectîon.Add(result);

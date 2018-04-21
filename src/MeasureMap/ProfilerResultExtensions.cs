@@ -28,7 +28,7 @@ namespace MeasureMap
 
             sb.AppendLine($"##### Summary");
             sb.AppendLine($"\tWarmup ========================================");
-            sb.AppendLine($"\t\tDuration Warmup:\t\t\t{profilerResult.Warmup.ToString()}");
+            sb.AppendLine($"\t\tDuration Warmup:\t\t\t{profilerResult.Warmup().ToString()}");
             sb.AppendLine($"\tSetup ========================================");
             sb.AppendLine($"\t\tIterations:\t\t\t{profilerResult.Iterations.Count()}");
             sb.AppendLine($"\tDuration ========================================");
@@ -59,6 +59,21 @@ namespace MeasureMap
             System.Diagnostics.Trace.WriteLine(result);
 
             return result;
+        }
+
+        /// <summary>
+        /// Returns the timespan that the Warmup took
+        /// </summary>
+        /// <param name="result">The ProfilerResult</param>
+        /// <returns>The timespan that the warmup took</returns>
+        public static TimeSpan Warmup(this IProfilerResult result)
+        {
+            if (result.ResultValues.ContainsKey("Warmup"))
+            {
+                return (TimeSpan)result.ResultValues["Warmup"];
+            }
+
+            return new TimeSpan();
         }
     }
 }
