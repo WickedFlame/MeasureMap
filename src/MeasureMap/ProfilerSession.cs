@@ -65,63 +65,16 @@ namespace MeasureMap
         }
         
         /// <summary>
-        /// Sets the Task that will be profiled
+        /// Sets the Taskrunner that will be profiled
         /// </summary>
-        /// <param name="task">The Task</param>
+        /// <param name="runner">The runner containig the task</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession Task(Action task)
+        public ProfilerSession Task(ITaskRunner runner)
         {
-            _task = new TaskRunner(task);
-
+            _task = runner;
             return this;
         }
-
-        /// <summary>
-        /// Sets the Task that will be profiled
-        /// </summary>
-        /// <typeparam name="T">The return and parameter value</typeparam>
-        /// <param name="task">The task to execute</param>
-        /// <returns>The current profiling session</returns>
-        public ProfilerSession Task<T>(Func<T,T> task)
-        {
-            _task = new TaskRunner<T>(task);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the Task that will be profiled
-        /// </summary>
-        /// <typeparam name="T">The return and parameter value</typeparam>
-        /// <param name="task">The task to execute</param>
-        /// <param name="parameter">The parameter that is passed to the task</param>
-        /// <returns>The current profiling session</returns>
-        public ProfilerSession Task<T>(Func<T, T> task, T parameter)
-        {
-            _task = new TaskRunner<T>(task, parameter);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the Task that will be profiled passing the current iteration index as parameter
-        /// </summary>
-        /// <param name="task">The task to execute</param>
-        /// <returns>The current profiling session</returns>
-        public ProfilerSession Task(Action<int> task)
-        {
-            _task = new IteratedTaskRunner(task);
-
-            return this;
-        }
-
-        public ProfilerSession Task(Action<int, ProfilerOptions> task)
-        {
-            _task = new OptionsTaskRunner(task);
-
-            return this;
-        }
-
+        
         /// <summary>
         /// Adds a condition to the profiling session
         /// </summary>

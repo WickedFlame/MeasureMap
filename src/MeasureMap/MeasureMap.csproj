@@ -51,6 +51,7 @@
     <Compile Include="ProfilerResultExtensions.cs" />
     <Compile Include="ProfilerResult.cs" />
     <Compile Include="ProfilerSession.cs" />
+    <Compile Include="ProfilerSessionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ThreadRunner.cs" />
     <Compile Include="TaskRunner.cs" />
