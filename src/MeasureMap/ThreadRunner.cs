@@ -42,17 +42,14 @@ namespace MeasureMap
     public class MultyThreadRunner : TaskExecutor, IThreadRunner
     {
         private readonly int _threadCount;
-        private readonly bool _threadAffinity;
 
         /// <summary>
         /// Creates a new threaded task executor
         /// </summary>
         /// <param name="threadCount">The amount of threads to run the task</param>
-        /// <param name="threadAffinity">Defines if the Threads should be priorized</param>
-        public MultyThreadRunner(int threadCount, bool threadAffinity = false)
+        public MultyThreadRunner(int threadCount)
         {
             _threadCount = threadCount;
-            _threadAffinity = threadAffinity;
         }
 
         /// <summary>
@@ -67,7 +64,7 @@ namespace MeasureMap
 
             for (int i = 0; i < _threadCount; i++)
             {
-                var thread = ThreadHelper.QueueTask(i, _threadAffinity, threadIndex =>
+                var thread = ThreadHelper.QueueTask(i, threadIndex =>
                 {
                     var worker = new Worker();
                     var p = worker.Run(task, iterations);

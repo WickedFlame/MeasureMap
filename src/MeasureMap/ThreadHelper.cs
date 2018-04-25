@@ -16,16 +16,16 @@ namespace MeasureMap
             IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
         }
 
-        public static Task<Result> QueueTask(int index, bool threadAffinity, Func<int, Result> action)
+        public static Task<Result> QueueTask(int index, Func<int, Result> action)
         {
             var task = new Task<Result>(() =>
             {
-                SetThreadAffinity(index, threadAffinity);
+                SetThreadAffinity(index);
                 SetThreadPriority();
 
                 var result = action.Invoke(index);
 
-                EndThreadAffinity(threadAffinity);
+                EndThreadAffinity();
 
                 return result;
             });
@@ -33,9 +33,9 @@ namespace MeasureMap
             return task;
         }
 
-        private static void SetThreadAffinity(int index, bool threadAffinity)
+        private static void SetThreadAffinity(int index)
         {
-            if (!threadAffinity || IsRunningOnMono)
+            if (IsRunningOnMono)
             {
                 return;
             }
@@ -60,9 +60,9 @@ namespace MeasureMap
             process.PriorityClass = ProcessPriorityClass.High;
         }
 
-        private static void EndThreadAffinity(bool threadAffinity)
+        private static void EndThreadAffinity()
         {
-            if (!threadAffinity || IsRunningOnMono)
+            if (IsRunningOnMono)
             {
                 return;
             }

@@ -37,7 +37,7 @@ namespace MeasureMap.UnitTest
                     Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
-                .SetThreads(1, false)
+                .SetThreads(1)
                 .RunSession();
 
             Assert.That(((ProfilerResult)result).Count() == 1);
@@ -53,7 +53,7 @@ namespace MeasureMap.UnitTest
                     Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
-                .SetThreads(10, false)
+                .SetThreads(10)
                 .RunSession();
 
             Assert.That(((ProfilerResult)result).Count() == 10);
@@ -69,7 +69,7 @@ namespace MeasureMap.UnitTest
                     Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
-                .SetThreads(10, true)
+                .SetThreads(10)
                 .RunSession();
 
             Assert.That(((ProfilerResult)result).All(r => r.AverageTime.Ticks > 0), () => "AverageTime");

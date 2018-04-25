@@ -56,11 +56,10 @@ namespace MeasureMap
         /// All iterations are run on every thread.
         /// </summary>
         /// <param name="thredCount">The amount of threads that the task is run on</param>
-        /// <param name="threadAffinity">Defines if the threads should be priorized</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession SetThreads(int thredCount, bool threadAffinity = true)
+        public ProfilerSession SetThreads(int thredCount)
         {
-            _executor = new MultyThreadRunner(thredCount, threadAffinity);
+            _executor = new MultyThreadRunner(thredCount);
 
             return this;
         }
