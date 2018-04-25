@@ -23,7 +23,7 @@ namespace MeasureMap.UnitTest
             }), 10);
 
             Assert.That(results.Count() == 1);
-            Assert.That(iterations.Count == 11);
+            Assert.That(iterations.Count == 10);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace MeasureMap.UnitTest
             }), 10);
 
             Assert.That(results.Count() == 10);
-            Assert.That(iterations.Count == 11*10);
+            Assert.That(iterations.Count == 10*10);
         }
     }
 }

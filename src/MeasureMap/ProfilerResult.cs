@@ -1,29 +1,30 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MeasureMap
 {
-    /// <summary>
-    /// Represents the result of a profiled session
-    /// </summary>
-    public class ProfilerResult : IProfilerResult
+    public class ProfilerResult : IEnumerable<IResult>, IProfilerResult
     {
-        private readonly List<ProfileIteration> _iterations;
+        private readonly List<IResult> _results = new List<IResult>();
 
-        /// <summary>
-        /// Creates a result of the profiled session
-        /// </summary>
         public ProfilerResult()
         {
-            _iterations = new List<ProfileIteration>();
+            ResultValues = new Dictionary<string, object>();
         }
+
+        /// <summary>
+        /// Collection of all retun values
+        /// </summary>
+        public IDictionary<string, object> ResultValues { get; }
+
+        public TimeSpan Elapsed { get; internal set; }
 
         /// <summary>
         /// The iterations that were run
         /// </summary>
-        public IEnumerable<ProfileIteration> Iterations => _iterations;
+        public IEnumerable<ProfileIteration> Iterations => _results.SelectMany(r => r.Iterations);
 
         /// <summary>
         /// Gets the fastest iterations
@@ -43,7 +44,7 @@ namespace MeasureMap
         {
             get
             {
-                return Iterations.OrderByDescending(i => i.Ticks).FirstOrDefault(); 
+                return Iterations.OrderByDescending(i => i.Ticks).FirstOrDefault();
             }
         }
 
@@ -85,23 +86,17 @@ namespace MeasureMap
             }
         }
 
-        
+
 
         /// <summary>
         /// The initial memory size
         /// </summary>
-        public long InitialSize
-        {
-            get; set;
-        }
+        public long InitialSize => _results.Select(r => r.InitialSize).Min();
 
         /// <summary>
         /// The memory size after measure
         /// </summary>
-        public long EndSize
-        {
-            get; set;
-        }
+        public long EndSize => _results.Select(r => r.EndSize).Max();
 
         /// <summary>
         /// The increase in memory size
@@ -113,9 +108,19 @@ namespace MeasureMap
         /// </summary>
         public TimeSpan Warmup { get; set; }
 
-        internal void Add(ProfileIteration iteration)
+        internal void Add(Result result)
         {
-            _iterations.Add(iteration);
+            _results.Add(result);
+        }
+
+        public IEnumerator<IResult> GetEnumerator()
+        {
+            return _results.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return _results.GetEnumerator();
         }
     }
 }

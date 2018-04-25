@@ -22,9 +22,9 @@ namespace MeasureMap.UnitTest
                 .SetIterations(10)
                 .RunSession();
 
-            Assert.IsInstanceOf<ProfilerResultCollection>(result);
+            Assert.IsInstanceOf<ProfilerResult>(result);
 
-            Assert.That(((ProfilerResultCollection)result).Count() == 1);
+            Assert.That(((ProfilerResult)result).Count() == 1);
             Assert.That(result.Iterations.Count() == 10);
         }
 
@@ -40,7 +40,7 @@ namespace MeasureMap.UnitTest
                 .SetThreads(1, false)
                 .RunSession();
 
-            Assert.That(((ProfilerResultCollection)result).Count() == 1);
+            Assert.That(((ProfilerResult)result).Count() == 1);
             Assert.That(result.Iterations.Count() == 10);
         }
 
@@ -56,7 +56,7 @@ namespace MeasureMap.UnitTest
                 .SetThreads(10, false)
                 .RunSession();
 
-            Assert.That(((ProfilerResultCollection)result).Count() == 10);
+            Assert.That(((ProfilerResult)result).Count() == 10);
             Assert.That(result.Iterations.Count() == 100);
         }
 
@@ -72,15 +72,15 @@ namespace MeasureMap.UnitTest
                 .SetThreads(10, true)
                 .RunSession();
 
-            Assert.That(((ProfilerResultCollection)result).All(r => r.AverageTime.Ticks > 0), () => "AverageTime");
-            Assert.That(((ProfilerResultCollection)result).All(r => r.EndSize > 0), () => "EndSize");
-            Assert.That(((ProfilerResultCollection)result).All(r => r.AverageTicks > 0), () => "AverageTicks");
+            Assert.That(((ProfilerResult)result).All(r => r.AverageTime.Ticks > 0), () => "AverageTime");
+            Assert.That(((ProfilerResult)result).All(r => r.EndSize > 0), () => "EndSize");
+            Assert.That(((ProfilerResult)result).All(r => r.AverageTicks > 0), () => "AverageTicks");
             // milliseconds can be 0 when ticks are too low
             //Assert.That(((ProfilerResultCollection)result).Any(r => r.AverageMilliseconds != 0), () => "AverageMilliseconds");
-            Assert.That(((ProfilerResultCollection)result).All(r => r.Fastest != null), () => "Fastest");
-            Assert.That(((ProfilerResultCollection)result).All(r => r.Increase != 0), () => "Increase");
-            Assert.That(((ProfilerResultCollection)result).All(r => r.InitialSize > 0), () => "InitialSize");
-            Assert.That(((ProfilerResultCollection)result).All(r => r.TotalTime.Ticks > 0), () => "TotalTime.Ticks");
+            Assert.That(((ProfilerResult)result).All(r => r.Fastest != null), () => "Fastest");
+            Assert.That(((ProfilerResult)result).All(r => r.Increase != 0), () => "Increase");
+            Assert.That(((ProfilerResult)result).All(r => r.InitialSize > 0), () => "InitialSize");
+            Assert.That(((ProfilerResult)result).All(r => r.TotalTime.Ticks > 0), () => "TotalTime.Ticks");
         }
     }
 }

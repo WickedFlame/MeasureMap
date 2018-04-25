@@ -6,21 +6,14 @@ namespace MeasureMap
     /// <summary>
     /// defines a mechanism to execute the task
     /// </summary>
-    public interface IThreadRunner
+    public interface IThreadRunner : ITaskExecutor
     {
-        /// <summary>
-        /// Executes the task
-        /// </summary>
-        /// <param name="task">The task to run</param>
-        /// <param name="iterations">The iterations to run the task</param>
-        /// <returns>The resulting collection of the executions</returns>
-        ProfilerResultCollection Execute(ITaskRunner task, int iterations);
     }
 
     /// <summary>
     /// A single threaded task executor
     /// </summary>
-    public class ThreadRunner : IThreadRunner
+    public class ThreadRunner : TaskExecutor, IThreadRunner
     {
         /// <summary>
         /// Executes the task on a single thread
@@ -28,7 +21,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public ProfilerResultCollection Execute(ITaskRunner task, int iterations)
+        public override IProfilerResult Execute(ITaskRunner task, int iterations)
         {
             ThreadHelper.SetProcessor();
             ThreadHelper.SetThreadPriority();
@@ -36,7 +29,7 @@ namespace MeasureMap
             var worker = new Worker();
             var p = worker.Run(task, iterations);
 
-            return new ProfilerResultCollection
+            return new ProfilerResult
             {
                 p
             };
@@ -46,7 +39,7 @@ namespace MeasureMap
     /// <summary>
     /// A threaded task executor
     /// </summary>
-    public class MultyThreadRunner : IThreadRunner
+    public class MultyThreadRunner : TaskExecutor, IThreadRunner
     {
         private readonly int _threadCount;
         private readonly bool _threadAffinity;
@@ -68,9 +61,9 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public ProfilerResultCollection Execute(ITaskRunner task, int iterations)
+        public override IProfilerResult Execute(ITaskRunner task, int iterations)
         {
-            var threads = new List<System.Threading.Tasks.Task<ProfilerResult>>();
+            var threads = new List<System.Threading.Tasks.Task<Result>>();
 
             for (int i = 0; i < _threadCount; i++)
             {
@@ -93,7 +86,7 @@ namespace MeasureMap
 
             var results = threads.Select(s => s.Result);
 
-            var collectîon = new ProfilerResultCollection();
+            var collectîon = new ProfilerResult();
             foreach (var result in results)
             {
                 collectîon.Add(result);

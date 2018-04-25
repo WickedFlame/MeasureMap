@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace MeasureMap
 {
-    public interface IProfilerResult
+    public interface IResult
     {
+        IDictionary<string, object> ResultValues { get; }
+
         long AverageMilliseconds { get; }
 
         long AverageTicks { get; }
@@ -24,10 +26,9 @@ namespace MeasureMap
         ProfileIteration Slowest { get; }
 
         TimeSpan TotalTime { get; }
+    }
 
-        /// <summary>
-        /// Duration of the warmup
-        /// </summary>
-        TimeSpan Warmup { get; }
+    public interface IProfilerResult : IResult, IEnumerable<IResult>
+    {
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
 
 namespace MeasureMap
 {
@@ -12,16 +8,21 @@ namespace MeasureMap
     /// </summary>
     public class ProfilerSession
     {
-        private readonly List<Func<ProfilerResult, bool>> _conditions;
+        private readonly List<Func<IResult, bool>> _conditions;
         private int _iterations = 1;
         private ITaskRunner _task;
         private IThreadRunner _executor;
 
+        private readonly ITaskExecutor _executionChain;
+
         private ProfilerSession()
         {
             _iterations = 1;
-            _conditions = new List<Func<ProfilerResult, bool>>();
+            _conditions = new List<Func<IResult, bool>>();
             _executor = new ThreadRunner();
+
+            _executionChain = new TaskExecutionChain();
+            _executionChain.SetNext(new ElapsedMeasurementExecutor());
         }
 
         /// <summary>
@@ -72,6 +73,7 @@ namespace MeasureMap
         public ProfilerSession Task(ITaskRunner runner)
         {
             _task = runner;
+
             return this;
         }
         
@@ -80,7 +82,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="condition">The condition that will be checked</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession AddCondition(Func<ProfilerResult, bool> condition)
+        public ProfilerSession AddCondition(Func<IResult, bool> condition)
         {
             _conditions.Add(condition);
 
@@ -98,14 +100,12 @@ namespace MeasureMap
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
-            var sw = new Stopwatch();
-            sw.Start();
+            _executionChain.SetNext(new WarmupExecutor());
+            _executionChain.SetNext(_executor);
             
-            var profiles = _executor.Execute(_task, _iterations);
-
-            sw.Stop();
-            profiles.Elapsed = sw.Elapsed;
-
+            //var profiles = _executor.Execute(_task, _iterations);
+            var profiles = _executionChain.Execute(_task, _iterations);
+            
             foreach (var condition in _conditions)
             {
                 foreach (var profile in profiles)
