@@ -122,4 +122,4 @@ deploy:
       secure: UlhUOcqPXsN837S8VwqMZ+10mKTxkqlnvCS5mwSyUGkFwwukfBtvXNpX81+bjS1j
     skip_symbols: true
 #    symbol_server: https://your.symbol.server/feed
-    artifact: MeasureMap.nupkg
+    artifact: *.nupkg
