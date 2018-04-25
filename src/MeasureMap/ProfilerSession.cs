@@ -63,7 +63,7 @@ namespace MeasureMap
 
             return this;
         }
-
+        
         /// <summary>
         /// Sets the Task that will be profiled
         /// </summary>
@@ -85,6 +85,20 @@ namespace MeasureMap
         public ProfilerSession Task<T>(Func<T,T> task)
         {
             _task = new TaskRunner<T>(task);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the Task that will be profiled
+        /// </summary>
+        /// <typeparam name="T">The return and parameter value</typeparam>
+        /// <param name="task">The task to execute</param>
+        /// <param name="parameter">The parameter that is passed to the task</param>
+        /// <returns>The current profiling session</returns>
+        public ProfilerSession Task<T>(Func<T, T> task, T parameter)
+        {
+            _task = new TaskRunner<T>(task, parameter);
 
             return this;
         }

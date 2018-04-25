@@ -35,6 +35,12 @@ namespace MeasureMap
             _parameter = GetObject();
         }
 
+        public TaskRunner(Func<T, T> task, T parameter)
+        {
+            _task = task;
+            _parameter = parameter;
+        }
+
         public object Run(int iteration)
         {
             _parameter = _task(_parameter);

@@ -76,6 +76,47 @@ namespace MeasureMap.UnitTest
                 .Task<ItemUnemtyConstructor>(i => i));
         }
 
+        [Test]
+        public void GenericTask_SetParameter()
+        {
+            var output = 0;
+            var param = new Item { Count = 3 };
+            var session = ProfilerSession.StartSession()
+                .Task<Item>(i =>
+                {
+                    // do something
+                    output = i.Count;
+
+                    i.Count++;
+                    return i;
+                }, param)
+                .SetIterations(20)
+                .RunSession();
+
+            Assert.AreEqual(param.Count, 24);
+        }
+
+        [Test]
+        public void GenericTask_SetParameter_AnonymousObject()
+        {
+            var output = 0;
+            var param = new { Count = 3 };
+            var session = ProfilerSession.StartSession()
+                .Task(i =>
+                {
+                    // do something
+                    var tmp = new { Count = i.Count + 1 };
+                    
+                    output = tmp.Count;
+
+                    return tmp;
+                }, param)
+                .SetIterations(20)
+                .RunSession();
+
+            Assert.AreEqual(output, 24);
+        }
+
         public class Item
         {
             public int Count { get; set; }
