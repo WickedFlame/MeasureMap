@@ -2,7 +2,7 @@
 
 
 # version format
-version: 1.2.1.{build}
+version: 1.2.2.{build}
 
 # you can use {branch} name in version format too
 # version: 1.0.{build}-{branch}
@@ -114,12 +114,12 @@ artifacts:
   
 # providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
 # provider names are case-sensitive!
-deploy:
+# deploy:
     # Deploying to NuGet feed
-  - provider: NuGet
+#  - provider: NuGet
 #    server: https://my.nuget.server/feed
-    api_key: 
-      secure: UlhUOcqPXsN837S8VwqMZ+10mKTxkqlnvCS5mwSyUGkFwwukfBtvXNpX81+bjS1j
-    skip_symbols: true
+#    api_key: 
+#      secure: UlhUOcqPXsN837S8VwqMZ+10mKTxkqlnvCS5mwSyUGkFwwukfBtvXNpX81+bjS1j
+#    skip_symbols: true
 #    symbol_server: https://your.symbol.server/feed
 #    artifact: MeasureMap.nupkg
