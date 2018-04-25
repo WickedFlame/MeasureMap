@@ -11,3 +11,16 @@ $content = $content -replace '\$version\$',$versionStr
 $content | Out-File $root\src\MeasureMap.compiled.nuspec
 
 & $root\build\NuGet.exe pack $root\src\MeasureMap.compiled.nuspec
+
+
+
+$versionStr = "{0}.{1}.{2}" -f ($version.Major, $version.Minor, $version.Build)
+
+Write-Host "Setting .nuspec version tag to $versionStr"
+
+$content = (Get-Content $root\src\MeasureMap.nuspec) 
+$content = $content -replace '\$version\$',$versionStr
+
+$content | Out-File $root\src\MeasureMap.compiled.nuspec
+
+& $root\build\NuGet.exe pack $root\src\MeasureMap.compiled.nuspec

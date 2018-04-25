@@ -114,12 +114,12 @@ artifacts:
   
 # providers: Local, FTP, WebDeploy, AzureCS, AzureBlob, S3, NuGet, Environment
 # provider names are case-sensitive!
-#deploy:
+deploy:
     # Deploying to NuGet feed
-#  - provider: NuGet
+  - provider: NuGet
 #    server: https://my.nuget.server/feed
-#    api_key:
-#      secure: FYWX6NfjZIVw==
-#    skip_symbols: false
+    api_key: 
+      secure: UlhUOcqPXsN837S8VwqMZ+10mKTxkqlnvCS5mwSyUGkFwwukfBtvXNpX81+bjS1j
+    skip_symbols: true
 #    symbol_server: https://your.symbol.server/feed
-#    artifact: MeasureMap.nupkg
+    artifact: MeasureMap.nupkg
