@@ -8,7 +8,7 @@ namespace MeasureMap
 
     public class WarmupExecutor : TaskExecutor, IWarmupExecutor
     {
-        public override IProfilerResult Execute(ITaskRunner task, int iterations)
+        public override IProfilerResult Execute(ITask task, int iterations)
         {
             var stopwatch = new Stopwatch();
 

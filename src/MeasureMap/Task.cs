@@ -3,16 +3,16 @@ using System.Diagnostics;
 
 namespace MeasureMap
 {
-    public interface ITaskRunner
+    public interface ITask
     {
         object Run(int iteration);
     }
 
-    public class TaskRunner : ITaskRunner
+    public class Task : ITask
     {
         private readonly Action _task;
 
-        public TaskRunner(Action task)
+        public Task(Action task)
         {
             _task = task;
         }
@@ -24,18 +24,18 @@ namespace MeasureMap
         }
     }
 
-    public class TaskRunner<T> : ITaskRunner
+    public class Task<T> : ITask
     {
         private readonly Func<T, T> _task;
         private T _parameter;
 
-        public TaskRunner(Func<T, T> task)
+        public Task(Func<T, T> task)
         {
             _task = task;
             _parameter = GetObject();
         }
 
-        public TaskRunner(Func<T, T> task, T parameter)
+        public Task(Func<T, T> task, T parameter)
         {
             _task = task;
             _parameter = parameter;
@@ -65,11 +65,11 @@ namespace MeasureMap
         }
     }
 
-    public class IteratedTaskRunner : ITaskRunner
+    public class IteratedTask : ITask
     {
         private readonly Action<int> _task;
 
-        public IteratedTaskRunner(Action<int> task)
+        public IteratedTask(Action<int> task)
         {
             _task = task;
         }
@@ -81,11 +81,11 @@ namespace MeasureMap
         }
     }
 
-    public class OptionsTaskRunner : ITaskRunner
+    public class OptionsTask : ITask
     {
         private readonly Action<int, ProfilerOptions> _task;
 
-        public OptionsTaskRunner(Action<int, ProfilerOptions> task)
+        public OptionsTask(Action<int, ProfilerOptions> task)
         {
             _task = task;
         }

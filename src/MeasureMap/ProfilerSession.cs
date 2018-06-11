@@ -10,7 +10,7 @@ namespace MeasureMap
     {
         private readonly List<Func<IResult, bool>> _conditions;
         private int _iterations = 1;
-        private ITaskRunner _task;
+        private ITask _task;
         private IThreadRunner _executor;
 
         private readonly ITaskExecutor _executionChain;
@@ -69,7 +69,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="runner">The runner containig the task</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession Task(ITaskRunner runner)
+        public ProfilerSession Task(ITask runner)
         {
             _task = runner;
 

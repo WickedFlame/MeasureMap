@@ -15,7 +15,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession Task(this ProfilerSession session, Action task)
         {
-            session.Task(new TaskRunner(task));
+            session.Task(new Task(task));
 
             return session;
         }
@@ -29,7 +29,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession Task<T>(this ProfilerSession session, Func<T, T> task)
         {
-            session.Task(new TaskRunner<T>(task));
+            session.Task(new Task<T>(task));
 
             return session;
         }
@@ -44,7 +44,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession Task<T>(this ProfilerSession session, Func<T, T> task, T parameter)
         {
-            session.Task(new TaskRunner<T>(task, parameter));
+            session.Task(new Task<T>(task, parameter));
 
             return session;
         }
@@ -57,7 +57,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession Task(this ProfilerSession session, Action<int> task)
         {
-            session.Task(new IteratedTaskRunner(task));
+            session.Task(new IteratedTask(task));
 
             return session;
         }
@@ -70,7 +70,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession Task(this ProfilerSession session, Action<int, ProfilerOptions> task)
         {
-            session.Task(new OptionsTaskRunner(task));
+            session.Task(new OptionsTask(task));
 
             return session;
         }

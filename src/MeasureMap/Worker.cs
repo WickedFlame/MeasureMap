@@ -15,19 +15,10 @@ namespace MeasureMap
         /// <param name="task">The task that has to be run</param>
         /// <param name="iterations">The amount of iterations to run the task</param>
         /// <returns></returns>
-        public Result Run(ITaskRunner task, int iterations)
+        public Result Run(ITask task, int iterations)
         {
             var result = new Result();
             var stopwatch = new Stopwatch();
-
-            //// warmup
-            //Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
-            //stopwatch.Start();
-
-            //task.Run(0);
-
-            //stopwatch.Stop();
-            //profile.Warmup = stopwatch.Elapsed;
 
             ForceGarbageCollector();
 

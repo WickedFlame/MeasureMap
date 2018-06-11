@@ -57,7 +57,7 @@
     <Compile Include="TaskExecutionChain.cs" />
     <Compile Include="TaskExecutor.cs" />
     <Compile Include="ThreadRunner.cs" />
-    <Compile Include="TaskRunner.cs" />
+    <Compile Include="Task.cs" />
     <Compile Include="ThreadHelper.cs" />
     <Compile Include="WarmupExecutor.cs" />
     <Compile Include="Worker.cs" />

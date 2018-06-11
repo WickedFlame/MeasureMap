@@ -1,20 +1,15 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MeasureMap.UnitTest.Runners
+namespace MeasureMap.UnitTest.Tasks
 {
     [TestFixture]
-    public class TaskRunnerOfTTests
+    public class TaskOfTTests
     {
         [Test]
-        public void TaskRunnerOfT_WithParameter()
+        public void TaskOfT_WithParameter()
         {
             var item = new Item { IsRun = false };
-            var runner = new TaskRunner<Item>(i =>
+            var runner = new Task<Item>(i =>
             {
                 i.IsRun = true;
                 return i;
@@ -26,9 +21,9 @@ namespace MeasureMap.UnitTest.Runners
         }
 
         [Test]
-        public void TaskRunnerOfT_WithParameter_Outpout()
+        public void TaskOfT_WithParameter_Outpout()
         {
-            var runner = new TaskRunner<Item>(i =>
+            var runner = new Task<Item>(i =>
             {
                 i.IsRun = true;
                 return i;

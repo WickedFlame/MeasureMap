@@ -18,13 +18,13 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        IProfilerResult Execute(ITaskRunner task, int iterations);
+        IProfilerResult Execute(ITask task, int iterations);
     }
 
     /// <summary>
     /// Baseclass for Chainofresponsibility for executing tasks
     /// </summary>
-    public class TaskExecutor : ITaskExecutor
+    public abstract class TaskExecutor : ITaskExecutor
     {
         private ITaskExecutor _next;
 
@@ -43,7 +43,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public virtual IProfilerResult Execute(ITaskRunner task, int iterations)
+        public virtual IProfilerResult Execute(ITask task, int iterations)
         {
             return _next.Execute(task, iterations);
         }

@@ -14,7 +14,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override IProfilerResult Execute(ITaskRunner task, int iterations)
+        public override IProfilerResult Execute(ITask task, int iterations)
         {
             var sw = new Stopwatch();
             sw.Start();

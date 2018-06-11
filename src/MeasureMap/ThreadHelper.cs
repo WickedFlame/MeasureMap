@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MeasureMap
 {
@@ -16,9 +15,9 @@ namespace MeasureMap
             IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
         }
 
-        public static Task<Result> QueueTask(int index, Func<int, Result> action)
+        public static System.Threading.Tasks.Task<Result> QueueTask(int index, Func<int, Result> action)
         {
-            var task = new Task<Result>(() =>
+            var task = new System.Threading.Tasks.Task<Result>(() =>
             {
                 SetThreadAffinity(index);
                 SetThreadPriority();
