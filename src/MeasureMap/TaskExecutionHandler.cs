@@ -4,13 +4,13 @@ namespace MeasureMap
     /// <summary>
     /// Chainofresponsibility for executing tasks
     /// </summary>
-    public interface ITaskExecutor
+    public interface ITaskExecutionHandler
     {
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        void SetNext(ITaskExecutor next);
+        void SetNext(ITaskExecutionHandler next);
 
         /// <summary>
         /// Executes the task
@@ -24,15 +24,15 @@ namespace MeasureMap
     /// <summary>
     /// Baseclass for Chainofresponsibility for executing tasks
     /// </summary>
-    public abstract class TaskExecutor : ITaskExecutor
+    public abstract class TaskExecutionHandler : ITaskExecutionHandler
     {
-        private ITaskExecutor _next;
+        private ITaskExecutionHandler _next;
 
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        public void SetNext(ITaskExecutor next)
+        public void SetNext(ITaskExecutionHandler next)
         {
             _next = next;
         }

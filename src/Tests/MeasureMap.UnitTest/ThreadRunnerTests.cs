@@ -15,7 +15,7 @@ namespace MeasureMap.UnitTest
         public void MeasureMap_ThreadRunner()
         {
             var task = new Task(() => Trace.WriteLine("ThreadRunner test"));
-            var runner = new ThreadRunner();
+            var runner = new ThreadExecutionHandler();
 
             var result = runner.Execute(task, 10);
 
@@ -27,7 +27,7 @@ namespace MeasureMap.UnitTest
         public void MeasureMap_MultyThreadRunner()
         {
             var task = new Task(() => Trace.WriteLine("ThreadRunner test"));
-            var runner = new MultyThreadRunner(10);
+            var runner = new MultyThreadExecutionHandler(10);
 
             var result = runner.Execute(task, 10);
 

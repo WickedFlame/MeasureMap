@@ -11,15 +11,15 @@ namespace MeasureMap
         private readonly List<Func<IResult, bool>> _conditions;
         private int _iterations = 1;
         private ITask _task;
-        private IThreadRunner _executor;
+        private IThreadExecutionHandler _executor;
 
-        private readonly ITaskExecutor _executionChain;
+        private readonly ITaskExecutionHandler _executionChain;
 
         private ProfilerSession()
         {
             _iterations = 1;
             _conditions = new List<Func<IResult, bool>>();
-            _executor = new ThreadRunner();
+            _executor = new ThreadExecutionHandler();
 
             _executionChain = new TaskExecutionChain();
             _executionChain.SetNext(new ElapsedMeasurementExecutor());
@@ -59,7 +59,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public ProfilerSession SetThreads(int thredCount)
         {
-            _executor = new MultyThreadRunner(thredCount);
+            _executor = new MultyThreadExecutionHandler(thredCount);
 
             return this;
         }
@@ -99,7 +99,7 @@ namespace MeasureMap
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
-            _executionChain.SetNext(new WarmupExecutor());
+            _executionChain.SetNext(new WarmupExecutionHandler());
             _executionChain.SetNext(_executor);
             
             //var profiles = _executor.Execute(_task, _iterations);

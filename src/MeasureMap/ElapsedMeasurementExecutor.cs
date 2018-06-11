@@ -6,7 +6,7 @@ namespace MeasureMap
     /// <summary>
     /// TaskExecutor that measures the total elapsed time
     /// </summary>
-    public class ElapsedMeasurementExecutor : TaskExecutor
+    public class ElapsedMeasurementExecutor : TaskExecutionHandler
     {
         /// <summary>
         /// Executes the task

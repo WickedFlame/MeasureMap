@@ -5,16 +5,16 @@ namespace MeasureMap
     /// <summary>
     /// Chainofresponnsibility Manager for executing tasks
     /// </summary>
-    public class TaskExecutionChain : ITaskExecutor
+    public class TaskExecutionChain : ITaskExecutionHandler
     {
-        private ITaskExecutor _root;
-        private ITaskExecutor _last;
+        private ITaskExecutionHandler _root;
+        private ITaskExecutionHandler _last;
 
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        public void SetNext(ITaskExecutor next)
+        public void SetNext(ITaskExecutionHandler next)
         {
             if(_root == null)
             {

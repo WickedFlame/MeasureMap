@@ -4,9 +4,9 @@ using System.Diagnostics;
 
 namespace MeasureMap
 {
-    public interface IWarmupExecutor : ITaskExecutor { }
+    public interface IWarmupExecutionHandler : ITaskExecutionHandler { }
 
-    public class WarmupExecutor : TaskExecutor, IWarmupExecutor
+    public class WarmupExecutionHandler : TaskExecutionHandler, IWarmupExecutionHandler
     {
         public override IProfilerResult Execute(ITask task, int iterations)
         {
