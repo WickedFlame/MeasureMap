@@ -12,10 +12,10 @@ namespace MeasureMap.UnitTest
         {
             var output = 0;
             ProfilerSession.StartSession()
-                .Task(i =>
+                .Task(c =>
                 {
                     // do something
-                    output = i;
+                    output = c.Get<int>(ContextKeys.Iteration); 
                 })
                 .SetIterations(20)
                 .RunSession();

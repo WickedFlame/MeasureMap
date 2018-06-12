@@ -15,8 +15,9 @@ namespace MeasureMap.UnitTest
         public void ThreadedProfiler_NoThread()
         {
             var result = ProfilerSession.StartSession()
-                .Task(i =>
+                .Task(c =>
                 {
+                    var i = c.Get<int>(ContextKeys.Iteration);
                     Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
@@ -32,8 +33,9 @@ namespace MeasureMap.UnitTest
         public void ThreadedProfiler_OneThread()
         {
             var result = ProfilerSession.StartSession()
-                .Task(i =>
+                .Task(c =>
                 {
+                    var i = c.Get<int>(ContextKeys.Iteration);
                     Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
@@ -48,8 +50,9 @@ namespace MeasureMap.UnitTest
         public void ThreadedProfiler_MultipleThreads()
         {
             var result = ProfilerSession.StartSession()
-                .Task(i =>
+                .Task(c =>
                 {
+                    var i = c.Get<int>(ContextKeys.Iteration);
                     Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)
@@ -64,8 +67,9 @@ namespace MeasureMap.UnitTest
         public void ThreadedProfiler_MultipleThreads_ReturnValues()
         {
             var result = ProfilerSession.StartSession()
-                .Task(i =>
+                .Task(c =>
                 {
+                    var i = c.Get<int>(ContextKeys.Iteration);
                     Trace.WriteLine($"Iteration {(int)i}");
                 })
                 .SetIterations(10)

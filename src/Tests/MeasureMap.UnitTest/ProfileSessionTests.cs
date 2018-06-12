@@ -148,12 +148,15 @@ namespace MeasureMap.UnitTest
         public void ProfileSession_Fastest()
         {
             var result = ProfilerSession.StartSession()
-                .Task(i =>
+                .Task(c =>
                 {
+                    var i = c.Get<int>(ContextKeys.Iteration);
                     if (i != 0)
                     {
                         System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
                     }
+
+                    return i;
                 })
                 .SetIterations(10)
                 .RunSession();
@@ -165,12 +168,15 @@ namespace MeasureMap.UnitTest
         public void ProfileSession_Slowest()
         {
             var result = ProfilerSession.StartSession()
-                .Task(i =>
+                .Task(c =>
                 {
+                    var i = c.Get<int>(ContextKeys.Iteration);
                     if (i == 9)
                     {
                         System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
                     }
+
+                    return i;
                 })
                 .SetIterations(10)
                 .RunSession();

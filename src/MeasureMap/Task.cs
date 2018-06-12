@@ -172,39 +172,4 @@ namespace MeasureMap
             }
         }
     }
-
-    /// <summary>
-    /// Defines a task that will be run
-    /// </summary>
-    public class IteratedTask : ITask
-    {
-        private readonly Action<int> _task;
-
-        /// <summary>
-        /// Defines a task that will be run
-        /// </summary>
-        public IteratedTask(Action<int> task)
-        {
-            _task = task;
-        }
-
-        /// <summary>
-        /// Executes the task
-        /// </summary>
-        /// <param name="context">The current execution context</param>
-        /// <returns>The resulting collection of the executions</returns>
-        public IIterationResult Run(IExecutionContext context)
-        {
-            var iteration = context.Get<int>(ContextKeys.Iteration);
-
-            _task(iteration);
-
-            var result = new IterationResult()
-            {
-                Data = iteration
-            };
-
-            return result;
-        }
-    }
 }
