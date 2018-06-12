@@ -6,14 +6,14 @@ namespace MeasureMap
     /// <summary>
     /// defines a mechanism to execute the task
     /// </summary>
-    public interface IThreadExecutionHandler : ITaskExecutionHandler
+    public interface IThreadExecutionHandler : IExecutionHandler
     {
     }
 
     /// <summary>
     /// A single threaded task executor
     /// </summary>
-    public class ThreadExecutionHandler : TaskExecutionHandler, IThreadExecutionHandler
+    public class ThreadExecutionHandler : ExecutionHandler, IThreadExecutionHandler
     {
         /// <summary>
         /// Executes the task on a single thread
@@ -21,7 +21,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override IProfilerResult Execute(ITaskHandler task, int iterations)
+        public override IProfilerResult Execute(ITask task, int iterations)
         {
             ThreadHelper.SetProcessor();
             ThreadHelper.SetThreadPriority();
@@ -39,7 +39,7 @@ namespace MeasureMap
     /// <summary>
     /// A threaded task executor
     /// </summary>
-    public class MultyThreadExecutionHandler : TaskExecutionHandler, IThreadExecutionHandler
+    public class MultyThreadExecutionHandler : ExecutionHandler, IThreadExecutionHandler
     {
         private readonly int _threadCount;
 
@@ -58,7 +58,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override IProfilerResult Execute(ITaskHandler task, int iterations)
+        public override IProfilerResult Execute(ITask task, int iterations)
         {
             var threads = new List<System.Threading.Tasks.Task<Result>>();
 

@@ -6,14 +6,14 @@ namespace MeasureMap
     /// </summary>
     public class TaskHandlerChain : ITaskHandler
     {
-        private ITaskHandler _root;
-        private ITaskHandler _last;
+        private ITask _root;
+        private ITask _last;
 
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        public void SetNext(ITaskHandler next)
+        public void SetNext(ITask next)
         {
             if (_root == null)
             {
@@ -22,10 +22,13 @@ namespace MeasureMap
             }
             else
             {
-                _last.SetNext(next);
+                var last = _last as ITaskHandler;
+                if(last != null)
+                {
+                    last.SetNext(next);
+                    _last = next;
+                }
             }
-
-            _last = next;
         }
 
         /// <summary>

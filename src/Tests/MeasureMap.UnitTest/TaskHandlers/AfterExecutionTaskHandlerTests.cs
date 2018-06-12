@@ -24,7 +24,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
                 one = two;
                 two = "task";
             });
-            handler.SetNext(new TaskHandler(task));
+            handler.SetNext(task);
 
 
             var result = handler.Run(new ExecutionContext());
@@ -46,7 +46,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
                 one = two;
                 two = "task";
             });
-            handler.SetNext(new TaskHandler(task));
+            handler.SetNext(task);
 
             var context = new ExecutionContext();
 

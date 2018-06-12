@@ -13,10 +13,9 @@ namespace MeasureMap.UnitTest
         {
             int i = 0;
             var task = new Task(() => i++);
-            var handler = new TaskHandler(task);
 
             var worker = new Worker();
-            var result = worker.Run(handler, 10);
+            var result = worker.Run(task, 10);
 
             Assert.That(result.Iterations.Count() == 10);
             Assert.That(i == 10);
@@ -28,7 +27,7 @@ namespace MeasureMap.UnitTest
             int i = 0;
             var task = new Task(() => i++);
             var handler = new ElapsedTimeTaskHandler();
-            handler.SetNext(new TaskHandler(task));
+            handler.SetNext(task);
 
             var worker = new Worker();
             var result = worker.Run(handler, 10);
@@ -45,10 +44,9 @@ namespace MeasureMap.UnitTest
         {
             int i = 0;
             var task = new Task(() => i++);
-            var handler = new TaskHandler(task);
 
             var worker = new Worker();
-            var result = worker.Run(handler, 10);
+            var result = worker.Run(task, 10);
 
             Assert.That(result.InitialSize > 0, () => "InitialSize is smaller than 0");
             Assert.That(result.EndSize > 0, () => "EndSize is smaller than 0");

@@ -3,7 +3,9 @@ using System.Diagnostics;
 
 namespace MeasureMap
 {
-
+    /// <summary>
+    /// Defines a task that will be run
+    /// </summary>
     public interface ITask
     {
         /// <summary>
@@ -14,10 +16,16 @@ namespace MeasureMap
         IIterationResult Run(IExecutionContext context);
     }
 
+    /// <summary>
+    /// Defines a task receiving a ExecutionContext that will be run
+    /// </summary>
     public class ContextTask : ITask
     {
         private readonly Action<IExecutionContext> _task;
 
+        /// <summary>
+        /// Defines a task that will be run
+        /// </summary>
         public ContextTask(Action<IExecutionContext> task)
         {
             _task = task;
@@ -35,16 +43,27 @@ namespace MeasureMap
             return new IterationResult();
         }
     }
-    
+
+    /// <summary>
+    /// Defines a task that will be run
+    /// </summary>
     public class Task : ITask
     {
         private readonly Action _task;
 
+        /// <summary>
+        /// Defines a task that will be run
+        /// </summary>
         public Task(Action task)
         {
             _task = task;
         }
 
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
         public IIterationResult Run(IExecutionContext context)
         {
             _task();
@@ -58,23 +77,37 @@ namespace MeasureMap
         }
     }
 
+    /// <summary>
+    /// Defines a task that will be run
+    /// </summary>
     public class Task<T> : ITask
     {
         private readonly Func<T, T> _task;
         private T _parameter;
 
+        /// <summary>
+        /// Defines a task that will be run
+        /// </summary>
         public Task(Func<T, T> task)
         {
             _task = task;
             _parameter = GetObject();
         }
 
+        /// <summary>
+        /// Defines a task that will be run
+        /// </summary>
         public Task(Func<T, T> task, T parameter)
         {
             _task = task;
             _parameter = parameter;
         }
 
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
         public IIterationResult Run(IExecutionContext context)
         {
             // ATENTION
@@ -108,15 +141,26 @@ namespace MeasureMap
         }
     }
 
+    /// <summary>
+    /// Defines a task that will be run
+    /// </summary>
     public class IteratedTask : ITask
     {
         private readonly Action<int> _task;
 
+        /// <summary>
+        /// Defines a task that will be run
+        /// </summary>
         public IteratedTask(Action<int> task)
         {
             _task = task;
         }
 
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
         public IIterationResult Run(IExecutionContext context)
         {
             var iteration = context.Get<int>(ContextKeys.Iteration);
@@ -126,36 +170,6 @@ namespace MeasureMap
             var result = new IterationResult()
             {
                 Data = iteration
-            };
-
-            return result;
-        }
-    }
-
-    public class OptionsTask : ITask
-    {
-        private readonly Action<int, ProfilerOptions> _task;
-
-        public OptionsTask(Action<int, ProfilerOptions> task)
-        {
-            _task = task;
-        }
-
-        public IIterationResult Run(IExecutionContext context)
-        {
-            var iteration = context.Get<int>(ContextKeys.Iteration);
-
-            var parameter = new ProfilerOptions
-            {
-                Iteration = iteration,
-                ThreadId = System.Threading.Thread.CurrentThread.ManagedThreadId,
-                ProcessId = Process.GetCurrentProcess().Id
-            };
-            _task(iteration, parameter);
-
-            var result = new IterationResult()
-            {
-                Data = parameter
             };
 
             return result;

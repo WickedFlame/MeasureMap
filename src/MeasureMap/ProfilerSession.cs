@@ -13,8 +13,8 @@ namespace MeasureMap
         private ITask _task;
         private IThreadExecutionHandler _executor;
 
-        private readonly ITaskExecutionHandler _executionHandler;
-        private readonly ITaskHandler _taskHandler;
+        private readonly IExecutionHandler _executionHandler;
+        private readonly TaskHandlerChain _taskHandler;
 
         private ProfilerSession()
         {
@@ -36,7 +36,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the chain of handlers that get executed before the task execution
         /// </summary>
-        public ITaskExecutionHandler ExecutionHandler => _executionHandler;
+        public IExecutionHandler ExecutionHandler => _executionHandler;
 
         /// <summary>
         /// Gets the chain of handlers that get executed when running every task
@@ -115,9 +115,10 @@ namespace MeasureMap
             _executionHandler.SetNext(new WarmupExecutionHandler());
             _executionHandler.SetNext(_executor);
 
+            _taskHandler.SetNext(new ProcessDataTaskHandler());
             _taskHandler.SetNext(new MemoryCollectionTaskHandler());
             _taskHandler.SetNext(new ElapsedTimeTaskHandler());
-            _taskHandler.SetNext(new TaskHandler(_task));
+            _taskHandler.SetNext(_task);
 
             //var profiles = _executor.Execute(_task, _iterations);
             var profiles = _executionHandler.Execute(_taskHandler, _iterations);

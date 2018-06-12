@@ -13,7 +13,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
             var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new MemoryCollectionTaskHandler();
-            handler.SetNext(new TaskHandler(task));
+            handler.SetNext(task);
 
 
             var result = handler.Run(new ExecutionContext());
@@ -27,7 +27,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
             var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new MemoryCollectionTaskHandler();
-            handler.SetNext(new TaskHandler(task));
+            handler.SetNext(task);
 
 
             var result = handler.Run(new ExecutionContext());
@@ -41,7 +41,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
             var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new MemoryCollectionTaskHandler();
-            handler.SetNext(new TaskHandler(task));
+            handler.SetNext(task);
 
 
             var result = handler.Run(new ExecutionContext());

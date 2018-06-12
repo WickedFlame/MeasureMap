@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace MeasureMap
 {
@@ -41,6 +42,21 @@ namespace MeasureMap
         /// The timestamp of when the iteration was run
         /// </summary>
         DateTime TimeStamp { get; set; }
+
+        /// <summary>
+        /// Gets the current iteration
+        /// </summary>
+        int Iteration { get; set; }
+
+        /// <summary>
+        /// Gets the current thread
+        /// </summary>
+        int ThreadId { get; set; }
+
+        /// <summary>
+        /// Gets the current process
+        /// </summary>
+        int ProcessId { get; set; }
     }
 
     /// <summary>
@@ -90,6 +106,21 @@ namespace MeasureMap
         /// Gets or sets the data that is returned by the Task. If no data is returned, the iteration is contained
         /// </summary>
         public object Data { get; set; }
+
+        /// <summary>
+        /// Gets the current iteration
+        /// </summary>
+        public int Iteration { get; set; }
+
+        /// <summary>
+        /// Gets the current thread
+        /// </summary>
+        public int ThreadId { get; set; }
+
+        /// <summary>
+        /// Gets the current process
+        /// </summary>
+        public int ProcessId { get; set; }
 
         public override string ToString()
         {

@@ -1,22 +1,20 @@
-﻿using System;
-
+﻿
 namespace MeasureMap
 {
-    public class TaskHandler : ITaskHandler
+    /// <summary>
+    /// Base task handler containing logic for calling the next task in the chain
+    /// </summary>
+    public abstract class TaskHandler : ITaskHandler
     {
-        private ITask _task;
+        private ITask _next;
 
-        public TaskHandler(ITask task)
-        {
-            _task = task;
-        }
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        public void SetNext(ITaskHandler next)
+        public void SetNext(ITask next)
         {
-            throw new InvalidOperationException("TaskHandler is not allowed to have a child handler");
+            _next = next;
         }
 
         /// <summary>
@@ -24,11 +22,14 @@ namespace MeasureMap
         /// </summary>
         /// <param name="context">The current execution context</param>
         /// <returns>The resulting collection of the executions</returns>
-        public IIterationResult Run(IExecutionContext context)
+        public virtual IIterationResult Run(IExecutionContext context)
         {
-            var result = _task.Run(context);
+            if(_next == null)
+            {
+                return new IterationResult();
+            }
 
-            return result;
+            return _next.Run(context);
         }
     }
 }

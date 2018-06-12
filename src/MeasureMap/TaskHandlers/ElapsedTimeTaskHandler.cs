@@ -3,9 +3,9 @@
 namespace MeasureMap
 {
     /// <summary>
-    /// 
+    /// Taskhandler that measures the elapsed time for each profiling task execution
     /// </summary>
-    public class ElapsedTimeTaskHandler : BaseTaskHandler
+    public class ElapsedTimeTaskHandler : TaskHandler
     {
         /// <summary>
         /// Executes the task

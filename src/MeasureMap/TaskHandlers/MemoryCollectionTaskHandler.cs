@@ -2,7 +2,10 @@
 
 namespace MeasureMap
 {
-    public class MemoryCollectionTaskHandler : BaseTaskHandler
+    /// <summary>
+    /// Taskhandler that measures the memory before and after each profiling task execution
+    /// </summary>
+    public class MemoryCollectionTaskHandler : TaskHandler
     {
         /// <summary>
         /// Executes the task

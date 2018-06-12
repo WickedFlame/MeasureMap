@@ -5,7 +5,7 @@ namespace MeasureMap
     /// <summary>
     /// Taskhandler that executes a task before each profiling task execution
     /// </summary>
-    public class PreExecutionTaskHandler : BaseTaskHandler
+    public class PreExecutionTaskHandler : TaskHandler
     {
         private readonly ITask _task;
 

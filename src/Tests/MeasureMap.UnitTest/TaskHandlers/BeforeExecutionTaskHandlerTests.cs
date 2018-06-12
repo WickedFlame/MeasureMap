@@ -24,7 +24,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
             });
 
             var handler = new PreExecutionTaskHandler(() => two = "before");
-            handler.SetNext(new TaskHandler(task));
+            handler.SetNext(task);
 
 
             var result = handler.Run(new ExecutionContext());

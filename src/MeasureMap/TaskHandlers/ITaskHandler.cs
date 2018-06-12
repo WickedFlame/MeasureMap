@@ -10,6 +10,6 @@ namespace MeasureMap
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        void SetNext(ITaskHandler next);
+        void SetNext(ITask next);
     }
 }

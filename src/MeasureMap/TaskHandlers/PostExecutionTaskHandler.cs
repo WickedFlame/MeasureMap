@@ -5,7 +5,7 @@ namespace MeasureMap
     /// <summary>
     /// Taskhandler that executes a task after each profiling task execution
     /// </summary>
-    public class PostExecutionTaskHandler : BaseTaskHandler
+    public class PostExecutionTaskHandler : TaskHandler
     {
         private readonly ITask _task;
 

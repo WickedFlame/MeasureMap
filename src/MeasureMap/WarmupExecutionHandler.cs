@@ -1,14 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace MeasureMap
 {
-    public interface IWarmupExecutionHandler : ITaskExecutionHandler { }
+    /// <summary>
+    /// Warmup for the task
+    /// </summary>
+    public interface IWarmupExecutionHandler : IExecutionHandler { }
 
-    public class WarmupExecutionHandler : TaskExecutionHandler, IWarmupExecutionHandler
+    /// <summary>
+    /// Warmup for the task
+    /// </summary>
+    public class WarmupExecutionHandler : ExecutionHandler, IWarmupExecutionHandler
     {
-        public override IProfilerResult Execute(ITaskHandler task, int iterations)
+        /// <summary>
+        /// Executes a warmup for the task
+        /// </summary>
+        /// <param name="task">The task to run</param>
+        /// <param name="iterations">The iterations to run the task</param>
+        /// <returns>The resulting collection of the executions</returns>
+        public override IProfilerResult Execute(ITask task, int iterations)
         {
             var stopwatch = new Stopwatch();
 
