@@ -18,7 +18,6 @@ namespace MeasureMap
         public Result Run(ITask task, int iterations)
         {
             var result = new Result();
-            var stopwatch = new Stopwatch();
 
             ForceGarbageCollector();
 
@@ -29,6 +28,7 @@ namespace MeasureMap
 
             for (int i = 0; i < iterations; i++)
             {
+                Trace.WriteLine($"Running Task for iteration {i}");
                 context.Set(ContextKeys.Iteration, i);
 
                 var iteration = task.Run(context);

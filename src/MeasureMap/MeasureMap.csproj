@@ -68,7 +68,7 @@
     <Compile Include="ExecutionHandlers\ThreadExecutionHandler.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="ThreadHelper.cs" />
-    <Compile Include="WarmupExecutionHandler.cs" />
+    <Compile Include="ExecutionHandlers\WarmupExecutionHandler.cs" />
     <Compile Include="Worker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
