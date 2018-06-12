@@ -1,23 +1,9 @@
 ﻿
 namespace MeasureMap
 {
-    public interface ITaskHandler
-    {
-        /// <summary>
-        /// Set the next execution item
-        /// </summary>
-        /// <param name="next">The next executor</param>
-        void SetNext(ITaskHandler next);
-
-        /// <summary>
-        /// Executes the task
-        /// </summary>
-        /// <param name="iteration">The current iteration</param>
-        /// <returns>The resulting collection of the executions</returns>
-        IIterationResult Run(int iteration);
-    }
-
-
+    /// <summary>
+    /// Base task handler containing logic for calling the next task in the chain
+    /// </summary>
     public abstract class BaseTaskHandler : ITaskHandler
     {
         private ITaskHandler _next;
@@ -34,16 +20,16 @@ namespace MeasureMap
         /// <summary>
         /// Executes the task
         /// </summary>
-        /// <param name="iteration">The current iteration</param>
+        /// <param name="context">The current execution context</param>
         /// <returns>The resulting collection of the executions</returns>
-        public virtual IIterationResult Run(int iteration)
+        public virtual IIterationResult Run(IExecutionContext context)
         {
             if(_next == null)
             {
                 return new IterationResult();
             }
 
-            return _next.Run(iteration);
+            return _next.Run(context);
         }
     }
 }

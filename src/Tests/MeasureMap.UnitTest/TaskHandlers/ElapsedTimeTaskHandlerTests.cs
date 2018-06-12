@@ -14,13 +14,13 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void ElapsedTimeTaskHandler_Ticks()
         {
-            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new ElapsedTimeTaskHandler();
             handler.SetNext(new TaskHandler(task));
 
 
-            var result = handler.Run(0);
+            var result = handler.Run(new ExecutionContext());
 
             Assert.That(result.Ticks > 0);
         }
@@ -28,13 +28,13 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void ElapsedTimeTaskHandler_Duration()
         {
-            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new ElapsedTimeTaskHandler();
             handler.SetNext(new TaskHandler(task));
 
 
-            var result = handler.Run(0);
+            var result = handler.Run(new ExecutionContext());
 
             Assert.That(result.Duration.Ticks > 0);
         }

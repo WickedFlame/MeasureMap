@@ -16,7 +16,7 @@ namespace MeasureMap.UnitTest
             var iterations = new List<int>();
             var cnt = 0;
             var executor = new MultyThreadExecutionHandler(1);
-            var results = executor.Execute(new TaskHandler(new Task(() =>
+            var results = executor.Execute(new TaskHandler(new SimpleTask(() =>
             {
                 cnt = cnt++;
                 iterations.Add(cnt);
@@ -32,7 +32,7 @@ namespace MeasureMap.UnitTest
             var iterations = new List<int>();
             var cnt = 0;
             var executor = new MultyThreadExecutionHandler(10);
-            var results = executor.Execute(new TaskHandler(new Task(() =>
+            var results = executor.Execute(new TaskHandler(new SimpleTask(() =>
             {
                 cnt = cnt++;
                 iterations.Add(cnt);

@@ -17,17 +17,17 @@ namespace MeasureMap.UnitTest.TaskHandlers
             string two = null;
             string one = null;
             
-            var task = new Task(() =>
+            var task = new SimpleTask(() =>
             {
                 one = two;
                 two = "task";
             });
 
-            var handler = new BeforeExecutionTaskHandler(() => two = "before");
+            var handler = new PreExecutionTaskHandler(() => two = "before");
             handler.SetNext(new TaskHandler(task));
 
 
-            var result = handler.Run(0);
+            var result = handler.Run(new ExecutionContext());
 
             Assert.That(two == "task");
             Assert.That(one == "before");

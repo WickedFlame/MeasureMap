@@ -16,7 +16,7 @@ namespace MeasureMap
             Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
             stopwatch.Start();
 
-            task.Run(0);
+            task.Run(new ExecutionContext());
 
             stopwatch.Stop();
 

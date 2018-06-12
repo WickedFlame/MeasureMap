@@ -10,11 +10,11 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void TaskHandler_Data()
         {
-            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new TaskHandler(task);
 
-            var result = handler.Run(0);
+            var result = handler.Run(new ExecutionContext());
 
             Assert.That((int)result.Data == 0);
         }

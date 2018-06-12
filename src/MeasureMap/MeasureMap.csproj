@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="AssertionException.cs" />
     <Compile Include="ExecutionHandlers\ElapsedTimeExecutionHandler.cs" />
+    <Compile Include="ExecutionContext.cs" />
     <Compile Include="IProfilerResult.cs" />
     <Compile Include="IterationResult.cs" />
     <Compile Include="ProfilerOptions.cs" />
@@ -56,9 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskExecutionChain.cs" />
     <Compile Include="ExecutionHandlers\TaskExecutionHandler.cs" />
-    <Compile Include="TaskHandlers\AfterExecutionTaskHandler.cs" />
-    <Compile Include="TaskHandlers\BeforeExecutionTaskHandler.cs" />
+    <Compile Include="TaskHandlers\PostExecutionTaskHandler.cs" />
+    <Compile Include="TaskHandlers\PreExecutionTaskHandler.cs" />
     <Compile Include="TaskHandlers\ElapsedTimeTaskHandler.cs" />
+    <Compile Include="TaskHandlers\ITaskHandler.cs" />
     <Compile Include="TaskHandlers\MemoryCollectionTaskHandler.cs" />
     <Compile Include="TaskHandlers\BaseTaskHandler.cs" />
     <Compile Include="TaskHandlerChain.cs" />

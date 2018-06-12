@@ -22,10 +22,11 @@ namespace MeasureMap
         /// <summary>
         /// Executes the task
         /// </summary>
-        /// <param name="iteration">The current iteration</param>
+        /// <param name="context">The current execution context</param>
         /// <returns>The resulting collection of the executions</returns>
-        public virtual IIterationResult Run(int iteration)
+        public IIterationResult Run(IExecutionContext context)
         {
+            var iteration = context.Get<int>(ContextKeys.Iteration);
             var output = _task.Run(iteration);
             var result = new IterationResult()
             {

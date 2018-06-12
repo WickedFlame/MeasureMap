@@ -4,11 +4,16 @@ namespace MeasureMap
 {
     public class MemoryCollectionTaskHandler : BaseTaskHandler
     {
-        public override IIterationResult Run(int iteration)
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
+        public override IIterationResult Run(IExecutionContext context)
         {
             var initial = GC.GetTotalMemory(true);
 
-            var result = base.Run(iteration);
+            var result = base.Run(context);
 
             result.InitialSize = initial;
             result.AfterExecution = GC.GetTotalMemory(false);

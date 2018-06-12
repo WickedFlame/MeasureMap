@@ -12,7 +12,7 @@ namespace MeasureMap.UnitTest
         public void MeasureMap_Worker()
         {
             int i = 0;
-            var task = new Task(() => i++);
+            var task = new SimpleTask(() => i++);
             var handler = new TaskHandler(task);
 
             var worker = new Worker();
@@ -26,7 +26,7 @@ namespace MeasureMap.UnitTest
         public void MeasureMap_Worker_ElapsedTime()
         {
             int i = 0;
-            var task = new Task(() => i++);
+            var task = new SimpleTask(() => i++);
             var handler = new ElapsedTimeTaskHandler();
             handler.SetNext(new TaskHandler(task));
 
@@ -44,7 +44,7 @@ namespace MeasureMap.UnitTest
         public void MeasureMap_Worker_Memory()
         {
             int i = 0;
-            var task = new Task(() => i++);
+            var task = new SimpleTask(() => i++);
             var handler = new TaskHandler(task);
 
             var worker = new Worker();

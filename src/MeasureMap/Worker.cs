@@ -25,10 +25,13 @@ namespace MeasureMap
             Trace.WriteLine($"Running Task for {iterations} iterations for Perfomance Analysis Benchmark");
 
             result.InitialSize = GC.GetTotalMemory(true);
+            var context = new ExecutionContext();
 
             for (int i = 0; i < iterations; i++)
             {
-                var iteration = task.Run(i);
+                context.Set(ContextKeys.Iteration, i);
+
+                var iteration = task.Run(context);
 
                 result.Add(iteration);
             }

@@ -3,16 +3,81 @@ using System.Diagnostics;
 
 namespace MeasureMap
 {
+
+    public interface ITempTask
+    {
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
+        IIterationResult Run(IExecutionContext context);
+    }
+
+
+    public class SimpleTask2 : ITempTask
+    {
+        private readonly Action _task;
+
+        public SimpleTask2(Action task)
+        {
+            _task = task;
+        }
+
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
+        public IIterationResult Run(IExecutionContext context)
+        {
+            _task();
+
+            return new IterationResult();
+        }
+    }
+
+    public class Task : ITempTask
+    {
+        private readonly Action<IExecutionContext> _task;
+
+        public Task(Action<IExecutionContext> task)
+        {
+            _task = task;
+        }
+
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
+        public IIterationResult Run(IExecutionContext context)
+        {
+            _task(context);
+
+            return new IterationResult();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     public interface ITask
     {
         object Run(int iteration);
     }
-
-    public class Task : ITask
+    
+    public class SimpleTask : ITask
     {
         private readonly Action _task;
 
-        public Task(Action task)
+        public SimpleTask(Action task)
         {
             _task = task;
         }
@@ -23,6 +88,22 @@ namespace MeasureMap
             return iteration;
         }
     }
+
+    //public class Task : ITask
+    //{
+    //    private readonly Action<IExecutionContext> _task;
+
+    //    public Task(Action<IExecutionContext> task)
+    //    {
+    //        _task = task;
+    //    }
+
+    //    public object Run(IExecutionContext context)
+    //    {
+    //        _task(context);
+    //        return context;
+    //    }
+    //}
 
     public class Task<T> : ITask
     {

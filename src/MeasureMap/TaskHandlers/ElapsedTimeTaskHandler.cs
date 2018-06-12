@@ -8,16 +8,16 @@ namespace MeasureMap
     public class ElapsedTimeTaskHandler : BaseTaskHandler
     {
         /// <summary>
-        /// 
+        /// Executes the task
         /// </summary>
-        /// <param name="iteration">The current iteration</param>
-        /// <returns></returns>
-        public override IIterationResult Run(int iteration)
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
+        public override IIterationResult Run(IExecutionContext context)
         {
             var sw = new Stopwatch();
             sw.Start();
 
-            var result = base.Run(iteration);
+            var result = base.Run(context);
 
             sw.Stop();
 

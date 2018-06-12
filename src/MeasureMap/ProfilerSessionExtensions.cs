@@ -15,7 +15,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession Task(this ProfilerSession session, Action task)
         {
-            session.Task(new Task(task));
+            session.Task(new SimpleTask(task));
 
             return session;
         }
@@ -83,7 +83,20 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession BeforeExecute(this ProfilerSession session, Action task)
         {
-            session.TaskHandler.SetNext(new BeforeExecutionTaskHandler(task));
+            session.TaskHandler.SetNext(new PreExecutionTaskHandler(task));
+
+            return session;
+        }
+
+        /// <summary>
+        /// Sets a Task that will be executed before each profiling task execution
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="task">The task to execute before each profiling task</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession BeforeExecute(this ProfilerSession session, Action<IExecutionContext> task)
+        {
+            session.TaskHandler.SetNext(new PreExecutionTaskHandler(task));
 
             return session;
         }
@@ -96,7 +109,20 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession AfterExecute(this ProfilerSession session, Action task)
         {
-            session.TaskHandler.SetNext(new AfterExecutionTaskHandler(task));
+            session.TaskHandler.SetNext(new PostExecutionTaskHandler(task));
+
+            return session;
+        }
+
+        /// <summary>
+        /// Sets a Task that will be executed after each profiling task execution
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="task">The task to execute after each profiling task</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession AfterExecute(this ProfilerSession session, Action<IExecutionContext> task)
+        {
+            session.TaskHandler.SetNext(new PostExecutionTaskHandler(task));
 
             return session;
         }
