@@ -13,7 +13,7 @@ namespace MeasureMap
 
         TimeSpan AverageTime { get; }
         
-        ProfileIteration Fastest { get; }
+        IIterationResult Fastest { get; }
 
         long Increase { get; }
 
@@ -21,9 +21,9 @@ namespace MeasureMap
 
         long EndSize { get; }
 
-        IEnumerable<ProfileIteration> Iterations { get; }
+        IEnumerable<IIterationResult> Iterations { get; }
 
-        ProfileIteration Slowest { get; }
+        IIterationResult Slowest { get; }
 
         TimeSpan TotalTime { get; }
     }

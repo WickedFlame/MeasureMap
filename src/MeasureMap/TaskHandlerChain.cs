@@ -1,22 +1,21 @@
-﻿using System;
-
+﻿
 namespace MeasureMap
 {
     /// <summary>
-    /// Chain of responnsibility Manager for executing tasks
+    /// Chain of responnsibility Manager for running tasks
     /// </summary>
-    public class TaskExecutionChain : ITaskExecutionHandler
+    public class TaskHandlerChain : ITaskHandler
     {
-        private ITaskExecutionHandler _root;
-        private ITaskExecutionHandler _last;
-        
+        private ITaskHandler _root;
+        private ITaskHandler _last;
+
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        public void SetNext(ITaskExecutionHandler next)
+        public void SetNext(ITaskHandler next)
         {
-            if(_root == null)
+            if (_root == null)
             {
                 _root = next;
                 _last = next;
@@ -32,12 +31,10 @@ namespace MeasureMap
         /// <summary>
         /// Executes the task
         /// </summary>
-        /// <param name="task">The task to run</param>
-        /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public IProfilerResult Execute(ITaskHandler task, int iterations)
+        public IIterationResult Run()
         {
-            return _root.Execute(task, iterations);
+            return _root.Run();
         }
     }
 }

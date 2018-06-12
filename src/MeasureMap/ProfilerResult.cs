@@ -24,12 +24,12 @@ namespace MeasureMap
         /// <summary>
         /// The iterations that were run
         /// </summary>
-        public IEnumerable<ProfileIteration> Iterations => _results.SelectMany(r => r.Iterations);
+        public IEnumerable<IIterationResult> Iterations => _results.SelectMany(r => r.Iterations);
 
         /// <summary>
         /// Gets the fastest iterations
         /// </summary>
-        public ProfileIteration Fastest
+        public IIterationResult Fastest
         {
             get
             {
@@ -40,7 +40,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the slowest iterations
         /// </summary>
-        public ProfileIteration Slowest
+        public IIterationResult Slowest
         {
             get
             {

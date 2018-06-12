@@ -5,7 +5,48 @@ namespace MeasureMap
     /// <summary>
     /// Marks a iteration of a run Task
     /// </summary>
-    public class ProfileIteration
+    public interface IIterationResult
+    {
+        /// <summary>
+        /// The memory size after execution
+        /// </summary>
+        long AfterExecution { get; set; }
+
+        /// <summary>
+        /// The memory size after GC
+        /// </summary>
+        long AfterGarbageCollection { get; set; }
+
+        /// <summary>
+        /// Gets or sets the data that is returned by the Task. If no data is returned, the iteration is contained
+        /// </summary>
+        object Data { get; set; }
+
+        /// <summary>
+        /// Gets the Milliseconds that the iteration took to run the Task
+        /// </summary>
+        TimeSpan Duration { get; set; }
+
+        /// <summary>
+        /// The initial memory size
+        /// </summary>
+        long InitialSize { get; set; }
+
+        /// <summary>
+        /// Gets the Ticks that the iteration took to run the Task
+        /// </summary>
+        long Ticks { get; set; }
+
+        /// <summary>
+        /// The timestamp of when the iteration was run
+        /// </summary>
+        DateTime TimeStamp { get; set; }
+    }
+
+    /// <summary>
+    /// Marks a iteration of a run Task
+    /// </summary>
+    public class IterationResult : IIterationResult
     {
         /// <summary>
         /// Creates a object containing information on the iteration
@@ -15,7 +56,7 @@ namespace MeasureMap
         /// <param name="initialSize">The initial memory size</param>
         /// <param name="afterExecution">The memory size afte execution</param>
         /// <param name="afterGarbageCollection">The memory size after GC</param>
-        public ProfileIteration(long ticks, TimeSpan duration, long initialSize, long afterExecution, long afterGarbageCollection)
+        public IterationResult(long ticks, TimeSpan duration, long initialSize, long afterExecution, long afterGarbageCollection)
         {
             TimeStamp = DateTime.Now;
             Ticks = ticks;
@@ -25,35 +66,40 @@ namespace MeasureMap
             AfterGarbageCollection = afterGarbageCollection;
         }
 
+        public IterationResult()
+        {
+            TimeStamp = DateTime.Now;
+        }
+
         /// <summary>
         /// Gets the Ticks that the iteration took to run the Task
         /// </summary>
-        public long Ticks { get; }
+        public long Ticks { get; set; }
 
         /// <summary>
         /// Gets the Milliseconds that the iteration took to run the Task
         /// </summary>
-        public TimeSpan Duration { get; }
+        public TimeSpan Duration { get; set; }
 
         /// <summary>
         /// The timestamp of when the iteration was run
         /// </summary>
-        public DateTime TimeStamp { get; }
+        public DateTime TimeStamp { get; set; }
 
         /// <summary>
         /// The memory size after execution
         /// </summary>
-        public long AfterExecution { get; }
+        public long AfterExecution { get; set; }
 
         /// <summary>
         /// The memory size after GC
         /// </summary>
-        public long AfterGarbageCollection { get; }
+        public long AfterGarbageCollection { get; set; }
 
         /// <summary>
         /// The initial memory size
         /// </summary>
-        public long InitialSize { get; }
+        public long InitialSize { get; set; }
 
         /// <summary>
         /// Gets or sets the data that is returned by the Task. If no data is returned, the iteration is contained

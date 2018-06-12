@@ -10,14 +10,14 @@ namespace MeasureMap
     /// </summary>
     public class Result : IResult
     {
-        private readonly List<ProfileIteration> _iterations;
+        private readonly List<IIterationResult> _iterations;
 
         /// <summary>
         /// Creates a result of the profiled session
         /// </summary>
         public Result()
         {
-            _iterations = new List<ProfileIteration>();
+            _iterations = new List<IIterationResult>();
             ResultValues = new Dictionary<string, object>();
         }
         
@@ -29,12 +29,12 @@ namespace MeasureMap
         /// <summary>
         /// The iterations that were run
         /// </summary>
-        public IEnumerable<ProfileIteration> Iterations => _iterations;
+        public IEnumerable<IIterationResult> Iterations => _iterations;
 
         /// <summary>
         /// Gets the fastest iterations
         /// </summary>
-        public ProfileIteration Fastest
+        public IIterationResult Fastest
         {
             get
             {
@@ -45,7 +45,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the slowest iterations
         /// </summary>
-        public ProfileIteration Slowest
+        public IIterationResult Slowest
         {
             get
             {
@@ -119,7 +119,7 @@ namespace MeasureMap
         /// </summary>
         public TimeSpan Warmup { get; set; }
         
-        internal void Add(ProfileIteration iteration)
+        internal void Add(IIterationResult iteration)
         {
             _iterations.Add(iteration);
         }

@@ -16,11 +16,11 @@ namespace MeasureMap.UnitTest
             var iterations = new List<int>();
             var cnt = 0;
             var executor = new MultyThreadExecutionHandler(1);
-            var results = executor.Execute(new Task(() =>
+            var results = executor.Execute(new TaskHandler(new Task(() =>
             {
                 cnt = cnt++;
                 iterations.Add(cnt);
-            }), 10);
+            })), 10);
 
             Assert.That(results.Count() == 1);
             Assert.That(iterations.Count == 10);
@@ -32,11 +32,11 @@ namespace MeasureMap.UnitTest
             var iterations = new List<int>();
             var cnt = 0;
             var executor = new MultyThreadExecutionHandler(10);
-            var results = executor.Execute(new Task(() =>
+            var results = executor.Execute(new TaskHandler(new Task(() =>
             {
                 cnt = cnt++;
                 iterations.Add(cnt);
-            }), 10);
+            })), 10);
 
             Assert.That(results.Count() == 10);
             Assert.That(iterations.Count == 10*10);

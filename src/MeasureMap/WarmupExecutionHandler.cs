@@ -8,7 +8,7 @@ namespace MeasureMap
 
     public class WarmupExecutionHandler : TaskExecutionHandler, IWarmupExecutionHandler
     {
-        public override IProfilerResult Execute(ITask task, int iterations)
+        public override IProfilerResult Execute(ITaskHandler task, int iterations)
         {
             var stopwatch = new Stopwatch();
 
@@ -16,7 +16,7 @@ namespace MeasureMap
             Trace.WriteLine($"Running Task once for warmup on Performance Analysis Benchmark");
             stopwatch.Start();
 
-            task.Run(0);
+            task.Run();
 
             stopwatch.Stop();
 

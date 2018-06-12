@@ -15,7 +15,7 @@ namespace MeasureMap
         /// <param name="task">The task that has to be run</param>
         /// <param name="iterations">The amount of iterations to run the task</param>
         /// <returns></returns>
-        public Result Run(ITask task, int iterations)
+        public Result Run(ITaskHandler task, int iterations)
         {
             var result = new Result();
             var stopwatch = new Stopwatch();
@@ -28,23 +28,7 @@ namespace MeasureMap
 
             for (int i = 0; i < iterations; i++)
             {
-                var initial = GC.GetTotalMemory(true);
-
-                stopwatch.Reset();
-                stopwatch.Start();
-
-                var output = task.Run(i);
-
-                stopwatch.Stop();
-
-                var after = GC.GetTotalMemory(false);
-                ForceGarbageCollector();
-                var afterCollect = GC.GetTotalMemory(true);
-
-                var iteration = new ProfileIteration(stopwatch.ElapsedTicks, stopwatch.Elapsed, initial, after, afterCollect)
-                {
-                    Data = output
-                };
+                var iteration = task.Run();
 
                 result.Add(iteration);
             }

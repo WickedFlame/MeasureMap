@@ -14,6 +14,7 @@ namespace MeasureMap
         private IThreadExecutionHandler _executor;
 
         private readonly ITaskExecutionHandler _executionChain;
+        private readonly ITaskHandler _runnerChain;
 
         private ProfilerSession()
         {
@@ -22,13 +23,20 @@ namespace MeasureMap
             _executor = new ThreadExecutionHandler();
 
             _executionChain = new TaskExecutionChain();
-            _executionChain.SetNext(new ElapsedMeasurementExecutor());
+            _executionChain.SetNext(new ElapsedTimeExecutionHandler());
+
+            _runnerChain = new TaskHandlerChain();
         }
 
         /// <summary>
         /// Gets the amount of iterations that the Task will be run
         /// </summary>
         public int Iterations => _iterations;
+
+        /// <summary>
+        /// Gets the chain of handlers that get executed when running a task
+        /// </summary>
+        public ITaskHandler TaskRunnerChain => _runnerChain;
 
         /// <summary>
         /// Creates a new Session for profiling performance
@@ -101,9 +109,13 @@ namespace MeasureMap
 
             _executionChain.SetNext(new WarmupExecutionHandler());
             _executionChain.SetNext(_executor);
-            
+
+            _runnerChain.SetNext(new MemoryCollectionTaskHandler());
+            _runnerChain.SetNext(new ElapsedTimeTaskHandler());
+            _runnerChain.SetNext(new TaskHandler(_task));
+
             //var profiles = _executor.Execute(_task, _iterations);
-            var profiles = _executionChain.Execute(_task, _iterations);
+            var profiles = _executionChain.Execute(_runnerChain, _iterations);
             
             foreach (var condition in _conditions)
             {

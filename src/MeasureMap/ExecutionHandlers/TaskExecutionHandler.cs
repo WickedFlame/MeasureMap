@@ -18,7 +18,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        IProfilerResult Execute(ITask task, int iterations);
+        IProfilerResult Execute(ITaskHandler task, int iterations);
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ namespace MeasureMap
         /// <param name="task">The task to run</param>
         /// <param name="iterations">The iterations to run the task</param>
         /// <returns>The resulting collection of the executions</returns>
-        public virtual IProfilerResult Execute(ITask task, int iterations)
+        public virtual IProfilerResult Execute(ITaskHandler task, int iterations)
         {
             return _next.Execute(task, iterations);
         }
