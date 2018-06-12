@@ -106,11 +106,44 @@ namespace MeasureMap.UnitTest
         public void ProfilesSessionExtension_AfterPostExecuteTask_EnsureContext()
         {
             var session = ProfilerSession.StartSession()
+                .PostExecute(c => c.Clear())
                 .PreExecute(c =>
                 {
                     c.Set("pre", "before");
                     Assert.That(c.Get<string>("post") == null);
                     Assert.That(c.Get<string>("task") == null);
+                })
+                .Task(c =>
+                {
+                    c.Set("task", "Task");
+                    Assert.That(c.Get<string>("pre") == "before");
+                    Assert.That(c.Get<string>("post") == null);
+                })
+                .PostExecute(c =>
+                {
+                    c.Set("post", "after");
+                    Assert.That(c.Get<string>("pre") == "before");
+                    Assert.That(c.Get<string>("task") == "Task");
+                })
+                .SetIterations(10)
+                .RunSession();
+        }
+
+        [Test]
+        public void ProfilesSessionExtension_AfterPostExecuteTask_MultiplePrePost()
+        {
+            var session = ProfilerSession.StartSession()
+                .PreExecute(c => Assert.That(c.SessionData.Count <= 1))
+                .PreExecute(c =>
+                {
+                    c.Set("pre", "before");
+                    Assert.That(c.Get<string>("post") == null);
+                    Assert.That(c.Get<string>("task") == null);
+                })
+                .PostExecute(c =>
+                {
+                    Assert.That(c.SessionData.Count > 0);
+                    c.Clear();
                 })
                 .PostExecute(c =>
                 {
@@ -124,6 +157,7 @@ namespace MeasureMap.UnitTest
                     Assert.That(c.Get<string>("pre") == "before");
                     Assert.That(c.Get<string>("post") == null);
                 })
+                .SetIterations(10)
                 .RunSession();
         }
     }

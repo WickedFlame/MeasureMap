@@ -82,6 +82,33 @@ namespace MeasureMap
 
             return context;
         }
+
+        /// <summary>
+        /// Removes a value from the context
+        /// </summary>
+        /// <param name="context">The execution context</param>
+        /// <param name="key">The key of the stored value</param>
+        public static IExecutionContext Remove(this IExecutionContext context, string key)
+        {
+            key = key.ToLower();
+            if (context.SessionData.ContainsKey(key))
+            {
+                context.SessionData.Remove(key);
+            }
+
+            return context;
+        }
+
+        /// <summary>
+        /// Cleares all values from the context
+        /// </summary>
+        /// <param name="context">The execution context</param>
+        public static IExecutionContext Clear(this IExecutionContext context)
+        {
+            context.SessionData.Clear();
+
+            return context;
+        }
     }
 
     /// <summary>
