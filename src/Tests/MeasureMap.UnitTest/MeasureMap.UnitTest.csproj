@@ -61,8 +61,14 @@
     <Compile Include="IteratedTaskTests.cs" />
     <Compile Include="MemoryProfileSessionTests.cs" />
     <Compile Include="GenericTaskTests.cs" />
+    <Compile Include="ProfileSessionTaskHandlerExtensionTests.cs" />
     <Compile Include="ProfileSessionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaskHandlers\BeforeExecutionTaskHandlerTests.cs" />
+    <Compile Include="TaskHandlers\AfterExecutionTaskHandlerTests.cs" />
+    <Compile Include="TaskHandlers\TaskHandlerTests.cs" />
+    <Compile Include="TaskHandlers\MemoryCollectionTaskHandlerTests.cs" />
+    <Compile Include="TaskHandlers\ElapsedTimeTaskHandlerTests.cs" />
     <Compile Include="Tasks\TaskOfTTests.cs" />
     <Compile Include="ThreadedProfilerTests.cs" />
     <Compile Include="ThreadedTaskExecutorTests.cs" />

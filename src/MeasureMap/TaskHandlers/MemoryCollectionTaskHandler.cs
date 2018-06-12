@@ -10,9 +10,10 @@ namespace MeasureMap
 
             var result = base.Run(iteration);
 
-            var after = GC.GetTotalMemory(false);
+            result.InitialSize = initial;
+            result.AfterExecution = GC.GetTotalMemory(false);
             ForceGarbageCollector();
-            var afterCollect = GC.GetTotalMemory(true);
+            result.AfterGarbageCollection = GC.GetTotalMemory(true);
 
             return result;
         }

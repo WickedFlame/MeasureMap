@@ -13,8 +13,8 @@ namespace MeasureMap
         private ITask _task;
         private IThreadExecutionHandler _executor;
 
-        private readonly ITaskExecutionHandler _executionChain;
-        private readonly ITaskHandler _runnerChain;
+        private readonly ITaskExecutionHandler _executionHandler;
+        private readonly ITaskHandler _taskHandler;
 
         private ProfilerSession()
         {
@@ -22,10 +22,10 @@ namespace MeasureMap
             _conditions = new List<Func<IResult, bool>>();
             _executor = new ThreadExecutionHandler();
 
-            _executionChain = new TaskExecutionChain();
-            _executionChain.SetNext(new ElapsedTimeExecutionHandler());
+            _executionHandler = new TaskExecutionChain();
+            _executionHandler.SetNext(new ElapsedTimeExecutionHandler());
 
-            _runnerChain = new TaskHandlerChain();
+            _taskHandler = new TaskHandlerChain();
         }
 
         /// <summary>
@@ -34,9 +34,14 @@ namespace MeasureMap
         public int Iterations => _iterations;
 
         /// <summary>
-        /// Gets the chain of handlers that get executed when running a task
+        /// Gets the chain of handlers that get executed before the task execution
         /// </summary>
-        public ITaskHandler TaskRunnerChain => _runnerChain;
+        public ITaskExecutionHandler ExecutionHandler => _executionHandler;
+
+        /// <summary>
+        /// Gets the chain of handlers that get executed when running every task
+        /// </summary>
+        public ITaskHandler TaskHandler => _taskHandler;
 
         /// <summary>
         /// Creates a new Session for profiling performance
@@ -107,15 +112,15 @@ namespace MeasureMap
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
-            _executionChain.SetNext(new WarmupExecutionHandler());
-            _executionChain.SetNext(_executor);
+            _executionHandler.SetNext(new WarmupExecutionHandler());
+            _executionHandler.SetNext(_executor);
 
-            _runnerChain.SetNext(new MemoryCollectionTaskHandler());
-            _runnerChain.SetNext(new ElapsedTimeTaskHandler());
-            _runnerChain.SetNext(new TaskHandler(_task));
+            _taskHandler.SetNext(new MemoryCollectionTaskHandler());
+            _taskHandler.SetNext(new ElapsedTimeTaskHandler());
+            _taskHandler.SetNext(new TaskHandler(_task));
 
             //var profiles = _executor.Execute(_task, _iterations);
-            var profiles = _executionChain.Execute(_runnerChain, _iterations);
+            var profiles = _executionHandler.Execute(_taskHandler, _iterations);
             
             foreach (var condition in _conditions)
             {
