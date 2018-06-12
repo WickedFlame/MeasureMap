@@ -22,16 +22,17 @@ namespace MeasureMap
         /// <summary>
         /// Executes the task
         /// </summary>
+        /// <param name="iteration">The current iteration</param>
         /// <returns>The resulting collection of the executions</returns>
-        public virtual IIterationResult Run()
+        public virtual IIterationResult Run(int iteration)
         {
-            var output = _task.Run(0);
-            var iteration = new IterationResult()
+            var output = _task.Run(iteration);
+            var result = new IterationResult()
             {
                 Data = output
             };
 
-            return iteration;
+            return result;
         }
     }
 }

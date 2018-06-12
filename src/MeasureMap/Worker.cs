@@ -28,7 +28,7 @@ namespace MeasureMap
 
             for (int i = 0; i < iterations; i++)
             {
-                var iteration = task.Run();
+                var iteration = task.Run(i);
 
                 result.Add(iteration);
             }

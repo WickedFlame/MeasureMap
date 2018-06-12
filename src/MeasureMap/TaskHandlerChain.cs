@@ -31,10 +31,11 @@ namespace MeasureMap
         /// <summary>
         /// Executes the task
         /// </summary>
+        /// <param name="iteration">iteration</param>
         /// <returns>The resulting collection of the executions</returns>
-        public IIterationResult Run()
+        public IIterationResult Run(int iteration)
         {
-            return _root.Run();
+            return _root.Run(iteration);
         }
     }
 }

@@ -4,11 +4,11 @@ namespace MeasureMap
 {
     public class MemoryCollectionTaskHandler : BaseTaskHandler
     {
-        public override IIterationResult Run()
+        public override IIterationResult Run(int iteration)
         {
             var initial = GC.GetTotalMemory(true);
 
-            var result = base.Run();
+            var result = base.Run(iteration);
 
             var after = GC.GetTotalMemory(false);
             ForceGarbageCollector();

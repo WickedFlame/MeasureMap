@@ -10,13 +10,14 @@ namespace MeasureMap
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="iteration">The current iteration</param>
         /// <returns></returns>
-        public override IIterationResult Run()
+        public override IIterationResult Run(int iteration)
         {
             var sw = new Stopwatch();
             sw.Start();
 
-            var result = base.Run();
+            var result = base.Run(iteration);
 
             sw.Stop();
 

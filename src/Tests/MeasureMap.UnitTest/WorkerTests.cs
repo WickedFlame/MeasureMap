@@ -27,7 +27,8 @@ namespace MeasureMap.UnitTest
         {
             int i = 0;
             var task = new Task(() => i++);
-            var handler = new TaskHandler(task);
+            var handler = new ElapsedTimeTaskHandler();
+            handler.SetNext(new TaskHandler(task));
 
             var worker = new Worker();
             var result = worker.Run(handler, 10);

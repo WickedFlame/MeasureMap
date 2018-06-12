@@ -12,8 +12,9 @@ namespace MeasureMap
         /// <summary>
         /// Executes the task
         /// </summary>
+        /// <param name="iteration">The current iteration</param>
         /// <returns>The resulting collection of the executions</returns>
-        IIterationResult Run();
+        IIterationResult Run(int iteration);
     }
 
 
@@ -33,15 +34,16 @@ namespace MeasureMap
         /// <summary>
         /// Executes the task
         /// </summary>
+        /// <param name="iteration">The current iteration</param>
         /// <returns>The resulting collection of the executions</returns>
-        public virtual IIterationResult Run()
+        public virtual IIterationResult Run(int iteration)
         {
             if(_next == null)
             {
                 return new IterationResult();
             }
 
-            return _next.Run();
+            return _next.Run(iteration);
         }
     }
 }
