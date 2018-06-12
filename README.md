@@ -38,6 +38,23 @@ var result = ProfileSession.StartSession()
 Assert.IsTrue(result.Iterations.Count() == 2000);
 ```
 
+Execute a setup/cleanup Task before each execution of the profiling Task.
+```csharp
+var output = string.Empty;
+var result = ProfileSession.StartSession()
+        .BeforeExcute(() => output += "before")
+		.AfterExcute(() => output += " after")
+		.Task(() => 
+		{
+			// This represents the Task that needs testint
+			output += " task"
+		})
+		.SetIterations(3)
+		.RunSession();
+
+Assert.IsTrue(output == "before task task task after");
+```
+
 Trace the result as Markdown text
 ```csharp
 var result = ProfileSession.StartSession()
