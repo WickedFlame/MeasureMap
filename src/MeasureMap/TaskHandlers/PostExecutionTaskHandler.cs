@@ -7,7 +7,7 @@ namespace MeasureMap
     /// </summary>
     public class PostExecutionTaskHandler : BaseTaskHandler
     {
-        private readonly ITempTask _task;
+        private readonly ITask _task;
 
         /// <summary>
         /// Creates a new taskhandler
@@ -15,7 +15,7 @@ namespace MeasureMap
         /// <param name="task">Task to execute after each profiling task execution</param>
         public PostExecutionTaskHandler(Action task)
         {
-            _task = new SimpleTask2(task);
+            _task = new Task(task);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace MeasureMap
         /// <param name="task">Task to execute after each profiling task execution</param>
         public PostExecutionTaskHandler(Action<IExecutionContext> task)
         {
-            _task = new Task(task);
+            _task = new ContextTask(task);
         }
 
         /// <summary>

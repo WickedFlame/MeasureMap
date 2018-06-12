@@ -4,7 +4,7 @@ using System.Diagnostics;
 namespace MeasureMap
 {
 
-    public interface ITempTask
+    public interface ITask
     {
         /// <summary>
         /// Executes the task
@@ -14,34 +14,11 @@ namespace MeasureMap
         IIterationResult Run(IExecutionContext context);
     }
 
-
-    public class SimpleTask2 : ITempTask
-    {
-        private readonly Action _task;
-
-        public SimpleTask2(Action task)
-        {
-            _task = task;
-        }
-
-        /// <summary>
-        /// Executes the task
-        /// </summary>
-        /// <param name="context">The current execution context</param>
-        /// <returns>The resulting collection of the executions</returns>
-        public IIterationResult Run(IExecutionContext context)
-        {
-            _task();
-
-            return new IterationResult();
-        }
-    }
-
-    public class Task : ITempTask
+    public class ContextTask : ITask
     {
         private readonly Action<IExecutionContext> _task;
 
-        public Task(Action<IExecutionContext> task)
+        public ContextTask(Action<IExecutionContext> task)
         {
             _task = task;
         }
@@ -58,52 +35,28 @@ namespace MeasureMap
             return new IterationResult();
         }
     }
-
-
-
-
-
-
-
-
-
-
-    public interface ITask
-    {
-        object Run(int iteration);
-    }
     
-    public class SimpleTask : ITask
+    public class Task : ITask
     {
         private readonly Action _task;
 
-        public SimpleTask(Action task)
+        public Task(Action task)
         {
             _task = task;
         }
 
-        public object Run(int iteration)
+        public IIterationResult Run(IExecutionContext context)
         {
             _task();
-            return iteration;
+
+            var result = new IterationResult()
+            {
+                //Data = iteration
+            };
+
+            return result;
         }
     }
-
-    //public class Task : ITask
-    //{
-    //    private readonly Action<IExecutionContext> _task;
-
-    //    public Task(Action<IExecutionContext> task)
-    //    {
-    //        _task = task;
-    //    }
-
-    //    public object Run(IExecutionContext context)
-    //    {
-    //        _task(context);
-    //        return context;
-    //    }
-    //}
 
     public class Task<T> : ITask
     {
@@ -122,10 +75,19 @@ namespace MeasureMap
             _parameter = parameter;
         }
 
-        public object Run(int iteration)
+        public IIterationResult Run(IExecutionContext context)
         {
+            // ATENTION
+            // TODO: Check if using _parameter is threadsafe
+
             _parameter = _task(_parameter);
-            return _parameter;
+
+            var result = new IterationResult()
+            {
+                Data = _parameter
+            };
+
+            return result;
         }
 
         private T GetObject()
@@ -155,10 +117,18 @@ namespace MeasureMap
             _task = task;
         }
 
-        public object Run(int iteration)
+        public IIterationResult Run(IExecutionContext context)
         {
+            var iteration = context.Get<int>(ContextKeys.Iteration);
+
             _task(iteration);
-            return iteration;
+
+            var result = new IterationResult()
+            {
+                Data = iteration
+            };
+
+            return result;
         }
     }
 
@@ -171,8 +141,10 @@ namespace MeasureMap
             _task = task;
         }
 
-        public object Run(int iteration)
+        public IIterationResult Run(IExecutionContext context)
         {
+            var iteration = context.Get<int>(ContextKeys.Iteration);
+
             var parameter = new ProfilerOptions
             {
                 Iteration = iteration,
@@ -180,7 +152,13 @@ namespace MeasureMap
                 ProcessId = Process.GetCurrentProcess().Id
             };
             _task(iteration, parameter);
-            return parameter;
+
+            var result = new IterationResult()
+            {
+                Data = parameter
+            };
+
+            return result;
         }
     }
 }

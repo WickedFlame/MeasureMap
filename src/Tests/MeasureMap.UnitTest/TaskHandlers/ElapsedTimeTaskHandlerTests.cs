@@ -14,7 +14,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void ElapsedTimeTaskHandler_Ticks()
         {
-            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new ElapsedTimeTaskHandler();
             handler.SetNext(new TaskHandler(task));
@@ -28,7 +28,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void ElapsedTimeTaskHandler_Duration()
         {
-            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new ElapsedTimeTaskHandler();
             handler.SetNext(new TaskHandler(task));

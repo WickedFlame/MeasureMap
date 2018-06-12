@@ -17,7 +17,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
             string two = null;
             string one = null;
             
-            var task = new SimpleTask(() => two = "before");
+            var task = new Task(() => two = "before");
 
             var handler = new PostExecutionTaskHandler(() =>
             {
@@ -39,7 +39,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
             string two = null;
             string one = null;
 
-            var task = new SimpleTask(() => two = "before");
+            var task = new Task(() => two = "before");
 
             var handler = new PostExecutionTaskHandler(c =>
             {

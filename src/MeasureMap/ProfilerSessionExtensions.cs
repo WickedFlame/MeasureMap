@@ -15,7 +15,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession Task(this ProfilerSession session, Action task)
         {
-            session.Task(new SimpleTask(task));
+            session.Task(new Task(task));
 
             return session;
         }

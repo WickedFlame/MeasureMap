@@ -26,12 +26,7 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public IIterationResult Run(IExecutionContext context)
         {
-            var iteration = context.Get<int>(ContextKeys.Iteration);
-            var output = _task.Run(iteration);
-            var result = new IterationResult()
-            {
-                Data = output
-            };
+            var result = _task.Run(context);
 
             return result;
         }

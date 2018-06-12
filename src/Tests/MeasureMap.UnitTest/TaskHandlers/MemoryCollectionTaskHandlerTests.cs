@@ -10,7 +10,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void MemoryCollectionTaskHandler_Initial()
         {
-            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new MemoryCollectionTaskHandler();
             handler.SetNext(new TaskHandler(task));
@@ -24,7 +24,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void MemoryCollectionTaskHandler_AfterExecution()
         {
-            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new MemoryCollectionTaskHandler();
             handler.SetNext(new TaskHandler(task));
@@ -38,7 +38,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
         [Test]
         public void MemoryCollectionTaskHandler_AfterGarbageCollection()
         {
-            var task = new SimpleTask(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
 
             var handler = new MemoryCollectionTaskHandler();
             handler.SetNext(new TaskHandler(task));

@@ -51,21 +51,6 @@ namespace MeasureMap
         /// <summary>
         /// Creates a object containing information on the iteration
         /// </summary>
-        /// <param name="ticks">Ticks the Task took to run</param>
-        /// <param name="duration">The duration the Task took to run</param>
-        /// <param name="initialSize">The initial memory size</param>
-        /// <param name="afterExecution">The memory size afte execution</param>
-        /// <param name="afterGarbageCollection">The memory size after GC</param>
-        public IterationResult(long ticks, TimeSpan duration, long initialSize, long afterExecution, long afterGarbageCollection)
-        {
-            TimeStamp = DateTime.Now;
-            Ticks = ticks;
-            Duration = duration;
-            InitialSize = initialSize;
-            AfterExecution = afterExecution;
-            AfterGarbageCollection = afterGarbageCollection;
-        }
-
         public IterationResult()
         {
             TimeStamp = DateTime.Now;

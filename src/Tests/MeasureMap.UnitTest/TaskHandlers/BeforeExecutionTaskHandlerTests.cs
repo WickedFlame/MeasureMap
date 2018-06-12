@@ -17,7 +17,7 @@ namespace MeasureMap.UnitTest.TaskHandlers
             string two = null;
             string one = null;
             
-            var task = new SimpleTask(() =>
+            var task = new Task(() =>
             {
                 one = two;
                 two = "task";
