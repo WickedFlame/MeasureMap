@@ -17,6 +17,38 @@ namespace MeasureMap
     }
 
     /// <summary>
+    /// Defines a task that will be run
+    /// </summary>
+    public class Task : ITask
+    {
+        private readonly Action _task;
+
+        /// <summary>
+        /// Defines a task that will be run
+        /// </summary>
+        public Task(Action task)
+        {
+            _task = task;
+        }
+
+        /// <summary>
+        /// Executes the task
+        /// </summary>
+        /// <param name="context">The current execution context</param>
+        /// <returns>The resulting collection of the executions</returns>
+        public IIterationResult Run(IExecutionContext context)
+        {
+            _task();
+
+            var result = new IterationResult()
+            {
+                //Data = iteration
+            };
+
+            return result;
+        }
+    }
+    /// <summary>
     /// Defines a task receiving a ExecutionContext that will be run
     /// </summary>
     public class ContextTask : ITask
@@ -47,14 +79,14 @@ namespace MeasureMap
     /// <summary>
     /// Defines a task that will be run
     /// </summary>
-    public class Task : ITask
+    public class OutputTask<T> : ITask
     {
-        private readonly Action _task;
+        private readonly Func<IExecutionContext, T> _task;
 
         /// <summary>
         /// Defines a task that will be run
         /// </summary>
-        public Task(Action task)
+        public OutputTask(Func<IExecutionContext, T> task)
         {
             _task = task;
         }
@@ -66,11 +98,11 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public IIterationResult Run(IExecutionContext context)
         {
-            _task();
+            var output = _task(context);
 
             var result = new IterationResult()
             {
-                //Data = iteration
+                Data = output
             };
 
             return result;

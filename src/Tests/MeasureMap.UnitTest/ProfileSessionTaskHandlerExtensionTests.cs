@@ -12,12 +12,12 @@ namespace MeasureMap.UnitTest
     public class ProfilesSessionTaskHandlerExtensionTests
     {
         [Test]
-        public void ProfilesSessionExtension_BeforeExecuteTask()
+        public void ProfilesSessionExtension_PreExecuteTask()
         {
             bool initialized = false;
 
             var session = ProfilerSession.StartSession()
-                .BeforeExecute(() => initialized = true)
+                .PreExecute(() => initialized = true)
                 .Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.05)))
                 .RunSession();
 
@@ -25,13 +25,13 @@ namespace MeasureMap.UnitTest
         }
 
         [Test]
-        public void ProfilesSessionExtension_BeforeExecuteTask_EnsureBeforeTask()
+        public void ProfilesSessionExtension_PreExecuteTask_EnsureBeforeTask()
         {
             string current = null;
             string last = null;
 
             var session = ProfilerSession.StartSession()
-                .BeforeExecute(() => current = "before")
+                .PreExecute(() => current = "before")
                 .Task(() =>
                 {
                     last = current;
@@ -44,12 +44,12 @@ namespace MeasureMap.UnitTest
         }
 
         [Test]
-        public void ProfilesSessionExtension_AfterExecuteTask()
+        public void ProfilesSessionExtension_PostExecuteTask()
         {
             bool initialized = false;
 
             var session = ProfilerSession.StartSession()
-                .AfterExecute(() => initialized = true)
+                .PostExecute(() => initialized = true)
                 .Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.05)))
                 .RunSession();
 
@@ -57,13 +57,13 @@ namespace MeasureMap.UnitTest
         }
 
         [Test]
-        public void ProfilesSessionExtension_AfterExecuteTask_EnsureAfterTask()
+        public void ProfilesSessionExtension_PostExecuteTask_EnsureAfterTask()
         {
             string current = null;
             string last = null;
 
             var session = ProfilerSession.StartSession()
-                .AfterExecute(() =>
+                .PostExecute(() =>
                 {
                     last = current;
                     current = "after";
@@ -76,15 +76,15 @@ namespace MeasureMap.UnitTest
         }
 
         [Test]
-        public void ProfilesSessionExtension_AfterAfterExecuteTask_EnsureOrder()
+        public void ProfilesSessionExtension_AfterPostExecuteTask_EnsureOrder()
         {
             string one = null;
             string two = null;
             string three = null;
 
             var session = ProfilerSession.StartSession()
-                .BeforeExecute(()=> three = "before")
-                .AfterExecute(() =>
+                .PreExecute(() => three = "before")
+                .PostExecute(() =>
                 {
                     one = two;
                     two = three;
@@ -100,6 +100,31 @@ namespace MeasureMap.UnitTest
             Assert.That(three == "after");
             Assert.That(two == "task");
             Assert.That(one == "before");
+        }
+
+        [Test]
+        public void ProfilesSessionExtension_AfterPostExecuteTask_EnsureContext()
+        {
+            var session = ProfilerSession.StartSession()
+                .PreExecute(c =>
+                {
+                    c.Set("pre", "before");
+                    Assert.That(c.Get<string>("post") == null);
+                    Assert.That(c.Get<string>("task") == null);
+                })
+                .PostExecute(c =>
+                {
+                    c.Set("post", "after");
+                    Assert.That(c.Get<string>("pre") == "before");
+                    Assert.That(c.Get<string>("task") == "Task");
+                })
+                .Task(c =>
+                {
+                    c.Set("task", "Task");
+                    Assert.That(c.Get<string>("pre") == "before");
+                    Assert.That(c.Get<string>("post") == null);
+                })
+                .RunSession();
         }
     }
 }

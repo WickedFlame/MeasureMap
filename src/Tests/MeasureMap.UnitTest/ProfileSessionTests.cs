@@ -178,6 +178,45 @@ namespace MeasureMap.UnitTest
             Assert.That((int)result.Slowest.Data == 9);
         }
 
+        [Test]
+        public void ProfileSession_ContextTask()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var iteration = c.Get<int>(ContextKeys.Iteration);
+                    if (iteration == 9)
+                    {
+                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
+                    }
+                })
+                .SetIterations(10)
+                .RunSession();
+
+            Assert.That(result.Slowest.Iteration == 9);
+        }
+
+        [Test]
+        public void ProfileSession_OutputTask()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var iteration = c.Get<int>(ContextKeys.Iteration);
+                    if (iteration == 9)
+                    {
+                        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
+                    }
+
+                    return iteration;
+                })
+                .SetIterations(10)
+                .RunSession();
+
+            Assert.That((int)result.Slowest.Data == 9);
+        }
+
+
         private void Task()
         {
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.002));

@@ -63,12 +63,39 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Sets the Task that will be profiled passing the current ExecutionContext as parameter
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="task">The task to execute</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession Task(this ProfilerSession session, Action<IExecutionContext> task)
+        {
+            session.Task(new ContextTask(task));
+
+            return session;
+        }
+
+        /// <summary>
+        /// Sets the Task that will be profiled passing the current ExecutionContext as parameter
+        /// </summary>
+        /// <typeparam name="T">The expected task output</typeparam>
+        /// <param name="session">The current session</param>
+        /// <param name="task">The task to execute</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession Task<T>(this ProfilerSession session, Func<IExecutionContext, T> task)
+        {
+            session.Task(new OutputTask<T>(task));
+
+            return session;
+        }
+
+        /// <summary>
         /// Sets a Task that will be executed before each profiling task execution
         /// </summary>
         /// <param name="session">The current session</param>
         /// <param name="task">The task to execute before each profiling task</param>
         /// <returns>The current profiling session</returns>
-        public static ProfilerSession BeforeExecute(this ProfilerSession session, Action task)
+        public static ProfilerSession PreExecute(this ProfilerSession session, Action task)
         {
             session.TaskHandler.SetNext(new PreExecutionTaskHandler(task));
 
@@ -81,7 +108,7 @@ namespace MeasureMap
         /// <param name="session">The current session</param>
         /// <param name="task">The task to execute before each profiling task</param>
         /// <returns>The current profiling session</returns>
-        public static ProfilerSession BeforeExecute(this ProfilerSession session, Action<IExecutionContext> task)
+        public static ProfilerSession PreExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
             session.TaskHandler.SetNext(new PreExecutionTaskHandler(task));
 
@@ -94,7 +121,7 @@ namespace MeasureMap
         /// <param name="session">The current session</param>
         /// <param name="task">The task to execute after each profiling task</param>
         /// <returns>The current profiling session</returns>
-        public static ProfilerSession AfterExecute(this ProfilerSession session, Action task)
+        public static ProfilerSession PostExecute(this ProfilerSession session, Action task)
         {
             session.TaskHandler.SetNext(new PostExecutionTaskHandler(task));
 
@@ -107,7 +134,7 @@ namespace MeasureMap
         /// <param name="session">The current session</param>
         /// <param name="task">The task to execute after each profiling task</param>
         /// <returns>The current profiling session</returns>
-        public static ProfilerSession AfterExecute(this ProfilerSession session, Action<IExecutionContext> task)
+        public static ProfilerSession PostExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
             session.TaskHandler.SetNext(new PostExecutionTaskHandler(task));
 
