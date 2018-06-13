@@ -4,15 +4,15 @@ namespace MeasureMap
     /// <summary>
     /// Baseclass for Chain of responsibility for executing tasks
     /// </summary>
-    public abstract class ExecutionHandler : IExecutionHandler
+    public abstract class SessionHandler : ISessionHandler
     {
-        private IExecutionHandler _next;
+        private ISessionHandler _next;
 
         /// <summary>
         /// Set the next execution item
         /// </summary>
-        /// <param name="next">The next executor</param>
-        public void SetNext(IExecutionHandler next)
+        /// <param name="next">The next handler for the session</param>
+        public void SetNext(ISessionHandler next)
         {
             _next = next;
         }
@@ -25,6 +25,11 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public virtual IProfilerResult Execute(ITask task, int iterations)
         {
+            if(_next == null)
+            {
+                return new ProfilerResult();
+            }
+
             return _next.Execute(task, iterations);
         }
     }

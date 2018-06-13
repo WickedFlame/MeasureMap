@@ -75,5 +75,20 @@ namespace MeasureMap
 
             return new TimeSpan();
         }
+
+        /// <summary>
+        /// Returns the timespan that the complete Session took
+        /// </summary>
+        /// <param name="result">The ProfilerResult</param>
+        /// <returns>The timespan that the session took</returns>
+        public static TimeSpan Elapsed(this IProfilerResult result)
+        {
+            if (result.ResultValues.ContainsKey("Elapsed"))
+            {
+                return (TimeSpan)result.ResultValues["Elapsed"];
+            }
+
+            return new TimeSpan();
+        }
     }
 }

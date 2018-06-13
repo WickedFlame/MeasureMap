@@ -5,12 +5,12 @@ namespace MeasureMap
     /// <summary>
     /// Warmup for the task
     /// </summary>
-    public interface IWarmupExecutionHandler : IExecutionHandler { }
+    public interface IWarmupSessionHandler : ISessionHandler { }
 
     /// <summary>
     /// Warmup for the task
     /// </summary>
-    public class WarmupExecutionHandler : ExecutionHandler, IWarmupExecutionHandler
+    public class WarmupSessionHandler : SessionHandler, IWarmupSessionHandler
     {
         /// <summary>
         /// Executes a warmup for the task

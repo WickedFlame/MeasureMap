@@ -6,14 +6,14 @@ namespace MeasureMap
     /// <summary>
     /// defines a mechanism to execute the task
     /// </summary>
-    public interface IThreadExecutionHandler : IExecutionHandler
+    public interface IThreadSessionHandler : ISessionHandler
     {
     }
 
     /// <summary>
-    /// A single threaded task executor
+    /// A single threaded task session handler
     /// </summary>
-    public class ThreadExecutionHandler : ExecutionHandler, IThreadExecutionHandler
+    public class ThreadSessionHandler : SessionHandler, IThreadSessionHandler
     {
         /// <summary>
         /// Executes the task on a single thread
@@ -37,9 +37,9 @@ namespace MeasureMap
     }
 
     /// <summary>
-    /// A threaded task executor
+    /// A multy threaded task session handler
     /// </summary>
-    public class MultyThreadExecutionHandler : ExecutionHandler, IThreadExecutionHandler
+    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
     {
         private readonly int _threadCount;
 
@@ -47,7 +47,7 @@ namespace MeasureMap
         /// Creates a new threaded task executor
         /// </summary>
         /// <param name="threadCount">The amount of threads to run the task</param>
-        public MultyThreadExecutionHandler(int threadCount)
+        public MultyThreadSessionHandler(int threadCount)
         {
             _threadCount = threadCount;
         }

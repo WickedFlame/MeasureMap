@@ -4,13 +4,13 @@ namespace MeasureMap
     /// <summary>
     /// Chain of responsibility for executing tasks
     /// </summary>
-    public interface IExecutionHandler
+    public interface ISessionHandler
     {
         /// <summary>
         /// Set the next execution item
         /// </summary>
-        /// <param name="next">The next executor</param>
-        void SetNext(IExecutionHandler next);
+        /// <param name="next">The next handler for the session</param>
+        void SetNext(ISessionHandler next);
 
         /// <summary>
         /// Executes the task

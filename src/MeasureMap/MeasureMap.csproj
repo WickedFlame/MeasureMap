@@ -44,9 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertionException.cs" />
-    <Compile Include="ExecutionHandlers\ElapsedTimeExecutionHandler.cs" />
+    <Compile Include="SessionHandlers\ElapsedTimeSessionHandler.cs" />
     <Compile Include="ExecutionContext.cs" />
-    <Compile Include="ExecutionHandlers\IExecutionHandler.cs" />
+    <Compile Include="SessionHandlers\ISessionHandler.cs" />
     <Compile Include="IProfilerResult.cs" />
     <Compile Include="IterationResult.cs" />
     <Compile Include="ProfilerResult.cs" />
@@ -56,7 +56,7 @@
     <Compile Include="ProfilerSessionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaskExecutionChain.cs" />
-    <Compile Include="ExecutionHandlers\ExecutionHandler.cs" />
+    <Compile Include="SessionHandlers\SessionHandler.cs" />
     <Compile Include="TaskHandlers\ProcessDataTaskHandler.cs" />
     <Compile Include="TaskHandlers\PostExecutionTaskHandler.cs" />
     <Compile Include="TaskHandlers\PreExecutionTaskHandler.cs" />
@@ -65,10 +65,10 @@
     <Compile Include="TaskHandlers\MemoryCollectionTaskHandler.cs" />
     <Compile Include="TaskHandlers\TaskHandler.cs" />
     <Compile Include="TaskHandlerChain.cs" />
-    <Compile Include="ExecutionHandlers\ThreadExecutionHandler.cs" />
+    <Compile Include="SessionHandlers\ThreadSessioionHandler.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="ThreadHelper.cs" />
-    <Compile Include="ExecutionHandlers\WarmupExecutionHandler.cs" />
+    <Compile Include="SessionHandlers\WarmupSessionHandler.cs" />
     <Compile Include="Worker.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

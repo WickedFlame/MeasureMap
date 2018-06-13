@@ -11,19 +11,19 @@ namespace MeasureMap
         private readonly List<Func<IResult, bool>> _conditions;
         private int _iterations = 1;
         private ITask _task;
-        private IThreadExecutionHandler _executor;
+        private IThreadSessionHandler _executor;
 
-        private readonly IExecutionHandler _executionHandler;
+        private readonly ISessionHandler _sessionHandler;
         private readonly TaskHandlerChain _taskHandler;
 
         private ProfilerSession()
         {
             _iterations = 1;
             _conditions = new List<Func<IResult, bool>>();
-            _executor = new ThreadExecutionHandler();
+            _executor = new ThreadSessionHandler();
 
-            _executionHandler = new TaskExecutionChain();
-            _executionHandler.SetNext(new ElapsedTimeExecutionHandler());
+            _sessionHandler = new TaskExecutionChain();
+            _sessionHandler.SetNext(new ElapsedTimeSessionHandler());
 
             _taskHandler = new TaskHandlerChain();
         }
@@ -36,7 +36,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the chain of handlers that get executed before the task execution
         /// </summary>
-        public IExecutionHandler ExecutionHandler => _executionHandler;
+        public ISessionHandler SessionHandler => _sessionHandler;
 
         /// <summary>
         /// Gets the chain of handlers that get executed when running every task
@@ -72,7 +72,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public ProfilerSession SetThreads(int thredCount)
         {
-            _executor = new MultyThreadExecutionHandler(thredCount);
+            _executor = new MultyThreadSessionHandler(thredCount);
 
             return this;
         }
@@ -112,8 +112,8 @@ namespace MeasureMap
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
-            _executionHandler.SetNext(new WarmupExecutionHandler());
-            _executionHandler.SetNext(_executor);
+            _sessionHandler.SetNext(new WarmupSessionHandler());
+            _sessionHandler.SetNext(_executor);
 
             _taskHandler.SetNext(new ProcessDataTaskHandler());
             _taskHandler.SetNext(new MemoryCollectionTaskHandler());
@@ -121,7 +121,7 @@ namespace MeasureMap
             _taskHandler.SetNext(_task);
 
             //var profiles = _executor.Execute(_task, _iterations);
-            var profiles = _executionHandler.Execute(_taskHandler, _iterations);
+            var profiles = _sessionHandler.Execute(_taskHandler, _iterations);
             
             foreach (var condition in _conditions)
             {

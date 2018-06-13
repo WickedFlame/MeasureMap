@@ -5,16 +5,16 @@ namespace MeasureMap
     /// <summary>
     /// Chain of responnsibility Manager for executing tasks
     /// </summary>
-    public class TaskExecutionChain : IExecutionHandler
+    public class TaskExecutionChain : ISessionHandler
     {
-        private IExecutionHandler _root;
-        private IExecutionHandler _last;
+        private ISessionHandler _root;
+        private ISessionHandler _last;
         
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next executor</param>
-        public void SetNext(IExecutionHandler next)
+        public void SetNext(ISessionHandler next)
         {
             if(_root == null)
             {
