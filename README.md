@@ -76,7 +76,7 @@ var result = ProfilerSession.StartSession()
 
 var md = result.Trace();
 ```
-wich produces the following Markup:
+which produces the following Markup:
 ```
 ### MeasureMap - Profiler result for Profilesession
 ##### Summary
@@ -98,7 +98,7 @@ wich produces the following Markup:
 ```
 
 #### ExecutionContext
-The ExecutionContext is a object containing information about the curent run. The Context can be used to store and pass Data to each Taskexecution.
+The ExecutionContext is a object containing information about the current run. The Context can be used to store and pass Data to each Taskexecution.
 ```csharp
 ProfilerSession.StartSession()
 		.Task(ctx => {
