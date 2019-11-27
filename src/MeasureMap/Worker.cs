@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
@@ -9,6 +10,16 @@ namespace MeasureMap
     /// </summary>
     public class Worker
     {
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// Creates a new instance of the worker
+        /// </summary>
+        public Worker()
+        {
+            _logger = Logger.Setup();
+        }
+
         /// <summary>
         /// Runs the provided task for the iteration count
         /// </summary>
@@ -21,14 +32,14 @@ namespace MeasureMap
 
             ForceGarbageCollector();
 
-            Trace.WriteLine($"Running Task for {iterations} iterations for Perfomance Analysis Benchmark");
+            _logger.Write($"Running Task for {iterations} iterations for Perfomance Analysis Benchmark");
 
             result.InitialSize = GC.GetTotalMemory(true);
             var context = new ExecutionContext();
 
             for (int i = 0; i < iterations; i++)
             {
-                Trace.WriteLine($"Running Task for iteration {i}");
+                _logger.Write($"Running Task for iteration {i}");
                 context.Set(ContextKeys.Iteration, i);
 
                 var iteration = task.Run(context);

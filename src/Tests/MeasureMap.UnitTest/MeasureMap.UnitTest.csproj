@@ -87,6 +87,7 @@
     <Compile Include="TaskHandlers\MemoryCollectionTaskHandlerTests.cs" />
     <Compile Include="TaskHandlers\ElapsedTimeTaskHandlerTests.cs" />
     <Compile Include="Tasks\TaskOfTTests.cs" />
+    <Compile Include="TestSetup.cs" />
     <Compile Include="ThreadedProfilerTests.cs" />
     <Compile Include="ThreadedTaskExecutorTests.cs" />
     <Compile Include="ThreadRunnerTests.cs" />

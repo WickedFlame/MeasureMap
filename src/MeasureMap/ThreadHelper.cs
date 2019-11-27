@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
+using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
@@ -51,7 +52,8 @@ namespace MeasureMap
             }
             catch (Exception)
             {
-                Trace.WriteLine($"Could not set Task to run on second Core or Processor");
+                var logger = Logger.Setup();
+                logger.Write($"Could not set Task to run on second Core or Processor", LogLevel.Error, "ThreadHelper");
             }
 
             // Prevents "Normal" processes from interrupting Threads
@@ -110,7 +112,8 @@ namespace MeasureMap
                 }
                 catch (Exception)
                 {
-                    Trace.WriteLine($"Could not set Task to run on second Core or Processor");
+                    var logger = Logger.Setup();
+                    logger.Write($"Could not set Task to run on second Core or Processor", LogLevel.Error, "ThreadHelper");
                 }
 
                 // Prevents "Normal" processes from interrupting Threads

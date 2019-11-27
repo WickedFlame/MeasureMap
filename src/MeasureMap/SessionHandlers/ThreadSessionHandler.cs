@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
@@ -42,7 +43,7 @@ namespace MeasureMap
     public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
     {
         private readonly int _threadCount;
-
+        
         /// <summary>
         /// Creates a new threaded task executor
         /// </summary>

@@ -44,6 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertionException.cs" />
+    <Compile Include="Diagnostics\ILogger.cs" />
+    <Compile Include="Diagnostics\ILogWriter.cs" />
+    <Compile Include="Diagnostics\Logger.cs" />
+    <Compile Include="Diagnostics\LogLevel.cs" />
+    <Compile Include="Diagnostics\TraceLogWriter.cs" />
+    <Compile Include="GlobalConfiguration.cs" />
     <Compile Include="SessionHandlers\ElapsedTimeSessionHandler.cs" />
     <Compile Include="ExecutionContext.cs" />
     <Compile Include="SessionHandlers\ISessionHandler.cs" />
@@ -65,12 +71,13 @@
     <Compile Include="TaskHandlers\MemoryCollectionTaskHandler.cs" />
     <Compile Include="TaskHandlers\TaskHandler.cs" />
     <Compile Include="TaskHandlerChain.cs" />
-    <Compile Include="SessionHandlers\ThreadSessioionHandler.cs" />
+    <Compile Include="SessionHandlers\ThreadSessionHandler.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="ThreadHelper.cs" />
     <Compile Include="SessionHandlers\WarmupSessionHandler.cs" />
     <Compile Include="Worker.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
