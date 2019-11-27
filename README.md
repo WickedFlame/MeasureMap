@@ -97,7 +97,8 @@ wich produces the following Markup:
 		Memory Increase:		106640
 ```
 
-Pass the Executioncontext to each iteration
+#### ExecutionContext
+The ExecutionContext is a object containing information about the curent run. The Context can be used to store and pass Data to each Taskexecution.
 ```csharp
 ProfilerSession.StartSession()
 		.Task(ctx => {
