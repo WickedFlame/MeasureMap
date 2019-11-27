@@ -20,9 +20,9 @@ skip_tags: true
 #cache:
 #  - packages -> **\packages.config
 
-os: Visual Studio 2015
+os: Visual Studio 2019
 install:
-  - set PATH=C:\Program Files (x86)\MSBuild\14.0\Bin;%PATH%
+  - set PATH=C:\Program Files (x86)\MSBuild\16.0\Bin;%PATH%
 #  - sudo apt-get install nunit-console
 #  - nuget restore MeasureMap.sln
  
