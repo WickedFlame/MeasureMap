@@ -2,6 +2,8 @@
 sudo: false
 language: csharp
 solution: MeasureMap.sln
+mono: none
+dotnet: 2.1.502
 
 notifications:
   email:
@@ -13,8 +15,9 @@ notifications:
     
 install:
   - nuget restore MeasureMap.sln
-  - nuget install NUnit.Console -Version 3.0.1 -OutputDirectory testrunner
- 
+  - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
+
 script:
+  - dotnet restore
   - xbuild /p:Configuration=Release MeasureMap.sln
-  - mono ./testrunner/NUnit.Console.3.0.1/tools/nunit3-console.exe ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
+  - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
