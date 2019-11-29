@@ -27,13 +27,6 @@ install:
 #  - sudo apt-get install nunit-console
 #  - nuget restore MeasureMap.sln
  
-# assembly_info:
-#  patch: true
-#   file: AssemblyInfo.*
-#   assembly_version: "{version}" # "0.3.3.{build}"
-#   assembly_file_version: "{version}"
-#   assembly_informational_version: "{version}"
- 
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -48,13 +41,10 @@ dotnet_csproj:
 #  - x86
 #  - Any CPU
 
-# build Configuration, i.e. Debug, Release, etc.
-configuration: Release
-
 # to add several configurations to build matrix:
-#configuration:
+configuration:
 #  - Debug
-#  - Release
+  - Release
 
 before_build:
   - nuget restore
