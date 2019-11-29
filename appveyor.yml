@@ -41,10 +41,13 @@ dotnet_csproj:
 #  - x86
 #  - Any CPU
 
+# build Configuration, i.e. Debug, Release, etc.
+configuration: Release
+
 # to add several configurations to build matrix:
-configuration:
+#configuration:
 #  - Debug
-  - Release
+#  - Release
 
 before_build:
   - nuget restore
