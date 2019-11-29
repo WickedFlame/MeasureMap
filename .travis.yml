@@ -16,10 +16,12 @@ notifications:
     on_failure: always #[always|never|change] # default: always
     
 install:
-  - nuget restore MeasureMap.sln
+#  - nuget restore MeasureMap.sln
+  - dotnet restore
   - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
 
 script:
 #  - dotnet restore
-  - xbuild /p:Configuration=Release MeasureMap.sln
+  - dotnet build
+#  - xbuild /p:Configuration=Release MeasureMap.sln
   - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
