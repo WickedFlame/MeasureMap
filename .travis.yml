@@ -20,10 +20,11 @@ install:
 #  - nuget restore MeasureMap.sln
   - sudo apt-get install -qq dotnet-sdk-2.0.0
   - dotnet restore
-  - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
+#  - nuget install NUnit.Console -Version 3.9.0 -OutputDirectory testrunner
 
 script:
 #  - dotnet restore
   - dotnet build
 #  - xbuild /p:Configuration=Release MeasureMap.sln
-  - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
+#  - mono ./testrunner/NUnit.ConsoleRunner.3.9.0/tools/nunit3-console.exe ./src/Tests/MeasureMap.UnitTest/bin/Release/MeasureMap.UnitTest.dll
+  - dotnet test
