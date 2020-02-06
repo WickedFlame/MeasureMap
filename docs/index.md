@@ -12,72 +12,77 @@
 ProfileSession is always the starting point of each Benchmark test.
 This builds the profiler and allows execution of the Task. 
 
+### Run a Task
+```csharp
+var result = ProfilerSession.StartSession()
+    .Task(() => 
+    {
+        // This represents the Task that needs testint
+        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
+    })
+    .RunSession();
+```
+### Run a Task for n iterations
 Execute the Task for n iterations where n is 200 in this example.
 ```csharp
 var result = ProfilerSession.StartSession()
-		.Task(() => 
-		{
-			// This represents the Task that needs testint
-			System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
-		})
-		.SetIterations(200)
-		.AddCondition(pr => pr.Iterations.Count() == 1)
-		.RunSession();
-
-Assert.IsTrue(result.AverageMilliseconds < 20);
+    .Task(() => 
+    {
+        // This represents the Task that needs testint
+        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
+    })
+    .SetIterations(200)
+    .RunSession();
 ```
+The result contains the summary of all iterations
 
+### Run a Task for n iterations on n Threads
 Execute the Task for n iterations each on y Threads. That means n*y iterations (200*10);
 ```csharp
 var result = ProfilerSession.StartSession()
-		.Task(() => 
-		{
-			// This represents the Task that needs testint
-			System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
-		})
-		.SetIterations(200)
-		.SetThreads(10)
-		.AddCondition(pr => pr.Iterations.Count() == 1)
-		.RunSession();
-
-Assert.IsTrue(result.Iterations.Count() == 2000);
+    .Task(() => 
+    {
+        // This represents the Task that needs testint
+        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
+    })
+    .SetIterations(200)
+    .SetThreads(10)
+    .RunSession();
 ```
-
+### Define a condition that is checked with every iteration
 Add conditions that are tested
 ```csharp
 ProfilerSession.StartSession()
-		.Task(() => 
-		{
-			// This represents the Task that needs testint
-			System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
-		})
-		.AddCondition(pr => pr.Iterations.Count() == 1)
-		.RunSession();
+    .Task(() => 
+    {
+        // This represents the Task that needs testint
+        System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
+    })
+    .AddCondition(pr => pr.Iterations.Count() == 1)
+    .RunSession();
 ```
-
+### Setup and teardown of tasks
 Execute a setup/cleanup Task before each execution of the profiling Task.
 ```csharp
 var output = string.Empty;
 var result = ProfilerSession.StartSession()
-        .BeforeExcute(() => output += "before")
-		.AfterExcute(() => output += " after")
-		.Task(() => 
-		{
-			// This represents the Task that needs testint
-			output += " task"
-		})
-		.SetIterations(3)
-		.RunSession();
-
-Assert.IsTrue(output == "before task task task after");
+    .BeforeExcute(() => output += "before")
+    .AfterExcute(() => output += " after")
+    .Task(() => 
+    {
+        // This represents the Task that needs testint
+        output += " task"
+    })
+    .RunSession();
 ```
 
+### Trace the reult
 Trace the result as Markdown text
 ```csharp
 var result = ProfilerSession.StartSession()
-		.Task(() => System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001)))
-		.SetIterations(200)
-		.RunSession();
+    .Task(() => System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001)))
+    .SetIterations(200)
+    .RunSession();
 
 var md = result.Trace();
 ```
@@ -102,12 +107,39 @@ which produces the following Markup:
 		Memory Increase:		106640
 ```
 
-#### ExecutionContext
+### Task with ExecutionContext
 The ExecutionContext is a object containing information about the current run. The Context can be used to store and pass Data to each Taskexecution.
 ```csharp
 ProfilerSession.StartSession()
-		.Task(ctx => {
-			// ctx is passed to all iterations
-			var iteration = ctx.Get<int>(ContextKeys.Iteration);
-		});
+    .Task(ctx => {
+        // ctx is passed to all iterations
+        var iteration = ctx.Get<int>(ContextKeys.Iteration);
+    });
+```
+
+### Passing a return value to the next Task
+Define a datatype that is returned from a Task and is passed to the next Task iteration
+```csharp
+ProfilerSession.StartSession()
+    .Task<int>(i =>
+    {
+        // do something
+        System.Threading.Thread.Sleep(50);
+        return ++i;
+    })
+    .SetIterations(20)
+    .RunSession();
+```
+
+It is even possible to pass a anonymous objet to the next iteration
+```csharp
+ProfilerSession.StartSession()
+    .Task(itm =>
+    {
+        var tmp = new { Count = itm.Count + 1 };
+        // do something
+        return tmp;
+    })
+    .SetIterations(20)
+    .RunSession();
 ```
