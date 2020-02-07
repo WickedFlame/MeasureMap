@@ -3,6 +3,7 @@
 .NET Benchmarking made simple
 
 - [GitHub](https://github.com/WickedFlame/MeasureMap)
+- [Executionpipeline](executionpipeline)
 - [Changelog](changelog)
 
 
