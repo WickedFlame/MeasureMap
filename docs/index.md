@@ -76,7 +76,7 @@ var result = ProfilerSession.StartSession()
     .RunSession();
 ```
 
-### Trace the reult
+### Trace the result
 Trace the result as Markdown text
 ```csharp
 var result = ProfilerSession.StartSession()
