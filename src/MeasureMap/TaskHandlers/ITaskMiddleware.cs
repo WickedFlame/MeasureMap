@@ -1,10 +1,17 @@
 ﻿
+using System;
+
 namespace MeasureMap
 {
+    [Obsolete("Use ITaskMiddleware instead", false)]
+    public interface ITaskHandler : ITaskMiddleware
+    {
+    }
+
     /// <summary>
     /// Represents a task handler that can be chained together with further task handlers
     /// </summary>
-    public interface ITaskHandler : ITask
+    public interface ITaskMiddleware : ITask
     {
         /// <summary>
         /// Set the next execution item

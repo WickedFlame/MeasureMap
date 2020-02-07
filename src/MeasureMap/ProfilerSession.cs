@@ -15,7 +15,7 @@ namespace MeasureMap
         private IThreadSessionHandler _executor;
 
         private readonly ISessionHandler _sessionHandler;
-        private readonly TaskHandlerChain _taskHandler;
+        private readonly ProcessingPipeline _processingPipeline;
 
         private ProfilerSession()
         {
@@ -26,7 +26,7 @@ namespace MeasureMap
             _sessionHandler = new TaskExecutionChain();
             _sessionHandler.SetNext(new ElapsedTimeSessionHandler());
 
-            _taskHandler = new TaskHandlerChain();
+            _processingPipeline = new ProcessingPipeline();
         }
 
         /// <summary>
@@ -42,7 +42,13 @@ namespace MeasureMap
         /// <summary>
         /// Gets the chain of handlers that get executed when running every task
         /// </summary>
-        public ITaskHandler TaskHandler => _taskHandler;
+        [Obsolete("Use ProcessingPipeline")]
+        public ITaskMiddleware TaskHandler => _processingPipeline;
+
+        /// <summary>
+        /// Gets the processing pipeline containing the middleware that get executed when running every task
+        /// </summary>
+        public ITaskMiddleware ProcessingPipeline => _processingPipeline;
 
         /// <summary>
         /// Creates a new Session for profiling performance
@@ -116,13 +122,13 @@ namespace MeasureMap
             _sessionHandler.SetNext(new WarmupSessionHandler());
             _sessionHandler.SetNext(_executor);
 
-            _taskHandler.SetNext(new ProcessDataTaskHandler());
-            _taskHandler.SetNext(new MemoryCollectionTaskHandler());
-            _taskHandler.SetNext(new ElapsedTimeTaskHandler());
-            _taskHandler.SetNext(_task);
+            _processingPipeline.SetNext(new ProcessDataTaskHandler());
+            _processingPipeline.SetNext(new MemoryCollectionTaskHandler());
+            _processingPipeline.SetNext(new ElapsedTimeTaskHandler());
+            _processingPipeline.SetNext(_task);
 
             //var profiles = _executor.Execute(_task, _iterations);
-            var profiles = _sessionHandler.Execute(_taskHandler, _iterations);
+            var profiles = _sessionHandler.Execute(_processingPipeline, _iterations);
             
             foreach (var condition in _conditions)
             {

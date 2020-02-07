@@ -4,7 +4,7 @@ namespace MeasureMap
     /// <summary>
     /// Base task handler containing logic for calling the next task in the chain
     /// </summary>
-    public abstract class TaskHandler : ITaskHandler
+    public abstract class TaskHandler : ITaskMiddleware
     {
         private ITask _next;
 

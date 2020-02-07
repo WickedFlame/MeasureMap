@@ -77,6 +77,18 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Add the middleware to the processing pipeline
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="middleware">THe middleware to add</param>
+        /// <returns></returns>
+        public static ProfilerSession AddMiddleware(this ProfilerSession session, ITaskMiddleware middleware)
+        {
+            session.ProcessingPipeline.SetNext(middleware);
+            return session;
+        }
+
+        /// <summary>
         /// Sets a Task that will be executed before each profiling task execution
         /// </summary>
         /// <param name="session">The current session</param>
@@ -84,9 +96,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PreExecute(this ProfilerSession session, Action task)
         {
-            session.TaskHandler.SetNext(new PreExecutionTaskHandler(task));
-
-            return session;
+            return session.AddMiddleware(new PreExecutionTaskHandler(task));
         }
 
         /// <summary>
@@ -97,9 +107,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PreExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
-            session.TaskHandler.SetNext(new PreExecutionTaskHandler(task));
-
-            return session;
+            return session.AddMiddleware(new PreExecutionTaskHandler(task));
         }
 
         /// <summary>
@@ -110,9 +118,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PostExecute(this ProfilerSession session, Action task)
         {
-            session.TaskHandler.SetNext(new PostExecutionTaskHandler(task));
-
-            return session;
+            return session.AddMiddleware(new PostExecutionTaskHandler(task));
         }
 
         /// <summary>
@@ -123,9 +129,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PostExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
-            session.TaskHandler.SetNext(new PostExecutionTaskHandler(task));
-
-            return session;
+            return session.AddMiddleware(new PostExecutionTaskHandler(task));
         }
     }
 }

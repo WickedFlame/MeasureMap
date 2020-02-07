@@ -4,7 +4,7 @@ namespace MeasureMap
     /// <summary>
     /// Chain of responnsibility Manager for running tasks
     /// </summary>
-    public class TaskHandlerChain : ITaskHandler
+    public class ProcessingPipeline : ITaskMiddleware
     {
         private ITask _root;
         private ITask _last;
@@ -22,8 +22,7 @@ namespace MeasureMap
             }
             else
             {
-                var last = _last as ITaskHandler;
-                if(last != null)
+                if(_last is ITaskMiddleware last)
                 {
                     last.SetNext(next);
                     _last = next;
