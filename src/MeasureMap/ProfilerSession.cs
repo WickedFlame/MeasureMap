@@ -9,7 +9,7 @@ namespace MeasureMap
     /// </summary>
     public class ProfilerSession
     {
-        private readonly List<Func<IResult, bool>> _conditions;
+        private readonly List<Func<IResult, bool>> _assertions;
         private int _iterations = 1;
         private ITask _task;
         private IThreadSessionHandler _executor;
@@ -20,7 +20,7 @@ namespace MeasureMap
         private ProfilerSession()
         {
             _iterations = 1;
-            _conditions = new List<Func<IResult, bool>>();
+            _assertions = new List<Func<IResult, bool>>();
             _executor = new ThreadSessionHandler();
 
             _sessionHandler = new TaskExecutionChain();
@@ -95,15 +95,23 @@ namespace MeasureMap
 
             return this;
         }
-        
+
         /// <summary>
         /// Adds a condition to the profiling session
         /// </summary>
         /// <param name="condition">The condition that will be checked</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession AddCondition(Func<IResult, bool> condition)
+        [Obsolete("Use Assert", false)]
+        public ProfilerSession AddCondition(Func<IResult, bool> condition) => Assert(condition);
+
+        /// <summary>
+        /// Adds a condition to the profiling session
+        /// </summary>
+        /// <param name="assertion">The condition that will be checked</param>
+        /// <returns>The current profiling session</returns>
+        public ProfilerSession Assert(Func<IResult, bool> assertion)
         {
-            _conditions.Add(condition);
+            _assertions.Add(assertion);
 
             return this;
         }
@@ -130,7 +138,7 @@ namespace MeasureMap
             //var profiles = _executor.Execute(_task, _iterations);
             var profiles = _sessionHandler.Execute(_processingPipeline, _iterations);
             
-            foreach (var condition in _conditions)
+            foreach (var condition in _assertions)
             {
                 foreach (var profile in profiles)
                 {

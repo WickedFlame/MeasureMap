@@ -9,14 +9,14 @@ Visit [https://wickedflame.github.io/MeasureMap/](https://wickedflame.github.io/
 
 ```csharp
 var result = ProfilerSession.StartSession()
-		.Task(() => 
-		{
-			// This represents the Task that needs testint
-			System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
-		})
-		.SetIterations(200)
-		.AddCondition(pr => pr.Iterations.Count() == 1)
-		.RunSession();
+	.Task(() => 
+	{
+		// This represents the Task that needs testint
+		System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
+	})
+	.SetIterations(200)
+	.Assert(pr => pr.Iterations.Count() == 1)
+	.RunSession();
 
 Assert.IsTrue(result.AverageMilliseconds < 20);
 ```

@@ -59,7 +59,7 @@ ProfilerSession.StartSession()
         // This represents the Task that needs testint
         System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.001));
     })
-    .AddCondition(pr => pr.Iterations.Count() == 1)
+    .Assert(pr => pr.Iterations.Count() == 1)
     .RunSession();
 ```
 ### Setup and teardown of tasks

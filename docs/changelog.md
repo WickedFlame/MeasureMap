@@ -7,6 +7,7 @@ nav_order: 99
 ### 1.5.0
 - Refactored TaskHandler to ProcessingPipeline
 - Refactored ITaskHandler to ITaskMiddleware
+- Refactoring AddCondition to Assert
 
 ### 1.4.0
 - Converted to .Net Standard library
