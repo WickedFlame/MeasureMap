@@ -1,7 +1,7 @@
 title: 'MeasureMap'
 subtitle: 'Documentation'
 codeurl: 'https://github.com/WickedFlame/MeasureMap'
-baseurl: ''
+baseurl: '/MeasureMap'
 highlighter: rouge
 exclude: [README.md']
 markdown: kramdown
