@@ -1,3 +1,6 @@
+---
+layout: "default"
+---
 # MeasureMap
 
 .NET Benchmarking made simple
