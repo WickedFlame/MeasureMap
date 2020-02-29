@@ -97,7 +97,7 @@ namespace MeasureMap.UnitTest
         {
             ProfilerSession.StartSession()
                 .Task(Task)
-                .AddCondition(pr => pr.Iterations.Count() == 1)
+                .Assert(pr => pr.Iterations.Count() == 1)
                 .RunSession();
         }
 
@@ -106,8 +106,8 @@ namespace MeasureMap.UnitTest
         {
             ProfilerSession.StartSession()
                 .Task(Task)
-                .AddCondition(pr => pr.Iterations.Count() == 1)
-                .AddCondition(pr => pr.AverageMilliseconds > 0)
+                .Assert(pr => pr.Iterations.Count() == 1)
+                .Assert(pr => pr.AverageMilliseconds > 0)
                 .RunSession();
         }
 
@@ -117,7 +117,7 @@ namespace MeasureMap.UnitTest
             Assert.Throws<MeasureMap.AssertionException>(() => ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(2)
-                .AddCondition(pr => pr.Iterations.Count() == 1)
+                .Assert(pr => pr.Iterations.Count() == 1)
                 .RunSession());
         }
 
