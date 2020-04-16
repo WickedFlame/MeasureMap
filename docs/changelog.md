@@ -12,3 +12,6 @@ nav_order: 99
 
 ### 1.4.0
 - Converted to .Net Standard library
+
+### 1.5.0
+- Benchmarking multiple ProfilerSessions
