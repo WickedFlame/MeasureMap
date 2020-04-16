@@ -35,12 +35,14 @@ namespace MeasureMap
 
         public IProfilerResultCollection RunSessions()
         {
-            var results = new ProfilerResultCollection();
+            var results = new ProfilerResultCollection(_iterations);
 
-            foreach (var session in _sessions)
+            foreach (var key in _sessions.Keys)
             {
-                var result = session.Value.RunSession();
-                results.Add(session.Key, result);
+                var session = _sessions[key];
+                session.SetIterations(_iterations);
+                var result = session.RunSession();
+                results.Add(key, result);
             }
 
             return results;

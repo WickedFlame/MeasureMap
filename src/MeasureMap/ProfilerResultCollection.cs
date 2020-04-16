@@ -7,6 +7,8 @@ namespace MeasureMap
     {
         void Add(string name, IProfilerResult result);
 
+        int Iterations { get; }
+        
         IEnumerable<string> Keys { get; }
 
         IProfilerResult this[string key] { get; }
@@ -16,10 +18,13 @@ namespace MeasureMap
     {
         private readonly Dictionary<string, IProfilerResult> _results;
 
-        public ProfilerResultCollection()
+        public ProfilerResultCollection(int iterations)
         {
             _results = new Dictionary<string, IProfilerResult>();
+            Iterations = iterations;
         }
+
+        public int Iterations { get; }
 
         public IEnumerable<string> Keys => _results.Keys;
 

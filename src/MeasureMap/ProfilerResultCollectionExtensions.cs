@@ -10,9 +10,11 @@ namespace MeasureMap
         {
             var sb = new StringBuilder();
 
-            sb.AppendLine($"##### Summary");
-            sb.AppendLine("| Name | Avg Time | Avg Ticks | Total            | Fastest | Slowest | Memory Increase |");
-            sb.AppendLine("|----- |--------: |---------: |----------------: |-------: |-------: |---------------: |");
+            sb.AppendLine("## MeasureMap Benchmark");
+            sb.AppendLine($" Iterations:\t\t{results.Iterations}");
+            sb.AppendLine($"### Summary");
+            sb.AppendLine("| Name | Avg Time | Avg Ticks | Total | Fastest | Slowest | Memory Increase |");
+            sb.AppendLine("|--- |---: |---: |---: |---: |---: |---: |");
             foreach (var key in results.Keys)
             {
                 sb.AppendLine($"| {key} {TraceLine(results[key])}");
