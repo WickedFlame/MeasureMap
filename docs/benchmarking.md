@@ -20,6 +20,8 @@ var result = runner.RunSessions();
 
 result.Trace();
 ```
+### Resulting MarkDown
+```
 ### MeasureMap Benchmark
  Iterations:		10
 #### Summary
@@ -27,3 +29,4 @@ result.Trace();
 |--- |---: |---: |---: |---: |---: |---: |
 | sha256 | 00:00:00.0000924 | 924 | 00:00:00.0009243 | 776 | 1471 | 1392 |
 | Md5 | 00:00:00.0000485 | 485 | 00:00:00.0004858 | 409 | 534 | 1392 |
+```
