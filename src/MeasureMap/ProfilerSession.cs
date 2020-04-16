@@ -4,9 +4,9 @@ using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
-    /// <summary>
-    /// TODO: Memorytests: http://www.codeproject.com/Articles/5171/Advanced-Unit-Testing-Part-IV-Fixture-Setup-Teardo
-    /// </summary>
+    //
+    // TODO: Memorytests: http://www.codeproject.com/Articles/5171/Advanced-Unit-Testing-Part-IV-Fixture-Setup-Teardo
+    // 
     public class ProfilerSession
     {
         private readonly List<Func<IResult, bool>> _assertions;
