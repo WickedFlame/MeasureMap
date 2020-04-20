@@ -40,6 +40,10 @@ namespace MeasureMap
     {
         private readonly Dictionary<string, IProfilerResult> _results;
 
+        /// <summary>
+        /// Creates an instance of a ProfilerResultCollection
+        /// </summary>
+        /// <param name="iterations"></param>
         public ProfilerResultCollection(int iterations)
         {
             _results = new Dictionary<string, IProfilerResult>();

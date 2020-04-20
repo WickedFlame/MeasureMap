@@ -4,8 +4,16 @@ using System.Text;
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// Extension methods for the IProfilerResultCollection
+    /// </summary>
     public static class ProfilerResultCollectionExtensions
     {
+        /// <summary>
+        /// Traces the output of a Benchmark Test
+        /// </summary>
+        /// <param name="results"></param>
+        /// <returns></returns>
         public static string Trace(this IProfilerResultCollection results)
         {
             var sb = new StringBuilder();

@@ -7,6 +7,10 @@ namespace MeasureMap
     //
     // TODO: Memorytests: http://www.codeproject.com/Articles/5171/Advanced-Unit-Testing-Part-IV-Fixture-Setup-Teardo
     // 
+
+    /// <summary>
+    /// The main entry for a profiling session
+    /// </summary>
     public class ProfilerSession
     {
         private readonly List<Func<IResult, bool>> _assertions;

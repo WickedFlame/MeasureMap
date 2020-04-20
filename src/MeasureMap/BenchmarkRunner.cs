@@ -11,6 +11,9 @@ namespace MeasureMap
         private int _iterations;
         private readonly Dictionary<string, ProfilerSession> _sessions;
 
+        /// <summary>
+        /// Creates an instance of the BenchmaekRunner
+        /// </summary>
         public BenchmarkRunner()
         {
             _iterations = 1;
