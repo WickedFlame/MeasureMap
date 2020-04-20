@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// Runs multiple sessions to create benchmarks
+    /// </summary>
     public class BenchmarkRunner
     {
         private int _iterations;
@@ -14,6 +17,11 @@ namespace MeasureMap
             _sessions = new Dictionary<string, ProfilerSession>();
         }
 
+        /// <summary>
+        /// Set the amount of iterations that the benchmarks run
+        /// </summary>
+        /// <param name="iterations"></param>
+        /// <returns></returns>
         public BenchmarkRunner SetIterations(int iterations)
         {
             if (iterations < 1)
@@ -26,6 +34,12 @@ namespace MeasureMap
             return this;
         }
 
+        /// <summary>
+        /// Add a new session to run benchmarks against
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="session"></param>
+        /// <returns></returns>
         public BenchmarkRunner AddSession(string name, ProfilerSession session)
         {
             _sessions.Add(name, session);
@@ -33,6 +47,10 @@ namespace MeasureMap
             return this;
         }
 
+        /// <summary>
+        /// Run all sessions and benchmarks
+        /// </summary>
+        /// <returns></returns>
         public IProfilerResultCollection RunSessions()
         {
             var results = new ProfilerResultCollection(_iterations);

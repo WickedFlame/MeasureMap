@@ -1,0 +1,28 @@
+---metadata
+id: 6
+---data
+| Md5 | 00:00:00.000
+---metadata
+id: 5
+---data
+| sha256 | 00:00:00.
+---metadata
+id: 4
+---data
+|--- |---: |---: |---: |---: |---: |---: |
+---metadata
+id: 3
+---data
+| Name | Avg Time | Avg Ticks | Total | Fastest | Slowest | Memory Increase |
+---metadata
+id: 2
+---data
+### Summary
+---metadata
+id: 1
+---data
+ Iterations:		10
+---metadata
+id: 0
+---data
+## MeasureMap Benchmark

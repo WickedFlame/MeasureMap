@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using NUnit.Framework;
+using Polaroider;
 
 namespace MeasureMap.UnitTest
 {
@@ -25,7 +26,14 @@ namespace MeasureMap.UnitTest
 
             var result = runner.RunSessions();
 
-            result.Trace();
+            var output = result.Trace().Split("\r\n");
+            output[0].MatchSnapshot(() => new {id = 0});
+            output[1].MatchSnapshot(() => new { id = 1 });
+            output[2].MatchSnapshot(() => new { id = 2 });
+            output[3].MatchSnapshot(() => new { id = 3 });
+            output[4].MatchSnapshot(() => new { id = 4 });
+            output[5].Substring(0, 20).MatchSnapshot(() => new { id = 5 });
+            output[6].Substring(0, 20).MatchSnapshot(() => new { id = 6 });
         }
     }
 }
