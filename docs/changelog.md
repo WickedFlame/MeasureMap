@@ -15,3 +15,6 @@ nav_order: 99
 
 ### 1.5.0
 - Benchmarking multiple ProfilerSessions
+
+### 1.5.1
+- Extend ProfilerSession configuration for Benchmarking
