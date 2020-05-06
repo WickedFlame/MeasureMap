@@ -18,7 +18,7 @@ namespace MeasureMap
         private ITask _task;
         private IThreadSessionHandler _executor;
 
-        private readonly ISessionHandler _sessionHandler;
+        private readonly ISessionHandler _sessionPipeline;
         private readonly ProcessingPipeline _processingPipeline;
 
         private ProfilerSession()
@@ -27,8 +27,8 @@ namespace MeasureMap
             _assertions = new List<Func<IResult, bool>>();
             _executor = new ThreadSessionHandler();
 
-            _sessionHandler = new TaskExecutionChain();
-            _sessionHandler.SetNext(new ElapsedTimeSessionHandler());
+            _sessionPipeline = new TaskExecutionChain();
+            _sessionPipeline.SetNext(new ElapsedTimeSessionHandler());
 
             _processingPipeline = new ProcessingPipeline();
         }
@@ -41,7 +41,13 @@ namespace MeasureMap
         /// <summary>
         /// Gets the chain of handlers that get executed before the task execution
         /// </summary>
-        public ISessionHandler SessionHandler => _sessionHandler;
+        [Obsolete("Use SessionPipeline")]
+        public ISessionHandler SessionHandler => _sessionPipeline;
+
+        /// <summary>
+        /// Gets the chain of handlers that get executed before the task execution
+        /// </summary>
+        public ISessionHandler SessionPipeline => _sessionPipeline;
 
         /// <summary>
         /// Gets the chain of handlers that get executed when running every task
@@ -131,8 +137,8 @@ namespace MeasureMap
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
-            _sessionHandler.SetNext(new WarmupSessionHandler());
-            _sessionHandler.SetNext(_executor);
+            _sessionPipeline.SetNext(new WarmupSessionHandler());
+            _sessionPipeline.SetNext(_executor);
 
             _processingPipeline.SetNext(new ProcessDataTaskHandler());
             _processingPipeline.SetNext(new MemoryCollectionTaskHandler());
@@ -140,7 +146,7 @@ namespace MeasureMap
             _processingPipeline.SetNext(_task);
 
             //var profiles = _executor.Execute(_task, _iterations);
-            var profiles = _sessionHandler.Execute(_processingPipeline, _iterations);
+            var profiles = _sessionPipeline.Execute(_processingPipeline, _iterations);
             
             foreach (var condition in _assertions)
             {

@@ -18,9 +18,24 @@ namespace MeasureMap.UnitTest.SessionHandlers
                 .Task(() => Debug.WriteLine("AddCustomSessionHandler call"))
                 .SetIterations(100);
             
-            session.SessionHandler.SetNext(handler);
+            session.SessionPipeline.SetNext(handler);
 
             session.RunSession();
+
+            // handler is called once
+            Assert.That(handler.Calls == 1);
+        }
+
+        [Test]
+        public void MiddlewareExtendability_AddSessionHandler()
+        {
+            var handler = new Handler();
+
+            ProfilerSession.StartSession()
+                .AddMiddleware(handler)
+                .Task(() => Debug.WriteLine("AddCustomSessionHandler call"))
+                .SetIterations(100)
+                .RunSession();
 
             // handler is called once
             Assert.That(handler.Calls == 1);
