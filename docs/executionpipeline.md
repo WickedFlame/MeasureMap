@@ -6,8 +6,13 @@ nav_order: 2
 
 ## MeasureMap execution pipeline
 The execution pipeline of MeasureMap followes the Chain of Responsibility Pattern
+There are 2 kinds of Pipelines in MeasureMap
+1. The SessionPipeline is the main pipeline that is run for each session.
+2. The ExecutionPipeline is run for each execution.
 
-The pipeline is executed twice
+The ExecutionPipeline is run as part of the SessionPipeline.
+
+The Task-Pipeline is executed twice
 1. In the WarmupSessionHandler pipeline
 2. In the execution pipeline
 
@@ -17,6 +22,7 @@ The pipeline is executed twice
 3. MemoryCollectionTaskHandler
 4. ElapsedTimeTaskHandler
 5. Execution of the Task
+
 
 ## Extend the execution pipeline
 Implement ITaskMiddleware for the middleware
