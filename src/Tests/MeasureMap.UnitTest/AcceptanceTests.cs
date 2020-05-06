@@ -135,6 +135,20 @@ namespace MeasureMap.UnitTest
             Assert.That((int)result.Slowest.Data == 9);
         }
 
+        [Test]
+        public void Acceptance_Setup()
+        {
+            var count = 0;
+            
+            ProfilerSession.StartSession()
+                .Setup(() => count += 1)
+                .Task(Task)
+                .SetIterations(10)
+                .RunSession();
+
+            Assert.That(count == 1);
+        }
+
 
         private void Task()
         {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MeasureMap.SessionHandlers;
+using System;
 
 namespace MeasureMap
 {
@@ -142,6 +143,17 @@ namespace MeasureMap
         public static ProfilerSession PostExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
             return session.AddMiddleware(new PostExecutionTaskHandler(task));
+        }
+
+        /// <summary>
+        /// Adds a setup task to the sessionpipeline
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="setup">The setuptask</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession Setup(this ProfilerSession session, Action setup)
+        {
+            return session.AddMiddleware(new PreExecutionSessionHandler(setup));
         }
     }
 }
