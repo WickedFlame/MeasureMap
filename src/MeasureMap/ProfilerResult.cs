@@ -5,10 +5,16 @@ using System.Linq;
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// The result
+    /// </summary>
     public class ProfilerResult : IEnumerable<IResult>, IProfilerResult
     {
         private readonly List<IResult> _results = new List<IResult>();
 
+        /// <summary>
+        /// Creates a profiler result
+        /// </summary>
         public ProfilerResult()
         {
             ResultValues = new Dictionary<string, object>();
@@ -19,6 +25,9 @@ namespace MeasureMap
         /// </summary>
         public IDictionary<string, object> ResultValues { get; }
 
+        /// <summary>
+        /// Gets the total timespan
+        /// </summary>
         public TimeSpan Elapsed { get; internal set; }
 
         /// <summary>
@@ -108,11 +117,19 @@ namespace MeasureMap
         /// </summary>
         public TimeSpan Warmup { get; set; }
 
+        /// <summary>
+        /// Add a new result
+        /// </summary>
+        /// <param name="result"></param>
         internal void Add(Result result)
         {
             _results.Add(result);
         }
 
+        /// <summary>
+        /// The enumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<IResult> GetEnumerator()
         {
             return _results.GetEnumerator();

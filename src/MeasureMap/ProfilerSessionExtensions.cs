@@ -1,5 +1,4 @@
-﻿using MeasureMap.SessionHandlers;
-using System;
+﻿using System;
 
 namespace MeasureMap
 {

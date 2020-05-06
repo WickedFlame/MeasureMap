@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MeasureMap.SessionHandlers
+namespace MeasureMap
 {
     /// <summary>
     /// SessionHandler that executes a task before the TaskExecution

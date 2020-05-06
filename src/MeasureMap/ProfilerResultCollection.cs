@@ -77,6 +77,10 @@ namespace MeasureMap
             _results.Add(name, result);
         }
 
+        /// <summary>
+        /// The enumerator
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<IProfilerResult> GetEnumerator()
         {
             return _results.Values.GetEnumerator();

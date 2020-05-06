@@ -3,6 +3,9 @@ using System;
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// Obsolete middleware
+    /// </summary>
     [Obsolete("Use ITaskMiddleware instead", false)]
     public interface ITaskHandler : ITaskMiddleware
     {
