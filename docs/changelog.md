@@ -18,3 +18,7 @@ nav_order: 99
 
 ### 1.5.1
 - Extend ProfilerSession configuration for Benchmarking
+
+### 1.5.1
+- Simplify adding SessionHandler Middleware to the SessionPipeline
+- Setup method for initializing a Session

@@ -94,9 +94,7 @@ namespace MeasureMap
                 return TimeSpan.FromTicks(Iterations.Select(i => i.Ticks).Sum());
             }
         }
-
-
-
+        
         /// <summary>
         /// The initial memory size
         /// </summary>
