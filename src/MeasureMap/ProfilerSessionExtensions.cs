@@ -97,7 +97,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession SetSettings(this ProfilerSession session, ProfilerSettings settings)
         {
-            settings.MergeChanges(session.Settings);
+            settings.MergeChangesTo(session.Settings);
 
             return session;
         }

@@ -44,7 +44,7 @@ namespace MeasureMap
             _changes[property] = (origSet, newSet) => action(origSet, func(newSet));
         }
 
-        internal void MergeChanges(ProfilerSettings settings)
+        internal void MergeChangesTo(ProfilerSettings settings)
         {
             foreach (var action in _changes.Values)
             {
