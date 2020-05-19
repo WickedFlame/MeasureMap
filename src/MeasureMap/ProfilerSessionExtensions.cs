@@ -77,6 +77,32 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Sets the amount of iterations that the profileing session should run the task
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="iterations">The iterations to run the task</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession SetIterations(this ProfilerSession session, int iterations)
+        {
+            session.Settings.Iterations = iterations;
+
+            return session;
+        }
+
+        /// <summary>
+        /// Sets the amount of iterations that the profileing session should run the task
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="settings">The settings for thr profiler</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession SetSettings(this ProfilerSession session, ProfilerSettings settings)
+        {
+            settings.MergeChanges(session.Settings);
+
+            return session;
+        }
+
+        /// <summary>
         /// Add the middleware to the processing pipeline
         /// </summary>
         /// <param name="session">The current session</param>

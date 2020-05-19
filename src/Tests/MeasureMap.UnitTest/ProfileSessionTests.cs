@@ -20,7 +20,7 @@ namespace MeasureMap.UnitTest
         {
             var session = ProfilerSession.StartSession();
 
-            Assert.AreEqual(1, session.Iterations);
+            Assert.AreEqual(1, session.Settings.Iterations);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace MeasureMap.UnitTest
             var session = ProfilerSession.StartSession()
                 .SetIterations(12);
 
-            Assert.AreEqual(12, session.Iterations);
+            Assert.AreEqual(12, session.Settings.Iterations);
         }
 
         [Test]

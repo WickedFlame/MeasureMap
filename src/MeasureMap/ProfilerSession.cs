@@ -34,11 +34,6 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Gets the amount of iterations that the Task will be run
-        /// </summary>
-        public int Iterations => _settings.Iterations;
-
-        /// <summary>
         /// Gets the settings for this profiler
         /// </summary>
         public ProfilerSettings Settings => _settings;
@@ -74,18 +69,6 @@ namespace MeasureMap
             return new ProfilerSession();
         }
         
-        /// <summary>
-        /// Sets the amount of iterations that the profileing session should run the task
-        /// </summary>
-        /// <param name="iterations">The iterations to run the task</param>
-        /// <returns>The current profiling session</returns>
-        public ProfilerSession SetIterations(int iterations)
-        {
-            _settings.Iterations = iterations;
-
-            return this;
-        }
-
         /// <summary>
         /// Sets the amount of threads that the profiling sessions should run in.
         /// All iterations are run on every thread.
