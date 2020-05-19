@@ -22,3 +22,9 @@ nav_order: 99
 ### 1.5.1
 - Simplify adding SessionHandler Middleware to the SessionPipeline
 - Setup method for initializing a Session
+
+### 1.6.0
+- Added Settings to the ProfilingSession and BenchmarkRunner
+- Added setting to disable the Warmup task run
+#### Breaking
+- Moved Itterations Property to Settings
