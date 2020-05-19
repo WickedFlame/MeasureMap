@@ -24,20 +24,20 @@ namespace MeasureMap
         /// Runs the provided task for the iteration count
         /// </summary>
         /// <param name="task">The task that has to be run</param>
-        /// <param name="iterations">The amount of iterations to run the task</param>
+        /// <param name="settings">The settings for the profiler</param>
         /// <returns></returns>
-        public Result Run(ITask task, int iterations)
+        public Result Run(ITask task, ProfilerSettings settings)
         {
             var result = new Result();
 
             ForceGarbageCollector();
 
-            _logger.Write($"Running Task for {iterations} iterations for Perfomance Analysis Benchmark");
+            _logger.Write($"Running Task for {settings.Iterations} iterations for Perfomance Analysis Benchmark");
 
             result.InitialSize = GC.GetTotalMemory(true);
             var context = new ExecutionContext();
 
-            for (int i = 0; i < iterations; i++)
+            for (int i = 0; i < settings.Iterations; i++)
             {
                 _logger.Write($"Running Task for iteration {i}");
                 context.Set(ContextKeys.Iteration, i);

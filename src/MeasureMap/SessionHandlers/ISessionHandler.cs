@@ -16,8 +16,8 @@ namespace MeasureMap
         /// Executes the task
         /// </summary>
         /// <param name="task">The task to run</param>
-        /// <param name="iterations">The iterations to run the task</param>
+        /// <param name="settings">The settings for the profiler</param>
         /// <returns>The resulting collection of the executions</returns>
-        IProfilerResult Execute(ITask task, int iterations);
+        IProfilerResult Execute(ITask task, ProfilerSettings settings);
     }
 }

@@ -21,7 +21,7 @@ namespace MeasureMap.UnitTest
             {
                 cnt = cnt++;
                 iterations.Add(cnt);
-            }), 10);
+            }), new ProfilerSettings { Iterations = 10 });
 
             Assert.That(results.Count() == 1);
             Assert.That(iterations.Count == 10);
@@ -37,7 +37,7 @@ namespace MeasureMap.UnitTest
             {
                 cnt = cnt++;
                 iterations.Add(cnt);
-            }), 10);
+            }), new ProfilerSettings { Iterations = 10 });
 
             Assert.That(results.Count() == 10);
             Assert.That(iterations.Count == 10*10);

@@ -19,16 +19,16 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Execute the task
+        /// Executes the task
         /// </summary>
-        /// <param name="task">The task to execute</param>
-        /// <param name="iterations">The iterations for executing the task</param>
-        /// <returns></returns>
-        public override IProfilerResult Execute(ITask task, int iterations)
+        /// <param name="task">The task to run</param>
+        /// <param name="settings">The settings for the profiler</param>
+        /// <returns>The resulting collection of the executions</returns>
+        public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
             _action.Invoke();
 
-            return base.Execute(task, iterations);
+            return base.Execute(task, settings);
         }
     }
 }

@@ -42,10 +42,10 @@ namespace MeasureMap.UnitTest.SessionHandlers
         {
             public int Calls { get; private set; }
 
-            public override IProfilerResult Execute(ITask task, int iterations)
+            public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
             {
                 Calls = Calls + 1;
-                return base.Execute(task, iterations);
+                return base.Execute(task, settings);
             }
         }
     }

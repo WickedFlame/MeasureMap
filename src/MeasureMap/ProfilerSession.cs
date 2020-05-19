@@ -14,16 +14,16 @@ namespace MeasureMap
     public class ProfilerSession
     {
         private readonly List<Func<IResult, bool>> _assertions;
-        private int _iterations = 1;
         private ITask _task;
         private IThreadSessionHandler _executor;
 
         private readonly ISessionHandler _sessionPipeline;
         private readonly ProcessingPipeline _processingPipeline;
+        private readonly ProfilerSettings _settings;
 
         private ProfilerSession()
         {
-            _iterations = 1;
+            _settings = new ProfilerSettings();
             _assertions = new List<Func<IResult, bool>>();
             _executor = new ThreadSessionHandler();
 
@@ -36,7 +36,12 @@ namespace MeasureMap
         /// <summary>
         /// Gets the amount of iterations that the Task will be run
         /// </summary>
-        public int Iterations => _iterations;
+        public int Iterations => _settings.Iterations;
+
+        /// <summary>
+        /// Gets the settings for this profiler
+        /// </summary>
+        public ProfilerSettings Settings => _settings;
 
         /// <summary>
         /// Gets the chain of handlers that get executed before the task execution
@@ -45,7 +50,7 @@ namespace MeasureMap
         public ISessionHandler SessionHandler => _sessionPipeline;
 
         /// <summary>
-        /// Gets the chain of handlers that get executed before the task execution
+        /// Gets the chain of handlers that get executed before the execution of the ProcessingPipeline
         /// </summary>
         public ISessionHandler SessionPipeline => _sessionPipeline;
 
@@ -56,7 +61,7 @@ namespace MeasureMap
         public ITaskMiddleware TaskHandler => _processingPipeline;
 
         /// <summary>
-        /// Gets the processing pipeline containing the middleware that get executed when running every task
+        /// Gets the processing pipeline containing the middleware that get executed for every itteration. The task is executed at the top of the executionchain.
         /// </summary>
         public ITaskMiddleware ProcessingPipeline => _processingPipeline;
 
@@ -76,7 +81,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public ProfilerSession SetIterations(int iterations)
         {
-            _iterations = iterations;
+            _settings.Iterations = iterations;
 
             return this;
         }
@@ -146,7 +151,7 @@ namespace MeasureMap
             _processingPipeline.SetNext(_task);
 
             //var profiles = _executor.Execute(_task, _iterations);
-            var profiles = _sessionPipeline.Execute(_processingPipeline, _iterations);
+            var profiles = _sessionPipeline.Execute(_processingPipeline, _settings);
             
             foreach (var condition in _assertions)
             {

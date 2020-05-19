@@ -24,12 +24,12 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Executes a warmup for the task
+        /// Executes the task
         /// </summary>
         /// <param name="task">The task to run</param>
-        /// <param name="iterations">The iterations to run the task</param>
+        /// <param name="settings">The settings for the profiler</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override IProfilerResult Execute(ITask task, int iterations)
+        public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
             var stopwatch = new Stopwatch();
 
@@ -42,7 +42,7 @@ namespace MeasureMap
 
             stopwatch.Stop();
 
-            var result = base.Execute(task, iterations);
+            var result = base.Execute(task, settings);
 
             result.ResultValues.Add("Warmup", stopwatch.Elapsed);
 

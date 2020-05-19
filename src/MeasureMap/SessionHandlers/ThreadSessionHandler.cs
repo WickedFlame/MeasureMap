@@ -17,18 +17,18 @@ namespace MeasureMap
     public class ThreadSessionHandler : SessionHandler, IThreadSessionHandler
     {
         /// <summary>
-        /// Executes the task on a single thread
+        /// Executes the task
         /// </summary>
         /// <param name="task">The task to run</param>
-        /// <param name="iterations">The iterations to run the task</param>
+        /// <param name="settings">The settings for the profiler</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override IProfilerResult Execute(ITask task, int iterations)
+        public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
             ThreadHelper.SetProcessor();
             ThreadHelper.SetThreadPriority();
 
             var worker = new Worker();
-            var p = worker.Run(task, iterations);
+            var p = worker.Run(task, settings);
 
             return new ProfilerResult
             {
@@ -54,12 +54,12 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Executes the task on multiple threads
+        /// Executes the task
         /// </summary>
         /// <param name="task">The task to run</param>
-        /// <param name="iterations">The iterations to run the task</param>
+        /// <param name="settings">The settings for the profiler</param>
         /// <returns>The resulting collection of the executions</returns>
-        public override IProfilerResult Execute(ITask task, int iterations)
+        public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
             var threads = new List<System.Threading.Tasks.Task<Result>>();
 
@@ -68,7 +68,7 @@ namespace MeasureMap
                 var thread = ThreadHelper.QueueTask(i, threadIndex =>
                 {
                     var worker = new Worker();
-                    var p = worker.Run(task, iterations);
+                    var p = worker.Run(task, settings);
                     return p;
                 });
 
