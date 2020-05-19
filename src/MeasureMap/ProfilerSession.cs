@@ -125,7 +125,11 @@ namespace MeasureMap
                 throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
             }
 
-            _sessionPipeline.SetNext(new WarmupSessionHandler());
+            if(_settings.RunWarmup)
+            {
+                _sessionPipeline.SetNext(new WarmupSessionHandler());
+            }
+
             _sessionPipeline.SetNext(_executor);
 
             _processingPipeline.SetNext(new ProcessDataTaskHandler());

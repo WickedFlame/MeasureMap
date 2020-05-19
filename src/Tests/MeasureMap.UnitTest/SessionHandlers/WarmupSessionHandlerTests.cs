@@ -25,7 +25,7 @@ namespace MeasureMap.UnitTest.SessionHandlers
         }
 
         [Test]
-        public void ElapsedTimeSessionHandler_Execute_EnsureBaseIsCalled()
+        public void WarmupSessionHandler_Execute_EnsureBaseIsCalled()
         {
             var next = new Mock<ISessionHandler>();
             next.Setup(exp => exp.Execute(It.IsAny<ITask>(), It.IsAny<ProfilerSettings>())).Returns(() => new ProfilerResult());
@@ -42,7 +42,7 @@ namespace MeasureMap.UnitTest.SessionHandlers
         }
 
         [Test]
-        public void ElapsedTimeSessionHandler_Execute_EnsureTaskIsRun()
+        public void WarmupSessionHandler_Execute_EnsureTaskIsRun()
         {
             var settings = new ProfilerSettings { Iterations = 10 };
 
@@ -52,6 +52,32 @@ namespace MeasureMap.UnitTest.SessionHandlers
             var result = handler.Execute(task.Object, settings);
 
             task.Verify(exp => exp.Run(It.IsAny<IExecutionContext>()), Times.Once);
+        }
+
+        [Test]
+        public void WarmupSessionHandler_Enabled()
+        {
+            var count = 0;
+
+            ProfilerSession.StartSession()
+                .Task(() => count += 1)
+                .SetSettings(new ProfilerSettings { Iterations = 10 })
+                .RunSession();
+
+            Assert.That(count == 11);
+        }
+
+        [Test]
+        public void WarmupSessionHandler_Disable()
+        {
+            var count = 0;
+
+            ProfilerSession.StartSession()
+                .Task(() => count += 1)
+                .SetSettings(new ProfilerSettings { Iterations = 10, RunWarmup = false })
+                .RunSession();
+
+            Assert.That(count == 10);
         }
     }
 }

@@ -10,9 +10,10 @@ namespace MeasureMap
         private readonly Dictionary<string, Action<ProfilerSettings, ProfilerSettings>> _changes = new Dictionary<string, Action<ProfilerSettings, ProfilerSettings>>();
 
         private int _iterations = 1;
-        
+        private bool _runWarmup = true;
+
         /// <summary>
-        /// Gets the amount of iterations that the Task will be run
+        /// Gets or sets the amount of iterations that the Task will be run
         /// </summary>
         public int Iterations
         {
@@ -21,6 +22,19 @@ namespace MeasureMap
             {
                 _iterations = value;
                 AddChange("iterations", s => s.Iterations, (s, v) => s.Iterations = v);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets if the Warmup should be run when executing the profile session
+        /// </summary>
+        public bool RunWarmup
+        {
+            get => _runWarmup;
+            set
+            {
+                _runWarmup = value;
+                AddChange("runwarmup", s => s.RunWarmup, (s, v) => s.RunWarmup = v);
             }
         }
 
