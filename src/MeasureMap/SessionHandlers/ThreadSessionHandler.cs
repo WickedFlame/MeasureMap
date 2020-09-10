@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using MeasureMap.Diagnostics;
 
 namespace MeasureMap
@@ -40,10 +42,11 @@ namespace MeasureMap
     /// <summary>
     /// A multy threaded task session handler
     /// </summary>
-    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
+    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler, IDisposable
     {
         private readonly int _threadCount;
-        
+        private List<System.Threading.Tasks.Task<Result>> _threads;
+
         /// <summary>
         /// Creates a new threaded task executor
         /// </summary>
@@ -53,6 +56,11 @@ namespace MeasureMap
             _threadCount = threadCount;
         }
 
+		/// <summary>
+		/// Gets the amount of threads that the task is run in
+		/// </summary>
+        public int ThreadCount => _threadCount;
+
         /// <summary>
         /// Executes the task
         /// </summary>
@@ -61,7 +69,7 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
-            var threads = new List<System.Threading.Tasks.Task<Result>>();
+            _threads = new List<System.Threading.Tasks.Task<Result>>();
 
             for (int i = 0; i < _threadCount; i++)
             {
@@ -72,17 +80,19 @@ namespace MeasureMap
                     return p;
                 });
 
-                threads.Add(thread);
+                System.Diagnostics.Trace.WriteLine($"MeasureMap - Start thread {thread.Id}");
+
+                _threads.Add(thread);
             }
 
-            foreach (var thread in threads)
+            foreach (var thread in _threads)
             {
                 thread.Start();
             }
 
-            System.Threading.Tasks.Task.WaitAll(threads.ToArray());
+            System.Threading.Tasks.Task.WaitAll(_threads.ToArray());
 
-            var results = threads.Select(s => s.Result);
+            var results = _threads.Select(s => s.Result);
 
             var collectîon = new ProfilerResult();
             foreach (var result in results)
@@ -91,6 +101,31 @@ namespace MeasureMap
             }
 
             return collectîon;
+        }
+
+        public void DisposeThreads()
+        {
+	        if (_threads == null)
+	        {
+		        return;
+	        }
+
+	        foreach (var thread in _threads.ToList())
+	        {
+		        System.Diagnostics.Trace.WriteLine($"MeasureMap - End thread {thread.Id}");
+				thread.Dispose();
+		        _threads.Remove(thread);
+	        }
+        }
+
+        public void Dispose()
+        {
+	        DisposeThreads();
+        }
+
+        ~MultyThreadSessionHandler()
+        {
+	        DisposeThreads();
         }
     }
 }

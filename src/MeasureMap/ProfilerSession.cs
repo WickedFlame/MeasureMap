@@ -11,7 +11,7 @@ namespace MeasureMap
     /// <summary>
     /// The main entry for a profiling session
     /// </summary>
-    public class ProfilerSession
+    public class ProfilerSession : IDisposable
     {
         private readonly List<Func<IResult, bool>> _assertions;
         private ITask _task;
@@ -137,6 +137,9 @@ namespace MeasureMap
             _processingPipeline.SetNext(new ElapsedTimeTaskHandler());
             _processingPipeline.SetNext(_task);
 
+            var threads = _executor is MultyThreadSessionHandler handler ? handler.ThreadCount : 1;
+            System.Diagnostics.Trace.WriteLine($"MeasureMap - Running {Settings.Iterations} Iterations on {threads} Threads");
+
             //var profiles = _executor.Execute(_task, _iterations);
             var profiles = _sessionPipeline.Execute(_processingPipeline, _settings);
             
@@ -152,6 +155,14 @@ namespace MeasureMap
             }
             
             return profiles;
+        }
+
+        public void Dispose()
+        {
+	        if (_executor is MultyThreadSessionHandler handler)
+	        {
+		        handler.DisposeThreads();
+	        }
         }
     }
 }
