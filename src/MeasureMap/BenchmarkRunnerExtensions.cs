@@ -34,5 +34,18 @@ namespace MeasureMap
 
             return runner;
         }
-    }
+
+		/// <summary>
+		/// Set values in the settings
+		/// </summary>
+		/// <param name="runner">The benchmark runner</param>
+		/// <param name="settings">The settings for thr profiler</param>
+		/// <returns></returns>
+		public static BenchmarkRunner Settings(this BenchmarkRunner runner, Action<ProfilerSettings> settings)
+        {
+	        settings(runner.Settings);
+
+	        return runner;
+        }
+	}
 }

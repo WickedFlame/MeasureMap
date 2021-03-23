@@ -23,5 +23,17 @@ namespace MeasureMap.UnitTest
 
             session.Settings.Should().BeEquivalentTo(new {Iterations = 10, RunWarmup = false});
         }
+
+        [Test]
+        public void ProfilerSettings_SetFromSession()
+        {
+	        var session = ProfilerSession.StartSession()
+		        .Settings(s=>
+		        {
+			        s.Iterations = 120;
+		        });
+
+	        session.Settings.Iterations.Should().Be(120);
+        }
     }
 }

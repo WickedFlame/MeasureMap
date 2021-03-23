@@ -102,13 +102,26 @@ namespace MeasureMap
             return session;
         }
 
-        /// <summary>
-        /// Add the middleware to the processing pipeline
-        /// </summary>
-        /// <param name="session">The current session</param>
-        /// <param name="middleware">The middleware to add</param>
-        /// <returns></returns>
-        public static ProfilerSession AddMiddleware(this ProfilerSession session, ITaskMiddleware middleware)
+		/// <summary>
+		/// Set values in the settings
+		/// </summary>
+		/// <param name="session">The current session</param>
+		/// <param name="settings">The settings for thr profiler</param>
+		/// <returns></returns>
+		public static ProfilerSession Settings(this ProfilerSession session, Action<ProfilerSettings> settings)
+        {
+	        settings(session.Settings);
+
+	        return session;
+        }
+
+		/// <summary>
+		/// Add the middleware to the processing pipeline
+		/// </summary>
+		/// <param name="session">The current session</param>
+		/// <param name="middleware">The middleware to add</param>
+		/// <returns></returns>
+		public static ProfilerSession AddMiddleware(this ProfilerSession session, ITaskMiddleware middleware)
         {
             session.ProcessingPipeline.SetNext(middleware);
             return session;

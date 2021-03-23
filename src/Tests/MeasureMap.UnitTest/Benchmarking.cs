@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
@@ -103,5 +104,17 @@ namespace MeasureMap.UnitTest
 
             Assert.That(cnt == 2);
         }
-    }
+
+        [Test]
+        public void MultipleTasks_BenchmarkRunner_SettingsExtension()
+        {
+	        var runner = new BenchmarkRunner()
+		        .Settings(s =>
+		        {
+			        s.Iterations = 10;
+		        });
+
+	        runner.Settings.Iterations.Should().Be(10);
+        }
+	}
 }

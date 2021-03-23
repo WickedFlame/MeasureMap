@@ -34,7 +34,7 @@ namespace MeasureMap
             var stopwatch = new Stopwatch();
 
             // warmup
-            _logger.Write($"Running Task once for warmup on Performance Analysis Benchmark");
+            _logger.Write($"Warmup: Running Task once for warmup on Performance Analysis Benchmark");
 
             stopwatch.Start();
 
