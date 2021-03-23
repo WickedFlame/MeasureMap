@@ -47,8 +47,8 @@ namespace MeasureMap
                 var affinity = GetAffinity(index + 1, Environment.ProcessorCount);
                 var thread = GetCurrentThread();
 
-                //thread.ProcessorAffinity = new IntPtr(1 << affinity);
-                thread.ProcessorAffinity = new IntPtr(2);
+                thread.ProcessorAffinity = new IntPtr(1 << affinity);
+                //thread.ProcessorAffinity = new IntPtr(2);
             }
             catch (Exception)
             {
