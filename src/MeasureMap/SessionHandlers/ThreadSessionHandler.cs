@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MeasureMap.Diagnostics;
@@ -45,7 +46,7 @@ namespace MeasureMap
     public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler, IDisposable
     {
         private readonly int _threadCount;
-        private List<System.Threading.Tasks.Task<Result>> _threads;
+        private readonly List<System.Threading.Tasks.Task<Result>> _threads;
 
         /// <summary>
         /// Creates a new threaded task executor
@@ -54,7 +55,8 @@ namespace MeasureMap
         public MultyThreadSessionHandler(int threadCount)
         {
             _threadCount = threadCount;
-        }
+            _threads = new List<System.Threading.Tasks.Task<Result>>();
+		}
 
 		/// <summary>
 		/// Gets the amount of threads that the task is run in
@@ -69,30 +71,34 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
-            _threads = new List<System.Threading.Tasks.Task<Result>>();
+			lock (_threads)
+			{
+				for (int i = 0; i < _threadCount; i++)
+				{
+					var thread = ThreadHelper.QueueTask(i, threadIndex =>
+					{
+						var worker = new Worker();
+						var p = worker.Run(task, settings);
+						return p;
+					});
 
-            for (int i = 0; i < _threadCount; i++)
-            {
-                var thread = ThreadHelper.QueueTask(i, threadIndex =>
-                {
-                    var worker = new Worker();
-                    var p = worker.Run(task, settings);
-                    return p;
-                });
+					System.Diagnostics.Trace.WriteLine($"MeasureMap - Start thread {thread.Id}");
 
-                System.Diagnostics.Trace.WriteLine($"MeasureMap - Start thread {thread.Id}");
+					_threads.Add(thread);
+				}
 
-                _threads.Add(thread);
-            }
+				foreach (var thread in _threads)
+				{
+					thread.Start();
+				}
+			}
 
-            foreach (var thread in _threads)
-            {
-                thread.Start();
-            }
+			while (CountOpenThreads() > 0)
+			{
+				System.Threading.Tasks.Task.WaitAll(GetAwaitableThreads(), -1, CancellationToken.None);
+			}
 
-            System.Threading.Tasks.Task.WaitAll(_threads.ToArray());
-
-            var results = _threads.Select(s => s.Result);
+			var results = _threads.Select(s => s.Result);
 
             var collectîon = new ProfilerResult();
             foreach (var result in results)
@@ -110,15 +116,34 @@ namespace MeasureMap
 		        return;
 	        }
 
-	        foreach (var thread in _threads.ToList())
+			lock(_threads)
+			{
+				foreach (var thread in _threads.ToList())
+				{
+					System.Diagnostics.Trace.WriteLine($"MeasureMap - End thread {thread.Id}");
+					thread.Dispose();
+					_threads.Remove(thread);
+				}
+			}
+        }
+
+        private System.Threading.Tasks.Task[] GetAwaitableThreads()
+        {
+	        lock (_threads)
 	        {
-		        System.Diagnostics.Trace.WriteLine($"MeasureMap - End thread {thread.Id}");
-				thread.Dispose();
-		        _threads.Remove(thread);
+		        return _threads.Where(t => !t.IsCanceled && !t.IsFaulted && !t.IsCompleted).ToArray();
 	        }
         }
 
-        public void Dispose()
+        private int CountOpenThreads()
+        {
+	        lock (_threads)
+	        {
+		        return _threads.Count(t => !t.IsCanceled && !t.IsFaulted && !t.IsCompleted);
+	        }
+        }
+
+		public void Dispose()
         {
 	        DisposeThreads();
         }
