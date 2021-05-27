@@ -10,3 +10,4 @@ TestResults
 .JustCode/PersistanceMap.solution-user.settings.xml
 _Resharper.*
 .vs
+.idea
