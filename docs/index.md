@@ -5,9 +5,9 @@ layout: "default"
 
 .NET Benchmarking made simple  
   
-[![Build Status](https://travis-ci.org/WickedFlame/MeasureMap.svg?branch=master)](https://travis-ci.org/WickedFlame/MeasureMap)
-[![Build status](https://ci.appveyor.com/api/projects/status/x0u2yu08pq7xye9w/branch/master?svg=true)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
-[![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=flat)](https://www.nuget.org/packages/measuremap/)
+[![Build Status](https://travis-ci.org/WickedFlame/MeasureMap.svg?branch=master)](https://travis-ci.org/WickedFlame/MeasureMap) 
+[![Build status](https://ci.appveyor.com/api/projects/status/x0u2yu08pq7xye9w/branch/master?svg=true)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master) 
+[![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=flat)](https://www.nuget.org/packages/measuremap/) 
   
 ## Profiling
 ```csharp
@@ -44,10 +44,12 @@ var result = runner.RunSessions();
 
 result.Trace();
 ```
+```
 ### MeasureMap Benchmark
 Iterations:		10
 #### Summary
-| Name | Avg Time | Avg Ticks | Total | Fastest | Slowest | Memory Increase |
-|--- |---: |---: |---: |---: |---: |---: |
-| sha256 | 00:00:00.0000924 | 924 | 00:00:00.0009243 | 776 | 1471 | 1392 |
-| Md5 | 00:00:00.0000485 | 485 | 00:00:00.0004858 | 409 | 534 | 1392 |
+| Name   | Avg Time         | Avg Ticks | Total            | Fastest | Slowest | Memory Increase |
+|------- |----------------: |---------: |----------------: |-------: |-------: |---------------: |
+| sha256 | 00:00:00.0000924 | 924       | 00:00:00.0009243 | 776     | 1471    | 1392            |
+| Md5    | 00:00:00.0000485 | 485       | 00:00:00.0004858 | 409     | 534     | 1392            |
+```
