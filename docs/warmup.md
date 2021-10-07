@@ -3,11 +3,11 @@ title: Warmup
 layout: "default"
 nav_order: 2
 ---
-Each Session is started with a warmup.
-The Task will be executed once and then all will will be reset.
-
-The Warmup can be disabled in the Settings
-
+Each Session is started with a warmup.  
+The Task will be executed once for the warmup. After the warmup all will be reset.  
+That means the task will be executed the amount of itterations + the warmup. This has to be kept in mind when a count is used in the task.  
+  
+It is possible to disable the Warmup in the Settings
 ```csharp
 ProfilerSession.StartSession()
     .Task(itm =>

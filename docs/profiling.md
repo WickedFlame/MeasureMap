@@ -3,7 +3,10 @@ title: Profiling
 layout: "default"
 nav_order: 2
 ---
+The profiler is used to measure the performance of a piece of code.  
+  
 ### Run a Task
+ProfilerSession.StartSession starts a new Profilingsession that measures the code that is passed to the Task method.  
 ```csharp
 var result = ProfilerSession.StartSession()
     .Task(() => 
@@ -13,6 +16,7 @@ var result = ProfilerSession.StartSession()
     })
     .RunSession();
 ```
+  
 ### Run a Task for n iterations
 Execute the Task for n iterations where n is 200 in this example.
 ```csharp
@@ -26,7 +30,7 @@ var result = ProfilerSession.StartSession()
     .RunSession();
 ```
 The result contains the summary of all iterations
-
+  
 ### Run a Task for n iterations on n Threads
 Execute the Task for n iterations each on y Threads. That means n*y iterations (200*10);
 ```csharp
@@ -40,6 +44,7 @@ var result = ProfilerSession.StartSession()
     .SetThreads(10)
     .RunSession();
 ```
+  
 ### Define a condition that is checked with every iteration
 Add conditions that are tested
 ```csharp
@@ -52,6 +57,7 @@ ProfilerSession.StartSession()
     .Assert(pr => pr.Iterations.Count() == 1)
     .RunSession();
 ```
+  
 ### Setup and teardown of tasks
 Execute a setup/cleanup Task before each execution of the profiling Task.
 ```csharp
@@ -77,7 +83,8 @@ var result = ProfilerSession.StartSession()
 
 var md = result.Trace();
 ```
-which produces the following Markup:
+  
+result.Trace() traces the following Markdown to the console:
 ```
 ### MeasureMap - Profiler result for Profilesession
 ##### Summary
@@ -97,7 +104,7 @@ which produces the following Markup:
 		Memory End size:		1338672
 		Memory Increase:		106640
 ```
-
+  
 ### Task with ExecutionContext
 The ExecutionContext is a object containing information about the current run. The Context can be used to store and pass Data to each Taskexecution.
 ```csharp
@@ -107,9 +114,9 @@ ProfilerSession.StartSession()
         var iteration = ctx.Get<int>(ContextKeys.Iteration);
     });
 ```
-
+  
 ### Passing a return value to the next Task
-Define a datatype that is returned from a Task and is passed to the next Task iteration
+Define a datatype that is returned from a Task and is passed to the task in the next iteration.
 ```csharp
 ProfilerSession.StartSession()
     .Task<int>(i =>
@@ -121,8 +128,8 @@ ProfilerSession.StartSession()
     .SetIterations(20)
     .RunSession();
 ```
-
-It is even possible to pass a anonymous objet to the next iteration
+  
+The Task accepts all types. It is also possible to pass a anonymous objet to the next iteration.
 ```csharp
 ProfilerSession.StartSession()
     .Task(itm =>

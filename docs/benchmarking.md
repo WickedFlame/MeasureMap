@@ -3,7 +3,8 @@ title: Benchmarking
 layout: "default"
 nav_order: 2
 ---
-Benchmarking compares multiple Profilingsessions.
+Benchmarking is used to compare the performance of multiple different implementations of the same logic.  
+Benchmarking compares multiple [Profilingsessions](profiling).
 ```csharp
 var sha256 = SHA256.Create();
 var md5 = MD5.Create();
