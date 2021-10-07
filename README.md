@@ -1,9 +1,19 @@
 # MeasureMap
 .NET Benchmarking made simple
 
+
+[![Build Status](https://img.shields.io/travis/chriswalpen/measuremap/master?label=Travis-CI&style=for-the-badge)](https://travis-ci.org/WickedFlame/MeasureMap)
+[![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/master?label=Master&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
+[![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/dev?label=Dev&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev)
+[![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=for-the-badge&label=Latest)](https://www.nuget.org/packages/measuremap/)
+[![NuGet Version](https://img.shields.io/nuget/vpre/measuremap.svg?style=for-the-badge&label=RC)](https://www.nuget.org/packages/measuremap/)
+  
 [![Build Status](https://travis-ci.org/WickedFlame/MeasureMap.svg?branch=master)](https://travis-ci.org/WickedFlame/MeasureMap)
 [![Build status](https://ci.appveyor.com/api/projects/status/x0u2yu08pq7xye9w/branch/master?svg=true)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
 [![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=flat)](https://www.nuget.org/packages/measuremap/)
+  
+Measuremap is a lightweight assembly that allows profiling code or running and comparing benchmark tests of different implementations of the code.
+  
 
 Visit [https://wickedflame.github.io/MeasureMap/](https://wickedflame.github.io/MeasureMap/) for the full documentation.
 

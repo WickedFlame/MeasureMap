@@ -4,7 +4,8 @@ layout: "default"
 # MeasureMap
 
 .NET Benchmarking made simple  
-
+  
+Measuremap is a lightweight assembly that allows profiling code or running and comparing benchmark tests of different implementations of the code.
 ## Profiling
 ```csharp
 var result = ProfilerSession.StartSession()
