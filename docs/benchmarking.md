@@ -3,6 +3,7 @@ title: Benchmarking
 layout: "default"
 nav_order: 2
 ---
+# Benchmarking
 Benchmarking is used to compare the performance of multiple different implementations of the same logic.  
 Benchmarking compares multiple [Profilingsessions](profiling).
 ```csharp

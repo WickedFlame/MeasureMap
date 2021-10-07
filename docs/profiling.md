@@ -3,6 +3,7 @@ title: Profiling
 layout: "default"
 nav_order: 2
 ---
+# Profiling
 The profiler is used to measure the performance of a piece of code.  
   
 ### Run a Task
