@@ -1,8 +1,7 @@
 # MeasureMap
 .NET Benchmarking made simple
 
-
-[![Build Status](https://img.shields.io/travis/chriswalpen/measuremap/master?label=Travis-CI&style=for-the-badge)](https://travis-ci.com/WickedFlame/MeasureMap)
+[![Build Status](https://img.shields.io/travis/chriswalpen/measuremap/master?label=Travis-CI&style=for-the-badge)](https://app.travis-ci.com/github/WickedFlame/MeasureMap)
 [![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/master?label=Master&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
 [![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/dev?label=Dev&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev)
 [![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=for-the-badge&label=Latest)](https://www.nuget.org/packages/measuremap/)
