@@ -68,9 +68,9 @@ namespace MeasureMap
         /// <returns>The timespan that the warmup took</returns>
         public static TimeSpan Warmup(this IProfilerResult result)
         {
-            if (result.ResultValues.ContainsKey("Warmup"))
+            if (result.ResultValues.ContainsKey(ResultValueType.Warmup))
             {
-                return (TimeSpan)result.ResultValues["Warmup"];
+                return (TimeSpan)result.ResultValues[ResultValueType.Warmup];
             }
 
             return new TimeSpan();
@@ -83,9 +83,9 @@ namespace MeasureMap
         /// <returns>The timespan that the session took</returns>
         public static TimeSpan Elapsed(this IProfilerResult result)
         {
-            if (result.ResultValues.ContainsKey("Elapsed"))
+            if (result.ResultValues.ContainsKey(ResultValueType.Elapsed))
             {
-                return (TimeSpan)result.ResultValues["Elapsed"];
+                return (TimeSpan)result.ResultValues[ResultValueType.Elapsed];
             }
 
             return new TimeSpan();

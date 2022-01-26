@@ -28,7 +28,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the total timespan
         /// </summary>
-        public TimeSpan Elapsed { get; internal set; }
+        public TimeSpan Elapsed => ResultValues.ContainsKey(ResultValueType.Elapsed) ? (TimeSpan)ResultValues[ResultValueType.Elapsed] : TimeSpan.Zero;
 
         /// <summary>
         /// The iterations that were run
@@ -113,7 +113,7 @@ namespace MeasureMap
         /// <summary>
         /// Duration of the warmup
         /// </summary>
-        public TimeSpan Warmup { get; set; }
+        public TimeSpan Warmup => ResultValues.ContainsKey(ResultValueType.Warmup) ? (TimeSpan)ResultValues[ResultValueType.Warmup] : TimeSpan.Zero;
 
         /// <summary>
         /// Add a new result
