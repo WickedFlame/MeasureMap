@@ -55,10 +55,44 @@ namespace MeasureMap.UnitTest
         public void ProfilerSettings_Runner_SetIterartions()
         {
             var settings = new ProfilerSettings();
+
+            // this sets a new iterationrunner
+            settings.Iterations = 1;
+
+            settings.Runner.Should().BeOfType<IterationRunner>();
+        }
+
+        [Test]
+        public void ProfilerSettings_Runner_SetIterartions_CheckNew()
+        {
+            var settings = new ProfilerSettings();
             var runner = settings.Runner;
             
             // this sets a new iterationrunner
             settings.Iterations = 1;
+
+            settings.Runner.Should().NotBeSameAs(runner);
+        }
+
+        [Test]
+        public void ProfilerSettings_Runner_SetDuration()
+        {
+            var settings = new ProfilerSettings();
+
+            // this sets a new iterationrunner
+            settings.Duration = TimeSpan.FromSeconds(1);
+
+            settings.Runner.Should().BeOfType<TimeRunner>();
+        }
+
+        [Test]
+        public void ProfilerSettings_Runner_SetDuration_CheckNew()
+        {
+            var settings = new ProfilerSettings();
+            var runner = settings.Runner;
+
+            // this sets a new iterationrunner
+            settings.Duration = TimeSpan.FromSeconds(1);
 
             settings.Runner.Should().NotBeSameAs(runner);
         }

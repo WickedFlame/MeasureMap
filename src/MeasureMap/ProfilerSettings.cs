@@ -12,6 +12,7 @@ namespace MeasureMap
 
         private int _iterations = 1;
         private bool _runWarmup = true;
+        private TimeSpan _duration;
 
         /// <summary>
         /// Gets or sets the amount of iterations that the Task will be run
@@ -24,6 +25,20 @@ namespace MeasureMap
                 _iterations = value;
                 AddChange("iterations", s => s.Iterations, (s, v) => s.Iterations = v);
                 Runner = new IterationRunner();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the duration that the Task will be run for
+        /// </summary>
+        public TimeSpan Duration
+        {
+            get => _duration;
+            set
+            {
+                _duration = value;
+                AddChange("duration", s => s.Duration, (s, v) => s.Duration = v);
+                Runner = new TimeRunner();
             }
         }
 

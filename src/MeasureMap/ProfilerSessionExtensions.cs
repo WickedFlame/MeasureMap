@@ -90,6 +90,19 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Sets the duration that the profileing session should run the task for
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="duration">The iterations to run the task</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession SetDuration(this ProfilerSession session, TimeSpan duration)
+        {
+            session.Settings.Duration = duration;
+
+            return session;
+        }
+
+        /// <summary>
         /// Sets the amount of iterations that the profileing session should run the task
         /// </summary>
         /// <param name="session">The current session</param>

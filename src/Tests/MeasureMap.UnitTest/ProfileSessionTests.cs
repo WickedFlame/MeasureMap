@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using NUnit.Framework;
 using System.Linq;
+using FluentAssertions;
+using MeasureMap.Runners;
 
 namespace MeasureMap.UnitTest
 {
@@ -30,6 +33,15 @@ namespace MeasureMap.UnitTest
                 .SetIterations(12);
 
             Assert.AreEqual(12, session.Settings.Iterations);
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration()
+        {
+            var session = ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1));
+
+            Assert.AreEqual(TimeSpan.FromSeconds(1), session.Settings.Duration);
         }
 
         [Test]
@@ -89,7 +101,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(200)
                 .RunSession();
 
-            Assert.IsTrue(result.AverageMilliseconds > 0);
+            Assert.IsTrue(result.AverageTicks > 0);
         }
 
         [Test]
@@ -222,6 +234,74 @@ namespace MeasureMap.UnitTest
             Assert.That((int)result.Slowest.Data == 9);
         }
 
+        [Test]
+        public void ProfileSession_SetIterations_Runner()
+        {
+            var session = ProfilerSession.StartSession()
+                .SetIterations(1);
+
+            session.Settings.Runner.Should().BeOfType<IterationRunner>();
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_Runner()
+        {
+            var session = ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1));
+
+            session.Settings.Runner.Should().BeOfType<TimeRunner>();
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_CheckTime()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+            
+            ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Task(() => { })
+                .RunSession();
+            
+            sw.Stop();
+
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(1)).And.BeLessThan(TimeSpan.FromSeconds(1.5));
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_TotalTime()
+        {
+            var result = ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Task(() => { })
+                .RunSession();
+
+            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(1)).And.BeLessThan(TimeSpan.FromSeconds(1.5));
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_Iterations()
+        {
+            var cnt = 0;
+            var result = ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Task(() => { cnt++; })
+                .RunSession();
+
+            result.Iterations.Count().Should().BeGreaterThan(100);
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_TaskExecutions()
+        {
+            var cnt = 0;
+            ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Task(() => { cnt++; })
+                .RunSession();
+
+            cnt.Should().BeGreaterThan(100);
+        }
 
         private void Task()
         {
