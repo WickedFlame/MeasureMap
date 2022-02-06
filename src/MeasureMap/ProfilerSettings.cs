@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using MeasureMap.Runners;
 
 namespace MeasureMap
 {
@@ -22,6 +23,7 @@ namespace MeasureMap
             {
                 _iterations = value;
                 AddChange("iterations", s => s.Iterations, (s, v) => s.Iterations = v);
+                Runner = new IterationRunner();
             }
         }
 
@@ -37,6 +39,11 @@ namespace MeasureMap
                 AddChange("runwarmup", s => s.RunWarmup, (s, v) => s.RunWarmup = v);
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="ITaskRunner"/> that is used to run the tasks
+        /// </summary>
+        public ITaskRunner Runner { get; private set; } = new IterationRunner();
 
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)

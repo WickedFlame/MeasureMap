@@ -36,7 +36,7 @@ namespace MeasureMap
             result.InitialSize = GC.GetTotalMemory(true);
             var context = new ExecutionContext();
 
-            var runner = new IterationRunner();
+            var runner = settings.Runner;
             runner.Run(settings, context, () =>
             {
                 var iteration = task.Run(context);

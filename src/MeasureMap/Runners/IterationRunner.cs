@@ -6,7 +6,7 @@ namespace MeasureMap.Runners
     /// <summary>
     /// Runner that runs the task for a given amount of iterations
     /// </summary>
-    public class IterationRunner
+    public class IterationRunner : ITaskRunner
     {
         private readonly ILogger _logger;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
+using MeasureMap.Runners;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
@@ -34,6 +35,32 @@ namespace MeasureMap.UnitTest
 		        });
 
 	        session.Settings.Iterations.Should().Be(120);
+        }
+
+        [Test]
+        public void ProfilerSettings_Runner_Default()
+        {
+            var settings = new ProfilerSettings();
+            settings.Runner.Should().BeOfType<IterationRunner>();
+        }
+
+        [Test]
+        public void ProfilerSettings_ProfilerSession_Runner_Default()
+        {
+            var session = ProfilerSession.StartSession();
+            session.Settings.Runner.Should().BeOfType<IterationRunner>();
+        }
+
+        [Test]
+        public void ProfilerSettings_Runner_SetIterartions()
+        {
+            var settings = new ProfilerSettings();
+            var runner = settings.Runner;
+            
+            // this sets a new iterationrunner
+            settings.Iterations = 1;
+
+            settings.Runner.Should().NotBeSameAs(runner);
         }
     }
 }
