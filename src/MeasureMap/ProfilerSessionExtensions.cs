@@ -102,8 +102,15 @@ namespace MeasureMap
             return session;
         }
 
+        public static ProfilerSession RunWarmup(this ProfilerSession session, bool run)
+        {
+            session.Settings.RunWarmup = run;
+
+            return session;
+        }
+
         /// <summary>
-        /// Sets the amount of iterations that the profileing session should run the task
+        /// Sets the settings that the profiler should use
         /// </summary>
         /// <param name="session">The current session</param>
         /// <param name="settings">The settings for thr profiler</param>
@@ -194,6 +201,17 @@ namespace MeasureMap
         public static ProfilerSession PostExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
             return session.AddMiddleware(new PostExecutionTaskHandler(task));
+        }
+
+        /// <summary>
+        /// Add a delay before each task gets executed. The delay is not countet to the execution time of the task
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="duration"></param>
+        /// <returns></returns>
+        public static ProfilerSession AddDelay(this ProfilerSession session, TimeSpan duration)
+        {
+            return session.AddMiddleware(new DelayTaskHandler(duration));
         }
 
         /// <summary>
