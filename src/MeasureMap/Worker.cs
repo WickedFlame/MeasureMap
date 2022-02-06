@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using MeasureMap.Diagnostics;
+using MeasureMap.Runners;
 
 namespace MeasureMap
 {
@@ -31,21 +32,17 @@ namespace MeasureMap
             var result = new Result();
 
             ForceGarbageCollector();
-
-            _logger.Write($"Running Task for {settings.Iterations} iterations for Perfomance Analysis Benchmark");
-
+            
             result.InitialSize = GC.GetTotalMemory(true);
             var context = new ExecutionContext();
 
-            for (int i = 0; i < settings.Iterations; i++)
+            var runner = new IterationRunner();
+            runner.Run(settings, context, () =>
             {
-                _logger.Write($"Running Task for iteration {i}");
-                context.Set(ContextKeys.Iteration, i);
-
                 var iteration = task.Run(context);
 
                 result.Add(iteration);
-            }
+            });
 
             ForceGarbageCollector();
             result.EndSize = GC.GetTotalMemory(true);

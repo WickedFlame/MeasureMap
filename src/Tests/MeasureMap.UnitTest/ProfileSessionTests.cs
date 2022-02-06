@@ -151,7 +151,7 @@ namespace MeasureMap.UnitTest
                 .Task(c =>
                 {
                     var i = c.Get<int>(ContextKeys.Iteration);
-                    if (i != 0)
+                    if (i > 1)
                     {
                         System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.5));
                     }
@@ -161,7 +161,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(10)
                 .RunSession();
 
-            Assert.That((int)result.Fastest.Data == 0);
+            Assert.That((int)result.Fastest.Data == 1);
         }
 
         [Test]
