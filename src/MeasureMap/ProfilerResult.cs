@@ -116,12 +116,18 @@ namespace MeasureMap
         public TimeSpan Warmup => ResultValues.ContainsKey(ResultValueType.Warmup) ? (TimeSpan)ResultValues[ResultValueType.Warmup] : TimeSpan.Zero;
 
         /// <summary>
+        /// Gets the last <see cref="Result"/> for fast access that is needed during executions
+        /// </summary>
+        public Result Last { get; private set; }
+
+        /// <summary>
         /// Add a new result
         /// </summary>
         /// <param name="result"></param>
         internal void Add(Result result)
         {
             _results.Add(result);
+            Last = result;
         }
 
         /// <summary>
