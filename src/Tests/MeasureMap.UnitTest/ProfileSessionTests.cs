@@ -249,7 +249,7 @@ namespace MeasureMap.UnitTest
             var session = ProfilerSession.StartSession()
                 .SetDuration(TimeSpan.FromSeconds(1));
 
-            session.Settings.Runner.Should().BeOfType<TimeRunner>();
+            session.Settings.Runner.Should().BeOfType<DurationRunner>();
         }
 
         [Test]

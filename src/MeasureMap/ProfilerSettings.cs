@@ -38,7 +38,7 @@ namespace MeasureMap
             {
                 _duration = value;
                 AddChange("duration", s => s.Duration, (s, v) => s.Duration = v);
-                Runner = new TimeRunner();
+                Runner = new DurationRunner();
             }
         }
 

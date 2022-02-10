@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MeasureMap.Diagnostics;
 
 namespace MeasureMap.Runners
@@ -8,14 +6,14 @@ namespace MeasureMap.Runners
     /// <summary>
     /// Runner that runs the task for a given duration
     /// </summary>
-    public class TimeRunner : ITaskRunner
+    public class DurationRunner : ITaskRunner
     {
         private readonly ILogger _logger;
 
         /// <summary>
         /// Creates a new instance of the worker
         /// </summary>
-        public TimeRunner()
+        public DurationRunner()
         {
             _logger = Logger.Setup();
         }

@@ -82,7 +82,7 @@ namespace MeasureMap.UnitTest
             // this sets a new iterationrunner
             settings.Duration = TimeSpan.FromSeconds(1);
 
-            settings.Runner.Should().BeOfType<TimeRunner>();
+            settings.Runner.Should().BeOfType<DurationRunner>();
         }
 
         [Test]
