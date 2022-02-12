@@ -28,7 +28,7 @@ namespace MeasureMap.Runners
         {
             _logger.Write($"Running Task for {settings.Iterations} iterations for Perfomance Analysis Benchmark");
 
-            var execution = new SimpleTaskExecution();
+            var execution = settings.Execution;
 
             for (var i = 0; i < settings.Iterations; i++)
             {

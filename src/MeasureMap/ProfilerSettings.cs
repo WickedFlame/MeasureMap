@@ -60,6 +60,9 @@ namespace MeasureMap
         /// </summary>
         public ITaskRunner Runner { get; private set; } = new IterationRunner();
 
+        /// <summary>
+        /// Gets the <see cref="ITaskExecution"/> that defines how the tasks are run
+        /// </summary>
         public ITaskExecution Execution { get; private set; } = new SimpleTaskExecution();
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
