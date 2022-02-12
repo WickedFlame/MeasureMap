@@ -29,12 +29,15 @@ namespace MeasureMap.Runners
             _logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark");
             var time = DateTime.Now + settings.Duration;
 
+            var execution = settings.Execution;
+
             var iteration = 1;
             while(DateTime.Now < time)
             {
                 _logger.Write($"Running Task for iteration {iteration}");
                 context.Set(ContextKeys.Iteration, iteration);
-                action();
+
+                execution.Execute(action);
 
                 iteration++;
             }

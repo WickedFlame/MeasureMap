@@ -60,6 +60,7 @@ namespace MeasureMap
         /// </summary>
         public ITaskRunner Runner { get; private set; } = new IterationRunner();
 
+        public ITaskExecution Execution { get; private set; } = new SimpleTaskExecution();
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
         {

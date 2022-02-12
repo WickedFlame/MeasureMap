@@ -28,11 +28,13 @@ namespace MeasureMap.Runners
         {
             _logger.Write($"Running Task for {settings.Iterations} iterations for Perfomance Analysis Benchmark");
 
+            var execution = new SimpleTaskExecution();
+
             for (var i = 0; i < settings.Iterations; i++)
             {
                 _logger.Write($"Running Task for iteration {i}");
                 context.Set(ContextKeys.Iteration, i + 1);
-                action();
+                execution.Execute(action);
             }
         }
     }
