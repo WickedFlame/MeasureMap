@@ -63,7 +63,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the <see cref="ITaskExecution"/> that defines how the tasks are run
         /// </summary>
-        public ITaskExecution Execution { get; private set; } = new SimpleTaskExecution();
+        public ITaskExecution Execution { get; internal set; } = new SimpleTaskExecution();
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
         {

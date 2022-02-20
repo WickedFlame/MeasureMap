@@ -1,4 +1,5 @@
 ﻿using System;
+using MeasureMap.Runners;
 
 namespace MeasureMap
 {
@@ -98,6 +99,20 @@ namespace MeasureMap
         public static ProfilerSession SetDuration(this ProfilerSession session, TimeSpan duration)
         {
             session.Settings.Duration = duration;
+
+            return session;
+        }
+
+        /// <summary>
+        /// The task will be executed at the given interval.
+        /// To ensure the execution interval, the task is executed in a new thread
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        public static ProfilerSession SetInterval(this ProfilerSession session, TimeSpan interval)
+        {
+            session.Settings.Execution = new TimedTaskExecution(interval);
 
             return session;
         }

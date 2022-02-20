@@ -355,6 +355,65 @@ namespace MeasureMap.UnitTest
             result.Iterations.Should().OnlyContain(i => i.Duration < TimeSpan.FromSeconds(1));
         }
 
+        [Test]
+        public void ProfileSession_Executino_Default()
+        {
+            var session = ProfilerSession.StartSession()
+                .Task(c => { });
+
+            Assert.IsInstanceOf<SimpleTaskExecution>(session.Settings.Execution);
+        }
+
+        [Test]
+        public void ProfileSession_Interval()
+        {
+            var session = ProfilerSession.StartSession()
+                .Task(c => { })
+                .SetInterval(TimeSpan.FromSeconds(.5));
+
+            Assert.IsInstanceOf<TimedTaskExecution>(session.Settings.Execution);
+        }
+
+        [Test]
+        public void ProfileSession_Interval_Integration()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetIterations(10)
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+
+            result.Iterations.Should().HaveCount(10);
+        }
+
+        [Test]
+        public void ProfileSession_Interval_Duration()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetIterations(10)
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(4)).And.BeLessThan(TimeSpan.FromSeconds(5));
+        }
+
         private void Task()
         {
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.002));
