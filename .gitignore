@@ -11,3 +11,4 @@ TestResults
 _Resharper.*
 .vs
 .idea
+.nuke/temp
