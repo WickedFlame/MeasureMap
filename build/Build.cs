@@ -78,6 +78,17 @@ class Build : NukeBuild
                 .EnableNoRestore());
         });
 
+    Target Test => _ => _
+        .DependsOn(Compile)
+        .Executes(() =>
+        {
+            DotNetTest();
+        });
+
+    Target Release => _ => _
+        .DependsOn(Clean)
+        .DependsOn(Compile)
+        .DependsOn(Test);
 
 
     string BuildVersion()
