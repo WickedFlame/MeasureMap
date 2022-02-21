@@ -29,13 +29,6 @@ for:
     build_script:
       - nuke Release --isrc true --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
 
-    artifacts:
-      - path: src\MeasureMap\bin\Release\netstandard2.0\MeasureMap.dll
-        name: MeasureMap.dll
-
-      # pushing all *.nupkg files in directory
-      - path: '.\*.nupkg'
-
   - 
     # branches to build
     branches:
@@ -55,9 +48,10 @@ for:
     build_script:
       - nuke Release --isrc false --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
 
-    artifacts:
-      - path: src\MeasureMap\bin\Release\netstandard2.0\MeasureMap.dll
-        name: MeasureMap.dll
-
-      # pushing all *.nupkg files in directory
-      - path: '.\*.nupkg'
+artifacts:
+  - path: src\MeasureMap\bin\Release\netstandard2.1\MeasureMap.dll
+    name: MeasureMap.dll
+  - path: src\MeasureMap\bin\Release\netstandard2.1\MeasureMap.xml
+    name: MeasureMap.xml
+  # pushing all *.nupkg files in directory
+  - path: 'src\MeasureMap\bin\Release\*.nupkg'

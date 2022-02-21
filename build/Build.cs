@@ -47,6 +47,7 @@ class Build : NukeBuild
     public bool IsRc = false;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
+
     AbsolutePath TestsDirectory => RootDirectory / "src" / "tests";
 
     Target Clean => _ => _
@@ -82,12 +83,14 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
-            DotNetTest();
+            DotNetTest(s => s
+                .SetProjectFile(Solution)
+                .SetConfiguration(Configuration));
         });
 
     Target Release => _ => _
-        .DependsOn(Clean)
-        .DependsOn(Compile)
+        //.DependsOn(Clean)
+        //.DependsOn(Compile)
         .DependsOn(Test);
 
 
