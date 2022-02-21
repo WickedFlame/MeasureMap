@@ -4,8 +4,8 @@
 # version format
 version: 1.7.0
 
-# you can use {branch} name in version format too
-# version: 1.0.{build}-{branch}
+image:
+  - Visual Studio 2022
 
 # branches to build
 branches:
@@ -17,16 +17,14 @@ branches:
 # Do not build on tags (GitHub only)
 skip_tags: true
 
-os: Visual Studio 2019
 install:
-  - set PATH=C:\Program Files (x86)\MSBuild\16.0\Bin;%PATH%
   - dotnet tool install Nuke.GlobalTool --global --version 6.0.1 --no-cache
 
 before_build:
   - dotnet restore ./build/_build.csproj
 
 build_script:
-  - nuke compile --isrc true --version {version} --buildno {build}
+  - cmd: nuke compile --isrc true --version {version} --buildno {build}
 
 artifacts:
   - path: src\MeasureMap\bin\Release\netstandard2.0\MeasureMap.dll
