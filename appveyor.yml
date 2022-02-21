@@ -9,24 +9,44 @@ version: $(base_version).{build}
 image:
   - Visual Studio 2022
 
-# branches to build
-branches:
-  # whitelist
-  only:
-    - master
-    - dev
+for:
+  - 
+    # branches to build
+    branches:
+      # whitelist
+      only:
+        - dev
 
-# Do not build on tags (GitHub only)
-skip_tags: true
+    # Do not build on tags (GitHub only)
+    skip_tags: true
 
-install:
-  - dotnet tool install Nuke.GlobalTool --global --version 6.0.1 --no-cache
+    install:
+      - dotnet tool install Nuke.GlobalTool --global --version 6.0.1 --no-cache
 
-before_build:
-  - dotnet restore ./build/_build.csproj
+    before_build:
+      - dotnet restore ./build/_build.csproj
 
-build_script:
-  - nuke Release --isrc true --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
+    build_script:
+      - nuke Release --isrc true --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
+
+  - 
+    # branches to build
+    branches:
+      # whitelist
+      only:
+        - master
+
+    # Do not build on tags (GitHub only)
+    skip_tags: true
+
+    install:
+      - dotnet tool install Nuke.GlobalTool --global --version 6.0.1 --no-cache
+
+    before_build:
+      - dotnet restore ./build/_build.csproj
+
+    build_script:
+      - nuke Release --isrc false --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
 
 artifacts:
   - path: src\MeasureMap\bin\Release\netstandard2.0\MeasureMap.dll
