@@ -85,7 +85,9 @@ class Build : NukeBuild
         {
             DotNetTest(s => s
                 .SetProjectFile(Solution)
-                .SetConfiguration(Configuration));
+                .SetConfiguration(Configuration)
+                .SetNoBuild(true)
+                .EnableNoRestore());
         });
 
     Target Release => _ => _
