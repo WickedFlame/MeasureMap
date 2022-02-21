@@ -26,7 +26,7 @@ before_build:
   - dotnet restore ./build/_build.csproj
 
 build_script:
-  - sh: nuke compile --isrc true --version "$(base_version)" --buildno "$APPVEYOR_BUILD_NUMBER"
+  - cmd: nuke compile --isrc true --version "$(base_version)" --buildno "$APPVEYOR_BUILD_NUMBER"
 
 artifacts:
   - path: src\MeasureMap\bin\Release\netstandard2.0\MeasureMap.dll
