@@ -20,7 +20,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(output, 19);
+            Assert.AreEqual(20, output);
         }
     }
 }

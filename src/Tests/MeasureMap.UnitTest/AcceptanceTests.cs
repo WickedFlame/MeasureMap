@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using System.Linq;
+using FluentAssertions;
 
 namespace MeasureMap.UnitTest
 {
@@ -149,6 +150,31 @@ namespace MeasureMap.UnitTest
             Assert.That(count == 1);
         }
 
+        [Test]
+        public void Acceptance_Duration()
+        {
+            int count = 0;
+            var result = ProfilerSession.StartSession()
+                .Task(() => count++)
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .RunSession();
+
+            // the task is rune once more to be able to initialize properly
+            result.Iterations.Count().Should().BeGreaterThan(10);
+        }
+
+        [Test]
+        public void Acceptance_Duration_Task()
+        {
+            int count = 0;
+            ProfilerSession.StartSession()
+                .Task(() => count++)
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .RunSession();
+
+            // the task is rune once more to be able to initialize properly
+            count.Should().BeGreaterThan(10);
+        }
 
         private void Task()
         {

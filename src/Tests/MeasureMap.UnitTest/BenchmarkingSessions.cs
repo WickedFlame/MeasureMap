@@ -38,8 +38,8 @@ namespace MeasureMap.UnitTest
 
             runner.RunSessions();
 
-            Assert.AreEqual(10, firstPre);
-            Assert.AreEqual(11, secondPre);
+            Assert.AreEqual(11, firstPre);
+            Assert.AreEqual(12, secondPre);
         }
     }
 }

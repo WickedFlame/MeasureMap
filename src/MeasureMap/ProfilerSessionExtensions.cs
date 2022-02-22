@@ -1,4 +1,5 @@
 ﻿using System;
+using MeasureMap.Runners;
 
 namespace MeasureMap
 {
@@ -90,7 +91,41 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Sets the amount of iterations that the profileing session should run the task
+        /// Sets the duration that the profileing session should run the task for
+        /// </summary>
+        /// <param name="session">The current session</param>
+        /// <param name="duration">The iterations to run the task</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession SetDuration(this ProfilerSession session, TimeSpan duration)
+        {
+            session.Settings.Duration = duration;
+
+            return session;
+        }
+
+        /// <summary>
+        /// The task will be executed at the given interval.
+        /// To ensure the execution interval, the task is executed in a new thread
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="interval"></param>
+        /// <returns></returns>
+        public static ProfilerSession SetInterval(this ProfilerSession session, TimeSpan interval)
+        {
+            session.Settings.Execution = new TimedTaskExecution(interval);
+
+            return session;
+        }
+
+        public static ProfilerSession RunWarmup(this ProfilerSession session, bool run)
+        {
+            session.Settings.RunWarmup = run;
+
+            return session;
+        }
+
+        /// <summary>
+        /// Sets the settings that the profiler should use
         /// </summary>
         /// <param name="session">The current session</param>
         /// <param name="settings">The settings for thr profiler</param>
@@ -181,6 +216,17 @@ namespace MeasureMap
         public static ProfilerSession PostExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
             return session.AddMiddleware(new PostExecutionTaskHandler(task));
+        }
+
+        /// <summary>
+        /// Add a delay before each task gets executed. The delay is not countet to the execution time of the task
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="duration"></param>
+        /// <returns></returns>
+        public static ProfilerSession AddDelay(this ProfilerSession session, TimeSpan duration)
+        {
+            return session.AddMiddleware(new DelayTaskHandler(duration));
         }
 
         /// <summary>

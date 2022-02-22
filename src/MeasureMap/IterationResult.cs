@@ -124,7 +124,7 @@ namespace MeasureMap
 
         public override string ToString()
         {
-            return "Ticks: " + Ticks + " mS: " + Duration;
+            return "Ticks: " + Ticks + " ms: " + Duration;
         }
     }
 }
