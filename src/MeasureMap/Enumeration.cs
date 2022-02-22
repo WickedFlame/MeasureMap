@@ -48,7 +48,17 @@ namespace MeasureMap
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            return Id.CompareTo(((Enumeration)obj).Id);
+            if (Id.CompareTo(((Enumeration)obj).Id) > 0 || String.Compare(Name, ((Enumeration)obj).Name, StringComparison.Ordinal) > 0)
+            {
+                return 1;
+            }
+
+            if (Id.CompareTo(((Enumeration)obj).Id) == 0 && string.Compare(Name, ((Enumeration)obj).Name, StringComparison.Ordinal) == 0)
+            {
+                return 0;
+            }
+
+            return  -1;
         }
 
         /// <summary>
@@ -88,7 +98,7 @@ namespace MeasureMap
         /// <returns></returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return new { Id, Name }.GetHashCode();
         }
 
         /// <summary>
