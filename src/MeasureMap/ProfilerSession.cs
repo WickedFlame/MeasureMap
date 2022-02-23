@@ -122,7 +122,7 @@ namespace MeasureMap
         {
             if (_task == null)
             {
-                throw new ArgumentNullException($"task", $"The Task that has to be processed is null or not set.");
+                throw new ArgumentException($"The Task that has to be processed is null or not set.");
             }
 
             if(_settings.RunWarmup)
@@ -140,7 +140,6 @@ namespace MeasureMap
             var threads = _executor is MultyThreadSessionHandler handler ? handler.ThreadCount : 1;
             System.Diagnostics.Trace.WriteLine($"MeasureMap - Running {Settings.Iterations} Iterations on {threads} Threads");
 
-            //var profiles = _executor.Execute(_task, _iterations);
             var profiles = _sessionPipeline.Execute(_processingPipeline, _settings);
             
             foreach (var condition in _assertions)
@@ -157,12 +156,25 @@ namespace MeasureMap
             return profiles;
         }
 
+        /// <summary>
+        /// Dispose the class
+        /// </summary>
         public void Dispose()
         {
-	        if (_executor is MultyThreadSessionHandler handler)
-	        {
-		        handler.DisposeThreads();
-	        }
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose the class
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (_executor is MultyThreadSessionHandler handler)
+            {
+                handler.DisposeThreads();
+            }
         }
     }
 }

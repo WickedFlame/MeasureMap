@@ -11,14 +11,11 @@ namespace MeasureMap
     /// </summary>
     public class Worker
     {
-        private readonly ILogger _logger;
-
         /// <summary>
         /// Creates a new instance of the worker
         /// </summary>
         public Worker()
         {
-            _logger = Logger.Setup();
         }
 
         /// <summary>
@@ -56,9 +53,11 @@ namespace MeasureMap
         protected void ForceGarbageCollector()
         {
             // clean up
+#pragma warning disable S1215 // "GC.Collect" should not be called
             GC.Collect();
             GC.WaitForPendingFinalizers();
             GC.Collect();
+#pragma warning restore S1215 // "GC.Collect" should not be called
         }
     }
 }

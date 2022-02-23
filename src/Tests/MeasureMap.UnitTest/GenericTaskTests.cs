@@ -22,7 +22,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(output, 20);
+            Assert.AreEqual(20, output);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(output, 20);
+            Assert.AreEqual(20, output);
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace MeasureMap.UnitTest
 
             session.Trace();
 
-            Assert.AreEqual(output, 20);
+            Assert.AreEqual(20, output);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace MeasureMap.UnitTest
         {
             var output = 0;
             var param = new Item { Count = 3 };
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .Task<Item>(i =>
                 {
                     // do something
@@ -93,7 +93,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(param.Count, 24);
+            Assert.AreEqual(24, param.Count);
         }
 
         [Test]
@@ -101,7 +101,7 @@ namespace MeasureMap.UnitTest
         {
             var output = 0;
             var param = new { Count = 3 };
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .Task(i =>
                 {
                     // do something
@@ -114,7 +114,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(output, 24);
+            Assert.AreEqual(24, output);
         }
 
         public class Item

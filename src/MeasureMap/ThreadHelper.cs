@@ -11,11 +11,20 @@ namespace MeasureMap
     {
         private static readonly bool IsRunningOnMono;
 
+        /// <summary>
+        /// 
+        /// </summary>
         static ThreadHelper()
         {
             IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
         }
 
+        /// <summary>
+        /// Queue a new task
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public static System.Threading.Tasks.Task<Result> QueueTask(int index, Func<int, Result> action)
         {
             var task = new System.Threading.Tasks.Task<Result>(() =>
@@ -48,7 +57,6 @@ namespace MeasureMap
                 var thread = GetCurrentThread();
 
                 thread.ProcessorAffinity = new IntPtr(1 << affinity);
-                //thread.ProcessorAffinity = new IntPtr(2);
             }
             catch (Exception)
             {

@@ -78,7 +78,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void Acceptance_WithoutTask()
         {
-            Assert.Throws<ArgumentNullException>(() => ProfilerSession.StartSession()
+            Assert.Throws<ArgumentException>(() => ProfilerSession.StartSession()
                 .RunSession());
         }
 

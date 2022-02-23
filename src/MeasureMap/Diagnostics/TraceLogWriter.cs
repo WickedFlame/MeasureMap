@@ -7,7 +7,7 @@ namespace MeasureMap.Diagnostics
     public class TraceLogWriter : ILogWriter
     {
         /// <inheritdoc />
-        public void Write(string message, LogLevel level, string source)
+        public void Write(string message, LogLevel level, string source = null)
         {
             System.Diagnostics.Trace.WriteLine($"[{source}] [{level}] {message}");
         }
