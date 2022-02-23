@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
 {
-#pragma warning disable L123
+#pragma warning disable CS1718
     public class EnumerationTests
     {
         [Test]
@@ -213,5 +213,5 @@ namespace MeasureMap.UnitTest
             }
         }
     }
-#pragma warning restore L123
+#pragma warning restore CS1718
 }
