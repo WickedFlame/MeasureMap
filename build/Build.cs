@@ -72,10 +72,11 @@ class Build : NukeBuild
             DotNetBuild(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
-                .SetVersion(BuildVersion())
-                .SetAssemblyVersion(BuildVersion())
-                .SetFileVersion(BuildVersion())
-                .AddProperty("PackageVersion", PackageVersion())
+                .SetVersion($"{Version}.{BuildNo}")
+                .SetAssemblyVersion($"{Version}.{BuildNo}")
+                .SetFileVersion(Version)
+                .SetInformationalVersion($"{Version}.{BuildNo}")
+                .AddProperty("PackageVersion", PackageVersion)
                 .EnableNoRestore());
         });
 
@@ -95,11 +96,7 @@ class Build : NukeBuild
         //.DependsOn(Compile)
         .DependsOn(Test);
 
-
-    string BuildVersion()
-        => $"{Version}.{BuildNo}";
-
-    string PackageVersion() 
+    string PackageVersion 
         => IsRc ? int.Parse(BuildNo) < 10 ? $"{Version}-RC0{BuildNo}" : $"{Version}-RC{BuildNo}" : Version;
 
 }
