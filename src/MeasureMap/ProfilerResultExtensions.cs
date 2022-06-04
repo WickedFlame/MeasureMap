@@ -46,11 +46,11 @@ namespace MeasureMap
             if (fullTrace)
             {
                 sb.AppendLine($"##### Iterations");
-                sb.AppendLine("Timestamp | Duration | Init size | End size");
-                sb.AppendLine("--- | --- | ---: | ---:");
+                sb.AppendLine("| ThreadId | Iteration | Timestamp | Duration | Init size | End size |");
+                sb.AppendLine("| --- | --- | --- | --- | ---: | ---: |");
                 foreach (var iteration in profilerResult.Iterations)
                 {
-                    sb.AppendLine($"{iteration.TimeStamp} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution}");
+                    sb.AppendLine($"| {iteration.ThreadId} | {iteration.Iteration} | {iteration.TimeStamp} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution} |");
                 }
             }
 

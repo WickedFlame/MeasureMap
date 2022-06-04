@@ -124,7 +124,7 @@ namespace MeasureMap
 
         public override string ToString()
         {
-            return "Ticks: " + Ticks + " ms: " + Duration;
+            return $"Id: {ThreadId}.{Iteration} Ticks: {Ticks} ms: {Duration}";
         }
     }
 }

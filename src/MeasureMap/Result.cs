@@ -91,8 +91,6 @@ namespace MeasureMap
             }
         }
 
-        
-
         /// <summary>
         /// The initial memory size
         /// </summary>

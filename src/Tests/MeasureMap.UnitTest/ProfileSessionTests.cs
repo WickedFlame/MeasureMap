@@ -2,8 +2,10 @@
 using System.Diagnostics;
 using NUnit.Framework;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using MeasureMap.Runners;
+using Polaroider;
 
 namespace MeasureMap.UnitTest
 {
@@ -154,6 +156,39 @@ namespace MeasureMap.UnitTest
             Assert.That(result.Contains("Memory Initial size"));
             Assert.That(result.Contains("Memory End size"));
             Assert.That(result.Contains("Memory Increase"));
+        }
+
+        [Test]
+        public void ProfileSession_Trace_Detail()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(Task)
+                .SetIterations(5)
+                .RunSession()
+                .Trace(true);
+
+            Regex.Matches(result, "\\| 1 \\|").Count.Should().Be(1);
+            Regex.Matches(result, "\\| 2 \\|").Count.Should().Be(1);
+            Regex.Matches(result, "\\| 3 \\|").Count.Should().Be(1);
+            Regex.Matches(result, "\\| 4 \\|").Count.Should().Be(1);
+            Regex.Matches(result, "\\| 5 \\|").Count.Should().Be(1);
+        }
+
+        [Test]
+        public void ProfileSession_Trace_MultipleThreads_Detail()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(Task)
+                .SetThreads(3)
+                .SetIterations(5)
+                .RunSession()
+                .Trace(true);
+
+            Regex.Matches(result, "\\| 1 \\|").Count.Should().Be(3);
+            Regex.Matches(result, "\\| 2 \\|").Count.Should().Be(3);
+            Regex.Matches(result, "\\| 3 \\|").Count.Should().Be(3);
+            Regex.Matches(result, "\\| 4 \\|").Count.Should().Be(3);
+            Regex.Matches(result, "\\| 5 \\|").Count.Should().Be(3);
         }
 
         [Test]
