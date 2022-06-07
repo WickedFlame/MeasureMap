@@ -25,7 +25,7 @@ namespace MeasureMap
         {
             _settings = new ProfilerSettings();
             _assertions = new List<Func<IResult, bool>>();
-            _executor = new ThreadSessionHandler();
+            _executor = new BasicSessionHandler();
 
             _sessionPipeline = new TaskExecutionChain();
             _sessionPipeline.SetNext(new ElapsedTimeSessionHandler());
