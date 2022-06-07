@@ -4,7 +4,7 @@ namespace MeasureMap
     /// <summary>
     /// A single threaded task session handler
     /// </summary>
-    public class ThreadSessionHandler : SessionHandler, IThreadSessionHandler
+    public class BasicSessionHandler : SessionHandler, IThreadSessionHandler
     {
         /// <summary>
         /// Executes the task

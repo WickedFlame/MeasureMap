@@ -11,7 +11,7 @@ namespace MeasureMap.UnitTest
         public void MeasureMap_ThreadRunner()
         {
             var task = new Task(() => Trace.WriteLine("ThreadRunner test"));
-            var runner = new ThreadSessionHandler();
+            var runner = new BasicSessionHandler();
 
             var result = runner.Execute(task, new ProfilerSettings { Iterations = 10 });
 
