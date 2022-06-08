@@ -128,10 +128,5 @@ namespace MeasureMap
         {
             DisposeThreads();
 		}
-
-		~MultyThreadSessionHandler()
-		{
-			DisposeThreads();
-		}
 	}
 }
