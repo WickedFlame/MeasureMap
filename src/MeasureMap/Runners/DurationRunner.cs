@@ -35,9 +35,10 @@ namespace MeasureMap.Runners
             while(DateTime.Now < time)
             {
                 _logger.Write($"Running Task for iteration {iteration}");
-                context.Set(ContextKeys.Iteration, iteration);
+                var child = context.Clone();
+                child.Set(ContextKeys.Iteration, iteration);
 
-                execution.Execute(action);
+                execution.Execute(child, action);
 
                 iteration++;
             }

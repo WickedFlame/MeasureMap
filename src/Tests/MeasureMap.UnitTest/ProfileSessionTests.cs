@@ -245,7 +245,7 @@ namespace MeasureMap.UnitTest
                 })
                 .SetIterations(10)
                 .RunSession();
-
+            result.Trace(true);
             Assert.That(result.Slowest.Iteration == 9);
         }
 
@@ -447,6 +447,83 @@ namespace MeasureMap.UnitTest
             result.Trace(true);
 
             result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(4)).And.BeLessThan(TimeSpan.FromSeconds(5));
+        }
+
+
+        [Test]
+        public void ProfileSession_IterationRunner_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetIterations(10)
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
+        }
+
+        [Test]
+        public void ProfileSession_DurationRunner_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
+        }
+
+        [Test]
+        public void ProfileSession_Iteration_Delayed_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetIterations(10)
+                .AddDelay(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
+        }
+
+        [Test]
+        public void ProfileSession_Interval_Delayed_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .AddDelay(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
         }
 
         private void Task()

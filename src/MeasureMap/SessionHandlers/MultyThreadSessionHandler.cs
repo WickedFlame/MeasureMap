@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -35,14 +36,16 @@ namespace MeasureMap
 		/// <param name="settings">The settings for the profiler</param>
 		/// <returns>The resulting collection of the executions</returns>
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
-		{
+        {
+            var threads = new ThreadList();
+
 			lock (_threads)
 			{
 				for (int i = 0; i < _threadCount; i++)
 				{
 					var thread = ThreadHelper.QueueTask(i, threadIndex =>
 					{
-						var worker = new Worker();
+						var worker = new Worker(threads);
 						var p = worker.Run(task, settings);
 						return p;
 					});
@@ -64,6 +67,8 @@ namespace MeasureMap
 			}
 
 			var results = _threads.Select(s => s.Result);
+
+            threads.WaitAll();
 
 			var collectîon = new ProfilerResult();
 			foreach (var result in results)

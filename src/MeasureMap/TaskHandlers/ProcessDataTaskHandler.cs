@@ -14,6 +14,7 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IIterationResult Run(IExecutionContext context)
         {
+            var iteration = context.Get<int>(ContextKeys.Iteration);
             var threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
             var processId = Process.GetCurrentProcess().Id;
 
@@ -24,7 +25,7 @@ namespace MeasureMap
 
             result.ThreadId = threadId;
             result.ProcessId = processId;
-            result.Iteration = context.Get<int>(ContextKeys.Iteration);
+            result.Iteration = iteration;
 
             return result;
         }

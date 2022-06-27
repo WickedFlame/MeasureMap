@@ -27,16 +27,21 @@ namespace MeasureMap.Runners
         public void Execute(IExecutionContext context, Action execution)
         {
             // calculate the wait depending on the current time and the next execution
-            var wait = _nextExecute.Subtract(DateTime.Now);
+            var now = DateTime.Now;
+            var wait = _nextExecute.Subtract(now);
             if(wait > TimeSpan.Zero)
             {
                 System.Threading.Tasks.Task.Delay(wait).Wait();
             }
 
+            
+
             context.Threads.StartNew(execution);
 
             // set the time for the next execution
-            _nextExecute = DateTime.Now.Add(_interval);
+            _nextExecute = now.Add(_interval);
+
+            //System.Diagnostics.Debug.WriteLine($"Execute Task at {_nextExecute:o}");
         }
     }
 }

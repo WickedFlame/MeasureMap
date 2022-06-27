@@ -32,9 +32,11 @@ namespace MeasureMap.Runners
 
             for (var i = 0; i < settings.Iterations; i++)
             {
-                _logger.Write($"Running Task for iteration {i}");
-                context.Set(ContextKeys.Iteration, i + 1);
-                execution.Execute(action);
+                _logger.Write($"Running Task for iteration {i + 1}");
+                var child = context.Clone();
+                child.Set(ContextKeys.Iteration, i + 1);
+
+                execution.Execute(child, action);
             }
         }
     }

@@ -1,4 +1,6 @@
 ﻿
+using MeasureMap.Threading;
+
 namespace MeasureMap
 {
     /// <summary>
@@ -17,8 +19,12 @@ namespace MeasureMap
             ThreadHelper.SetProcessor();
             ThreadHelper.SetThreadPriority();
 
-            var worker = new Worker();
+            var threads = new ThreadList();
+
+            var worker = new Worker(threads);
             var p = worker.Run(task, settings);
+
+            threads.WaitAll();
 
             return new ProfilerResult
             {
