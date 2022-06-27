@@ -50,7 +50,7 @@ namespace MeasureMap
                 sb.AppendLine("| --- | --- | --- | --- | ---: | ---: |");
                 foreach (var iteration in profilerResult.Iterations)
                 {
-                    sb.AppendLine($"| {iteration.ThreadId} | {iteration.Iteration} | {iteration.TimeStamp} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution} |");
+                    sb.AppendLine($"| {iteration.ThreadId} | {iteration.Iteration} | {iteration.TimeStamp:o} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution} |");
                 }
             }
 
