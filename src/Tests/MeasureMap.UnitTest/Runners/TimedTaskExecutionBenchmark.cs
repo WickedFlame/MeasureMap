@@ -49,6 +49,8 @@ namespace MeasureMap.UnitTest.Runners
 
             var result = runner.RunSessions();
             result.Trace();
+
+            result.Should().HaveCount(3);
         }
 
         [Test]
