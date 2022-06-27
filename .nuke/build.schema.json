@@ -81,6 +81,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "Deploy",
               "Release",
               "Restore",
               "Test"
@@ -99,6 +100,7 @@
             "enum": [
               "Clean",
               "Compile",
+              "Deploy",
               "Release",
               "Restore",
               "Test"
