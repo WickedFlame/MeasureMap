@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace MeasureMap.Runners
 {
@@ -7,8 +8,8 @@ namespace MeasureMap.Runners
     /// </summary>
     public class TimedTaskExecution : ITaskExecution
     {
-        private readonly TimeSpan _interval;
-        private DateTime _nextExecute = DateTime.MinValue;
+        private readonly long _interval;
+        private readonly Stopwatch _stopWatch;
 
         /// <summary>
         /// 
@@ -16,7 +17,9 @@ namespace MeasureMap.Runners
         /// <param name="interval"></param>
         public TimedTaskExecution(TimeSpan interval)
         {
-            _interval = interval;
+            _interval = interval.Ticks;
+            _stopWatch = new Stopwatch();
+            _stopWatch.Start();
         }
 
         /// <summary>
@@ -24,24 +27,23 @@ namespace MeasureMap.Runners
         /// </summary>
         /// <param name="context"></param>
         /// <param name="execution"></param>
-        public void Execute(IExecutionContext context, Action execution)
+        public void Execute(IExecutionContext context, Action<IExecutionContext> execution)
         {
-            // calculate the wait depending on the current time and the next execution
-            var now = DateTime.Now;
-            var wait = _nextExecute.Subtract(now);
-            if(wait > TimeSpan.Zero)
+            // reset the time for the next execution
+            _stopWatch.Restart();
+
+            while (_stopWatch.ElapsedTicks < _interval)
             {
-                System.Threading.Tasks.Task.Delay(wait).Wait();
+                // just wait
+                // this was found to be the most accurate way to delay the thread.
+                // This has a max overhead of 4ms when using iterations of 1ms.
+                // Intervals over 100ms only produce 0.1ms - 0.3ms overhead
+                // 
+                // Task.Delay(time).Wait() has a overhead of about 15ms which is too much
+                //
             }
 
-            
-
-            context.Threads.StartNew(execution);
-
-            // set the time for the next execution
-            _nextExecute = now.Add(_interval);
-
-            //System.Diagnostics.Debug.WriteLine($"Execute Task at {_nextExecute:o}");
+            context.Threads.StartNew(() => execution(context));
         }
     }
 }

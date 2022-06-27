@@ -437,7 +437,6 @@ namespace MeasureMap.UnitTest
                 .Task(c =>
                 {
                     var i = c.Get<int>(ContextKeys.Iteration);
-                    Trace.WriteLine(DateTime.Now);
                     return i;
                 })
                 .SetIterations(10)
@@ -446,7 +445,8 @@ namespace MeasureMap.UnitTest
 
             result.Trace(true);
 
-            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(4)).And.BeLessThan(TimeSpan.FromSeconds(5));
+            // 0.5*10 + some overhead = >5 and <6
+            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(5)).And.BeLessThan(TimeSpan.FromSeconds(6));
         }
 
 
