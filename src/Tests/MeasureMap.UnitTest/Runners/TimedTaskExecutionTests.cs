@@ -22,8 +22,11 @@ namespace MeasureMap.UnitTest.Runners
         {
             var called = false;
 
+            var context = new ExecutionContext();
             var exec = new TimedTaskExecution(TimeSpan.FromSeconds(1));
-            exec.Execute(new ExecutionContext(), () => called = true);
+            exec.Execute(context, c => called = true);
+
+            context.Threads.WaitAll();
 
             called.Should().BeTrue();
         }
@@ -33,10 +36,14 @@ namespace MeasureMap.UnitTest.Runners
         {
             var called = 0;
 
+            var context = new ExecutionContext();
+
             var exec = new TimedTaskExecution(TimeSpan.FromMilliseconds(5));
-            exec.Execute(new ExecutionContext(), () => called++);
-            exec.Execute(new ExecutionContext(), () => called++);
-            
+            exec.Execute(context, c => called++);
+            exec.Execute(context, c => called++);
+
+            context.Threads.WaitAll();
+
             called.Should().Be(2);
         }
 
@@ -46,8 +53,8 @@ namespace MeasureMap.UnitTest.Runners
             var sw = new Stopwatch();
             sw.Start();
             var exec = new TimedTaskExecution(TimeSpan.FromMilliseconds(50));
-            exec.Execute(new ExecutionContext(), () => { });
-            exec.Execute(new ExecutionContext(), () => { });
+            exec.Execute(new ExecutionContext(), c => { });
+            exec.Execute(new ExecutionContext(), c => { });
 
             sw.Stop();
             sw.ElapsedMilliseconds.Should().BeGreaterThan(50);
@@ -63,7 +70,7 @@ namespace MeasureMap.UnitTest.Runners
             {
                 for(var i = 1; i <= 10; i++)
                 {
-                    exec.Execute(new ExecutionContext(), () => { called = i; });
+                    exec.Execute(new ExecutionContext(), c => { called = i; });
                 }
             });
 

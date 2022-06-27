@@ -24,7 +24,7 @@ namespace MeasureMap.Runners
         /// <param name="settings"></param>
         /// <param name="context"></param>
         /// <param name="action"></param>
-        public void Run(ProfilerSettings settings, IExecutionContext context, Action action)
+        public void Run(ProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action)
         {
             _logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark");
             var time = DateTime.Now + settings.Duration;
@@ -35,8 +35,8 @@ namespace MeasureMap.Runners
             while(DateTime.Now < time)
             {
                 _logger.Write($"Running Task for iteration {iteration}");
+                context.Set(ContextKeys.Iteration, iteration);
                 var child = context.Clone();
-                child.Set(ContextKeys.Iteration, iteration);
 
                 execution.Execute(child, action);
 

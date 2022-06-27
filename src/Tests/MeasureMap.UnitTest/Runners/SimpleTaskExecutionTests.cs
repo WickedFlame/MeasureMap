@@ -22,7 +22,7 @@ namespace MeasureMap.UnitTest.Runners
             var called = false;
 
             var exec = new SimpleTaskExecution();
-            exec.Execute(new ExecutionContext(), () => called = true);
+            exec.Execute(new ExecutionContext(), c => called = true);
             
             called.Should().BeTrue();
         }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Threading;
+using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -45,9 +45,9 @@ namespace MeasureMap
             };
 
             var runner = settings.Runner;
-            runner.Run(settings, context, () =>
+            runner.Run(settings, context, c =>
             {
-                var iteration = task.Run(context);
+                var iteration = task.Run(c);
 
                 result.Add(iteration);
             });

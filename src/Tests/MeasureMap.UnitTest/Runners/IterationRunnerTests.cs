@@ -15,7 +15,7 @@ namespace MeasureMap.UnitTest.Runners
             var cnt = 0;
 
             var runner = new IterationRunner();
-            runner.Run(new ProfilerSettings{ Iterations = 2 }, new ExecutionContext(), () => cnt += 1);
+            runner.Run(new ProfilerSettings{ Iterations = 2 }, new ExecutionContext(), c => cnt += 1);
 
             cnt.Should().Be(2);
         }
@@ -26,7 +26,7 @@ namespace MeasureMap.UnitTest.Runners
             var context  = new ExecutionContext();
 
             var runner = new IterationRunner();
-            runner.Run(new ProfilerSettings { Iterations = 2 }, context, () => { });
+            runner.Run(new ProfilerSettings { Iterations = 2 }, context, c => { });
 
             context.Get(ContextKeys.Iteration).Should().Be(2);
         }

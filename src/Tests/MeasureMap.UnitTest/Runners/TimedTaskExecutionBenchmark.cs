@@ -22,7 +22,7 @@ namespace MeasureMap.UnitTest.Runners
             runner.SetIterations(10);
             runner.Task("1 ms delay", c =>
             {
-                execution.Execute(context, () => { });
+                execution.Execute(context, c => { });
             }).Setup(() =>
             {
                 var time = TimeSpan.FromMilliseconds(1);
@@ -31,7 +31,7 @@ namespace MeasureMap.UnitTest.Runners
 
             runner.Task("10 ms delay", c =>
             {
-                execution.Execute(context, () => { });
+                execution.Execute(context, c => { });
             }).Setup(() =>
             {
                 var time = TimeSpan.FromMilliseconds(10);
@@ -40,7 +40,7 @@ namespace MeasureMap.UnitTest.Runners
 
             runner.Task("100 ms delay", c =>
             {
-                execution.Execute(context, () => { });
+                execution.Execute(context, c => { });
             }).Setup(() =>
             {
                 var time = TimeSpan.FromMilliseconds(100);
@@ -59,6 +59,7 @@ namespace MeasureMap.UnitTest.Runners
             benchmarks.Add("1 ms delay", Measure(TimeSpan.FromMilliseconds(1)));
             benchmarks.Add("10 ms delay", Measure(TimeSpan.FromMilliseconds(10)));
             benchmarks.Add("100 ms delay", Measure(TimeSpan.FromMilliseconds(100)));
+            benchmarks.Add("1000 ms delay", Measure(TimeSpan.FromMilliseconds(1000)));
 
             Trace.WriteLine("| Key | Avg ms | Avg ticks |");
             foreach (var benchmark in benchmarks)
@@ -67,16 +68,17 @@ namespace MeasureMap.UnitTest.Runners
             }
 
             // skip first because that one is a direct runthroug and fakes statistics
-            benchmarks["1 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(1).And.BeLessThan(3);
-            benchmarks["10 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(10).And.BeLessThan(15);
-            benchmarks["100 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeLessThan(100);
+            benchmarks["1 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(1).And.BeLessThan(20);
+            benchmarks["10 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(10).And.BeLessThan(20);
+            benchmarks["100 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(100).And.BeLessThan(120);
+            benchmarks["1000 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(1000).And.BeLessThan(1020);
         }
 
         private List<TimeSpan> Measure(TimeSpan interval)
         {
             var context = new ExecutionContext();
 
-            var times = new List<TimeSpan>();
+            var times = new TimeSpan[10];
             var sw = new Stopwatch();
 
             var execution = new TimedTaskExecution(interval);
@@ -84,12 +86,12 @@ namespace MeasureMap.UnitTest.Runners
             sw.Start();
             for (var i = 0; i < 10; i++)
             {
-                execution.Execute(context, () => { });
-                times.Add(sw.Elapsed);
+                execution.Execute(context, c => { });
+                times[i] = sw.Elapsed;
                 sw.Restart();
             }
 
-            return times;
+            return times.ToList();
         }
     }
 }

@@ -13,6 +13,6 @@ namespace MeasureMap.Runners
         /// <param name="settings"></param>
         /// <param name="context"></param>
         /// <param name="action"></param>
-        void Run(ProfilerSettings settings, IExecutionContext context, Action action);
+        void Run(ProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action);
     }
 }

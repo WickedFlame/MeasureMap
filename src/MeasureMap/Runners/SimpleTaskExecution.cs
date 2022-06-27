@@ -12,9 +12,9 @@ namespace MeasureMap.Runners
         /// </summary>
         /// <param name="context"></param>
         /// <param name="execution"></param>
-        public void Execute(IExecutionContext context, Action execution)
+        public void Execute(IExecutionContext context, Action<IExecutionContext> execution)
         {
-            execution();
+            execution(context);
         }
     }
 }
