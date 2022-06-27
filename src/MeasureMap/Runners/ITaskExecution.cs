@@ -10,7 +10,8 @@ namespace MeasureMap.Runners
         /// <summary>
         /// Execute the task
         /// </summary>
+        /// <param name="context"></param>
         /// <param name="execution"></param>
-        void Execute(Action execution);
+        void Execute(IExecutionContext context, Action execution);
     }
 }

@@ -22,8 +22,9 @@ namespace MeasureMap.Runners
         /// <summary>
         /// Execute the task in a interval
         /// </summary>
+        /// <param name="context"></param>
         /// <param name="execution"></param>
-        public void Execute(Action execution)
+        public void Execute(IExecutionContext context, Action execution)
         {
             // calculate the wait depending on the current time and the next execution
             var wait = _nextExecute.Subtract(DateTime.Now);
@@ -32,7 +33,7 @@ namespace MeasureMap.Runners
                 System.Threading.Tasks.Task.Delay(wait).Wait();
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(execution);
+            context.Threads.StartNew(execution);
 
             // set the time for the next execution
             _nextExecute = DateTime.Now.Add(_interval);

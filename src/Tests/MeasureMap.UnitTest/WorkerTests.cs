@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FluentAssertions;
 using MeasureMap.Diagnostics;
+using MeasureMap.Threading;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
@@ -52,6 +54,20 @@ namespace MeasureMap.UnitTest
             Assert.That(result.InitialSize > 0, () => "InitialSize is smaller than 0");
             Assert.That(result.EndSize > 0, () => "EndSize is smaller than 0");
             Assert.That(result.Increase != 0, () => "Increase is 0");
+        }
+
+        [Test]
+        public void MeasureMap_Worker_ThreadList()
+        {
+            Action task = () => new Worker(new ThreadList());
+            task.Should().NotThrow();
+        }
+
+        [Test]
+        public void MeasureMap_Worker_ThreadList_Null()
+        {
+            Action task = () => new Worker(null);
+            task.Should().Throw<ArgumentNullException>();
         }
     }
 }

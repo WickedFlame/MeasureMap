@@ -3,6 +3,7 @@ bin
 obj
 release
 TestResults
+artifacts
 *.user
 *.jtconfig
 *.suo

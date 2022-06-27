@@ -24,7 +24,7 @@ namespace MeasureMap.Runners
         /// <param name="settings"></param>
         /// <param name="context"></param>
         /// <param name="action"></param>
-        public void Run(ProfilerSettings settings, ExecutionContext context, Action action)
+        public void Run(ProfilerSettings settings, IExecutionContext context, Action action)
         {
             _logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark");
             var time = DateTime.Now + settings.Duration;
