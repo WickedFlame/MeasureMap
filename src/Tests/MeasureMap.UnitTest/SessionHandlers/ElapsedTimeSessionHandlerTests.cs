@@ -25,6 +25,17 @@ namespace MeasureMap.UnitTest.SessionHandlers
         }
 
         [Test]
+        public void ElapsedTimeSessionHandler_Execute_Elapsed()
+        {
+            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var handler = new ElapsedTimeSessionHandler();
+
+            var result = handler.Execute(task, new ProfilerSettings { Iterations = 10 });
+
+            Assert.That(((TimeSpan)result.ResultValues[ResultValueType.Elapsed]).Ticks > 0);
+        }
+
+        [Test]
         public void ElapsedTimeSessionHandler_Execute_EnsureBaseIsCalled()
         {
             var next = new Mock<ISessionHandler>();

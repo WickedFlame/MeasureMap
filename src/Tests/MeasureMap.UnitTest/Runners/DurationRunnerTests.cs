@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using FluentAssertions;
 using MeasureMap.Runners;
@@ -29,6 +30,22 @@ namespace MeasureMap.UnitTest.Runners
             runner.Run(new ProfilerSettings { Duration = TimeSpan.FromSeconds(1) }, context, c => { });
 
             ((int)context.Get(ContextKeys.Iteration)).Should().BeGreaterThan(100);
+        }
+
+        [Test]
+        public void DurationRunner_Run_Duration()
+        {
+            var runner = new DurationRunner();
+            var duration = TimeSpan.FromSeconds(1);
+
+            var sw = new Stopwatch();
+            sw.Start();
+            
+            runner.Run(new ProfilerSettings { Duration = duration }, new ExecutionContext(), c => { });
+
+            sw.Stop();
+
+            sw.ElapsedTicks.Should().BeGreaterThan(duration.Ticks);
         }
     }
 }
