@@ -32,7 +32,8 @@ namespace MeasureMap
             sb.AppendLine($"\tSetup ========================================");
             sb.AppendLine($"\t\tIterations:\t\t\t{profilerResult.Iterations.Count()}");
             sb.AppendLine($"\tDuration ========================================");
-            sb.AppendLine($"\t\tDuration Total:\t\t\t{profilerResult.TotalTime.ToString()}");
+            sb.AppendLine($"\t\tDuration:\t\t\t{profilerResult.Elapsed()}");
+            sb.AppendLine($"\t\tTotal Time:\t\t\t{profilerResult.TotalTime.ToString()}");
             sb.AppendLine($"\t\tAverage Time:\t\t\t{profilerResult.AverageTime}");
             sb.AppendLine($"\t\tAverage Milliseconds:\t\t{profilerResult.AverageMilliseconds}");
             sb.AppendLine($"\t\tAverage Ticks:\t\t\t{profilerResult.AverageTicks}");
@@ -55,9 +56,11 @@ namespace MeasureMap
             }
 
             var result = sb.ToString();
-            
+#if DEBUG
             System.Diagnostics.Trace.WriteLine(result);
-
+#else
+            Console.WriteLine(result);
+#endif
             return result;
         }
 

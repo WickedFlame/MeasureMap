@@ -91,7 +91,8 @@ namespace MeasureMap.UnitTest
                 .RunSession()
                 .Trace();
 
-            Assert.That(result.Contains("Duration Total"));
+            Assert.That(result.Contains("Duration"));
+            Assert.That(result.Contains("Total Time"));
             Assert.That(result.Contains("Average Time"));
             Assert.That(result.Contains("Memory Initial size"));
             Assert.That(result.Contains("Memory End size"));
