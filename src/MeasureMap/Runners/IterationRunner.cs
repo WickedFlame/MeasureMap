@@ -34,9 +34,8 @@ namespace MeasureMap.Runners
             {
                 _logger.Write($"Running Task for iteration {i + 1}");
                 context.Set(ContextKeys.Iteration, i + 1);
-                var child = context.Clone();
 
-                execution.Execute(child, action);
+                execution.Execute(context.Clone(), action);
             }
         }
     }

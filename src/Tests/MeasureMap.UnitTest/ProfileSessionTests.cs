@@ -9,7 +9,7 @@ using Polaroider;
 
 namespace MeasureMap.UnitTest
 {
-    [TestFixture]
+    [SingleThreaded]
     public class ProfileSessionTests
     {
         [Test]
@@ -151,7 +151,8 @@ namespace MeasureMap.UnitTest
                 .RunSession()
                 .Trace();
 
-            Assert.That(result.Contains("Duration Total"));
+            Assert.That(result.Contains("Duration"));
+            Assert.That(result.Contains("Total Time"));
             Assert.That(result.Contains("Average Time"));
             Assert.That(result.Contains("Memory Initial size"));
             Assert.That(result.Contains("Memory End size"));
@@ -294,13 +295,59 @@ namespace MeasureMap.UnitTest
             sw.Start();
             
             ProfilerSession.StartSession()
-                .SetDuration(TimeSpan.FromSeconds(1))
+                .SetDuration(TimeSpan.FromSeconds(5))
                 .Task(() => { })
                 .RunSession();
             
             sw.Stop();
 
-            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(1)).And.BeLessThan(TimeSpan.FromSeconds(1.5));
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(5)).And.BeLessThan(TimeSpan.FromSeconds(5.5));
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_SetInterval_CheckTime()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .SetInterval(TimeSpan.FromMilliseconds(5))
+                .Task(() => { })
+                .RunSession();
+
+            sw.Stop();
+
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(5));
+        }
+
+        [Test]
+        [Explicit]
+        public void ProfileSession_SetDuration_SetInterval_CheckTime_UpperBOunds()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .SetInterval(TimeSpan.FromMilliseconds(5))
+                .Task(() => { })
+                .RunSession();
+
+            sw.Stop();
+
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(5)).And.BeLessThan(TimeSpan.FromSeconds(5.5));
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_Trace_TotalTime()
+        {
+            var result = ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Task(() => { })
+                .RunSession();
+
+            result.Trace().Should().Contain("Duration:\t\t\t00:00:01.");
         }
 
         [Test]
@@ -432,6 +479,26 @@ namespace MeasureMap.UnitTest
 
         [Test]
         public void ProfileSession_Interval_Duration()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    return i;
+                })
+                .SetIterations(10)
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            // 0.5*10 + some overhead = >5 and <6
+            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(5));
+        }
+
+        [Test]
+        [Explicit]
+        public void ProfileSession_Interval_Duration_Upperbounds()
         {
             var result = ProfilerSession.StartSession()
                 .Task(c =>

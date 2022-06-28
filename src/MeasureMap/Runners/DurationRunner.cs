@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using MeasureMap.Diagnostics;
 
 namespace MeasureMap.Runners
@@ -27,18 +28,20 @@ namespace MeasureMap.Runners
         public void Run(ProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action)
         {
             _logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark");
-            var time = DateTime.Now + settings.Duration;
+            var stopWatch = new Stopwatch();
 
             var execution = settings.Execution;
 
+            var duration = settings.Duration.TotalMilliseconds;
+
             var iteration = 1;
-            while(DateTime.Now < time)
+            stopWatch.Start();
+            while (stopWatch.Elapsed.TotalMilliseconds < duration)
             {
                 _logger.Write($"Running Task for iteration {iteration}");
                 context.Set(ContextKeys.Iteration, iteration);
-                var child = context.Clone();
 
-                execution.Execute(child, action);
+                execution.Execute(context.Clone(), action);
 
                 iteration++;
             }
