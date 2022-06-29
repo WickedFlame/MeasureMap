@@ -25,16 +25,16 @@ namespace MeasureMap
         /// <param name="index"></param>
         /// <param name="action"></param>
         /// <returns></returns>
-        public static System.Threading.Tasks.Task<Result> QueueTask(int index, Func<int, Result> action)
+        public static SessionThread QueueTask(int index, Func<int, Result> action)
         {
-            var task = new System.Threading.Tasks.Task<Result>(() =>
+            var task = new SessionThread(index, () =>
             {
-                SetThreadAffinity(index);
-                SetThreadPriority();
+                //SetThreadAffinity(index);
+                //SetThreadPriority();
 
                 var result = action.Invoke(index);
 
-                EndThreadAffinity();
+                //EndThreadAffinity();
 
                 return result;
             });

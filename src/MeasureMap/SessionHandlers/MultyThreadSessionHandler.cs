@@ -12,7 +12,7 @@ namespace MeasureMap
     public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler, IDisposable
 	{
 		private readonly int _threadCount;
-		private readonly List<System.Threading.Tasks.Task<Result>> _threads;
+		private readonly List<SessionThread> _threads;
 
 		/// <summary>
 		/// Creates a new threaded task executor
@@ -21,7 +21,7 @@ namespace MeasureMap
 		public MultyThreadSessionHandler(int threadCount)
 		{
 			_threadCount = threadCount;
-			_threads = new List<System.Threading.Tasks.Task<Result>>();
+			_threads = new List<SessionThread>();
 		}
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace MeasureMap
 
 			while (CountOpenThreads() > 0)
 			{
-				System.Threading.Tasks.Task.WaitAll(GetAwaitableThreads(), -1, CancellationToken.None);
+				//System.Threading.Tasks.Task.WaitAll(GetAwaitableThreads(), -1, CancellationToken.None);
 			}
 
 			var results = _threads.Select(s => s.Result);
@@ -102,19 +102,19 @@ namespace MeasureMap
 			}
 		}
 
-		private System.Threading.Tasks.Task[] GetAwaitableThreads()
-		{
-			lock (_threads)
-			{
-				return _threads.Where(t => !t.IsCanceled && !t.IsFaulted && !t.IsCompleted).ToArray();
-			}
-		}
+		//private Thread GetAwaitableThreads()
+		//{
+		//	lock (_threads)
+		//	{
+		//		return _threads.Where(t => t.IsAlive).ToArray();
+		//	}
+		//}
 
 		private int CountOpenThreads()
 		{
 			lock (_threads)
 			{
-				return _threads.Count(t => !t.IsCanceled && !t.IsFaulted && !t.IsCompleted);
+				return _threads.Count(t => t.IsAlive);
 			}
 		}
 
