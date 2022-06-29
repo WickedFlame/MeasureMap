@@ -71,6 +71,8 @@ namespace MeasureMap
             threads.WaitAll();
 
 			var collectîon = new ProfilerResult();
+			collectîon.ResultValues.Add(ResultValueType.Threads, _threadCount);
+
 			foreach (var result in results)
 			{
 				collectîon.Add(result);

@@ -94,7 +94,19 @@ namespace MeasureMap
                 return TimeSpan.FromTicks(Iterations.Select(i => i.Ticks).Sum());
             }
         }
-        
+
+        /// <summary>
+        /// Gets the id of the thread that the task was run in
+        /// </summary>
+        public int ThreadId
+        {
+            get
+            {
+                var first = Iterations.FirstOrDefault();
+                return first != null ? first.ThreadId : 0;
+            }
+        }
+
         /// <summary>
         /// The initial memory size
         /// </summary>

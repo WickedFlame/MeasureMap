@@ -26,10 +26,11 @@ namespace MeasureMap
                 sb.AppendLine(header);
             }
 
-            sb.AppendLine($"##### Summary");
+            sb.AppendLine($"#### Summary");
             sb.AppendLine($"\tWarmup ========================================");
             sb.AppendLine($"\t\tDuration Warmup:\t\t\t{profilerResult.Warmup().ToString()}");
             sb.AppendLine($"\tSetup ========================================");
+            sb.AppendLine($"\t\tThreads:\t\t\t{profilerResult.Threads()}");
             sb.AppendLine($"\t\tIterations:\t\t\t{profilerResult.Iterations.Count()}");
             sb.AppendLine($"\tDuration ========================================");
             sb.AppendLine($"\t\tDuration:\t\t\t{profilerResult.Elapsed()}");
@@ -44,12 +45,25 @@ namespace MeasureMap
             sb.AppendLine($"\t\tMemory End size:\t\t{profilerResult.EndSize}");
             sb.AppendLine($"\t\tMemory Increase:\t\t{profilerResult.Increase}");
 
+            if(profilerResult.Threads() > 1)
+            {
+                sb.AppendLine();
+                sb.AppendLine("#### Details per Thread");
+                sb.AppendLine("| ThreadId | Iterations | Average time | Slowest | Fastest |");
+                sb.AppendLine("| --- | --- | ---: | ---: | ---: |");
+                foreach (var thread in profilerResult)
+                {
+                    sb.AppendLine($"| {thread.ThreadId} | {thread.Iterations.Count()} | {thread.AverageTime} | {thread.Slowest.Duration} | {thread.Fastest.Duration} |");
+                }
+            }
+
             if (fullTrace)
             {
-                sb.AppendLine($"##### Iterations");
+                sb.AppendLine();
+                sb.AppendLine($"#### Iterations");
                 sb.AppendLine("| ThreadId | Iteration | Timestamp | Duration | Init size | End size |");
                 sb.AppendLine("| --- | --- | --- | --- | ---: | ---: |");
-                foreach (var iteration in profilerResult.Iterations)
+                foreach (var iteration in profilerResult.Iterations.OrderBy(i => i.TimeStamp))
                 {
                     sb.AppendLine($"| {iteration.ThreadId} | {iteration.Iteration} | {iteration.TimeStamp:o} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution} |");
                 }
@@ -92,6 +106,21 @@ namespace MeasureMap
             }
 
             return new TimeSpan();
+        }
+
+        /// <summary>
+        /// Returns the amount of threads used
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static int Threads(this IProfilerResult result)
+        {
+            if (result.ResultValues.ContainsKey(ResultValueType.Threads))
+            {
+                return (int)result.ResultValues[ResultValueType.Threads];
+            }
+
+            return 1;
         }
     }
 }
