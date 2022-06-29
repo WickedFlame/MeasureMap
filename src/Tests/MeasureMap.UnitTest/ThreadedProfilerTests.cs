@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -85,6 +86,32 @@ namespace MeasureMap.UnitTest
             Assert.That(((ProfilerResult)result).All(r => r.Increase != 0), () => "Increase");
             Assert.That(((ProfilerResult)result).All(r => r.InitialSize > 0), () => "InitialSize");
             Assert.That(((ProfilerResult)result).All(r => r.TotalTime.Ticks > 0), () => "TotalTime.Ticks");
+        }
+
+
+        [Test]
+        public void ThreadedProfiler_MultipleThreads_Interval_Duration()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine($"Iteration {i}");
+                })
+                .SetDuration(TimeSpan.FromSeconds(20))
+                .SetInterval(TimeSpan.FromMilliseconds(50))
+                .SetThreads(10)
+                .RunSession();
+
+
+            sw.Stop();
+
+            result.Trace();
+
+            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(20)).And.BeLessThan(sw.Elapsed);
         }
     }
 }

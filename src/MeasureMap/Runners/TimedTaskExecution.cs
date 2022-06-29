@@ -29,9 +29,6 @@ namespace MeasureMap.Runners
         /// <param name="execution"></param>
         public void Execute(IExecutionContext context, Action<IExecutionContext> execution)
         {
-            // reset the time for the next execution
-            _stopWatch.Restart();
-
             while (_stopWatch.ElapsedTicks < _interval)
             {
                 // just wait
@@ -43,7 +40,10 @@ namespace MeasureMap.Runners
                 //
             }
 
-            context.Threads.StartNew(() => execution(context));
+            // reset the time for the next execution
+            _stopWatch.Restart();
+
+            execution(context);
         }
     }
 }
