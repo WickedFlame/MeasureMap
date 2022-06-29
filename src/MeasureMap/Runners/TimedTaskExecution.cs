@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MeasureMap.Diagnostics;
+using System;
 using System.Diagnostics;
 
 namespace MeasureMap.Runners
@@ -9,6 +10,7 @@ namespace MeasureMap.Runners
     public class TimedTaskExecution : ITaskExecution
     {
         private readonly long _interval;
+        private readonly Logger _logger;
         private readonly Stopwatch _stopWatch;
 
         /// <summary>
@@ -18,6 +20,7 @@ namespace MeasureMap.Runners
         public TimedTaskExecution(TimeSpan interval)
         {
             _interval = interval.Ticks;
+            _logger = Logger.Setup();
             _stopWatch = new Stopwatch();
             _stopWatch.Start();
         }
@@ -39,6 +42,8 @@ namespace MeasureMap.Runners
                 // Task.Delay(time).Wait() has a overhead of about 15ms which is too much
                 //
             }
+
+            _logger.Write($"Elapsed {_stopWatch.Elapsed.TotalMilliseconds}", LogLevel.Info, "TimedExecution");
 
             // reset the time for the next execution
             _stopWatch.Restart();

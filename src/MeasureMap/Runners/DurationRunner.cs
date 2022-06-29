@@ -45,6 +45,8 @@ namespace MeasureMap.Runners
 
                 iteration++;
             }
+
+            _logger.Write($"Running {iteration} iterations took {stopWatch.Elapsed}");
         }
     }
 }
