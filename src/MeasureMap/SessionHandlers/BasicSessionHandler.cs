@@ -16,19 +16,23 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
-            ThreadHelper.SetProcessor();
-            ThreadHelper.SetThreadPriority();
-
+            var runnerThreads = new WorkerThreadList();
             var threads = new ThreadList();
+            
+            var thread = runnerThreads.StartNew(0, () =>
+            {
+                var worker = new Worker(threads);
+                return worker.Run(task, settings);
+            });
 
-            var worker = new Worker(threads);
-            var p = worker.Run(task, settings);
+            System.Diagnostics.Trace.WriteLine($"MeasureMap - Start thread {thread.Id}");
 
+            runnerThreads.WaitAll();
             threads.WaitAll();
 
             return new ProfilerResult
             {
-                p
+                thread.Result
             };
         }
     }
