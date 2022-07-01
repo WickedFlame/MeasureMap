@@ -108,7 +108,7 @@ namespace MeasureMap.UnitTest
 
 
             sw.Stop();
-
+            Debug.WriteLine($"Stopwatch: {sw.Elapsed}");
             result.Trace();
 
             result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(20)).And.BeLessThan(sw.Elapsed);
@@ -168,7 +168,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             sw.Stop();
-
+            Debug.WriteLine($"Stopwatch: {sw.Elapsed}");
             result.Trace();
 
             result.Elapsed().Should().BeLessThan(sw.Elapsed);
@@ -233,7 +233,7 @@ namespace MeasureMap.UnitTest
 
 
             sw.Stop();
-
+            Debug.WriteLine($"Stopwatch: {sw.Elapsed}");
             result.Trace();
 
             result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(20)).And.BeLessThan(sw.Elapsed);
@@ -292,7 +292,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             sw.Stop();
-
+            Debug.WriteLine($"Stopwatch: {sw.Elapsed}");
             result.Trace();
 
             result.Elapsed().Should().BeLessThan(sw.Elapsed);

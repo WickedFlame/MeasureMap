@@ -32,7 +32,7 @@ namespace MeasureMap.Runners
 
             for (var i = 0; i < settings.Iterations; i++)
             {
-                _logger.Write($"Running Task for iteration {i + 1}");
+                _logger.Write($"Running Task for iteration {i + 1}", source: "IterationRunner");
                 context.Set(ContextKeys.Iteration, i + 1);
 
                 execution.Execute(context.Clone(), action);

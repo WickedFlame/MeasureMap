@@ -12,7 +12,7 @@ namespace MeasureMap
     public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler, IDisposable
 	{
 		private readonly int _threadCount;
-		private readonly List<SessionThread> _threads;
+		private readonly WorkerThreadList _threads;
 
 		/// <summary>
 		/// Creates a new threaded task executor
@@ -21,7 +21,7 @@ namespace MeasureMap
 		public MultyThreadSessionHandler(int threadCount)
 		{
 			_threadCount = threadCount;
-			_threads = new List<SessionThread>();
+			_threads = new WorkerThreadList();
 		}
 
 		/// <summary>
@@ -43,7 +43,7 @@ namespace MeasureMap
 			{
 				for (int i = 0; i < _threadCount; i++)
 				{
-					var thread = ThreadHelper.QueueTask(i, threadIndex =>
+					var thread = _threads.StartNew(i, () =>
 					{
 						var worker = new Worker(threads);
 						var p = worker.Run(task, settings);
@@ -51,8 +51,6 @@ namespace MeasureMap
 					});
 
 					System.Diagnostics.Trace.WriteLine($"MeasureMap - Start thread {thread.Id}");
-
-					_threads.Add(thread);
 				}
 
 				foreach (var thread in _threads)
@@ -63,7 +61,7 @@ namespace MeasureMap
 
 			while (CountOpenThreads() > 0)
 			{
-				//System.Threading.Tasks.Task.WaitAll(GetAwaitableThreads(), -1, CancellationToken.None);
+				_threads.WaitAll();
 			}
 
 			var results = _threads.Select(s => s.Result);
@@ -101,14 +99,6 @@ namespace MeasureMap
 				}
 			}
 		}
-
-		//private Thread GetAwaitableThreads()
-		//{
-		//	lock (_threads)
-		//	{
-		//		return _threads.Where(t => t.IsAlive).ToArray();
-		//	}
-		//}
 
 		private int CountOpenThreads()
 		{

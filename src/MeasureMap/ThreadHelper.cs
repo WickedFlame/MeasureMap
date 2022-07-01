@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using MeasureMap.Diagnostics;
+using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -17,29 +18,6 @@ namespace MeasureMap
         static ThreadHelper()
         {
             IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
-        }
-
-        /// <summary>
-        /// Queue a new task
-        /// </summary>
-        /// <param name="index"></param>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        public static SessionThread QueueTask(int index, Func<int, Result> action)
-        {
-            var task = new SessionThread(index, () =>
-            {
-                //SetThreadAffinity(index);
-                //SetThreadPriority();
-
-                var result = action.Invoke(index);
-
-                //EndThreadAffinity();
-
-                return result;
-            });
-
-            return task;
         }
 
         private static void SetThreadAffinity(int index)
