@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using MeasureMap.Threading;
 
 namespace MeasureMap
@@ -51,11 +49,6 @@ namespace MeasureMap
 					});
 
 					System.Diagnostics.Trace.WriteLine($"MeasureMap - Start thread {thread.Id}");
-				}
-
-				foreach (var thread in _threads)
-				{
-					thread.Start();
 				}
 			}
 

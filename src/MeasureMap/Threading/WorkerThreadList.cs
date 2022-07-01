@@ -29,6 +29,8 @@ namespace MeasureMap.Threading
             });
 
             Add(thread);
+            
+            thread.Start();
 
             return thread;
         }
