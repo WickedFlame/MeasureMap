@@ -38,7 +38,7 @@ namespace MeasureMap.Runners
             stopWatch.Start();
             while (stopWatch.Elapsed.TotalMilliseconds < duration)
             {
-                _logger.Write($"Running Task for iteration {iteration}");
+                _logger.Write($"Running Task for iteration {iteration}", source: "DurationRunner");
                 context.Set(ContextKeys.Iteration, iteration);
 
                 execution.Execute(context.Clone(), action);
