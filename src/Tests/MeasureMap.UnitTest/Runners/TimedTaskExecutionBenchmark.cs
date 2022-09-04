@@ -22,7 +22,7 @@ namespace MeasureMap.UnitTest.Runners
             runner.SetIterations(10);
             runner.Task("1 ms delay", c =>
             {
-                execution.Execute(context, c => { });
+                execution.Execute(context, d => { });
             }).Setup(() =>
             {
                 var time = TimeSpan.FromMilliseconds(1);
@@ -31,7 +31,7 @@ namespace MeasureMap.UnitTest.Runners
 
             runner.Task("10 ms delay", c =>
             {
-                execution.Execute(context, c => { });
+                execution.Execute(context, d => { });
             }).Setup(() =>
             {
                 var time = TimeSpan.FromMilliseconds(10);
@@ -40,7 +40,7 @@ namespace MeasureMap.UnitTest.Runners
 
             runner.Task("100 ms delay", c =>
             {
-                execution.Execute(context, c => { });
+                execution.Execute(context, d => { });
             }).Setup(() =>
             {
                 var time = TimeSpan.FromMilliseconds(100);
