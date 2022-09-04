@@ -371,7 +371,7 @@ namespace MeasureMap.UnitTest
                 .Task(() => { cnt++; })
                 .RunSession();
 
-            result.Iterations.Count().Should().BeGreaterThan(100);
+            result.Iterations.Count().Should().BeGreaterThan(10);
         }
 
         [Test]
@@ -383,7 +383,7 @@ namespace MeasureMap.UnitTest
                 .Task(() => { cnt++; })
                 .RunSession();
 
-            cnt.Should().BeGreaterThan(100);
+            cnt.Should().BeGreaterThan(10);
         }
 
         [Test]

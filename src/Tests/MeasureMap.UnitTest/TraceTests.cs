@@ -25,8 +25,11 @@ namespace MeasureMap.UnitTest
             runner.Task("Md5", () => md5.ComputeHash(data));
 
             var result = runner.RunSessions();
-
+#if NET6_0_OR_GREATER
             var output = result.Trace().Split("\r\n");
+#else
+            var output = result.Trace().Split(new[] { "\r\n" }, StringSplitOptions.None);
+#endif
             output[0].MatchSnapshot(() => new {id = 0});
             output[1].MatchSnapshot(() => new { id = 1 });
             output[2].MatchSnapshot(() => new { id = 2 });
