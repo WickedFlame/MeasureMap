@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -14,7 +15,6 @@ using static Nuke.Common.IO.FileSystemTasks;
 using static Nuke.Common.IO.PathConstruction;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
-[CheckBuildProjectConfigurations]
 [ShutdownDotNetAfterServerBuild]
 class Build : NukeBuild
 {
@@ -38,10 +38,10 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
 
     [Parameter("Version to be injected in the Build")]
-    public string Version { get; set; } = $"1.2.11";
+    public string Version { get; set; } = $"1.8.0";
 
     [Parameter("The Buildnumber provided by the CI")]
-    public string BuildNo = $"{DateTime.Today.Month * 31 + DateTime.Today.Day}0";
+    public string BuildNo = "1";
 
     [Parameter("Is RC Version")]
     public bool IsRc = false;
@@ -50,12 +50,17 @@ class Build : NukeBuild
 
     AbsolutePath TestsDirectory => RootDirectory / "src" / "tests";
 
+    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+
+    AbsolutePath DeployPath => (AbsolutePath)"C:" / "Projects" / "NuGet Store";
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
         {
             SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
             TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
+            EnsureCleanDirectory(ArtifactsDirectory);
         });
 
     Target Restore => _ => _
@@ -94,7 +99,36 @@ class Build : NukeBuild
     Target Release => _ => _
         //.DependsOn(Clean)
         //.DependsOn(Compile)
-        .DependsOn(Test);
+        .DependsOn(Test)
+        .Executes(() =>
+        {
+            // copy to artifacts folder
+            foreach (var file in Directory.GetFiles(RootDirectory, $"*.{PackageVersion}.nupkg", SearchOption.AllDirectories))
+            {
+                CopyFile(file, ArtifactsDirectory / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+            }
+
+            foreach (var file in Directory.GetFiles(RootDirectory, $"*.{PackageVersion}.snupkg", SearchOption.AllDirectories))
+            {
+                CopyFile(file, ArtifactsDirectory / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+            }
+        });
+
+    Target Deploy => _ => _
+        .DependsOn(Release)
+        .Executes(() =>
+        {
+            // copy to local store
+            foreach (var file in Directory.GetFiles(ArtifactsDirectory, $"*.{PackageVersion}.nupkg", SearchOption.AllDirectories))
+            {
+                CopyFile(file, DeployPath / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+            }
+
+            foreach (var file in Directory.GetFiles(ArtifactsDirectory, $"*.{PackageVersion}.snupkg", SearchOption.AllDirectories))
+            {
+                CopyFile(file, DeployPath / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+            }
+        });
 
     string PackageVersion 
         => IsRc ? int.Parse(BuildNo) < 10 ? $"{Version}-RC0{BuildNo}" : $"{Version}-RC{BuildNo}" : Version;

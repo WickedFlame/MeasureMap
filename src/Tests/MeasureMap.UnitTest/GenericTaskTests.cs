@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using System.Linq;
+using FluentAssertions;
 
 namespace MeasureMap.UnitTest
 {
@@ -22,7 +23,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(20, output);
+            output.Should().Be(20);
         }
 
         [Test]
@@ -41,7 +42,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(20, output);
+            output.Should().Be(20);
         }
 
         [Test]
@@ -66,7 +67,7 @@ namespace MeasureMap.UnitTest
 
             session.Trace();
 
-            Assert.AreEqual(20, output);
+            output.Should().Be(20);
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(24, param.Count);
+            param.Count.Should().Be(24);
         }
 
         [Test]
@@ -114,7 +115,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(24, output);
+            output.Should().Be(24);
         }
 
         public class Item

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
@@ -38,8 +39,8 @@ namespace MeasureMap.UnitTest
 
             runner.RunSessions();
 
-            Assert.AreEqual(11, firstPre);
-            Assert.AreEqual(12, secondPre);
+            firstPre.Should().Be(11);
+            secondPre.Should().Be(12);
         }
     }
 }

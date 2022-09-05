@@ -2,12 +2,14 @@
 using System.Diagnostics;
 using NUnit.Framework;
 using System.Linq;
+using System.Text.RegularExpressions;
 using FluentAssertions;
 using MeasureMap.Runners;
+using Polaroider;
 
 namespace MeasureMap.UnitTest
 {
-    [TestFixture]
+    [SingleThreaded]
     public class ProfileSessionTests
     {
         [Test]
@@ -23,7 +25,7 @@ namespace MeasureMap.UnitTest
         {
             var session = ProfilerSession.StartSession();
 
-            Assert.AreEqual(1, session.Settings.Iterations);
+            session.Settings.Iterations.Should().Be(1);
         }
 
         [Test]
@@ -32,7 +34,7 @@ namespace MeasureMap.UnitTest
             var session = ProfilerSession.StartSession()
                 .SetIterations(12);
 
-            Assert.AreEqual(12, session.Settings.Iterations);
+            session.Settings.Iterations.Should().Be(12);
         }
 
         [Test]
@@ -41,7 +43,7 @@ namespace MeasureMap.UnitTest
             var session = ProfilerSession.StartSession()
                 .SetDuration(TimeSpan.FromSeconds(1));
 
-            Assert.AreEqual(TimeSpan.FromSeconds(1), session.Settings.Duration);
+            session.Settings.Duration.Should().Be(TimeSpan.FromSeconds(1));
         }
 
         [Test]
@@ -54,7 +56,7 @@ namespace MeasureMap.UnitTest
             // TODO: is it neccesary to run the session just to check if a task is set???
             session.RunSession();
 
-            Assert.AreEqual("passed", result);
+            result.Should().Be("passed");
         }
 
         [Test]
@@ -66,7 +68,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count - 1);
         }
 
         [Test]
@@ -79,7 +81,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count - 1);
         }
 
         [Test]
@@ -90,7 +92,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(200)
                 .RunSession();
 
-            Assert.IsTrue(result.AverageMilliseconds > 0);
+            result.AverageMilliseconds.Should().BeGreaterThan(0);
         }
 
         [Test]
@@ -101,7 +103,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(200)
                 .RunSession();
 
-            Assert.IsTrue(result.AverageTicks > 0);
+            result.AverageTicks.Should().BeGreaterThan(0);
         }
 
         [Test]
@@ -149,11 +151,50 @@ namespace MeasureMap.UnitTest
                 .RunSession()
                 .Trace();
 
-            Assert.That(result.Contains("Duration Total"));
+            Assert.That(result.Contains("Duration"));
+            Assert.That(result.Contains("Total Time"));
             Assert.That(result.Contains("Average Time"));
             Assert.That(result.Contains("Memory Initial size"));
             Assert.That(result.Contains("Memory End size"));
             Assert.That(result.Contains("Memory Increase"));
+        }
+
+        [Test]
+        public void ProfileSession_Trace_Detail()
+        {
+            System.Threading.Tasks.Task.Delay(5000).Wait();
+
+            var result = ProfilerSession.StartSession()
+                .Task(Task)
+                .SetIterations(5)
+                .RunSession()
+                .Trace(true);
+
+            Regex.Matches(result, " \\| 1 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 2 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 3 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 4 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 5 \\| ").Count.Should().Be(1);
+        }
+
+        [Test]
+        public void ProfileSession_Trace_MultipleThreads_Detail()
+        {
+            System.Threading.Tasks.Task.Delay(5000).Wait();
+
+            var result = ProfilerSession.StartSession()
+                .Task(Task)
+                .SetThreads(3)
+                .SetIterations(5)
+                .RunSession()
+                .Trace(true);
+
+            Regex.Matches(result, " \\| 1 \\| ").Count.Should().Be(3);
+            Regex.Matches(result, " \\| 2 \\| ").Count.Should().Be(3);
+            Regex.Matches(result, " \\| 3 \\| ").Count.Should().Be(3);
+            Regex.Matches(result, " \\| 4 \\| ").Count.Should().Be(3);
+            // 3 in thread details and 3 in full trace
+            Regex.Matches(result, " \\| 5 \\| ").Count.Should().Be(6);
         }
 
         [Test]
@@ -210,7 +251,7 @@ namespace MeasureMap.UnitTest
                 })
                 .SetIterations(10)
                 .RunSession();
-
+            result.Trace(true);
             Assert.That(result.Slowest.Iteration == 9);
         }
 
@@ -259,13 +300,59 @@ namespace MeasureMap.UnitTest
             sw.Start();
             
             ProfilerSession.StartSession()
-                .SetDuration(TimeSpan.FromSeconds(1))
+                .SetDuration(TimeSpan.FromSeconds(5))
                 .Task(() => { })
                 .RunSession();
             
             sw.Stop();
 
-            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(1)).And.BeLessThan(TimeSpan.FromSeconds(1.5));
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(5)).And.BeLessThan(TimeSpan.FromSeconds(5.5));
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_SetInterval_CheckTime()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .SetInterval(TimeSpan.FromMilliseconds(5))
+                .Task(() => { })
+                .RunSession();
+
+            sw.Stop();
+
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(5));
+        }
+
+        [Test]
+        [Explicit]
+        public void ProfileSession_SetDuration_SetInterval_CheckTime_UpperBOunds()
+        {
+            var sw = new Stopwatch();
+            sw.Start();
+
+            ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .SetInterval(TimeSpan.FromMilliseconds(5))
+                .Task(() => { })
+                .RunSession();
+
+            sw.Stop();
+
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromSeconds(5)).And.BeLessThan(TimeSpan.FromSeconds(5.5));
+        }
+
+        [Test]
+        public void ProfileSession_SetDuration_Trace_TotalTime()
+        {
+            var result = ProfilerSession.StartSession()
+                .SetDuration(TimeSpan.FromSeconds(1))
+                .Task(() => { })
+                .RunSession();
+
+            result.Trace().Should().Contain("Duration:\t\t\t00:00:01.");
         }
 
         [Test]
@@ -288,7 +375,7 @@ namespace MeasureMap.UnitTest
                 .Task(() => { cnt++; })
                 .RunSession();
 
-            result.Iterations.Count().Should().BeGreaterThan(100);
+            result.Iterations.Count().Should().BeGreaterThan(10);
         }
 
         [Test]
@@ -300,7 +387,7 @@ namespace MeasureMap.UnitTest
                 .Task(() => { cnt++; })
                 .RunSession();
 
-            cnt.Should().BeGreaterThan(100);
+            cnt.Should().BeGreaterThan(10);
         }
 
         [Test]
@@ -402,6 +489,46 @@ namespace MeasureMap.UnitTest
                 .Task(c =>
                 {
                     var i = c.Get<int>(ContextKeys.Iteration);
+                    return i;
+                })
+                .SetIterations(10)
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            // 0.5*10 + some overhead = >5 and <6
+            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(5));
+        }
+
+        [Test]
+        [Explicit]
+        public void ProfileSession_Interval_Duration_Upperbounds()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    return i;
+                })
+                .SetIterations(10)
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            // 0.5*10 + some overhead = >5 and <6
+            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(5)).And.BeLessThan(TimeSpan.FromSeconds(6));
+        }
+
+
+        [Test]
+        public void ProfileSession_IterationRunner_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
                     Trace.WriteLine(DateTime.Now);
                     return i;
                 })
@@ -411,7 +538,64 @@ namespace MeasureMap.UnitTest
 
             result.Trace(true);
 
-            result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(4)).And.BeLessThan(TimeSpan.FromSeconds(5));
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
+        }
+
+        [Test]
+        public void ProfileSession_DurationRunner_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .SetInterval(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
+        }
+
+        [Test]
+        public void ProfileSession_Iteration_Delayed_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetIterations(10)
+                .AddDelay(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
+        }
+
+        [Test]
+        public void ProfileSession_Interval_Delayed_NoDuplicateIterartion()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(c =>
+                {
+                    var i = c.Get<int>(ContextKeys.Iteration);
+                    Trace.WriteLine(DateTime.Now);
+                    return i;
+                })
+                .SetDuration(TimeSpan.FromSeconds(5))
+                .AddDelay(TimeSpan.FromSeconds(.5))
+                .RunSession();
+
+            result.Trace(true);
+
+            result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
         }
 
         private void Task()

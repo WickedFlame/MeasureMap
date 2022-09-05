@@ -5,6 +5,16 @@ nav_order: 99
 ---
 
 ## MeasureMap Changelog
+### v2.0.0
+- Use Thread instead of Task to run the Sessions in. This improves performance and adds stability to the sessions
+- Simple Sessions now also start a own thread to run the session in
+- Trace shows more information about the result
+- Information per thread is displayed in the trace
+- Internally all measures are made with Stopwatch instead of DateTime. This adds to performance and accuracy
+- ExecutionContext is added to the Task to share information better
+- Fix: Thread and Iteration info was not allways correct
+- All threads are waited for before ending the session and returning the result
+
 ### v1.7.0
 - Set the duration that a Profilersession should run for
 - Set a Interval to define the pace a task should be executed at

@@ -122,9 +122,13 @@ namespace MeasureMap
         /// </summary>
         public int ProcessId { get; set; }
 
+        /// <summary>
+        /// Creates a string of the result
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
-            return "Ticks: " + Ticks + " ms: " + Duration;
+            return $"Id: {ThreadId}.{Iteration} Ticks: {Ticks} ms: {Duration}";
         }
     }
 }

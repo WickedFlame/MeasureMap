@@ -22,7 +22,7 @@ namespace MeasureMap
             var result = base.Execute(task, settings);
 
             sw.Stop();
-            result.ResultValues.Add("Elapsed", sw.Elapsed);
+            result.ResultValues.Add(ResultValueType.Elapsed, sw.Elapsed);
 
             return result;
         }

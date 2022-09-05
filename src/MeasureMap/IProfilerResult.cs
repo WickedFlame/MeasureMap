@@ -62,8 +62,16 @@ namespace MeasureMap
         /// Gets the total time for all iterations
         /// </summary>
         TimeSpan TotalTime { get; }
+
+        /// <summary>
+        /// Gets the id of the thread that the task was run in
+        /// </summary>
+        int ThreadId { get; }
     }
 
+    /// <summary>
+    /// Result for multiple profiles
+    /// </summary>
     public interface IProfilerResult : IResult, IEnumerable<IResult>
     {
     }

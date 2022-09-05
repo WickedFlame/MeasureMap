@@ -24,7 +24,7 @@ namespace MeasureMap.Runners
         /// <param name="settings"></param>
         /// <param name="context"></param>
         /// <param name="action"></param>
-        public void Run(ProfilerSettings settings, ExecutionContext context, Action action)
+        public void Run(ProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action)
         {
             _logger.Write($"Running Task for {settings.Iterations} iterations for Perfomance Analysis Benchmark");
 
@@ -32,9 +32,10 @@ namespace MeasureMap.Runners
 
             for (var i = 0; i < settings.Iterations; i++)
             {
-                _logger.Write($"Running Task for iteration {i}");
+                _logger.Write($"Running Task for iteration {i + 1}", source: "IterationRunner");
                 context.Set(ContextKeys.Iteration, i + 1);
-                execution.Execute(action);
+
+                execution.Execute(context.Clone(), action);
             }
         }
     }

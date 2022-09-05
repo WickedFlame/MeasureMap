@@ -17,6 +17,11 @@ namespace MeasureMap
         /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
         protected Enumeration(int id, string name)
         {
             Id = id;

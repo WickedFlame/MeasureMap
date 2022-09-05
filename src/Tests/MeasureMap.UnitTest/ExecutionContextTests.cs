@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System.Linq;
+using FluentAssertions;
 
 namespace MeasureMap.UnitTest
 {
@@ -46,6 +47,13 @@ namespace MeasureMap.UnitTest
             var value = context.Get<int>("somevalue");
 
             Assert.That(value == 0);
+        }
+
+        [Test]
+        public void ExecutionContext_ThreadList_Default()
+        {
+            var context = new ExecutionContext();
+            context.Threads.Should().NotBeNull();
         }
     }
 }

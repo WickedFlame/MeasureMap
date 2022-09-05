@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
-using MeasureMap.Diagnostics;
-using MeasureMap.Runners;
+using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -11,11 +8,22 @@ namespace MeasureMap
     /// </summary>
     public class Worker
     {
+        private readonly IThreadList _threads;
+
         /// <summary>
         /// Creates a new instance of the worker
         /// </summary>
-        public Worker()
+        public Worker() : this(new ThreadList())
         {
+        }
+
+        /// <summary>
+        /// Creates a new instance of the worker
+        /// </summary>
+        /// <param name="threads"></param>
+        public Worker(IThreadList threads)
+        {
+            _threads = threads ?? throw new ArgumentNullException(nameof(threads));
         }
 
         /// <summary>
@@ -31,12 +39,15 @@ namespace MeasureMap
             ForceGarbageCollector();
             
             result.InitialSize = GC.GetTotalMemory(true);
-            var context = new ExecutionContext();
+            var context = new ExecutionContext
+            {
+                Threads = _threads
+            };
 
             var runner = settings.Runner;
-            runner.Run(settings, context, () =>
+            runner.Run(settings, context, c =>
             {
-                var iteration = task.Run(context);
+                var iteration = task.Run(c);
 
                 result.Add(iteration);
             });

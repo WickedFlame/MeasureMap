@@ -1,6 +1,12 @@
 # MeasureMap Changelog
 
 ## vNext
+- Add ThreadId and Iteration to the Tracedetails
+- Changed Targetframework to netstandard2.0
+- Changed from Task to full Threads
+- Display more infos in the traces
+- Use Stopwatch instead of DateTime.Now for more accuracy
+- Wait for all threads to end
 
 ## v1.7.0
 - Set the duration that a Profilersession should run for

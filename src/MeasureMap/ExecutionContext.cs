@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -11,6 +12,11 @@ namespace MeasureMap
         /// The data store for the context
         /// </summary>
         IDictionary<string, object> SessionData { get; }
+
+        /// <summary>
+        /// Gets a list containing all threads that are associated with this run
+        /// </summary>
+        IThreadList Threads { get; }
     }
 
     /// <summary>
@@ -19,9 +25,22 @@ namespace MeasureMap
     public class ExecutionContext : IExecutionContext
     {
         /// <summary>
+        /// Default constructor for ExecutionContext
+        /// </summary>
+        public ExecutionContext()
+        {
+            Threads = new ThreadList();
+        }
+
+        /// <summary>
         /// The data store for the context
         /// </summary>
         public IDictionary<string, object> SessionData { get; } = new Dictionary<string, object>();
+
+        /// <summary>
+        /// Gets a list containing all threads that are associated with this run
+        /// </summary>
+        public IThreadList Threads { get; set; }
     }
 
     /// <summary>
@@ -108,6 +127,26 @@ namespace MeasureMap
             context.SessionData.Clear();
 
             return context;
+        }
+
+        /// <summary>
+        /// Clones the <see cref="IExecutionContext"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static IExecutionContext Clone(this IExecutionContext context)
+        {
+            var child = new ExecutionContext
+            {
+                Threads = context.Threads
+            };
+
+            foreach(var item in context.SessionData)
+            {
+                child.Set(item.Key, item.Value);
+            }
+
+            return child;
         }
     }
 
