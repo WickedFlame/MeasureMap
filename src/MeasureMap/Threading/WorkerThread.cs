@@ -94,6 +94,10 @@ namespace MeasureMap.Threading
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Dispose the class
+        /// </summary>
+        /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
             if (_disposed)

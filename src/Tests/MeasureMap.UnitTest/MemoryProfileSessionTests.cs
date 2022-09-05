@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using FluentAssertions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count -1);
         }
 
         [Test]
@@ -56,7 +57,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count - 1);
         }
 
         [Test]

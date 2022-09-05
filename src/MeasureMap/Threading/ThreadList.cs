@@ -1,16 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 using System.Threading;
 using Thread = System.Threading.Tasks.Task;
 
 namespace MeasureMap.Threading
 {
+    /// <summary>
+    /// List of threads
+    /// </summary>
     public class ThreadList : IThreadList
     {
         private readonly List<Thread> _threads = new List<Thread>();
 
+        /// <summary>
+        /// Start the action in a new thread
+        /// </summary>
+        /// <param name="execution"></param>
         public void StartNew(Action execution)
         {
             var thread = Thread.Factory.StartNew(execution);

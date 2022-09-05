@@ -117,6 +117,12 @@ namespace MeasureMap
             return session;
         }
 
+        /// <summary>
+        /// Defines if the task is initially run as a warmup. Defaults to true
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="run"></param>
+        /// <returns></returns>
         public static ProfilerSession RunWarmup(this ProfilerSession session, bool run)
         {
             session.Settings.RunWarmup = run;

@@ -69,6 +69,9 @@ namespace MeasureMap
         int ThreadId { get; }
     }
 
+    /// <summary>
+    /// Result for multiple profiles
+    /// </summary>
     public interface IProfilerResult : IResult, IEnumerable<IResult>
     {
     }

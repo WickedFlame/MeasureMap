@@ -18,7 +18,7 @@ namespace MeasureMap.UnitTest
             // TODO: is it neccesary to run the session just to check if a task is set???
             session.RunSession();
 
-            Assert.AreEqual("passed", result);
+            result.Should().Be("passed");
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count - 1);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count - 1);
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(10)
                 .RunSession();
 
-            Assert.That(result.Slowest.Iteration == 9);
+            result.Slowest.Iteration.Should().Be(9);
         }
 
         [Test]

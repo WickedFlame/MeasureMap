@@ -1,6 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 using System.Linq;
+using FluentAssertions;
 
 namespace MeasureMap.UnitTest
 {
@@ -20,7 +21,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(20)
                 .RunSession();
 
-            Assert.AreEqual(20, output);
+            output.Should().Be(20);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using FluentAssertions;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest.SessionHandlers
@@ -21,7 +22,7 @@ namespace MeasureMap.UnitTest.SessionHandlers
             // 1 x task on warmup
             // 2 x CustomMiddleware on execution
             // 1 x task on execution
-            Assert.AreEqual(6, calls);
+            calls.Should().Be(6);
         }
 
         public class CustomMiddleware : ITaskMiddleware

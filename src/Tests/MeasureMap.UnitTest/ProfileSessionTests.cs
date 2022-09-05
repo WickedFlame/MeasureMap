@@ -25,7 +25,7 @@ namespace MeasureMap.UnitTest
         {
             var session = ProfilerSession.StartSession();
 
-            Assert.AreEqual(1, session.Settings.Iterations);
+            session.Settings.Iterations.Should().Be(1);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace MeasureMap.UnitTest
             var session = ProfilerSession.StartSession()
                 .SetIterations(12);
 
-            Assert.AreEqual(12, session.Settings.Iterations);
+            session.Settings.Iterations.Should().Be(12);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace MeasureMap.UnitTest
             var session = ProfilerSession.StartSession()
                 .SetDuration(TimeSpan.FromSeconds(1));
 
-            Assert.AreEqual(TimeSpan.FromSeconds(1), session.Settings.Duration);
+            session.Settings.Duration.Should().Be(TimeSpan.FromSeconds(1));
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace MeasureMap.UnitTest
             // TODO: is it neccesary to run the session just to check if a task is set???
             session.RunSession();
 
-            Assert.AreEqual("passed", result);
+            result.Should().Be("passed");
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count - 1);
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             // the task is rune once more to be able to initialize properly
-            Assert.AreEqual(result.Iterations.Count() + 1, count);
+            result.Iterations.Count().Should().Be(count - 1);
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(200)
                 .RunSession();
 
-            Assert.IsTrue(result.AverageMilliseconds > 0);
+            result.AverageMilliseconds.Should().BeGreaterThan(0);
         }
 
         [Test]
@@ -103,7 +103,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(200)
                 .RunSession();
 
-            Assert.IsTrue(result.AverageTicks > 0);
+            result.AverageTicks.Should().BeGreaterThan(0);
         }
 
         [Test]

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 using MeasureMap.Runners;
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// Settings for the profiler
+    /// </summary>
     public class ProfilerSettings
     {
         private readonly Dictionary<string, Action<ProfilerSettings, ProfilerSettings>> _changes = new Dictionary<string, Action<ProfilerSettings, ProfilerSettings>>();

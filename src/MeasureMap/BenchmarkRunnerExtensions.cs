@@ -2,6 +2,9 @@
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class BenchmarkRunnerExtensions
     {
         /// <summary>

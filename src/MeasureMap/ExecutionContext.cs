@@ -129,6 +129,11 @@ namespace MeasureMap
             return context;
         }
 
+        /// <summary>
+        /// Clones the <see cref="IExecutionContext"/>
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public static IExecutionContext Clone(this IExecutionContext context)
         {
             var child = new ExecutionContext
