@@ -8,7 +8,7 @@ namespace MeasureMap
     /// <summary>
     /// The result
     /// </summary>
-    public class ProfilerResult : IEnumerable<IResult>, IProfilerResult
+    public class ProfilerResult : IProfilerResult
     {
         private readonly List<IResult> _results = new List<IResult>();
 
