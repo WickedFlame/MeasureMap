@@ -162,22 +162,26 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_Trace_Detail()
         {
+            System.Threading.Tasks.Task.Delay(5000).Wait();
+
             var result = ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(5)
                 .RunSession()
                 .Trace(true);
 
-            Regex.Matches(result, "\\| 1 \\|").Count.Should().Be(1);
-            Regex.Matches(result, "\\| 2 \\|").Count.Should().Be(1);
-            Regex.Matches(result, "\\| 3 \\|").Count.Should().Be(1);
-            Regex.Matches(result, "\\| 4 \\|").Count.Should().Be(1);
-            Regex.Matches(result, "\\| 5 \\|").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 1 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 2 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 3 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 4 \\| ").Count.Should().Be(1);
+            Regex.Matches(result, " \\| 5 \\| ").Count.Should().Be(1);
         }
 
         [Test]
         public void ProfileSession_Trace_MultipleThreads_Detail()
         {
+            System.Threading.Tasks.Task.Delay(5000).Wait();
+
             var result = ProfilerSession.StartSession()
                 .Task(Task)
                 .SetThreads(3)
@@ -185,12 +189,12 @@ namespace MeasureMap.UnitTest
                 .RunSession()
                 .Trace(true);
 
-            Regex.Matches(result, "\\| 1 \\|").Count.Should().Be(3);
-            Regex.Matches(result, "\\| 2 \\|").Count.Should().Be(3);
-            Regex.Matches(result, "\\| 3 \\|").Count.Should().Be(3);
-            Regex.Matches(result, "\\| 4 \\|").Count.Should().Be(3);
+            Regex.Matches(result, " \\| 1 \\| ").Count.Should().Be(3);
+            Regex.Matches(result, " \\| 2 \\| ").Count.Should().Be(3);
+            Regex.Matches(result, " \\| 3 \\| ").Count.Should().Be(3);
+            Regex.Matches(result, " \\| 4 \\| ").Count.Should().Be(3);
             // 3 in thread details and 3 in full trace
-            Regex.Matches(result, "\\| 5 \\|").Count.Should().Be(6);
+            Regex.Matches(result, " \\| 5 \\| ").Count.Should().Be(6);
         }
 
         [Test]

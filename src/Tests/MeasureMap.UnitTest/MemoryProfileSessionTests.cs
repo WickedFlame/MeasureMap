@@ -72,12 +72,10 @@ namespace MeasureMap.UnitTest
                         list.Add(new byte[1024]);
                     }
                 })
-                .SetIterations(1000)
+                .SetIterations(100)
                 .RunSession();
 
-            Thread.Sleep(TimeSpan.FromSeconds(5));
-
-            Assert.IsTrue(result.Increase < 200000L && result.Increase > 30000L, result.Increase.ToString());
+            Assert.IsTrue(result.Increase > 0, result.Increase.ToString());
         }
     }
 }
