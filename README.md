@@ -7,6 +7,7 @@
 [![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=for-the-badge&label=Latest)](https://www.nuget.org/packages/measuremap/)
 [![NuGet Version](https://img.shields.io/nuget/vpre/measuremap.svg?style=for-the-badge&label=RC)](https://www.nuget.org/packages/measuremap/)
   
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=coverage)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
   
