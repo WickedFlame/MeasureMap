@@ -1,6 +1,8 @@
 # MeasureMap Changelog
 
 ## vNext
+
+## v2.0.0
 - Add ThreadId and Iteration to the Tracedetails
 - Changed Targetframework to netstandard2.0
 - Changed from Task to full Threads
