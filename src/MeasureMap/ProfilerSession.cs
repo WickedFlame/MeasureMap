@@ -56,7 +56,7 @@ namespace MeasureMap
         public ITaskMiddleware TaskHandler => _processingPipeline;
 
         /// <summary>
-        /// Gets the processing pipeline containing the middleware that get executed for every itteration. The task is executed at the top of the executionchain.
+        /// Gets the processing pipeline containing the middleware that get executed for every iteration. The task is executed at the top of the executionchain.
         /// </summary>
         public ITaskMiddleware ProcessingPipeline => _processingPipeline;
 

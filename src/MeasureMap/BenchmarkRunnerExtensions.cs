@@ -11,7 +11,7 @@ namespace MeasureMap
         /// Set the amount of iterations that the benchmarks run
         /// </summary>
         /// <param name="runner">The benchmark runner</param>
-        /// <param name="iterations">the amount of itterations</param>
+        /// <param name="iterations">The amount of iterations</param>
         /// <returns></returns>
         public static BenchmarkRunner SetIterations(this BenchmarkRunner runner, int iterations)
         {

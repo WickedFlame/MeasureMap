@@ -1,6 +1,7 @@
 # MeasureMap Changelog
 
 ## vNext
+- Benchmarks not Trace iterartions instead of memory used
 
 ## v2.0.0
 - Add ThreadId and Iteration to the Tracedetails

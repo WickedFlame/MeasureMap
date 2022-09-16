@@ -13,7 +13,7 @@ id: 4
 ---metadata
 id: 3
 ---data
-| Name | Avg Time | Avg ms | Avg Ticks | Total | Fastest | Slowest | Memory Increase |
+| Name | Avg Time | Avg ms | Avg Ticks | Total | Fastest | Slowest | Iterations |
 ---metadata
 id: 2
 ---data

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
 using System.Text;
 
 namespace MeasureMap
@@ -21,7 +20,7 @@ namespace MeasureMap
             sb.AppendLine("## MeasureMap Benchmark");
             sb.AppendLine($" Iterations:\t\t{results.Iterations}");
             sb.AppendLine($"### Summary");
-            sb.AppendLine("| Name | Avg Time | Avg ms | Avg Ticks | Total | Fastest | Slowest | Memory Increase |");
+            sb.AppendLine("| Name | Avg Time | Avg ms | Avg Ticks | Total | Fastest | Slowest | Iterations |");
             sb.AppendLine("|--- |---: |---: |---: |---: |---: |---: |---: |");
             foreach (var key in results.Keys)
             {
@@ -37,7 +36,7 @@ namespace MeasureMap
 
         private static string TraceLine(IProfilerResult result)
         {
-            return $"| {result.AverageTime} | {result.AverageMilliseconds} | {result.AverageTicks} | {result.TotalTime.ToString()} | {result.Fastest.Ticks} | {result.Slowest.Ticks} | {result.Increase} |";
+            return $"| {result.AverageTime} | {result.AverageMilliseconds} | {result.AverageTicks} | {result.TotalTime.ToString()} | {result.Fastest.Ticks} | {result.Slowest.Ticks} | {result.Iterations.Count()} |";
         }
     }
 }
