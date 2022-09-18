@@ -107,6 +107,17 @@ namespace MeasureMap.UnitTest
         }
 
         [Test]
+        public void ProfileSession_Throughput()
+        {
+            var result = ProfilerSession.StartSession()
+                .Task(()=>{})
+                .SetDuration(TimeSpan.FromSeconds(2))
+                .RunSession();
+
+            result.Throughput().Should().BeGreaterThan(50);
+        }
+
+        [Test]
         public void ProfileSession_TrueCondition()
         {
             ProfilerSession.StartSession()

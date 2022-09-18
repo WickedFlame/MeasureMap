@@ -122,5 +122,21 @@ namespace MeasureMap
 
             return 1;
         }
+
+        /// <summary>
+        /// Returns the average throughput per second
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static double Throughput(this IProfilerResult result)
+        {
+            var elapsed = result.Elapsed();
+            if (elapsed == TimeSpan.MinValue)
+            {
+                elapsed = result.TotalTime;
+            }
+
+            return result.Iterations.Count() / elapsed.TotalSeconds;
+        }
     }
 }
