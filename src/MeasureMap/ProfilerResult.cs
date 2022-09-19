@@ -130,13 +130,13 @@ namespace MeasureMap
         /// <summary>
         /// Gets the last <see cref="Result"/> for fast access that is needed during executions
         /// </summary>
-        public Result Last { get; private set; }
+        public IResult Last { get; private set; }
 
         /// <summary>
         /// Add a new result
         /// </summary>
         /// <param name="result"></param>
-        internal void Add(Result result)
+        public void Add(IResult result)
         {
             _results.Add(result);
             Last = result;

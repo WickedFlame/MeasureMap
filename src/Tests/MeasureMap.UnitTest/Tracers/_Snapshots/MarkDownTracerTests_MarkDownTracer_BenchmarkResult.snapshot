@@ -1,0 +1,9 @@
+---data
+## MeasureMap Benchmark
+ Iterations:		10
+### Summary
+| Name | Avg Time | Avg ms | Avg Ticks | Total | Fastest | Slowest | Iterations | Throughput |
+|--- |---: |---: |---: |---: |---: |---: |---: |---: |
+| res1 | 00:00:00 | 0 | 0 | 00:00:00 | 0 | 0 | 10 | ∞ |
+| res2 | 00:00:00 | 0 | 0 | 00:00:00 | 0 | 0 | 10 | ∞ |
+

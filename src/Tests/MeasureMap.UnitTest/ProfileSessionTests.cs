@@ -160,7 +160,7 @@ namespace MeasureMap.UnitTest
                 .Task(Task)
                 .SetIterations(10)
                 .RunSession()
-                .Trace();
+                .Trace(false);
 
             Assert.That(result.Contains("Duration"));
             Assert.That(result.Contains("Total Time"));
@@ -363,7 +363,7 @@ namespace MeasureMap.UnitTest
                 .Task(() => { })
                 .RunSession();
 
-            result.Trace().Should().Contain("Duration:\t\t\t00:00:01.");
+            result.Trace(false).Should().Contain("Duration:\t\t\t00:00:01.");
         }
 
         [Test]

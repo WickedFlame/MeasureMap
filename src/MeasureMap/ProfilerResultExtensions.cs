@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MeasureMap.Tracers;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -9,12 +10,6 @@ namespace MeasureMap
     /// </summary>
     public static class ProfilerResultExtensions
     {
-        /// <summary>
-        /// Trace the result to the Console
-        /// </summary>
-        public static string Trace(this IProfilerResult profilerResult, string header = "### MeasureMap - Profiler result for Profilesession")
-            => Trace(profilerResult, false, header);
-
         /// <summary>
         /// Trace the result to the Console
         /// </summary>
@@ -76,6 +71,57 @@ namespace MeasureMap
             Console.WriteLine(result);
 #endif
             return result;
+        }
+
+        /// <summary>
+        /// Traces the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static void Trace(this IProfilerResult result)
+        {
+            result.Trace(TraceOptions.Default.Tracer, TraceOptions.Default.ResultWriter);
+        }
+
+        /// <summary>
+        /// Trace the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="options"></param>
+        public static void Trace(this IProfilerResult result, TraceOptions options)
+        {
+            result.Trace(options.Tracer, options.ResultWriter);
+        }
+
+        /// <summary>
+        /// Trace the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="tracer"></param>
+        public static void Trace(this IProfilerResult result, ITracer tracer)
+        {
+            result.Trace(tracer, TraceOptions.Default.ResultWriter);
+        }
+
+        /// <summary>
+        /// Trace the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="writer"></param>
+        public static void Trace(this IProfilerResult result, IResultWriter writer)
+        {
+            result.Trace(TraceOptions.Default.Tracer, writer);
+        }
+
+        /// <summary>
+        /// Trace the output of a Benchmark Test
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="tracer"></param>
+        /// <param name="writer"></param>
+        public static void Trace(this IProfilerResult result, ITracer tracer, IResultWriter writer)
+        {
+            tracer.Trace(result, writer);
         }
 
         /// <summary>

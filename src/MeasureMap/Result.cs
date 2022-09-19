@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MeasureMap
 {
@@ -129,7 +128,11 @@ namespace MeasureMap
         /// </summary>
         public TimeSpan Warmup { get; set; }
         
-        internal void Add(IIterationResult iteration)
+        /// <summary>
+        /// Add a new <see cref="IIterationResult"/>
+        /// </summary>
+        /// <param name="iteration"></param>
+        public void Add(IIterationResult iteration)
         {
             _iterations.Add(iteration);
         }

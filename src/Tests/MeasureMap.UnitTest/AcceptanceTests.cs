@@ -89,7 +89,7 @@ namespace MeasureMap.UnitTest
                 .Task(Task)
                 .SetIterations(10)
                 .RunSession()
-                .Trace();
+                .Trace(false);
 
             Assert.That(result.Contains("Duration"));
             Assert.That(result.Contains("Total Time"));

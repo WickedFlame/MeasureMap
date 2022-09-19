@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using MeasureMap.Tracers;
+using MeasureMap.UnitTest.Tracers;
 using NUnit.Framework;
 using Polaroider;
 
@@ -13,6 +15,9 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfilerResultCollection_Trace()
         {
+            var writer = new StringResultWriter();
+            TraceOptions.Default.ResultWriter = writer;
+
             var sha256 = SHA256.Create();
             var md5 = MD5.Create();
 
@@ -25,10 +30,12 @@ namespace MeasureMap.UnitTest
             runner.Task("Md5", () => md5.ComputeHash(data));
 
             var result = runner.RunSessions();
+            result.Trace();
+
 #if NET6_0_OR_GREATER
-            var output = result.Trace().Split("\r\n");
+            var output = writer.Value.Split("\r\n");
 #else
-            var output = result.Trace().Split(new[] { "\r\n" }, StringSplitOptions.None);
+            var output = writer.Value.Split(new[] { "\r\n" }, StringSplitOptions.None);
 #endif
             output[0].MatchSnapshot(() => new {id = 0});
             output[1].MatchSnapshot(() => new { id = 1 });

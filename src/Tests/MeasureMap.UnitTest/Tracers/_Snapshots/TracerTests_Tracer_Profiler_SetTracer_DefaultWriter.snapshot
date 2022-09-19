@@ -1,0 +1,21 @@
+---data
+### MeasureMap - Profiler result for Profilesession
+#### Summary
+	Warmup ========================================
+		Duration Warmup:			00:00:00
+	Setup ========================================
+		Threads:			1
+		Iterations:			10
+	Duration ========================================
+		Duration:			00:00:00
+		Total Time:			00:00:00
+		Average Time:			00:00:00
+		Average Milliseconds:		0
+		Average Ticks:			0
+		Fastest:			00:00:00
+		Slowest:			00:00:00
+	Memory ==========================================
+		Memory Initial size:		0
+		Memory End size:		0
+		Memory Increase:		0
+

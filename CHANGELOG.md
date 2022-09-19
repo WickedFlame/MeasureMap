@@ -3,6 +3,7 @@
 ## vNext
 - Benchmarks not Trace iterartions instead of memory used
 - Benchmarks Trace throughput per second
+- Customizable Tracer for Results
 
 ## v2.0.0
 - Add ThreadId and Iteration to the Tracedetails
