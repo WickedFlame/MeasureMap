@@ -3,9 +3,9 @@ namespace MeasureMap.UnitTest.Tracers
 {
     public static class ResultFactory
     {
-        public static IProfilerResultCollection CreateBenchmarkResult()
+        public static IBenchmarkResult CreateBenchmarkResult()
         {
-            return new ProfilerResultCollection(10)
+            return new BenchmarkResult(10)
             {
                 { "res1", CreateResult() },
                 { "res2", CreateResult() }

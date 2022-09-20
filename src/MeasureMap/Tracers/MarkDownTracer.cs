@@ -62,11 +62,11 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Trace the <see cref="IProfilerResultCollection"/> as MarkDown to the ouput
+        /// Trace the <see cref="IBenchmarkResult"/> as MarkDown to the ouput
         /// </summary>
         /// <param name="result"></param>
         /// <param name="writer"></param>
-        public void Trace(IProfilerResultCollection result, IResultWriter writer)
+        public void Trace(IBenchmarkResult result, IResultWriter writer)
         {
             writer.WriteLine("## MeasureMap Benchmark");
             writer.WriteLine($" Iterations:\t\t{result.Iterations}");

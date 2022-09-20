@@ -31,7 +31,9 @@ namespace MeasureMap
         public TimeSpan Elapsed => ResultValues.ContainsKey(ResultValueType.Elapsed) ? (TimeSpan)ResultValues[ResultValueType.Elapsed] : TimeSpan.Zero;
 
         /// <summary>
-        /// The iterations that were run
+        /// The iterations that were run.
+        /// This is a summary of all Iterations over all threads.
+        /// Thre results of each thread is accessed through the enumerator
         /// </summary>
         public IEnumerable<IIterationResult> Iterations => _results.SelectMany(r => r.Iterations);
 
@@ -96,13 +98,15 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Gets the id of the thread that the task was run in
+        /// Gets the id of the thread that the task was run in.
+        /// For multithreaded profiles this gets the ThreadId of the first result.
+        /// Use the enumerator of the <see cref="IProfilerResult"/> to get the ThreadIds of all threads used
         /// </summary>
         public int ThreadId
         {
             get
             {
-                var first = Iterations.FirstOrDefault();
+                var first = this.FirstOrDefault();
                 return first != null ? first.ThreadId : 0;
             }
         }
@@ -143,7 +147,7 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// The enumerator
+        /// The enumerator. Each <see cref="IResult"/> represents the results of a thread
         /// </summary>
         /// <returns></returns>
         public IEnumerator<IResult> GetEnumerator()

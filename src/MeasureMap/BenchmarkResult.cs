@@ -6,37 +6,7 @@ namespace MeasureMap
     /// <summary>
     /// Defines the redults of benchmarktests
     /// </summary>
-    public interface IProfilerResultCollection : IEnumerable<IProfilerResult>
-    {
-        /// <summary>
-        /// Add a result of benchmarktest
-        /// </summary>
-        /// <param name="name">The name of the result</param>
-        /// <param name="result">The result</param>
-        void Add(string name, IProfilerResult result);
-
-        /// <summary>
-        /// Gets the amount of iterations that the benchmarktests were run
-        /// </summary>
-        int Iterations { get; }
-        
-        /// <summary>
-        /// Gets the keys collection
-        /// </summary>
-        IEnumerable<string> Keys { get; }
-
-        /// <summary>
-        /// Indexer for benchmarkresults 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        IProfilerResult this[string key] { get; }
-    }
-
-    /// <summary>
-    /// Defines the redults of benchmarktests
-    /// </summary>
-    public class ProfilerResultCollection : IProfilerResultCollection
+    public class BenchmarkResult : IBenchmarkResult
     {
         private readonly Dictionary<string, IProfilerResult> _results;
 
@@ -44,7 +14,7 @@ namespace MeasureMap
         /// Creates an instance of a ProfilerResultCollection
         /// </summary>
         /// <param name="iterations"></param>
-        public ProfilerResultCollection(int iterations)
+        public BenchmarkResult(int iterations)
         {
             _results = new Dictionary<string, IProfilerResult>();
             Iterations = iterations;

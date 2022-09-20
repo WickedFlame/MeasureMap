@@ -14,7 +14,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public static void Trace(this IProfilerResultCollection result)
+        public static void Trace(this IBenchmarkResult result)
         {
             result.Trace(TraceOptions.Default.Tracer, TraceOptions.Default.ResultWriter);
         }
@@ -24,7 +24,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="result"></param>
         /// <param name="options"></param>
-        public static void Trace(this IProfilerResultCollection result, TraceOptions options)
+        public static void Trace(this IBenchmarkResult result, TraceOptions options)
         {
             result.Trace(options.Tracer, options.ResultWriter);
         }
@@ -34,7 +34,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="result"></param>
         /// <param name="tracer"></param>
-        public static void Trace(this IProfilerResultCollection result, ITracer tracer)
+        public static void Trace(this IBenchmarkResult result, ITracer tracer)
         {
             result.Trace(tracer, TraceOptions.Default.ResultWriter);
         }
@@ -44,7 +44,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="result"></param>
         /// <param name="writer"></param>
-        public static void Trace(this IProfilerResultCollection result, IResultWriter writer)
+        public static void Trace(this IBenchmarkResult result, IResultWriter writer)
         {
             result.Trace(TraceOptions.Default.Tracer, writer);
         }
@@ -55,7 +55,7 @@ namespace MeasureMap
         /// <param name="result"></param>
         /// <param name="tracer"></param>
         /// <param name="writer"></param>
-        public static void Trace(this IProfilerResultCollection result, ITracer tracer, IResultWriter writer)
+        public static void Trace(this IBenchmarkResult result, ITracer tracer, IResultWriter writer)
         {
             tracer.Trace(result, writer);
         }
