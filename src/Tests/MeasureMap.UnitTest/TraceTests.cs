@@ -9,14 +9,17 @@ using Polaroider;
 
 namespace MeasureMap.UnitTest
 {
-    [TestFixture]
+    [SingleThreaded]
     public class TraceTests
     {
         [Test]
-        public void ProfilerResultCollection_Trace()
+        public void BenchmarkResult_Trace()
         {
             var writer = new StringResultWriter();
-            TraceOptions.Default.ResultWriter = writer;
+            var options = new TraceOptions
+            {
+                ResultWriter = writer
+            };
 
             var sha256 = SHA256.Create();
             var md5 = MD5.Create();
@@ -30,7 +33,7 @@ namespace MeasureMap.UnitTest
             runner.Task("Md5", () => md5.ComputeHash(data));
 
             var result = runner.RunSessions();
-            result.Trace();
+            result.Trace(options);
 
 #if NET6_0_OR_GREATER
             var output = writer.Value.Split("\r\n");

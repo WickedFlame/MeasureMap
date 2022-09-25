@@ -5,6 +5,7 @@ using Polaroider;
 
 namespace MeasureMap.UnitTest.Tracers
 {
+    [SingleThreaded]
     public class TracerTests
     {
         [Test]
@@ -24,6 +25,8 @@ namespace MeasureMap.UnitTest.Tracers
         {
             var result = ResultFactory.CreateBenchmarkResult();
 
+            TraceOptions.Default.Tracer = new MarkDownTracer();
+
             var writer = new StringResultWriter();
 
             result.Trace(writer);
@@ -41,6 +44,8 @@ namespace MeasureMap.UnitTest.Tracers
             result.Trace(new MarkDownTracer());
 
             ((StringResultWriter)TraceOptions.Default.ResultWriter).Value.MatchSnapshot();
+
+            TraceOptions.Default.ResultWriter = new TraceResultWriter();
         }
 
         [Test]
@@ -79,6 +84,7 @@ namespace MeasureMap.UnitTest.Tracers
         public void Tracer_Profiler_DefaultTracer_SetWriter()
         {
             var result = ResultFactory.CreateResult();
+            TraceOptions.Default.Tracer = new MarkDownTracer();
 
             var writer = new StringResultWriter();
 
@@ -97,6 +103,8 @@ namespace MeasureMap.UnitTest.Tracers
             result.Trace(new MarkDownTracer());
 
             ((StringResultWriter)TraceOptions.Default.ResultWriter).Value.MatchSnapshot();
+
+            TraceOptions.Default.ResultWriter = new TraceResultWriter();
         }
 
         [Test]

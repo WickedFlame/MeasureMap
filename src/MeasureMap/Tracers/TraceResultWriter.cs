@@ -5,7 +5,7 @@ namespace MeasureMap.Tracers
     /// <summary>
     /// Trace the output to the <see cref="Trace"/>
     /// </summary>
-    public class TraceWriter : IResultWriter
+    public class TraceResultWriter : IResultWriter
     {
         /// <summary>
         /// Write a value to the <see cref="Trace"/>

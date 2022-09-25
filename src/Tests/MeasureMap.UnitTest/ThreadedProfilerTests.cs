@@ -1,11 +1,8 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MeasureMap.UnitTest
 {
@@ -81,7 +78,7 @@ namespace MeasureMap.UnitTest
             Assert.That(((ProfilerResult)result).All(r => r.EndSize > 0), () => "EndSize");
             Assert.That(((ProfilerResult)result).All(r => r.AverageTicks > 0), () => "AverageTicks");
             // milliseconds can be 0 when ticks are too low
-            //Assert.That(((ProfilerResultCollection)result).Any(r => r.AverageMilliseconds != 0), () => "AverageMilliseconds");
+            //Assert.That(((BenchmarkResult)result).Any(r => r.AverageMilliseconds != 0), () => "AverageMilliseconds");
             Assert.That(((ProfilerResult)result).All(r => r.Fastest != null), () => "Fastest");
             Assert.That(((ProfilerResult)result).All(r => r.Increase != 0), () => "Increase");
             Assert.That(((ProfilerResult)result).All(r => r.InitialSize > 0), () => "InitialSize");

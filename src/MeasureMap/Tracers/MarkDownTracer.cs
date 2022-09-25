@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using MeasureMap.Tracers.Metrics;
 
 namespace MeasureMap.Tracers
 {
@@ -13,50 +14,88 @@ namespace MeasureMap.Tracers
         /// </summary>
         /// <param name="result"></param>
         /// <param name="writer"></param>
-        public void Trace(IProfilerResult result, IResultWriter writer)
+        /// <param name="options"></param>
+        public void Trace(IProfilerResult result, IResultWriter writer, TraceOptions options)
         {
-            writer.WriteLine("### MeasureMap - Profiler result for Profilesession");
+            options.Metrics ??= ProfilerTraceMetrics.GetDefaultTraceMetrics();
 
-            writer.WriteLine($"#### Summary");
-            writer.WriteLine($"\tWarmup ========================================");
-            writer.WriteLine($"\t\tDuration Warmup:\t\t\t{result.Warmup().ToString()}");
-            writer.WriteLine($"\tSetup ========================================");
-            writer.WriteLine($"\t\tThreads:\t\t\t{result.Threads()}");
-            writer.WriteLine($"\t\tIterations:\t\t\t{result.Iterations.Count()}");
-            writer.WriteLine($"\tDuration ========================================");
-            writer.WriteLine($"\t\tDuration:\t\t\t{result.Elapsed()}");
-            writer.WriteLine($"\t\tTotal Time:\t\t\t{result.TotalTime.ToString()}");
-            writer.WriteLine($"\t\tAverage Time:\t\t\t{result.AverageTime}");
-            writer.WriteLine($"\t\tAverage Milliseconds:\t\t{result.AverageMilliseconds}");
-            writer.WriteLine($"\t\tAverage Ticks:\t\t\t{result.AverageTicks}");
-            writer.WriteLine($"\t\tFastest:\t\t\t{TimeSpan.FromTicks(result.Fastest.Ticks)}");
-            writer.WriteLine($"\t\tSlowest:\t\t\t{TimeSpan.FromTicks(result.Slowest.Ticks)}");
-            writer.WriteLine($"\tMemory ==========================================");
-            writer.WriteLine($"\t\tMemory Initial size:\t\t{result.InitialSize}");
-            writer.WriteLine($"\t\tMemory End size:\t\t{result.EndSize}");
-            writer.WriteLine($"\t\tMemory Increase:\t\t{result.Increase}");
+            writer.WriteLine("# MeasureMap - Profiler result");
+            if (result == null || !result.Any())
+            {
+                writer.WriteLine("No measurements contained in the result");
+                return;
+            }
+
+            writer.WriteLine("## Summary");
+
+            writer.WriteLine("| Category | Metric | Value |");
+            writer.WriteLine("| --- | --- | ---: |");
+
+            foreach (var group in options.Metrics.GetProfilerMetrics().GroupBy(m => m.Category).OrderByDescending(g => g.Key == MetricCategory.Warmup).ThenByDescending(g => g.Key == MetricCategory.Setup).ThenByDescending(g => g.Key == MetricCategory.Duration).ThenBy(g => g.Key == MetricCategory.Memory))
+            {
+                var key = group.Key;
+                foreach (var metric in group)
+                {
+                    writer.WriteLine($"| {key} | {metric.Name} | {metric.GetMetric(result)} |");
+                    key = string.Empty;
+                }
+            }
 
             if (result.Threads() > 1)
             {
                 writer.WriteLine(string.Empty);
-                writer.WriteLine("#### Details per Thread");
-                writer.WriteLine("| ThreadId | Iterations | Average time | Slowest | Fastest |");
-                writer.WriteLine("| --- | --- | ---: | ---: | ---: |");
+                writer.WriteLine("## Details per Thread");
+                var metrics = options.Metrics.GetProfileThreadMetrics();
+                var headers = string.Join(" | ", metrics.Select(m => m.Name));
+                writer.WriteLine($"| {headers} |");
+
+                writer.Write("|");
+                foreach (var metric in metrics)
+                {
+                    writer.Write($" ---{GetAlignment(metric.TextAlign)} |");
+                }
+
+                writer.WriteLine(string.Empty);
+
                 foreach (var thread in result)
                 {
-                    writer.WriteLine($"| {thread.ThreadId} | {thread.Iterations.Count()} | {thread.AverageTime} | {thread.Slowest.Duration} | {thread.Fastest.Duration} |");
+                    writer.Write("|");
+
+                    foreach (var metric in metrics)
+                    {
+                        writer.Write($" {metric.GetMetric(thread)} |");
+                    }
+
+                    writer.WriteLine(string.Empty);
                 }
             }
 
-            if (TraceOptions.Default.TraceFullStack)
+            if (options.TraceFullStack)
             {
                 writer.WriteLine(string.Empty);
-                writer.WriteLine($"#### Iterations");
-                writer.WriteLine("| ThreadId | Iteration | Timestamp | Duration | Init size | End size |");
-                writer.WriteLine("| --- | --- | --- | --- | ---: | ---: |");
+                writer.WriteLine("## Details per Iteration and Thread");
+                var metrics = options.Metrics.GetIterationMetrics();
+                var headers = string.Join(" | ", metrics.Select(m => m.Name));
+                writer.WriteLine($"| {headers} |");
+
+                writer.Write("|");
+                foreach (var metric in metrics)
+                {
+                    writer.Write($" ---{GetAlignment(metric.TextAlign)} |");
+                }
+
+                writer.WriteLine(string.Empty);
+
                 foreach (var iteration in result.Iterations.OrderBy(i => i.TimeStamp))
                 {
-                    writer.WriteLine($"| {iteration.ThreadId} | {iteration.Iteration} | {iteration.TimeStamp:o} | {iteration.Duration} | {iteration.InitialSize} | {iteration.AfterExecution} |");
+                    writer.Write("|");
+
+                    foreach (var metric in metrics)
+                    {
+                        writer.Write($" {metric.GetMetric(iteration)} |");
+                    }
+
+                    writer.WriteLine(string.Empty);
                 }
             }
         }
@@ -66,22 +105,56 @@ namespace MeasureMap.Tracers
         /// </summary>
         /// <param name="result"></param>
         /// <param name="writer"></param>
-        public void Trace(IBenchmarkResult result, IResultWriter writer)
+        /// <param name="options"></param>
+        public void Trace(IBenchmarkResult result, IResultWriter writer, TraceOptions options)
         {
-            writer.WriteLine("## MeasureMap Benchmark");
-            writer.WriteLine($" Iterations:\t\t{result.Iterations}");
-            writer.WriteLine($"### Summary");
-            writer.WriteLine("| Name | Avg Time | Avg ms | Avg Ticks | Total | Fastest | Slowest | Iterations | Throughput |");
-            writer.WriteLine("|--- |---: |---: |---: |---: |---: |---: |---: |---: |");
+            options.Metrics ??= BenchmarkTraceMetrics.GetDefaultTraceMetrics();
+
+            writer.WriteLine("# MeasureMap - Benchmark result");
+            if (result == null || !result.Any())
+            {
+                writer.WriteLine("No measurements contained in the result");
+                return;
+            }
+
+            writer.WriteLine($" Iterations: {result.Iterations}");
+
+            writer.WriteLine("## Summary");
+
+            var metrics = options.Metrics.GetProfilerMetrics();
+            var headers = string.Join(" | ", metrics.Select(m => m.Name));
+            writer.WriteLine($"| Name | {headers} |");
+
+            writer.Write("| --- |");
+            foreach (var metric in metrics)
+            {
+                writer.Write($" ---{GetAlignment(metric.TextAlign)} |");
+            }
+
+            writer.WriteLine(string.Empty);
+
             foreach (var key in result.Keys)
             {
-                writer.WriteLine($"| {key} {TraceLine(result[key])}");
+                writer.Write($"| {key} |");
+
+                var profile = result[key];
+                foreach (var metric in metrics)
+                {
+                    writer.Write($" {metric.GetMetric(profile)} |");
+                }
+
+                writer.WriteLine(string.Empty);
             }
         }
 
-        private static string TraceLine(IProfilerResult result)
+        private string GetAlignment(TextAlign align)
         {
-            return $"| {result.AverageTime} | {result.AverageMilliseconds} | {result.AverageTicks} | {result.TotalTime.ToString()} | {result.Fastest.Ticks} | {result.Slowest.Ticks} | {result.Iterations.Count()} | {result.Throughput()} |";
+            return align switch
+            {
+                TextAlign.Right => ":",
+                TextAlign.Left => "",
+                _ => ""
+            };
         }
     }
 }

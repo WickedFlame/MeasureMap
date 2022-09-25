@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Text;
+using MeasureMap.Tracers.Metrics;
 
 namespace MeasureMap
 {
@@ -80,7 +81,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static void Trace(this IProfilerResult result)
         {
-            result.Trace(TraceOptions.Default.Tracer, TraceOptions.Default.ResultWriter);
+            result.Trace(TraceOptions.Default.Tracer, TraceOptions.Default.ResultWriter, TraceOptions.Default.Clone());
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace MeasureMap
         /// <param name="options"></param>
         public static void Trace(this IProfilerResult result, TraceOptions options)
         {
-            result.Trace(options.Tracer, options.ResultWriter);
+            result.Trace(options.Tracer, options.ResultWriter, options);
         }
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace MeasureMap
         /// <param name="tracer"></param>
         public static void Trace(this IProfilerResult result, ITracer tracer)
         {
-            result.Trace(tracer, TraceOptions.Default.ResultWriter);
+            result.Trace(tracer, TraceOptions.Default.ResultWriter, TraceOptions.Default.Clone());
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace MeasureMap
         /// <param name="writer"></param>
         public static void Trace(this IProfilerResult result, IResultWriter writer)
         {
-            result.Trace(TraceOptions.Default.Tracer, writer);
+            result.Trace(TraceOptions.Default.Tracer, writer, TraceOptions.Default.Clone());
         }
 
         /// <summary>
@@ -121,7 +122,21 @@ namespace MeasureMap
         /// <param name="writer"></param>
         public static void Trace(this IProfilerResult result, ITracer tracer, IResultWriter writer)
         {
-            tracer.Trace(result, writer);
+            result.Trace(tracer, writer, TraceOptions.Default.Clone());
+        }
+
+        /// <summary>
+        /// Trace the output of a Benchmark Test
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="tracer"></param>
+        /// <param name="writer"></param>
+        /// <param name="options"></param>
+        public static void Trace(this IProfilerResult result, ITracer tracer, IResultWriter writer, TraceOptions options)
+        {
+            options.Metrics ??= ProfilerTraceMetrics.GetDefaultTraceMetrics();
+
+            tracer.Trace(result, writer, options);
         }
 
         /// <summary>
@@ -140,21 +155,6 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Returns the timespan that the complete Session took
-        /// </summary>
-        /// <param name="result">The ProfilerResult</param>
-        /// <returns>The timespan that the session took</returns>
-        public static TimeSpan Elapsed(this IProfilerResult result)
-        {
-            if (result.ResultValues.ContainsKey(ResultValueType.Elapsed))
-            {
-                return (TimeSpan)result.ResultValues[ResultValueType.Elapsed];
-            }
-
-            return new TimeSpan();
-        }
-
-        /// <summary>
         /// Returns the amount of threads used
         /// </summary>
         /// <param name="result"></param>
@@ -166,23 +166,7 @@ namespace MeasureMap
                 return (int)result.ResultValues[ResultValueType.Threads];
             }
 
-            return 1;
-        }
-
-        /// <summary>
-        /// Returns the average throughput per second
-        /// </summary>
-        /// <param name="result"></param>
-        /// <returns></returns>
-        public static double Throughput(this IProfilerResult result)
-        {
-            var elapsed = result.Elapsed();
-            if (elapsed == TimeSpan.MinValue)
-            {
-                elapsed = result.TotalTime;
-            }
-
-            return result.Iterations.Count() / elapsed.TotalSeconds;
+            return result.Count();
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace MeasureMap.UnitTest.Tracers
 {
     public static class ResultFactory
@@ -14,20 +16,30 @@ namespace MeasureMap.UnitTest.Tracers
 
         public static IProfilerResult CreateResult()
         {
-            var r = new Result();
+            var result = new ProfilerResult();
 
-            for (var i = 0; i < 10; i++)
+            for(var t = 0; t < 2; t++)
             {
-                r.Add(new IterationResult
+                var thread = new Result();
+                result.Add(thread);
+
+                for (var i = 0; i < 10; i++)
                 {
-                    TimeStamp = new System.DateTime(2012, 12, 21, 1, 1, 1)
-                });
+                    var ticks = 20 - (i + 1 * 2);
+                    thread.Add(new IterationResult
+                    {
+                        ThreadId = t + 1,
+                        Iteration = i + 1,
+                        TimeStamp = new System.DateTime(2012, 12, 21, 1, 1, 1, 1).AddTicks(i + 1),
+                        Duration = TimeSpan.FromTicks(ticks),
+
+                        //TODO: remove ticks. take all from duration
+                        Ticks = ticks
+                    });
+                }
             }
 
-            var result = new ProfilerResult
-            {
-                r
-            };
+            
 
             return result;
         }

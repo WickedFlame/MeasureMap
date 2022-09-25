@@ -1,0 +1,27 @@
+---data
+RegisteredMetrics:
+  Duration Warmup
+  Threads
+  Iterations
+  Duration
+  Total Time
+  Average Time
+  Average Milliseconds
+  Throughput
+  Fastest
+  Slowest
+  Memory Initial size
+  Memory End size
+  Memory Increase
+  ThreadId
+  Iterations
+  Average Time
+  Slowest
+  Fastest
+  Throughput
+  ThreadId
+  Iteration
+  TimeStamp
+  Milliseconds
+  InitialSize
+  AfterExecution

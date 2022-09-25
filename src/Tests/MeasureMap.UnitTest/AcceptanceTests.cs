@@ -61,7 +61,7 @@ namespace MeasureMap.UnitTest
             ProfilerSession.StartSession()
                 .Task(Task)
                 .Assert(pr => pr.Iterations.Count() == 1)
-                .Assert(pr => pr.AverageMilliseconds > 0)
+                .Assert(pr => pr.AverageMilliseconds() > 0)
                 .RunSession();
         }
 

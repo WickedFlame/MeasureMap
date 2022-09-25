@@ -26,8 +26,4 @@
     <ItemGroup>
         <ProjectReference Include="..\..\MeasureMap\MeasureMap.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Tracers\_Snapshots\" />
-    </ItemGroup>
 </Project>

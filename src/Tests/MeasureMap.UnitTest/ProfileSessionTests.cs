@@ -92,7 +92,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(200)
                 .RunSession();
 
-            result.AverageMilliseconds.Should().BeGreaterThan(0);
+            result.AverageMilliseconds().Should().BeGreaterThan(0);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace MeasureMap.UnitTest
             ProfilerSession.StartSession()
                 .Task(Task)
                 .Assert(pr => pr.Iterations.Count() == 1)
-                .Assert(pr => pr.AverageMilliseconds > 0)
+                .Assert(pr => pr.AverageMilliseconds() > 0)
                 .RunSession();
         }
 

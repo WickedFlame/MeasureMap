@@ -11,13 +11,15 @@ namespace MeasureMap.Tracers
         /// </summary>
         /// <param name="result"></param>
         /// <param name="writer"></param>
-        void Trace(IProfilerResult result, IResultWriter writer);
+        /// <param name="options"></param>
+        void Trace(IProfilerResult result, IResultWriter writer, TraceOptions options);
 
         /// <summary>
         /// Trace the <see cref="IBenchmarkResult"/>
         /// </summary>
         /// <param name="result"></param>
         /// <param name="writer"></param>
-        void Trace(IBenchmarkResult result, IResultWriter writer);
+        /// <param name="options"></param>
+        void Trace(IBenchmarkResult result, IResultWriter writer, TraceOptions options);
     }
 }

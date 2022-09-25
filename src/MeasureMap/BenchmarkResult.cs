@@ -11,7 +11,7 @@ namespace MeasureMap
         private readonly Dictionary<string, IProfilerResult> _results;
 
         /// <summary>
-        /// Creates an instance of a ProfilerResultCollection
+        /// Creates an instance of a BenchmarkResult
         /// </summary>
         /// <param name="iterations"></param>
         public BenchmarkResult(int iterations)

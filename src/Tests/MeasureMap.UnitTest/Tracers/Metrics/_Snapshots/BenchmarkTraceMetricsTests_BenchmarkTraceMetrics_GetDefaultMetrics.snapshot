@@ -1,0 +1,8 @@
+---data
+RegisteredMetrics:
+  Average Time
+  Average Milliseconds
+  Fastest
+  Slowest
+  Iterations
+  Throughput

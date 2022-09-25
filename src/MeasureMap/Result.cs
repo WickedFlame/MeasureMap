@@ -55,11 +55,12 @@ namespace MeasureMap
         /// <summary>
         /// Gets the average Milliseconds that all iterations took to run the task
         /// </summary>
-        public long AverageMilliseconds
+        [Obsolete("Use Extensionmethods AverageTicks.ToMilliSeconds()")]
+        public double AverageMilliseconds
         {
             get
             {
-                return Iterations.Select(i => (int)i.Duration.TotalMilliseconds).Sum() / Iterations.Count();
+                return Math.Round(Iterations.Select(i => i.Duration.TotalMilliseconds).Sum() / Iterations.Count(), 5);
             }
         }
 
