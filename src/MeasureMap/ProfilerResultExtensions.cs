@@ -32,7 +32,7 @@ namespace MeasureMap
             sb.AppendLine($"\t\tDuration:\t\t\t{profilerResult.Elapsed()}");
             sb.AppendLine($"\t\tTotal Time:\t\t\t{profilerResult.TotalTime.ToString()}");
             sb.AppendLine($"\t\tAverage Time:\t\t\t{profilerResult.AverageTime}");
-            sb.AppendLine($"\t\tAverage Milliseconds:\t\t{profilerResult.AverageMilliseconds}");
+            sb.AppendLine($"\t\tAverage Milliseconds:\t\t{profilerResult.AverageMilliseconds()}");
             sb.AppendLine($"\t\tAverage Ticks:\t\t\t{profilerResult.AverageTicks}");
             sb.AppendLine($"\t\tFastest:\t\t\t{TimeSpan.FromTicks(profilerResult.Fastest.Ticks)}");
             sb.AppendLine($"\t\tSlowest:\t\t\t{TimeSpan.FromTicks(profilerResult.Slowest.Ticks)}");
