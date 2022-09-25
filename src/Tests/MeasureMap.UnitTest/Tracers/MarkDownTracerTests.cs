@@ -35,6 +35,17 @@ namespace MeasureMap.UnitTest.Tracers
         }
 
         [Test]
+        public void MarkDownTracer_ProfilerResult_CusotmHeader()
+        {
+            var writer = new StringResultWriter();
+
+            var tracer = new MarkDownTracer();
+            tracer.Trace(ResultFactory.CreateResult(), writer, new TraceOptions { Header = "Custom header" });
+
+            writer.Value.Should().StartWith("# Custom header");
+        }
+
+        [Test]
         public void MarkDownTracer_ProfilerResult_DefaultMetrics()
         {
             var options = new TraceOptions();
@@ -87,6 +98,17 @@ namespace MeasureMap.UnitTest.Tracers
             tracer.Trace(new BenchmarkResult(1), writer, new TraceOptions());
 
             writer.Value.MatchSnapshot();
+        }
+
+        [Test]
+        public void MarkDownTracer_BenchmarkResult_SetHeader()
+        {
+            var writer = new StringResultWriter();
+
+            var tracer = new MarkDownTracer();
+            tracer.Trace(new BenchmarkResult(1), writer, new TraceOptions { Header = "Custom header" });
+
+            writer.Value.Should().StartWith("# Custom header");
         }
     }
 }

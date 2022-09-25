@@ -33,6 +33,11 @@ namespace MeasureMap.Tracers
         public TraceMetrics Metrics { get; set; }
 
         /// <summary>
+        /// The header that is writen to the output
+        /// </summary>
+        public string Header { get; set; }
+
+        /// <summary>
         /// Clone the options. Metrics are not copied. These are set as default when tracing
         /// </summary>
         /// <returns></returns>

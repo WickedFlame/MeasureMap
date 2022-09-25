@@ -19,7 +19,7 @@ namespace MeasureMap.Tracers
         {
             options.Metrics ??= ProfilerTraceMetrics.GetDefaultTraceMetrics();
 
-            writer.WriteLine("# MeasureMap - Profiler result");
+            writer.WriteLine(string.IsNullOrEmpty(options.Header) ? "# MeasureMap - Profiler result" : $"# {options.Header}");
             if (result == null || !result.Any())
             {
                 writer.WriteLine("No measurements contained in the result");
@@ -110,7 +110,7 @@ namespace MeasureMap.Tracers
         {
             options.Metrics ??= BenchmarkTraceMetrics.GetDefaultTraceMetrics();
 
-            writer.WriteLine("# MeasureMap - Benchmark result");
+            writer.WriteLine(string.IsNullOrEmpty(options.Header) ? "# MeasureMap - Benchmark result" : $"# {options.Header}");
             if (result == null || !result.Any())
             {
                 writer.WriteLine("No measurements contained in the result");
