@@ -18,6 +18,9 @@ namespace MeasureMap.Tracers
         private readonly List<IProfileThreadResultMetric> _threadMetrics = new();
         private readonly List<IIterationMetric> _iterationMetrics = new();
 
+        /// <summary>
+        /// Get all registered metrics
+        /// </summary>
         public IEnumerable<string> RegisteredMetrics
         {
             get
@@ -48,55 +51,65 @@ namespace MeasureMap.Tracers
         /// Add a custom <see cref="IProfilerMetric"/>
         /// </summary>
         /// <param name="metric"></param>
-        public void Add(IProfilerMetric metric)
+        public TraceMetrics Add(IProfilerMetric metric)
         {
             _profilerMetrics.Add(metric);
+
+            return this;
         }
 
         /// <summary>
         /// Add a default <see cref="ProfileThreadMetric"/> to the output
         /// </summary>
         /// <param name="type"></param>
-        public void Add(ProfileThreadMetric type)
+        public TraceMetrics Add(ProfileThreadMetric type)
         {
             if (!DefaultThreadMetrics.Contains(type))
             {
-                return;
+                return this;
             }
 
             Add(DefaultThreadMetrics.Get(type));
+
+            return this;
         }
 
         /// <summary>
         /// Add a custom <see cref="IProfileThreadResultMetric"/>
         /// </summary>
         /// <param name="metric"></param>
-        public void Add(IProfileThreadResultMetric metric)
+        public TraceMetrics Add(IProfileThreadResultMetric metric)
         {
             _threadMetrics.Add(metric);
+
+            return this;
         }
 
         /// <summary>
         /// Add a default <see cref="IterationMetric"/> to the output
         /// </summary>
         /// <param name="type"></param>
-        public void Add(IterationMetric type)
+        public TraceMetrics Add(IterationMetric type)
         {
             if (!DefaultIterationMetrics.Contains(type))
             {
-                return;
+                return this;
             }
 
             Add(DefaultIterationMetrics.Get(type));
+
+            return this;
         }
 
         /// <summary>
         /// Add a custom <see cref="IIterationMetric"/>
         /// </summary>
         /// <param name="metric"></param>
-        public void Add(IIterationMetric metric)
+        public TraceMetrics Add(IIterationMetric metric)
         {
             _iterationMetrics.Add(metric);
+
+            return this;
         }
 
         /// <summary>
