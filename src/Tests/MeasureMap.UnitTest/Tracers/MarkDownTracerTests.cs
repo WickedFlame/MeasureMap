@@ -20,12 +20,44 @@ namespace MeasureMap.UnitTest.Tracers
         }
 
         [Test]
+        public void MarkDownTracer_ProfilerResult_Detailed()
+        {
+            var writer = new StringResultWriter();
+
+            var options = new TraceOptions()
+            {
+                TraceThreadDetail = true
+            };
+
+            var tracer = new MarkDownTracer();
+            tracer.Trace(ResultFactory.CreateResult(), writer, options);
+
+            writer.Value.MatchSnapshot();
+        }
+
+        [Test]
         public void MarkDownTracer_ProfilerResult_TraceFullStack()
         {
             var writer = new StringResultWriter();
             
             var options = new TraceOptions()
             {
+                TraceFullStack = true
+            };
+            var tracer = new MarkDownTracer();
+            tracer.Trace(ResultFactory.CreateResult(), writer, options);
+
+            writer.Value.MatchSnapshot();
+        }
+
+        [Test]
+        public void MarkDownTracer_ProfilerResult_Detailed_TraceFullStack()
+        {
+            var writer = new StringResultWriter();
+
+            var options = new TraceOptions()
+            {
+                TraceThreadDetail = true,
                 TraceFullStack = true
             };
             var tracer = new MarkDownTracer();

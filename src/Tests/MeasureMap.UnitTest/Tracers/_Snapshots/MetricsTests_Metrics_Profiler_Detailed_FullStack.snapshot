@@ -17,6 +17,12 @@
 |  | Memory End size | 0 |
 |  | Memory Increase | 0 |
 
+## Details per Thread
+| ThreadId | Iterations | Average Time | Slowest | Fastest | Throughput |
+| --- | --- | ---: | ---: | ---: | ---: |
+| 1 | 10 | 00:00:00.0000013 | 00:00:00.0000018 | 00:00:00.0000009 | 740740.74074/s |
+| 2 | 10 | 00:00:00.0000013 | 00:00:00.0000018 | 00:00:00.0000009 | 740740.74074/s |
+
 ## Details per Iteration and Thread
 | ThreadId | Iteration | TimeStamp | Milliseconds | InitialSize | AfterExecution |
 | --- | --- | --- | ---: | ---: | ---: |

@@ -41,7 +41,7 @@ namespace MeasureMap.Tracers
                 }
             }
 
-            if (result.Threads() > 1)
+            if (options.TraceThreadDetail)
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Thread");

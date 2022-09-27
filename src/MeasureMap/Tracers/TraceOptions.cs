@@ -23,6 +23,11 @@ namespace MeasureMap.Tracers
         public IResultWriter ResultWriter { get; set; } = new TraceResultWriter();
         
         /// <summary>
+        /// Trace the detail of all threads that are used
+        /// </summary>
+        public bool TraceThreadDetail { get; set; }
+
+        /// <summary>
         /// Trace all results of all iterations to the output
         /// </summary>
         public bool TraceFullStack { get; set; }

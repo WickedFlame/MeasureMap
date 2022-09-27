@@ -33,13 +33,30 @@ namespace MeasureMap.UnitTest.Tracers
             ((StringResultWriter)options.ResultWriter).Value.MatchSnapshot();
         }
 
-
         [Test]
-        public void Metrics_Profiler()
+        public void Metrics_Profiler_Detailed()
         {
             var options = new TraceOptions
             {
                 ResultWriter = new StringResultWriter(),
+                TraceThreadDetail = true,
+                Metrics = ProfilerTraceMetrics.GetDefaultTraceMetrics()
+            };
+
+            var result = ResultFactory.CreateResult();
+
+            result.Trace(options);
+
+            ((StringResultWriter)options.ResultWriter).Value.MatchSnapshot();
+        }
+
+        [Test]
+        public void Metrics_Profiler_Detailed_FullStack()
+        {
+            var options = new TraceOptions
+            {
+                ResultWriter = new StringResultWriter(),
+                TraceThreadDetail = true,
                 TraceFullStack = true,
                 Metrics = ProfilerTraceMetrics.GetDefaultTraceMetrics()
             };
