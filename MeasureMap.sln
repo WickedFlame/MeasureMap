@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{364A83BE-EC1F-42DA-ACCB-69DE17631CF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureMap.Benchmark", "src\Tests\MeasureMap.Benchmark\MeasureMap.Benchmark.csproj", "{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{09EB8BCB-A514-4178-9C28-4503BBD4C528}.Release|Any CPU.Build.0 = Release|Any CPU
 		{364A83BE-EC1F-42DA-ACCB-69DE17631CF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{364A83BE-EC1F-42DA-ACCB-69DE17631CF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,6 +50,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{09EB8BCB-A514-4178-9C28-4503BBD4C528} = {C302527D-DA3E-472C-9EBA-3F8C2A1ACDDE}
 		{364A83BE-EC1F-42DA-ACCB-69DE17631CF3} = {3BE4645D-C5EB-4675-AEE2-68BFE6AC84EB}
+		{5BA1A434-30F8-4233-B4C1-A668AB50BC4B} = {C302527D-DA3E-472C-9EBA-3F8C2A1ACDDE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2E89D7E4-1ED8-4DD2-9BE7-31DC2F349AEB}
