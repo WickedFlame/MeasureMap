@@ -19,6 +19,19 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Traces the output of a Benchmark Test
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="metrics"></param>
+        /// <returns></returns>
+        public static void Trace(this IBenchmarkResult result, TraceMetrics metrics)
+        {
+            var options = TraceOptions.Default.Clone();
+            options.Metrics = metrics;
+            result.Trace(options);
+        }
+
+        /// <summary>
         /// Trace the output of a Benchmark Test
         /// </summary>
         /// <param name="result"></param>

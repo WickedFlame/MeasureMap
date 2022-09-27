@@ -27,11 +27,7 @@ benchmark.Task("Setup 10 Threads", () =>
         .RunSession();
 }).SetThreads(10);
 
-
-var options = new TraceOptions();
-options.Metrics = new MeasureMap.Benchmark.TraceMetrics();
-
 benchmark.RunSessions()
-    .Trace(options);
+    .Trace(new MeasureMap.Benchmark.TraceMetrics());
 
 

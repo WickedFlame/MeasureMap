@@ -114,7 +114,7 @@ namespace MeasureMap.UnitTest
                 .SetDuration(TimeSpan.FromSeconds(2))
                 .RunSession();
 
-            result.Throughput().Should().BeGreaterThan(50);
+            result.Throughput().Should().BeGreaterThan(10);
         }
 
         [Test]
