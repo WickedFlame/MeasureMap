@@ -6,12 +6,20 @@ using System.Text.RegularExpressions;
 using FluentAssertions;
 using MeasureMap.Runners;
 using Polaroider;
+using MeasureMap.UnitTest.Tracers;
+using MeasureMap.Tracers;
 
 namespace MeasureMap.UnitTest
 {
     [SingleThreaded]
     public class ProfileSessionTests
     {
+        [SetUp]
+        public void Setup()
+        {
+            MeasureMap.Tracers.TraceOptions.Default.Tracer = new MarkDownTracer();
+        }
+
         [Test]
         public void ProfileSession_StartSessionTest()
         {
@@ -156,18 +164,19 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_Trace()
         {
-            var result = ProfilerSession.StartSession()
+            var writer = new StringResultWriter();
+            ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(10)
                 .RunSession()
-                .Trace(false);
+                .Trace(writer);
 
-            Assert.That(result.Contains("Duration"));
-            Assert.That(result.Contains("Total Time"));
-            Assert.That(result.Contains("Average Time"));
-            Assert.That(result.Contains("Memory Initial size"));
-            Assert.That(result.Contains("Memory End size"));
-            Assert.That(result.Contains("Memory Increase"));
+            writer.Value.Should().Contain("Duration");
+            writer.Value.Should().Contain("Total Time");
+            writer.Value.Should().Contain("Average Time");
+            writer.Value.Should().Contain("Memory Initial size");
+            writer.Value.Should().Contain("Memory End size");
+            writer.Value.Should().Contain("Memory Increase");
         }
 
         [Test]
@@ -175,17 +184,24 @@ namespace MeasureMap.UnitTest
         {
             System.Threading.Tasks.Task.Delay(5000).Wait();
 
-            var result = ProfilerSession.StartSession()
+            var writer = new StringResultWriter();
+            var options = new MeasureMap.Tracers.TraceOptions
+            {
+                ResultWriter = writer,
+                TraceFullStack = true
+            };
+
+            ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(5)
                 .RunSession()
-                .Trace(true);
+                .Trace(options);
 
-            Regex.Matches(result, " \\| 1 \\| ").Count.Should().Be(1);
-            Regex.Matches(result, " \\| 2 \\| ").Count.Should().Be(1);
-            Regex.Matches(result, " \\| 3 \\| ").Count.Should().Be(1);
-            Regex.Matches(result, " \\| 4 \\| ").Count.Should().Be(1);
-            Regex.Matches(result, " \\| 5 \\| ").Count.Should().Be(1);
+            Regex.Matches(writer.Value, " \\| 1 \\| ").Count.Should().Be(1);
+            Regex.Matches(writer.Value, " \\| 2 \\| ").Count.Should().Be(1);
+            Regex.Matches(writer.Value, " \\| 3 \\| ").Count.Should().Be(1);
+            Regex.Matches(writer.Value, " \\| 4 \\| ").Count.Should().Be(1);
+            Regex.Matches(writer.Value, " \\| 5 \\| ").Count.Should().Be(1);
         }
 
         [Test]
@@ -193,19 +209,26 @@ namespace MeasureMap.UnitTest
         {
             System.Threading.Tasks.Task.Delay(5000).Wait();
 
-            var result = ProfilerSession.StartSession()
+            var writer = new StringResultWriter();
+            var options = new MeasureMap.Tracers.TraceOptions
+            {
+                ResultWriter = writer,
+                TraceFullStack = true
+            };
+
+            ProfilerSession.StartSession()
                 .Task(Task)
                 .SetThreads(3)
                 .SetIterations(5)
                 .RunSession()
-                .Trace(true);
+                .Trace(options);
 
-            Regex.Matches(result, " \\| 1 \\| ").Count.Should().Be(3);
-            Regex.Matches(result, " \\| 2 \\| ").Count.Should().Be(3);
-            Regex.Matches(result, " \\| 3 \\| ").Count.Should().Be(3);
-            Regex.Matches(result, " \\| 4 \\| ").Count.Should().Be(3);
+            Regex.Matches(writer.Value, " \\| 1 \\| ").Count.Should().Be(3);
+            Regex.Matches(writer.Value, " \\| 2 \\| ").Count.Should().Be(3);
+            Regex.Matches(writer.Value, " \\| 3 \\| ").Count.Should().Be(3);
+            Regex.Matches(writer.Value, " \\| 4 \\| ").Count.Should().Be(3);
             // 3 in thread details and 3 in full trace
-            Regex.Matches(result, " \\| 5 \\| ").Count.Should().Be(6);
+            Regex.Matches(writer.Value, " \\| 5 \\| ").Count.Should().Be(3);
         }
 
         [Test]
@@ -262,7 +285,7 @@ namespace MeasureMap.UnitTest
                 })
                 .SetIterations(10)
                 .RunSession();
-            result.Trace(true);
+            
             Assert.That(result.Slowest.Iteration == 9);
         }
 
@@ -358,12 +381,14 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_SetDuration_Trace_TotalTime()
         {
+            var writer = new StringResultWriter();
             var result = ProfilerSession.StartSession()
                 .SetDuration(TimeSpan.FromSeconds(1))
                 .Task(() => { })
                 .RunSession();
 
-            result.Trace(false).Should().Contain("Duration:\t\t\t00:00:01.");
+            result.Trace(writer);
+            writer.Value.Split(new[]{ Environment.NewLine }, StringSplitOptions.None).Should().Contain(l => l.Contains("Duration") && l.Contains("00:00:01."));
         }
 
         [Test]
@@ -486,8 +511,6 @@ namespace MeasureMap.UnitTest
                 .SetInterval(TimeSpan.FromSeconds(.5))
                 .RunSession();
 
-            result.Trace(true);
-
             System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1)).Wait();
 
             result.Iterations.Should().HaveCount(10);
@@ -506,8 +529,6 @@ namespace MeasureMap.UnitTest
                 .SetInterval(TimeSpan.FromSeconds(.5))
                 .RunSession();
 
-            result.Trace(true);
-
             // 0.5*10 + some overhead = >5 and <6
             result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(5));
         }
@@ -525,8 +546,6 @@ namespace MeasureMap.UnitTest
                 .SetIterations(10)
                 .SetInterval(TimeSpan.FromSeconds(.5))
                 .RunSession();
-
-            result.Trace(true);
 
             // 0.5*10 + some overhead = >5 and <6
             result.Elapsed().Should().BeGreaterThan(TimeSpan.FromSeconds(5)).And.BeLessThan(TimeSpan.FromSeconds(6));
@@ -547,8 +566,6 @@ namespace MeasureMap.UnitTest
                 .SetInterval(TimeSpan.FromSeconds(.5))
                 .RunSession();
 
-            result.Trace(true);
-
             result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
         }
 
@@ -565,8 +582,6 @@ namespace MeasureMap.UnitTest
                 .SetDuration(TimeSpan.FromSeconds(5))
                 .SetInterval(TimeSpan.FromSeconds(.5))
                 .RunSession();
-
-            result.Trace(true);
 
             result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
         }
@@ -585,8 +600,6 @@ namespace MeasureMap.UnitTest
                 .AddDelay(TimeSpan.FromSeconds(.5))
                 .RunSession();
 
-            result.Trace(true);
-
             result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
         }
 
@@ -603,8 +616,6 @@ namespace MeasureMap.UnitTest
                 .SetDuration(TimeSpan.FromSeconds(5))
                 .AddDelay(TimeSpan.FromSeconds(.5))
                 .RunSession();
-
-            result.Trace(true);
 
             result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
         }

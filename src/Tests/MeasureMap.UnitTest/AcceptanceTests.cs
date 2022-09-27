@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.Linq;
 using FluentAssertions;
+using MeasureMap.UnitTest.Tracers;
 
 namespace MeasureMap.UnitTest
 {
@@ -85,18 +86,19 @@ namespace MeasureMap.UnitTest
         [Test]
         public void Acceptance_Trace()
         {
-            var result = ProfilerSession.StartSession()
+            var writer = new StringResultWriter();
+            ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(10)
                 .RunSession()
-                .Trace(false);
+                .Trace(writer);
 
-            Assert.That(result.Contains("Duration"));
-            Assert.That(result.Contains("Total Time"));
-            Assert.That(result.Contains("Average Time"));
-            Assert.That(result.Contains("Memory Initial size"));
-            Assert.That(result.Contains("Memory End size"));
-            Assert.That(result.Contains("Memory Increase"));
+            writer.Value.Should().Contain("Duration");
+            writer.Value.Should().Contain("Total Time");
+            writer.Value.Should().Contain("Average Time");
+            writer.Value.Should().Contain("Memory Initial size");
+            writer.Value.Should().Contain("Memory End size");
+            writer.Value.Should().Contain("Memory Increase");
         }
 
         [Test]

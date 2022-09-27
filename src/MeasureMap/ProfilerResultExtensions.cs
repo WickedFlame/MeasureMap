@@ -14,6 +14,7 @@ namespace MeasureMap
         /// <summary>
         /// Trace the result to the Console
         /// </summary>
+        [Obsolete("Use Trace methods with TraceOptions")]
         public static string Trace(this IProfilerResult profilerResult, bool fullTrace, string header = "### MeasureMap - Profiler result for Profilesession")
         {
             var sb = new StringBuilder();

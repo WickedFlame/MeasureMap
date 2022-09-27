@@ -1,7 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using MeasureMap;
-using MeasureMap.Tracers;
 
 var benchmark = new BenchmarkRunner();
 benchmark.SetIterations(10);
