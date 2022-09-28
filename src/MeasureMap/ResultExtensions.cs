@@ -39,6 +39,11 @@ namespace MeasureMap
             return Math.Round(result.Iterations.Count() / elapsed.TotalSeconds, 5);
         }
 
+        /// <summary>
+        /// Gets the average milliseconds that the <see cref="IResult"/> recorded
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public static double AverageMilliseconds(this IResult result)
         {
             return result.AverageTicks.ToMilliseconds();
