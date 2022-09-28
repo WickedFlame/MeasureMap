@@ -64,11 +64,11 @@ namespace MeasureMap.Threading
         {
             while (Count() > 0)
             {
-                Trace.WriteLine($"Task count before waitall: {Count()}");
+                Debug.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Debug] [{nameof(ThreadList)}] Task count before waitall: {Count()}");
 
                 Thread.WaitAll(GetTaskArray(), -1, CancellationToken.None);
 
-                Trace.WriteLine($"Task count after waitall: {Count()}");
+                Debug.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Debug] [{nameof(ThreadList)}] Task count after waitall: {Count()}");
             }
         }
 

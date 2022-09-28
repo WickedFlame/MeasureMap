@@ -70,7 +70,7 @@ namespace MeasureMap.Threading
             var threads = GetTaskArray();
             while (threads.Length > 0)
             {
-                Trace.WriteLine($"Task count before waitall: {threads.Length}");
+                Debug.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Debug] [{nameof(WorkerThreadList)}] Task count before waitall: {threads.Length}");
 
                 for(var i = 0; i < threads.Length; i++)
                 {
@@ -80,7 +80,7 @@ namespace MeasureMap.Threading
 
                 threads = GetTaskArray();
 
-                Trace.WriteLine($"Task count after waitall: {threads.Length}");
+                Debug.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Debug] [{nameof(WorkerThreadList)}] Task count after waitall: {threads.Length}");
             }
         }
 

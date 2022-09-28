@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MeasureMap
 {
@@ -56,11 +55,12 @@ namespace MeasureMap
         /// <summary>
         /// Gets the average Milliseconds that all iterations took to run the task
         /// </summary>
-        public long AverageMilliseconds
+        [Obsolete("Use Extensionmethods AverageTicks.ToMilliSeconds()")]
+        public double AverageMilliseconds
         {
             get
             {
-                return Iterations.Select(i => (int)i.Duration.TotalMilliseconds).Sum() / Iterations.Count();
+                return Math.Round(Iterations.Select(i => i.Duration.TotalMilliseconds).Sum() / Iterations.Count(), 5);
             }
         }
 
@@ -129,7 +129,11 @@ namespace MeasureMap
         /// </summary>
         public TimeSpan Warmup { get; set; }
         
-        internal void Add(IIterationResult iteration)
+        /// <summary>
+        /// Add a new <see cref="IIterationResult"/>
+        /// </summary>
+        /// <param name="iteration"></param>
+        public void Add(IIterationResult iteration)
         {
             _iterations.Add(iteration);
         }

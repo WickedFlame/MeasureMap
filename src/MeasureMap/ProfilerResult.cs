@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace MeasureMap
@@ -31,7 +32,9 @@ namespace MeasureMap
         public TimeSpan Elapsed => ResultValues.ContainsKey(ResultValueType.Elapsed) ? (TimeSpan)ResultValues[ResultValueType.Elapsed] : TimeSpan.Zero;
 
         /// <summary>
-        /// The iterations that were run
+        /// The iterations that were run.
+        /// This is a summary of all Iterations over all threads.
+        /// Thre results of each thread is accessed through the enumerator
         /// </summary>
         public IEnumerable<IIterationResult> Iterations => _results.SelectMany(r => r.Iterations);
 
@@ -60,11 +63,12 @@ namespace MeasureMap
         /// <summary>
         /// Gets the average Milliseconds that all iterations took to run the task
         /// </summary>
-        public long AverageMilliseconds
+        [Obsolete("Use Extensionmethods AverageTicks.ToMilliSeconds()")]
+        public double AverageMilliseconds
         {
             get
             {
-                return Iterations.Select(i => (int)i.Duration.TotalMilliseconds).Sum() / Iterations.Count();
+                return Math.Round(Iterations.Select(i => i.Duration.TotalMilliseconds).Sum() / Iterations.Count(), 5);
             }
         }
 
@@ -75,7 +79,7 @@ namespace MeasureMap
         {
             get
             {
-                return Iterations.Select(i => i.Ticks).Sum() / Iterations.Count();
+                return Iterations.Any() ? Iterations.Select(i => i.Ticks).Sum() / Iterations.Count() : 0;
             }
         }
 
@@ -96,13 +100,15 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Gets the id of the thread that the task was run in
+        /// Gets the id of the thread that the task was run in.
+        /// For multithreaded profiles this gets the ThreadId of the first result.
+        /// Use the enumerator of the <see cref="IProfilerResult"/> to get the ThreadIds of all threads used
         /// </summary>
         public int ThreadId
         {
             get
             {
-                var first = Iterations.FirstOrDefault();
+                var first = this.FirstOrDefault();
                 return first != null ? first.ThreadId : 0;
             }
         }
@@ -130,20 +136,20 @@ namespace MeasureMap
         /// <summary>
         /// Gets the last <see cref="Result"/> for fast access that is needed during executions
         /// </summary>
-        public Result Last { get; private set; }
+        public IResult Last { get; private set; }
 
         /// <summary>
         /// Add a new result
         /// </summary>
         /// <param name="result"></param>
-        internal void Add(Result result)
+        public void Add(IResult result)
         {
             _results.Add(result);
             Last = result;
         }
 
         /// <summary>
-        /// The enumerator
+        /// The enumerator. Each <see cref="IResult"/> represents the results of a thread
         /// </summary>
         /// <returns></returns>
         public IEnumerator<IResult> GetEnumerator()

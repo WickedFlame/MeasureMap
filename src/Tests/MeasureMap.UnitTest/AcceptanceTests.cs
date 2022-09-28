@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.Linq;
 using FluentAssertions;
+using MeasureMap.UnitTest.Tracers;
 
 namespace MeasureMap.UnitTest
 {
@@ -61,7 +62,7 @@ namespace MeasureMap.UnitTest
             ProfilerSession.StartSession()
                 .Task(Task)
                 .Assert(pr => pr.Iterations.Count() == 1)
-                .Assert(pr => pr.AverageMilliseconds > 0)
+                .Assert(pr => pr.AverageMilliseconds() > 0)
                 .RunSession();
         }
 
@@ -85,18 +86,19 @@ namespace MeasureMap.UnitTest
         [Test]
         public void Acceptance_Trace()
         {
-            var result = ProfilerSession.StartSession()
+            var writer = new StringResultWriter();
+            ProfilerSession.StartSession()
                 .Task(Task)
                 .SetIterations(10)
                 .RunSession()
-                .Trace();
+                .Trace(writer);
 
-            Assert.That(result.Contains("Duration"));
-            Assert.That(result.Contains("Total Time"));
-            Assert.That(result.Contains("Average Time"));
-            Assert.That(result.Contains("Memory Initial size"));
-            Assert.That(result.Contains("Memory End size"));
-            Assert.That(result.Contains("Memory Increase"));
+            writer.Value.Should().Contain("Duration");
+            writer.Value.Should().Contain("Total Time");
+            writer.Value.Should().Contain("Avg. Time");
+            writer.Value.Should().Contain("Memory init size");
+            writer.Value.Should().Contain("Memory end size");
+            writer.Value.Should().Contain("Memory increase");
         }
 
         [Test]

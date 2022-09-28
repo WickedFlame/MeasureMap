@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MeasureMap.Tracers;
+using System;
 using System.Linq;
 using System.Text;
+using MeasureMap.Tracers.Metrics;
 
 namespace MeasureMap
 {
@@ -12,12 +14,7 @@ namespace MeasureMap
         /// <summary>
         /// Trace the result to the Console
         /// </summary>
-        public static string Trace(this IProfilerResult profilerResult, string header = "### MeasureMap - Profiler result for Profilesession")
-            => Trace(profilerResult, false, header);
-
-        /// <summary>
-        /// Trace the result to the Console
-        /// </summary>
+        [Obsolete("Use Trace methods with TraceOptions")]
         public static string Trace(this IProfilerResult profilerResult, bool fullTrace, string header = "### MeasureMap - Profiler result for Profilesession")
         {
             var sb = new StringBuilder();
@@ -36,7 +33,7 @@ namespace MeasureMap
             sb.AppendLine($"\t\tDuration:\t\t\t{profilerResult.Elapsed()}");
             sb.AppendLine($"\t\tTotal Time:\t\t\t{profilerResult.TotalTime.ToString()}");
             sb.AppendLine($"\t\tAverage Time:\t\t\t{profilerResult.AverageTime}");
-            sb.AppendLine($"\t\tAverage Milliseconds:\t\t{profilerResult.AverageMilliseconds}");
+            sb.AppendLine($"\t\tAverage Milliseconds:\t\t{profilerResult.AverageMilliseconds()}");
             sb.AppendLine($"\t\tAverage Ticks:\t\t\t{profilerResult.AverageTicks}");
             sb.AppendLine($"\t\tFastest:\t\t\t{TimeSpan.FromTicks(profilerResult.Fastest.Ticks)}");
             sb.AppendLine($"\t\tSlowest:\t\t\t{TimeSpan.FromTicks(profilerResult.Slowest.Ticks)}");
@@ -79,6 +76,71 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Traces the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static void Trace(this IProfilerResult result)
+        {
+            result.Trace(TraceOptions.Default.Tracer, TraceOptions.Default.ResultWriter, TraceOptions.Default.Clone());
+        }
+
+        /// <summary>
+        /// Trace the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="options"></param>
+        public static void Trace(this IProfilerResult result, TraceOptions options)
+        {
+            result.Trace(options.Tracer, options.ResultWriter, options);
+        }
+
+        /// <summary>
+        /// Trace the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="tracer"></param>
+        public static void Trace(this IProfilerResult result, ITracer tracer)
+        {
+            result.Trace(tracer, TraceOptions.Default.ResultWriter, TraceOptions.Default.Clone());
+        }
+
+        /// <summary>
+        /// Trace the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="writer"></param>
+        public static void Trace(this IProfilerResult result, IResultWriter writer)
+        {
+            result.Trace(TraceOptions.Default.Tracer, writer, TraceOptions.Default.Clone());
+        }
+
+        /// <summary>
+        /// Trace the output of a Benchmark Test
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="tracer"></param>
+        /// <param name="writer"></param>
+        public static void Trace(this IProfilerResult result, ITracer tracer, IResultWriter writer)
+        {
+            result.Trace(tracer, writer, TraceOptions.Default.Clone());
+        }
+
+        /// <summary>
+        /// Trace the output of a Benchmark Test
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="tracer"></param>
+        /// <param name="writer"></param>
+        /// <param name="options"></param>
+        public static void Trace(this IProfilerResult result, ITracer tracer, IResultWriter writer, TraceOptions options)
+        {
+            options.Metrics ??= ProfilerTraceMetrics.GetDefaultTraceMetrics();
+
+            tracer.Trace(result, writer, options);
+        }
+
+        /// <summary>
         /// Returns the timespan that the Warmup took
         /// </summary>
         /// <param name="result">The ProfilerResult</param>
@@ -88,21 +150,6 @@ namespace MeasureMap
             if (result.ResultValues.ContainsKey(ResultValueType.Warmup))
             {
                 return (TimeSpan)result.ResultValues[ResultValueType.Warmup];
-            }
-
-            return new TimeSpan();
-        }
-
-        /// <summary>
-        /// Returns the timespan that the complete Session took
-        /// </summary>
-        /// <param name="result">The ProfilerResult</param>
-        /// <returns>The timespan that the session took</returns>
-        public static TimeSpan Elapsed(this IProfilerResult result)
-        {
-            if (result.ResultValues.ContainsKey(ResultValueType.Elapsed))
-            {
-                return (TimeSpan)result.ResultValues[ResultValueType.Elapsed];
             }
 
             return new TimeSpan();
@@ -120,7 +167,7 @@ namespace MeasureMap
                 return (int)result.ResultValues[ResultValueType.Threads];
             }
 
-            return 1;
+            return result.Count();
         }
     }
 }

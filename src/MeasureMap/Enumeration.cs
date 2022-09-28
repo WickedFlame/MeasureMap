@@ -20,6 +20,16 @@ namespace MeasureMap
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="name"></param>
+        protected Enumeration(string name)
+        {
+            Id = -1;
+            Name = name;
+        }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         /// <param name="id"></param>
         /// <param name="name"></param>
         protected Enumeration(int id, string name)
@@ -53,7 +63,7 @@ namespace MeasureMap
         /// <returns></returns>
         public int CompareTo(object obj)
         {
-            if (Id.CompareTo(((Enumeration)obj).Id) > 0 || String.Compare(Name, ((Enumeration)obj).Name, StringComparison.Ordinal) > 0)
+            if (Id.CompareTo(((Enumeration)obj).Id) > 0 || string.Compare(Name, ((Enumeration)obj).Name, StringComparison.Ordinal) > 0)
             {
                 return 1;
             }
@@ -63,7 +73,7 @@ namespace MeasureMap
                 return 0;
             }
 
-            return  -1;
+            return -1;
         }
 
         /// <summary>
@@ -94,6 +104,11 @@ namespace MeasureMap
         /// <returns></returns>
         public override bool Equals(object obj)
         {
+            if (obj is string v)
+            {
+                return ToString() == v;
+            }
+
             return obj is Enumeration en && en.Id == Id && en.ToLower() == ToLower();
         }
 

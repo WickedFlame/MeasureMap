@@ -48,7 +48,7 @@ namespace MeasureMap
 						return p;
 					});
 
-					System.Diagnostics.Trace.WriteLine($"MeasureMap - Start thread {thread.Id}");
+					System.Diagnostics.Trace.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Info] [{nameof(MultyThreadSessionHandler)}] Start thread {thread.Id}");
 				}
 			}
 

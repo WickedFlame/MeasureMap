@@ -42,9 +42,9 @@ namespace MeasureMap
         /// Run all sessions and benchmarks
         /// </summary>
         /// <returns></returns>
-        public IProfilerResultCollection RunSessions()
+        public IBenchmarkResult RunSessions()
         {
-            var results = new ProfilerResultCollection(_settings.Iterations);
+            var results = new BenchmarkResult(_settings.Iterations);
 
             foreach (var key in _sessions.Keys)
             {
