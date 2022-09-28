@@ -5,7 +5,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## vNext
-
+### Added
+ 
+### Changed
+ 
+### Fixed
+ 
+## v2.0.1
 ### Added
 - Benchmarks Trace throughput per second
 - Customizable Tracer for Results
