@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using MeasureMap.Tracers.Metrics;
 
 namespace MeasureMap.Tracers
@@ -28,15 +27,15 @@ namespace MeasureMap.Tracers
 
             writer.WriteLine("## Summary");
 
-            writer.WriteLine("| Category | Metric | Value |");
-            writer.WriteLine("| --- | --- | ---: |");
+            writer.WriteLine("| Category | Metric            |            Value |");
+            writer.WriteLine("| :------- | :---------------- | ---------------: |");
 
             foreach (var group in options.Metrics.GetProfilerMetrics().GroupBy(m => m.Category).OrderByDescending(g => g.Key == MetricCategory.Warmup).ThenByDescending(g => g.Key == MetricCategory.Setup).ThenByDescending(g => g.Key == MetricCategory.Duration).ThenBy(g => g.Key == MetricCategory.Memory))
             {
                 var key = group.Key;
                 foreach (var metric in group)
                 {
-                    writer.WriteLine($"| {key} | {metric.Name} | {metric.GetMetric(result)} |");
+                    writer.WriteLine($"| {key,-8} | {metric.Name,-17} | {metric.GetMetric(result),16} |");
                     key = string.Empty;
                 }
             }
@@ -45,14 +44,21 @@ namespace MeasureMap.Tracers
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Thread");
+
                 var metrics = options.Metrics.GetProfileThreadMetrics();
-                var headers = string.Join(" | ", metrics.Select(m => m.Name));
+
+                //var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, 16)));
+                var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
                 writer.WriteLine($"| {headers} |");
 
                 writer.Write("|");
+
                 foreach (var metric in metrics)
                 {
-                    writer.Write($" ---{GetAlignment(metric.TextAlign)} |");
+                    // reverse the alignment
+                    var align = metric.TextAlign == TextAlign.Right ? TextAlign.Left : TextAlign.Right;
+                    //writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, 16, '-')} |");
+                    writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, metric.Name.TraceLength(), '-')} |");
                 }
 
                 writer.WriteLine(string.Empty);
@@ -63,7 +69,8 @@ namespace MeasureMap.Tracers
 
                     foreach (var metric in metrics)
                     {
-                        writer.Write($" {metric.GetMetric(thread)} |");
+                        //writer.Write($" {metric.GetMetric(thread).Pad(metric.TextAlign, 16)} |");
+                        writer.Write($" {metric.GetMetric(thread).Pad(metric.TextAlign, metric.Name.TraceLength())} |");
                     }
 
                     writer.WriteLine(string.Empty);
@@ -75,13 +82,14 @@ namespace MeasureMap.Tracers
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Iteration and Thread");
                 var metrics = options.Metrics.GetIterationMetrics();
-                var headers = string.Join(" | ", metrics.Select(m => m.Name));
+                var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
                 writer.WriteLine($"| {headers} |");
 
                 writer.Write("|");
                 foreach (var metric in metrics)
                 {
-                    writer.Write($" ---{GetAlignment(metric.TextAlign)} |");
+                    var align = metric.TextAlign == TextAlign.Right ? TextAlign.Left : TextAlign.Right;
+                    writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, metric.Name.TraceLength(), '-')} |");
                 }
 
                 writer.WriteLine(string.Empty);
@@ -92,7 +100,7 @@ namespace MeasureMap.Tracers
 
                     foreach (var metric in metrics)
                     {
-                        writer.Write($" {metric.GetMetric(iteration)} |");
+                        writer.Write($" {metric.GetMetric(iteration).Pad(metric.TextAlign, metric.Name.TraceLength())} |");
                     }
 
                     writer.WriteLine(string.Empty);
@@ -120,27 +128,33 @@ namespace MeasureMap.Tracers
             writer.WriteLine($" Iterations: {result.Iterations}");
 
             writer.WriteLine("## Summary");
+            
+            var keylength = result.Keys.OrderByDescending(k => k).First().Length;
+            keylength = keylength < 4 ? 4 : keylength;
 
             var metrics = options.Metrics.GetProfilerMetrics();
-            var headers = string.Join(" | ", metrics.Select(m => m.Name));
-            writer.WriteLine($"| Name | {headers} |");
+            var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
 
-            writer.Write("| --- |");
+            var keyHeader = "Name".Pad(TextAlign.Left, keylength);
+            writer.WriteLine($"| {keyHeader} | {headers} |");
+
+            writer.Write($"| {GetAlignment(TextAlign.Left).Pad(TextAlign.Left, keylength, '-')} |");
             foreach (var metric in metrics)
             {
-                writer.Write($" ---{GetAlignment(metric.TextAlign)} |");
+                var align = metric.TextAlign == TextAlign.Right ? TextAlign.Left : TextAlign.Right;
+                writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, metric.Name.TraceLength(), '-')} |");
             }
 
             writer.WriteLine(string.Empty);
 
             foreach (var key in result.Keys)
             {
-                writer.Write($"| {key} |");
+                writer.Write($"| {key.Pad(TextAlign.Left, keylength)} |");
 
                 var profile = result[key];
                 foreach (var metric in metrics)
                 {
-                    writer.Write($" {metric.GetMetric(profile)} |");
+                    writer.Write($" {metric.GetMetric(profile).Pad(metric.TextAlign, metric.Name.TraceLength())} |");
                 }
 
                 writer.WriteLine(string.Empty);

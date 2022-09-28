@@ -33,8 +33,6 @@ namespace MeasureMap.Tracers.Metrics
             Add(IterationMetric.Iteration);
             Add(IterationMetric.TimeStamp);
             Add(IterationMetric.Milliseconds);
-            Add(IterationMetric.InitialSize);
-            Add(IterationMetric.AfterExecution);
         }
 
         /// <summary>

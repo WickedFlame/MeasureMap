@@ -95,10 +95,10 @@ namespace MeasureMap.UnitTest
 
             writer.Value.Should().Contain("Duration");
             writer.Value.Should().Contain("Total Time");
-            writer.Value.Should().Contain("Average Time");
-            writer.Value.Should().Contain("Memory Initial size");
-            writer.Value.Should().Contain("Memory End size");
-            writer.Value.Should().Contain("Memory Increase");
+            writer.Value.Should().Contain("Avg. Time");
+            writer.Value.Should().Contain("Memory init size");
+            writer.Value.Should().Contain("Memory end size");
+            writer.Value.Should().Contain("Memory increase");
         }
 
         [Test]

@@ -1,16 +1,6 @@
-﻿using MeasureMap.Tracers;
-using MeasureMap.UnitTest.Tracers;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using NUnit.Framework;
 using MeasureMap.Tracers.Metrics;
 using TraceOptions = MeasureMap.Tracers.TraceOptions;
-using Microsoft.VisualBasic;
 using Polaroider;
 
 namespace MeasureMap.UnitTest.Tracers

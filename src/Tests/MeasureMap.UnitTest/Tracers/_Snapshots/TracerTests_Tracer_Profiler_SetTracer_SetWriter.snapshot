@@ -1,19 +1,19 @@
 ---data
 # MeasureMap - Profiler result
 ## Summary
-| Category | Metric | Value |
-| --- | --- | ---: |
-| Warmup | Duration Warmup | 00:00:00 |
-| Setup | Threads | 2 |
-|  | Iterations | 20 |
-| Duration | Duration | 00:00:00.0000270 |
-|  | Total Time | 00:00:00.0000270 |
-|  | Average Time | 00:00:00.0000013 |
-|  | Average Milliseconds | 0.0013 ms |
-|  | Throughput | 740740.74074/s |
-|  | Fastest | 00:00:00.0000009 |
-|  | Slowest | 00:00:00.0000018 |
-| Memory | Memory Initial size | 0 |
-|  | Memory End size | 0 |
-|  | Memory Increase | 0 |
+| Category | Metric            |            Value |
+| :------- | :---------------- | ---------------: |
+| Warmup   | Duration Warmup   |         00:00:00 |
+| Setup    | Threads           |                2 |
+|          | Iterations        |               20 |
+| Duration | Duration          | 00:00:00.0000270 |
+|          | Total Time        | 00:00:00.0000270 |
+|          | Avg. Time         | 00:00:00.0000013 |
+|          | Avg. Milliseconds |        0.0013 ms |
+|          | Throughput        |   740740.74074/s |
+|          | Fastest           | 00:00:00.0000009 |
+|          | Slowest           | 00:00:00.0000018 |
+| Memory   | Memory init size  |                0 |
+|          | Memory end size   |                0 |
+|          | Memory increase   |                0 |
 

@@ -5,17 +5,17 @@ RegisteredMetrics:
   Iterations
   Duration
   Total Time
-  Average Time
-  Average Milliseconds
+  Avg. Time
+  Avg. Milliseconds
   Throughput
   Fastest
   Slowest
-  Memory Initial size
-  Memory End size
-  Memory Increase
+  Memory init size
+  Memory end size
+  Memory increase
   ThreadId
   Iterations
-  Average Time
+  Avg. Time
   Slowest
   Fastest
   Throughput
@@ -23,5 +23,3 @@ RegisteredMetrics:
   Iteration
   TimeStamp
   Milliseconds
-  InitialSize
-  AfterExecution

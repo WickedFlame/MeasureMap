@@ -19,11 +19,11 @@ namespace MeasureMap.Tracers.Metrics
         public static readonly ProfileThreadMetric ThreadId = new("ThreadId");
         public static readonly ProfileThreadMetric Iterations = new("Iterations");
 
-        public static readonly ProfileThreadMetric AverageNanoseconds = new("Average Nanoseconds");
-        public static readonly ProfileThreadMetric AverageMicroseconds = new("Average Microseconds");
-        public static readonly ProfileThreadMetric AverageMilliseconds = new("Average Milliseconds");
-        public static readonly ProfileThreadMetric AverageTicks = new("Average Ticks");
-        public static readonly ProfileThreadMetric AverageTime = new("Average Time");
+        public static readonly ProfileThreadMetric AverageNanoseconds = new("Avg. Nanoseconds");
+        public static readonly ProfileThreadMetric AverageMicroseconds = new("Avg. Microseconds");
+        public static readonly ProfileThreadMetric AverageMilliseconds = new("Avg. Milliseconds");
+        public static readonly ProfileThreadMetric AverageTicks = new("Avg. Ticks");
+        public static readonly ProfileThreadMetric AverageTime = new("Avg. Time");
         public static readonly ProfileThreadMetric Fastest = new("Fastest");
         public static readonly ProfileThreadMetric Slowest = new("Slowest");
         public static readonly ProfileThreadMetric TotalTime = new("Total Time");

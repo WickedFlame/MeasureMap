@@ -1,7 +1,7 @@
 ---data
 RegisteredMetrics:
-  Average Time
-  Average Milliseconds
+  Avg. Time
+  Avg. Milliseconds
   Fastest
   Slowest
   Iterations

@@ -25,11 +25,11 @@ namespace MeasureMap.Tracers.Metrics
         public static readonly ProfilerMetric Iterations = new("Iterations");
         public static readonly ProfilerMetric Duration = new("Duration");
         public static readonly ProfilerMetric TotalTime = new("Total Time");
-        public static readonly ProfilerMetric AverageTime = new("Average Time");
-        public static readonly ProfilerMetric AverageMilliseconds = new("Average Milliseconds");
-        public static readonly ProfilerMetric AverageNanoseconds = new("Average Nanoseconds");
-        public static readonly ProfilerMetric AverageMicroseconds = new("Average Microseconds");
-        public static readonly ProfilerMetric AverageTicks = new("Average Ticks");
+        public static readonly ProfilerMetric AverageTime = new("Avg. Time");
+        public static readonly ProfilerMetric AverageMilliseconds = new("Avg. Milliseconds");
+        public static readonly ProfilerMetric AverageNanoseconds = new("Avg. Nanoseconds");
+        public static readonly ProfilerMetric AverageMicroseconds = new("Avg. Microseconds");
+        public static readonly ProfilerMetric AverageTicks = new("Avg. Ticks");
         public static readonly ProfilerMetric Fastest = new("Fastest");
         public static readonly ProfilerMetric Slowest = new("Slowest");
         public static readonly ProfilerMetric Throughput = new("Throughput");
@@ -37,8 +37,8 @@ namespace MeasureMap.Tracers.Metrics
 
         // Memory
         //
-        public static readonly ProfilerMetric MemoryInitialSize = new("Memory Initial size");
-        public static readonly ProfilerMetric MemoryEndSize = new("Memory End size");
-        public static readonly ProfilerMetric MemoryIncrease = new("Memory Increase");
+        public static readonly ProfilerMetric MemoryInitialSize = new("Memory init size");
+        public static readonly ProfilerMetric MemoryEndSize = new("Memory end size");
+        public static readonly ProfilerMetric MemoryIncrease = new("Memory increase");
     }
 }
