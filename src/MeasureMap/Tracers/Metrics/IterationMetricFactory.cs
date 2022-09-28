@@ -3,11 +3,11 @@
 namespace MeasureMap.Tracers.Metrics
 {
     /// <summary>
-    /// A metric resolver fof <see cref="IResult"/>
+    /// A metric resolver fof <see cref="IIterationResult"/>
     /// </summary>
-    public class ProfileThreadResultMetric : BaseMetric<ProfileThreadMetric, IResult>, IProfileThreadResultMetric
+    public class IterationMetricFactory : BaseMetric<IterationMetric, IIterationResult>, IIterationMetric
     {
-        private readonly Func<IResult, object> _metric;
+        private readonly Func<IIterationResult, object> _metric;
 
         /// <summary>
         /// 
@@ -16,7 +16,7 @@ namespace MeasureMap.Tracers.Metrics
         /// <param name="category"></param>
         /// <param name="metric"></param>
         /// <param name="align"></param>
-        public ProfileThreadResultMetric(ProfileThreadMetric type, MetricCategory category, Func<IResult, object> metric, TextAlign align = TextAlign.Left)
+        public IterationMetricFactory(IterationMetric type, MetricCategory category, Func<IIterationResult, object> metric, TextAlign align = TextAlign.Left)
             : base(type, category, align)
         {
             _metric = metric;
@@ -27,6 +27,6 @@ namespace MeasureMap.Tracers.Metrics
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public override string GetMetric(IResult result) => _metric(result)?.ToString();
+        public override string GetMetric(IIterationResult result) => _metric(result)?.ToString();
     }
 }

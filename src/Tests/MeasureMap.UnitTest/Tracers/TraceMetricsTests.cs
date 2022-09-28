@@ -37,7 +37,7 @@ namespace MeasureMap.UnitTest.Tracers
             var type = new ProfilerMetric("custom");
 
             var metrics = new TraceMetrics();
-            metrics.Add(new ProfilerResultMetric(type, MetricCategory.Duration, r => string.Empty));
+            metrics.Add(new ProfilerMetricFactory(type, MetricCategory.Duration, r => string.Empty));
 
             metrics.GetProfilerMetrics().Single().Name.Should().Be(type);
         }
@@ -75,7 +75,7 @@ namespace MeasureMap.UnitTest.Tracers
             var type = new ProfileThreadMetric("custom");
 
             var metrics = new TraceMetrics();
-            metrics.Add(new ProfileThreadResultMetric(type, MetricCategory.Duration, r => string.Empty));
+            metrics.Add(new ProfileThreadMetricFactory(type, MetricCategory.Duration, r => string.Empty));
 
             metrics.GetProfileThreadMetrics().Single().Name.Should().Be(type);
         }
@@ -112,7 +112,7 @@ namespace MeasureMap.UnitTest.Tracers
             var type = new IterationMetric("custom");
 
             var metrics = new TraceMetrics();
-            metrics.Add(new IterationResultMetric(type, MetricCategory.Duration, r => string.Empty));
+            metrics.Add(new IterationMetricFactory(type, MetricCategory.Duration, r => string.Empty));
 
             metrics.GetIterationMetrics().Single().Name.Should().Be(type);
         }

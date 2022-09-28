@@ -6,28 +6,28 @@ using Polaroider;
 
 namespace MeasureMap.UnitTest.Tracers.Metrics
 {
-    public class IterationResultMetricTests
+    public class IterationMetricFactoryTests
     {
         [Test]
-        public void IterationResultMetric_Internal()
+        public void IterationMetricFactory_Internal()
         {
-            new IterationResultMetric(IterationMetric.Ticks, MetricCategory.Duration, r => string.Empty).MatchSnapshot();
+            new IterationMetricFactory(IterationMetric.Ticks, MetricCategory.Duration, r => string.Empty).MatchSnapshot();
         }
 
         [Test]
-        public void IterationResultMetric_GetMetric()
+        public void IterationMetricFactory_GetMetric()
         {
             var result = new Mock<IIterationResult>();
-            var metric = new IterationResultMetric(IterationMetric.Ticks, MetricCategory.Duration, r => "result");
+            var metric = new IterationMetricFactory(IterationMetric.Ticks, MetricCategory.Duration, r => "result");
             metric.GetMetric(result.Object).Should().Be("result");
         }
 
         [Test]
-        public void IterationResultMetric_GetMetric_Result()
+        public void IterationMetricFactory_GetMetric_Result()
         {
             var result = new Mock<IIterationResult>();
             result.Setup(x => x.Ticks).Returns(20);
-            var metric = new IterationResultMetric(IterationMetric.Ticks, MetricCategory.Duration, r => r.Ticks);
+            var metric = new IterationMetricFactory(IterationMetric.Ticks, MetricCategory.Duration, r => r.Ticks);
             metric.GetMetric(result.Object).Should().Be("20");
         }
     }

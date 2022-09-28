@@ -5,7 +5,7 @@ namespace MeasureMap.Tracers.Metrics
     /// <summary>
     /// A metric resolver fof <see cref="IProfilerResult"/>
     /// </summary>
-    public class ProfilerResultMetric : BaseMetric<ProfilerMetric, IProfilerResult>, IProfilerMetric
+    public class ProfilerMetricFactory : BaseMetric<ProfilerMetric, IProfilerResult>, IProfilerMetric
     {
         private readonly Func<IProfilerResult, object> _metric;
 
@@ -16,7 +16,7 @@ namespace MeasureMap.Tracers.Metrics
         /// <param name="category"></param>
         /// <param name="metric"></param>
         /// <param name="align"></param>
-        public ProfilerResultMetric(ProfilerMetric type, MetricCategory category, Func<IProfilerResult, object> metric, TextAlign align = TextAlign.Left)
+        public ProfilerMetricFactory(ProfilerMetric type, MetricCategory category, Func<IProfilerResult, object> metric, TextAlign align = TextAlign.Left)
         : base(type, category, align)
         {
             _metric = metric;
