@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ### Changed
 - Benchmarks now Trace iterartions instead of memory used
+- Complete redo of the trace output
  
 ### Fixed
  
