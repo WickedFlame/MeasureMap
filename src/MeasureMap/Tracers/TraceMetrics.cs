@@ -34,7 +34,7 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a default <see cref="ProfilerMetric"/> to the output
+        /// Add a default <see cref="ProfilerMetric"/> to the output. This is used for Profiers and Benchmarks
         /// </summary>
         /// <param name="type"></param>
         public void Add(ProfilerMetric type)
@@ -48,7 +48,7 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a custom <see cref="IProfilerMetric"/>
+        /// Add a custom <see cref="IProfilerMetric"/>. This is used for Profiers and Benchmarks
         /// </summary>
         /// <param name="metric"></param>
         public TraceMetrics Add(IProfilerMetric metric)
@@ -59,7 +59,7 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a default <see cref="ProfileThreadMetric"/> to the output
+        /// Add a default <see cref="ProfileThreadMetric"/> to the output. This is used for thread details of Profiers
         /// </summary>
         /// <param name="type"></param>
         public TraceMetrics Add(ProfileThreadMetric type)
@@ -75,7 +75,7 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a custom <see cref="IProfileThreadResultMetric"/>
+        /// Add a custom <see cref="IProfileThreadResultMetric"/>. This is used for thread details of Profiers
         /// </summary>
         /// <param name="metric"></param>
         public TraceMetrics Add(IProfileThreadResultMetric metric)
@@ -86,7 +86,7 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a default <see cref="IterationMetric"/> to the output
+        /// Add a default <see cref="IterationMetric"/> to the output. This is used for details of each iteration
         /// </summary>
         /// <param name="type"></param>
         public TraceMetrics Add(IterationMetric type)
@@ -102,7 +102,7 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a custom <see cref="IIterationMetric"/>
+        /// Add a custom <see cref="IIterationMetric"/>. This is used for details of each iteration
         /// </summary>
         /// <param name="metric"></param>
         public TraceMetrics Add(IIterationMetric metric)

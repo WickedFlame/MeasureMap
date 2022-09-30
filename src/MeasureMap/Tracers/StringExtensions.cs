@@ -46,6 +46,8 @@ namespace MeasureMap.Tracers
                 "Fastest" => 16,
                 "Slowest" => 16,
                 "Throughput" => 14,
+                "Total Time" => 16,
+                "Duration" => 16,
                 _ => value != null ? value.Length : 0
             };
         }
