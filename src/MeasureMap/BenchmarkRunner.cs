@@ -44,7 +44,7 @@ namespace MeasureMap
         /// <returns></returns>
         public IBenchmarkResult RunSessions()
         {
-            var results = new BenchmarkResult(_settings.Iterations);
+            var results = new BenchmarkResult(_settings);
 
             foreach (var key in _sessions.Keys)
             {

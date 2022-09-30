@@ -14,7 +14,7 @@ namespace MeasureMap.UnitTest
             TraceOptions.Default.Tracer = tracer.Object;
             TraceOptions.Default.ResultWriter = new Mock<IResultWriter>().Object;
 
-            var result = new BenchmarkResult(1);
+            var result = new BenchmarkResult(new ProfilerSettings());
             result.Trace();
 
             tracer.Verify(x => x.Trace(result, TraceOptions.Default.ResultWriter, It.IsAny<TraceOptions>()));
@@ -27,7 +27,7 @@ namespace MeasureMap.UnitTest
             var writer = new Mock<IResultWriter>();
             var options = new TraceOptions();
 
-            var result = new BenchmarkResult(1);
+            var result = new BenchmarkResult(new ProfilerSettings());
             result.Trace(tracer.Object, writer.Object, options);
 
             tracer.Verify(x => x.Trace(result, writer.Object, options));
@@ -43,7 +43,7 @@ namespace MeasureMap.UnitTest
                 Tracer = tracer.Object
             };
 
-            var result = new BenchmarkResult(1);
+            var result = new BenchmarkResult(new ProfilerSettings());
             result.Trace(options);
 
             tracer.Verify(x => x.Trace(result, options.ResultWriter, options));
@@ -54,7 +54,7 @@ namespace MeasureMap.UnitTest
         {
             var options = new TraceOptions();
 
-            new BenchmarkResult(1).Trace(options);
+            new BenchmarkResult(new ProfilerSettings()).Trace(options);
 
             options.Metrics.Should().NotBeNull();
         }
@@ -64,7 +64,7 @@ namespace MeasureMap.UnitTest
         {
             var options = new TraceOptions();
 
-            new BenchmarkResult(1).Trace(new MarkDownTracer(), new TraceResultWriter(), options);
+            new BenchmarkResult(new ProfilerSettings()).Trace(new MarkDownTracer(), new TraceResultWriter(), options);
 
             options.Metrics.Should().NotBeNull();
         }

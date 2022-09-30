@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace MeasureMap
@@ -13,12 +14,18 @@ namespace MeasureMap
         /// <summary>
         /// Creates an instance of a BenchmarkResult
         /// </summary>
-        /// <param name="iterations"></param>
-        public BenchmarkResult(int iterations)
+        /// <param name="settings"></param>
+        public BenchmarkResult(ProfilerSettings settings)
         {
             _results = new Dictionary<string, IProfilerResult>();
-            Iterations = iterations;
+            Iterations = settings.Iterations;
+            Duration = settings.Duration;
         }
+
+        /// <summary>
+        /// Gets the configured duration that the benchmarktests were run for
+        /// </summary>
+        public TimeSpan Duration { get; }
 
         /// <summary>
         /// Gets the amount of iterations that the benchmarktests were run

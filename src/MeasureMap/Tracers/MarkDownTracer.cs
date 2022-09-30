@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MeasureMap.Tracers.Metrics;
 
 namespace MeasureMap.Tracers
@@ -125,7 +126,15 @@ namespace MeasureMap.Tracers
                 return;
             }
 
-            writer.WriteLine($" Iterations: {result.Iterations}");
+            if(result.Iterations > 1)
+            {
+                writer.WriteLine($" Iterations: {result.Iterations}");
+            }
+
+            if (result.Duration > TimeSpan.Zero)
+            {
+                writer.WriteLine($" Duration: {result.Duration}");
+            }
 
             writer.WriteLine("## Summary");
             

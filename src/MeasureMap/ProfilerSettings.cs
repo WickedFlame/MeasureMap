@@ -13,7 +13,7 @@ namespace MeasureMap
 
         private int _iterations = 1;
         private bool _runWarmup = true;
-        private TimeSpan _duration;
+        private TimeSpan _duration = TimeSpan.Zero;
 
         /// <summary>
         /// Gets or sets the amount of iterations that the Task will be run

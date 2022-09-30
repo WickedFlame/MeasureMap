@@ -5,9 +5,18 @@ namespace MeasureMap.UnitTest.Tracers
 {
     public static class ResultFactory
     {
+        public static IBenchmarkResult CreateBenchmarkResult(TimeSpan duration)
+        {
+            return new BenchmarkResult(new ProfilerSettings { Duration = duration })
+            {
+                { "res1", CreateResult() },
+                { "res2", CreateResult() }
+            };
+        }
+
         public static IBenchmarkResult CreateBenchmarkResult()
         {
-            return new BenchmarkResult(10)
+            return new BenchmarkResult(new ProfilerSettings { Iterations = 10 })
             {
                 { "res1", CreateResult() },
                 { "res2", CreateResult() }

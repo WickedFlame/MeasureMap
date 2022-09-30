@@ -49,7 +49,7 @@ namespace MeasureMap
     public static class ExecutionContextExtensions
     {
         /// <summary>
-        /// Gets a value stored in the context
+        /// Gets a value stored in the SessionData of the context
         /// </summary>
         /// <param name="context">The execution context</param>
         /// <param name="key">The key of the stored value</param>
@@ -66,7 +66,7 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Gets a value stored in the context
+        /// Gets a value stored in the SessionData of the context
         /// </summary>
         /// <param name="context">The execution context</param>
         /// <param name="key">The key of the stored value</param>
@@ -82,7 +82,7 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Sets a value to the context
+        /// Sets a value to the SessionData of the context
         /// </summary>
         /// <param name="context">The execution context</param>
         /// <param name="key">The key of the stored value</param>
@@ -103,7 +103,7 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Removes a value from the context
+        /// Removes a value from the SessionData of the context
         /// </summary>
         /// <param name="context">The execution context</param>
         /// <param name="key">The key of the stored value</param>
@@ -119,7 +119,7 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Cleares all values from the context
+        /// Cleares all values from the SessionData of the context
         /// </summary>
         /// <param name="context">The execution context</param>
         public static IExecutionContext Clear(this IExecutionContext context)
