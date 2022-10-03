@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
 namespace MeasureMap
@@ -11,8 +12,9 @@ namespace MeasureMap
 	{
 		private readonly int _threadCount;
 		private readonly WorkerThreadList _threads;
+        private ILogger _logger;
 
-		/// <summary>
+        /// <summary>
 		/// Creates a new threaded task executor
 		/// </summary>
 		/// <param name="threadCount">The amount of threads to run the task</param>
@@ -36,6 +38,7 @@ namespace MeasureMap
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
             var threads = new ThreadList();
+            _logger = settings.Logger;
 
 			lock (_threads)
 			{
@@ -48,7 +51,7 @@ namespace MeasureMap
 						return p;
 					});
 
-					System.Diagnostics.Trace.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Info] [{nameof(MultyThreadSessionHandler)}] Start thread {thread.Id}");
+					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
 				}
 			}
 
@@ -86,7 +89,11 @@ namespace MeasureMap
 			{
 				foreach (var thread in _threads.ToList())
 				{
-					System.Diagnostics.Trace.WriteLine($"MeasureMap - End thread {thread.Id}");
+                    if (_logger != null)
+                    {
+                        _logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+                    }
+
 					thread.Dispose();
 					_threads.Remove(thread);
 				}

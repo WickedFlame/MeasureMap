@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
+using MeasureMap.Diagnostics;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
@@ -41,6 +42,17 @@ namespace MeasureMap.UnitTest
 
             firstPre.Should().Be(11);
             secondPre.Should().Be(12);
+        }
+
+        [TestCase(LogLevel.Debug)]
+        [TestCase(LogLevel.Info)]
+        [TestCase(LogLevel.Warning)]
+        [TestCase(LogLevel.Error)]
+        [TestCase(LogLevel.Critical)]
+        public void BenchmarkRunner_SetMinLogLevel(LogLevel level)
+        {
+            new BenchmarkRunner()
+                .SetMinLogLevel(level).Settings.Logger.MinLogLevel.Should().Be(level);
         }
     }
 }

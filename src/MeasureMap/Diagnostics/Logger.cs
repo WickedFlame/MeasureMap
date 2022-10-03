@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 
 namespace MeasureMap.Diagnostics
 {
@@ -8,7 +7,9 @@ namespace MeasureMap.Diagnostics
     {
         private readonly List<ILogWriter> _writers;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// 
+        /// </summary>
         public Logger()
         {
             _writers = new List<ILogWriter>();
@@ -17,10 +18,31 @@ namespace MeasureMap.Diagnostics
         /// <inheritdoc />
         public void Write(string message, LogLevel level = LogLevel.Info, string source = null)
         {
+            if (level < MinLogLevel)
+            {
+                return;
+            }
+
             foreach(var writer in _writers)
             {
                 writer.Write(message, level, source);
             }
+        }
+
+        /// <summary>
+        /// Defines the minimal <see cref="LogLevel"/>. All higher levels are writen to the log
+        /// </summary>
+        public LogLevel MinLogLevel { get; set; } = LogLevel.Warning;
+
+        /// <summary>
+        /// Add a <see cref="ILogWriter"/> to the logger
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <returns></returns>
+        public ILogger AddWriter(ILogWriter writer)
+        {
+            _writers.Add(writer);
+            return this;
         }
 
         /// <summary>

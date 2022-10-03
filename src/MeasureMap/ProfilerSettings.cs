@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
 
 namespace MeasureMap
@@ -14,6 +15,13 @@ namespace MeasureMap
         private int _iterations = 1;
         private bool _runWarmup = true;
         private TimeSpan _duration = TimeSpan.Zero;
+
+        public ProfilerSettings()
+        {
+            Logger = Diagnostics.Logger.Setup();
+        }
+
+        public ILogger Logger { get; }
 
         /// <summary>
         /// Gets or sets the amount of iterations that the Task will be run

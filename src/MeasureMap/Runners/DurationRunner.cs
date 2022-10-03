@@ -27,7 +27,7 @@ namespace MeasureMap.Runners
         /// <param name="action"></param>
         public void Run(ProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action)
         {
-            _logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark");
+            _logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark", source: nameof(DurationRunner));
             var stopWatch = new Stopwatch();
 
             var execution = settings.Execution;
@@ -38,7 +38,7 @@ namespace MeasureMap.Runners
             stopWatch.Start();
             while (stopWatch.Elapsed.TotalMilliseconds < duration)
             {
-                _logger.Write($"Running Task for iteration {iteration}", source: "DurationRunner");
+                _logger.Write($"Running Task for iteration {iteration}", source: nameof(DurationRunner));
                 context.Set(ContextKeys.Iteration, iteration);
 
                 execution.Execute(context.Clone(), action);

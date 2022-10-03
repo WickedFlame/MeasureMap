@@ -17,6 +17,9 @@ namespace MeasureMap
             LogWriters.Add(writer);
         }
 
-        internal static List<ILogWriter> LogWriters { get; } = new List<ILogWriter>();
+        internal static List<ILogWriter> LogWriters { get; } = new List<ILogWriter>
+        {
+            new TraceLogWriter()
+        };
     }
 }

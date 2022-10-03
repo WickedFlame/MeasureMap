@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MeasureMap.Diagnostics;
+using System;
 
 namespace MeasureMap
 {
@@ -50,5 +51,17 @@ namespace MeasureMap
 
 	        return runner;
         }
-	}
+
+        /// <summary>
+        /// Defines the minimal <see cref="LogLevel"/>. All higher levels are writen to the log
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner SetMinLogLevel(this BenchmarkRunner runner, LogLevel level)
+        {
+            runner.Settings.Logger.MinLogLevel = level;
+            return runner;
+        }
+    }
 }

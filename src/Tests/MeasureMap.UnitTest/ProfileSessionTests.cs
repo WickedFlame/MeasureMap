@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FluentAssertions;
+using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
 using Polaroider;
 using MeasureMap.UnitTest.Tracers;
@@ -618,6 +619,17 @@ namespace MeasureMap.UnitTest
                 .RunSession();
 
             result.Iterations.GroupBy(r => r.Iteration).All(i => i.Count() == 1).Should().BeTrue();
+        }
+
+        [TestCase(LogLevel.Debug)]
+        [TestCase(LogLevel.Info)]
+        [TestCase(LogLevel.Warning)]
+        [TestCase(LogLevel.Error)]
+        [TestCase(LogLevel.Critical)]
+        public void ProfileSession_SetMinLogLevel(LogLevel level)
+        {
+            ProfilerSession.StartSession()
+                .SetMinLogLevel(level).Settings.Logger.MinLogLevel.Should().Be(level);
         }
 
         private void Task()
