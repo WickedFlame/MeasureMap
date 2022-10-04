@@ -21,6 +21,9 @@ namespace MeasureMap
             Logger = Diagnostics.Logger.Setup();
         }
 
+        /// <summary>
+        /// Gets the <<see cref="ILogger"/>
+        /// </summary>
         public ILogger Logger { get; }
 
         /// <summary>
