@@ -20,12 +20,10 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
-            var stopwatch = new Stopwatch();
-
             // warmup
-            _logger.Write($"Running Task once for warmup on Performance Analysis Benchmark", source: nameof(WarmupSessionHandler));
+            settings.Logger.Write($"Running Task once for warmup on Performance Analysis Benchmark", source: nameof(WarmupSessionHandler));
 
-            stopwatch.Start();
+            var stopwatch = Stopwatch.StartNew();
 
             task.Run(new ExecutionContext(settings));
 

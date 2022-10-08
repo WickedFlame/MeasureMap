@@ -14,8 +14,7 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IIterationResult Run(IExecutionContext context)
         {
-            var sw = new Stopwatch();
-            sw.Start();
+            var sw = Stopwatch.StartNew();
 
             var result = base.Run(context);
 

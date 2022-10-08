@@ -19,6 +19,8 @@ namespace MeasureMap.Threading
         /// <param name="action"></param>
         public WorkerThread(int index, Func<Result> action)
         {
+            _event = new ManualResetEventSlim();
+
             _thread = new Thread(new ThreadStart(() =>
             {
                 try
@@ -43,7 +45,6 @@ namespace MeasureMap.Threading
                 Priority = ThreadPriority.Highest
             };
 
-            _event = new ManualResetEventSlim();
             _event.Reset();
         }
 
