@@ -81,11 +81,13 @@ namespace MeasureMap.UnitTest.Runners
             var context = new ExecutionContext();
 
             var times = new TimeSpan[10];
-            var sw = new Stopwatch();
+
+            // Start Stopwatch before creating TimedTaskExecution
+            // The ctor of TimedTaskExecution starts the Stopwatch to track the timer
+            // 
+            var sw = Stopwatch.StartNew();
 
             var execution = new TimedTaskExecution(interval);
-
-            sw.Start();
             for (var i = 0; i < 10; i++)
             {
                 execution.Execute(context, c => { });
