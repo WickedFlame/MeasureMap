@@ -9,7 +9,6 @@ namespace MeasureMap.Runners
     /// </summary>
     public class SimpleTaskExecution : ITaskExecution
     {
-        private readonly Logger _logger;
         private readonly Stopwatch _stopWatch;
 
         /// <summary>
@@ -17,9 +16,7 @@ namespace MeasureMap.Runners
         /// </summary>
         public SimpleTaskExecution()
         {
-            _logger = Logger.Setup();
-            _stopWatch = new Stopwatch();
-            _stopWatch.Start();
+            _stopWatch = Stopwatch.StartNew();
         }
 
         /// <summary>
@@ -31,7 +28,7 @@ namespace MeasureMap.Runners
         {
             execution(context);
 
-            _logger.Write($"Elapsed {_stopWatch.Elapsed.TotalMilliseconds}", LogLevel.Info, "SimpleExecution");
+            context.Logger.Write($"Elapsed {_stopWatch.Elapsed.TotalMilliseconds}", LogLevel.Debug, nameof(SimpleTaskExecution));
 
             // reset the time for the next execution
             _stopWatch.Restart();

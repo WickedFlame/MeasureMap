@@ -8,7 +8,7 @@ namespace MeasureMap
     /// <summary>
     /// Settings for the profiler
     /// </summary>
-    public class ProfilerSettings
+    public class ProfilerSettings : IProfilerSettings
     {
         private readonly Dictionary<string, Action<ProfilerSettings, ProfilerSettings>> _changes = new Dictionary<string, Action<ProfilerSettings, ProfilerSettings>>();
 
@@ -16,13 +16,16 @@ namespace MeasureMap
         private bool _runWarmup = true;
         private TimeSpan _duration = TimeSpan.Zero;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ProfilerSettings()
         {
             Logger = Diagnostics.Logger.Setup();
         }
 
         /// <summary>
-        /// Gets the <<see cref="ILogger"/>
+        /// Gets the <see cref="ILogger"/>
         /// </summary>
         public ILogger Logger { get; }
 

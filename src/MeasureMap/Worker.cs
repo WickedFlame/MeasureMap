@@ -39,7 +39,7 @@ namespace MeasureMap
             ForceGarbageCollector();
             
             result.InitialSize = GC.GetTotalMemory(true);
-            var context = new ExecutionContext
+            var context = new ExecutionContext(settings)
             {
                 Threads = _threads
             };

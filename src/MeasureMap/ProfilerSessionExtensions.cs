@@ -258,5 +258,11 @@ namespace MeasureMap
             session.Settings.Logger.MinLogLevel = level;
             return session;
         }
+
+        internal static ProfilerSession AppendSettings(this ProfilerSession session, ProfilerSettings settings)
+        {
+            session.SetMinLogLevel(settings.Logger.MinLogLevel);
+            return session;
+        }
     }
 }

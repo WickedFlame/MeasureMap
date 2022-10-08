@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
@@ -37,6 +39,7 @@ namespace MeasureMap
 		/// <returns>The resulting collection of the executions</returns>
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
+			var sw = Stopwatch.StartNew();
             var threads = new ThreadList();
             _logger = settings.Logger;
 
@@ -55,7 +58,9 @@ namespace MeasureMap
 				}
 			}
 
-			while (CountOpenThreads() > 0)
+            settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Warning, nameof(MultyThreadSessionHandler));
+
+            while (CountOpenThreads() > 0)
 			{
 				_threads.WaitAll();
 			}

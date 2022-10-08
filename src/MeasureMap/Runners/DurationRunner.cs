@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using MeasureMap.Diagnostics;
 
 namespace MeasureMap.Runners
 {
@@ -9,16 +8,6 @@ namespace MeasureMap.Runners
     /// </summary>
     public class DurationRunner : ITaskRunner
     {
-        private readonly ILogger _logger;
-
-        /// <summary>
-        /// Creates a new instance of the worker
-        /// </summary>
-        public DurationRunner()
-        {
-            _logger = Logger.Setup();
-        }
-
         /// <summary>
         /// Runs the task for the given duration that is defined in the <see cref="ProfilerSettings"/>
         /// </summary>
@@ -27,7 +16,7 @@ namespace MeasureMap.Runners
         /// <param name="action"></param>
         public void Run(ProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action)
         {
-            _logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark", source: nameof(DurationRunner));
+            settings.Logger.Write($"Running Task for {settings.Duration} for Perfomance Analysis Benchmark", source: nameof(DurationRunner));
             var stopWatch = new Stopwatch();
 
             var execution = settings.Execution;
@@ -38,7 +27,7 @@ namespace MeasureMap.Runners
             stopWatch.Start();
             while (stopWatch.Elapsed.TotalMilliseconds < duration)
             {
-                _logger.Write($"Running Task for iteration {iteration}", source: nameof(DurationRunner));
+                settings.Logger.Write($"Running Task for iteration {iteration}", source: nameof(DurationRunner));
                 context.Set(ContextKeys.Iteration, iteration);
 
                 execution.Execute(context.Clone(), action);
@@ -46,7 +35,7 @@ namespace MeasureMap.Runners
                 iteration++;
             }
 
-            _logger.Write($"Running {iteration} iterations took {stopWatch.Elapsed}");
+            settings.Logger.Write($"Running {iteration} iterations took {stopWatch.Elapsed}");
         }
     }
 }

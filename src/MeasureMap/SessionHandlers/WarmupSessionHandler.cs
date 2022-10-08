@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
@@ -13,16 +12,6 @@ namespace MeasureMap
     /// </summary>
     public class WarmupSessionHandler : SessionHandler, IWarmupSessionHandler
     {
-        private readonly Logger _logger;
-
-        /// <summary>
-        /// Creates an instance of the WarmupSessionHandler
-        /// </summary>
-        public WarmupSessionHandler()
-        {
-            _logger = Logger.Setup();
-        }
-
         /// <summary>
         /// Executes the task
         /// </summary>
@@ -38,7 +27,7 @@ namespace MeasureMap
 
             stopwatch.Start();
 
-            task.Run(new ExecutionContext());
+            task.Run(new ExecutionContext(settings));
 
             stopwatch.Stop();
 

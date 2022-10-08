@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MeasureMap
 {
@@ -48,6 +47,8 @@ namespace MeasureMap
 
             foreach (var key in _sessions.Keys)
             {
+                _settings.Logger.Write($"Starting Benchmarks for {key}", Diagnostics.LogLevel.Info, nameof(BenchmarkRunner));
+
                 var session = _sessions[key];
                 session.SetSettings(_settings);
                 var result = session.RunSession();

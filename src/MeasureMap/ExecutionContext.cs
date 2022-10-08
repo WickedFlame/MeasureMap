@@ -1,24 +1,9 @@
 ﻿using System.Collections.Generic;
+using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
 namespace MeasureMap
 {
-    /// <summary>
-    /// The context containing info to the execution run
-    /// </summary>
-    public interface IExecutionContext
-    {
-        /// <summary>
-        /// The data store for the context
-        /// </summary>
-        IDictionary<string, object> SessionData { get; }
-
-        /// <summary>
-        /// Gets a list containing all threads that are associated with this run
-        /// </summary>
-        IThreadList Threads { get; }
-    }
-
     /// <summary>
     /// The context containing info to the execution run
     /// </summary>
@@ -27,9 +12,18 @@ namespace MeasureMap
         /// <summary>
         /// Default constructor for ExecutionContext
         /// </summary>
-        public ExecutionContext()
+        public ExecutionContext() 
+            : this(new ProfilerSettings())
+        {
+        }
+
+        /// <summary>
+        /// Default constructor for ExecutionContext
+        /// </summary>
+        public ExecutionContext(IProfilerSettings settings)
         {
             Threads = new ThreadList();
+            Settings = settings;
         }
 
         /// <summary>
@@ -41,6 +35,16 @@ namespace MeasureMap
         /// Gets a list containing all threads that are associated with this run
         /// </summary>
         public IThreadList Threads { get; set; }
+
+        /// <summary>
+        /// Gets the settings associated with the session
+        /// </summary>
+        public IProfilerSettings Settings { get; }
+
+        /// <summary>
+        /// Gets the logger associated with the session
+        /// </summary>
+        public ILogger Logger => Settings.Logger;
     }
 
     /// <summary>
@@ -136,7 +140,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static IExecutionContext Clone(this IExecutionContext context)
         {
-            var child = new ExecutionContext
+            var child = new ExecutionContext(context.Settings)
             {
                 Threads = context.Threads
             };
