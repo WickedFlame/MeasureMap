@@ -1,6 +1,6 @@
 ﻿using MeasureMap.Benchmark;
 
-var bm = "BenchmarkSample";
+var bm = "ThroughputBenchmarks";//"BenchmarkSample";
 
 switch (bm)
 {
@@ -12,6 +12,9 @@ switch (bm)
         break;
     case nameof(WorkerThreadListBenchmarks):
         new WorkerThreadListBenchmarks().RunBenchmarks();
+        break;
+    case nameof(ThroughputBenchmarks):
+        new ThroughputBenchmarks().RunBenchmarks();
         break;
 }
 
