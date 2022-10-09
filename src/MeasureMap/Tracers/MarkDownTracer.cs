@@ -138,7 +138,7 @@ namespace MeasureMap.Tracers
 
             writer.WriteLine("## Summary");
             
-            var keylength = result.Keys.OrderByDescending(k => k).First().Length;
+            var keylength = result.Keys.Select(k => k.Length).OrderByDescending(k => k).First();
             keylength = keylength < 4 ? 4 : keylength;
 
             var metrics = options.Metrics.GetProfilerMetrics();
