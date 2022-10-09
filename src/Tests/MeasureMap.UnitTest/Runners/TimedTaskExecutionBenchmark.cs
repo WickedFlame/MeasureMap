@@ -70,10 +70,10 @@ namespace MeasureMap.UnitTest.Runners
             }
 
             // skip first because that one is a direct runthroug and fakes statistics
-            benchmarks["1 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(1, TraceResult(benchmarks["1 ms delay"].Skip(1))).And.BeLessThan(20);
-            benchmarks["10 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(10, TraceResult(benchmarks["1 ms delay"].Skip(1))).And.BeLessThan(20);
-            benchmarks["100 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(100, TraceResult(benchmarks["1 ms delay"].Skip(1))).And.BeLessThan(120);
-            benchmarks["1000 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(1000, TraceResult(benchmarks["1 ms delay"].Skip(1))).And.BeLessThan(1020);
+            benchmarks["1 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(1, TraceResult(benchmarks["1 ms delay"])).And.BeLessThan(20);
+            benchmarks["10 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(10, TraceResult(benchmarks["1 ms delay"])).And.BeLessThan(20);
+            benchmarks["100 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(100, TraceResult(benchmarks["1 ms delay"])).And.BeLessThan(120);
+            benchmarks["1000 ms delay"].Skip(1).Average(v => v.TotalMilliseconds).Should().BeGreaterThan(1000, TraceResult(benchmarks["1 ms delay"])).And.BeLessThan(1020);
         }
 
         private string TraceResult(IEnumerable<TimeSpan> skip)
