@@ -8,12 +8,10 @@ namespace MeasureMap.Diagnostics
     /// </summary>
     public class TraceLogWriter : ILogWriter
     {
-        private readonly Action<string> _writeLine = Environment.UserInteractive ? s => Console.WriteLine(s) : s => Trace.WriteLine(s);
-
         /// <inheritdoc />
         public void Write(string message, LogLevel level, string source = null)
         {
-            _writeLine($"[{DateTime.Now:o}] [MeasureMap] [{source}] [{level}] {message}");
+            ConsoleWriter.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [{source}] [{level}] {message}");
         }
     }
 }

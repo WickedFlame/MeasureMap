@@ -40,7 +40,7 @@ namespace MeasureMap.Runners
                 //
             }
 
-            context.Logger.Write($"Elapsed {_stopWatch.Elapsed.TotalMilliseconds}", LogLevel.Info, "TimedExecution");
+            context.Logger.Write($"Elapsed {_stopWatch.Elapsed.TotalMilliseconds}", LogLevel.Debug, "TimedExecution");
 
             // reset the time for the next execution
             _stopWatch.Restart();
