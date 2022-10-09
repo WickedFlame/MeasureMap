@@ -10,7 +10,7 @@ namespace MeasureMap.Benchmark
             // check the throughput 
             // from 0 to 
             var benchmark = new BenchmarkRunner();
-            benchmark.SetIterations(100);
+            benchmark.SetIterations(10);
 
             benchmark.Task("no interval", () => { }).SetInterval(TimeSpan.Zero);
             benchmark.Task("1 ms interval", () => { }).SetInterval(TimeSpan.FromMilliseconds(1));
