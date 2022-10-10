@@ -56,7 +56,7 @@ namespace MeasureMap.UnitTest.Runners
         [Test]
         public void TimedTaskExecution_Benchmark_Timer()
         {
-            var benchmarks = new Dictionary<string, List<TimeSpan>>();
+            var benchmarks = new Dictionary<string, TimeSpan[]>();
 
             benchmarks.Add("1 ms delay", Measure(TimeSpan.FromMilliseconds(1)));
             benchmarks.Add("10 ms delay", Measure(TimeSpan.FromMilliseconds(10)));
@@ -81,7 +81,7 @@ namespace MeasureMap.UnitTest.Runners
             return string.Join($"{Environment.NewLine} - ", skip);
         }
 
-        private List<TimeSpan> Measure(TimeSpan interval)
+        private TimeSpan[] Measure(TimeSpan interval)
         {
             var context = new ExecutionContext();
             context.Logger.MinLogLevel = MeasureMap.Diagnostics.LogLevel.Debug;
@@ -104,7 +104,7 @@ namespace MeasureMap.UnitTest.Runners
                 
             }
 
-            return times.ToList();
+            return times;
         }
     }
 }
