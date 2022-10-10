@@ -6,10 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## vNext
 ### Added
+- Added Benchmarks and samples oh how to use the BenchmarkRunner
+- SetDuration on BenchmarkRunner
  
 ### Changed
+- Traces are now writen to the Logger
  
 ### Fixed
+- ProfilerSettings are now passed to all elements of a session
  
 ## v2.0.1
 ### Added
