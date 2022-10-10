@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFrameworks>net6.0;net48</TargetFrameworks>
+        <TargetFrameworks Condition="'$(OS)' != 'Windows_NT'">net6.0</TargetFrameworks>
         <ImplicitUsings>disable</ImplicitUsings>
 
         <IsPackable>false</IsPackable>
