@@ -58,7 +58,7 @@ namespace MeasureMap
 				}
 			}
 
-            settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+            settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultyThreadSessionHandler));
 
             while (CountOpenThreads() > 0)
 			{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using MeasureMap.Diagnostics;
 
 namespace MeasureMap.Runners
 {
@@ -27,7 +28,7 @@ namespace MeasureMap.Runners
             stopWatch.Start();
             while (stopWatch.Elapsed.TotalMilliseconds < duration)
             {
-                settings.Logger.Write($"Running Task for iteration {iteration}", source: nameof(DurationRunner));
+                settings.Logger.Write($"Running Task for iteration {iteration}", LogLevel.Debug, source: nameof(DurationRunner));
                 context.Set(ContextKeys.Iteration, iteration);
 
                 execution.Execute(context.Clone(), action);
@@ -35,7 +36,7 @@ namespace MeasureMap.Runners
                 iteration++;
             }
 
-            settings.Logger.Write($"Running {iteration} iterations took {stopWatch.Elapsed}");
+            settings.Logger.Write($"Running {iteration} iterations took {stopWatch.Elapsed}", source: nameof(DurationRunner));
         }
     }
 }
