@@ -29,10 +29,10 @@ namespace MeasureMap.Tracers.Metrics
             Add(ThreadMetric.Fastest);
             Add(ThreadMetric.Throughput);
 
-            Add(IterationMetric.ThreadId);
-            Add(IterationMetric.Iteration);
-            Add(IterationMetric.TimeStamp);
-            Add(IterationMetric.Milliseconds);
+            Add(DetailMetric.ThreadId);
+            Add(DetailMetric.Iteration);
+            Add(DetailMetric.TimeStamp);
+            Add(DetailMetric.Milliseconds);
         }
 
         /// <summary>

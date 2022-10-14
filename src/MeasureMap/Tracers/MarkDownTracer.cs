@@ -79,7 +79,7 @@ namespace MeasureMap.Tracers
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Iteration and Thread");
-                var metrics = options.Metrics.GetIterationMetrics();
+                var metrics = options.Metrics.GetDetailMetrics();
                 var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
                 writer.WriteLine($"| {headers} |");
 

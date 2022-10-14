@@ -10,13 +10,13 @@ namespace MeasureMap.Tracers
     /// </summary>
     public class TraceMetrics
     {
-        private static readonly MetricsCollection<IterationMetric, IIterationMetric> DefaultIterationMetrics = new IterationMetricsCollection();
+        private static readonly MetricsCollection<DetailMetric, IDetailMetric> DefaultDetailMetrics = new DetailMetricsCollection();
         private static readonly MetricsCollection<ProfilerMetric, IProfilerMetric> DefaultProfilerMetrics = new ProfilerMetricsCollection();
         private static readonly MetricsCollection<ThreadMetric, IThreadMetric> DefaultThreadMetrics = new ThreadMetricsCollection();
 
         private readonly List<IProfilerMetric> _profilerMetrics = new();
         private readonly List<IThreadMetric> _threadMetrics = new();
-        private readonly List<IIterationMetric> _iterationMetrics = new();
+        private readonly List<IDetailMetric> _detailMetrics = new();
 
         /// <summary>
         /// Get all registered metrics
@@ -27,7 +27,7 @@ namespace MeasureMap.Tracers
             {
                 var metrics = _profilerMetrics.Select(p => p.Name).ToList();
                 metrics.AddRange(_threadMetrics.Select(p => p.Name));
-                metrics.AddRange(_iterationMetrics.Select(p => p.Name));
+                metrics.AddRange(_detailMetrics.Select(p => p.Name));
 
                 return metrics;
             }
@@ -86,28 +86,28 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a default <see cref="IterationMetric"/> to the output. This is used for details of each iteration
+        /// Add a default <see cref="DetailMetric"/> to the output. This is used for details of each iteration
         /// </summary>
         /// <param name="type"></param>
-        public TraceMetrics Add(IterationMetric type)
+        public TraceMetrics Add(DetailMetric type)
         {
-            if (!DefaultIterationMetrics.Contains(type))
+            if (!DefaultDetailMetrics.Contains(type))
             {
                 return this;
             }
 
-            Add(DefaultIterationMetrics.Get(type));
+            Add(DefaultDetailMetrics.Get(type));
 
             return this;
         }
 
         /// <summary>
-        /// Add a custom <see cref="IIterationMetric"/>. This is used for details of each iteration
+        /// Add a custom <see cref="IDetailMetric"/>. This is used for details of each iteration
         /// </summary>
         /// <param name="metric"></param>
-        public TraceMetrics Add(IIterationMetric metric)
+        public TraceMetrics Add(IDetailMetric metric)
         {
-            _iterationMetrics.Add(metric);
+            _detailMetrics.Add(metric);
 
             return this;
         }
@@ -131,12 +131,12 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Get the registered <see cref="IIterationMetric"/>
+        /// Get the registered <see cref="IDetailMetric"/>
         /// </summary>
         /// <returns></returns>
-        public IIterationMetric[] GetIterationMetrics()
+        public IDetailMetric[] GetDetailMetrics()
         {
-            return _iterationMetrics.ToArray();
+            return _detailMetrics.ToArray();
         }
     }
 }

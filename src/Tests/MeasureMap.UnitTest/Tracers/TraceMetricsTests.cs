@@ -72,41 +72,34 @@ namespace MeasureMap.UnitTest.Tracers
             metrics.GetThreadMetrics().Single().Name.Should().Be(type);
         }
 
-
-
-
-
-
-
-
         [Test]
-        public void TraceMetrics_Add_IterationMetric()
+        public void TraceMetrics_Add_DetailMetric()
         {
             var metrics = new TraceMetrics();
-            metrics.Add(IterationMetric.Ticks);
+            metrics.Add(DetailMetric.Ticks);
 
-            metrics.GetIterationMetrics().Single().Name.Should().Be(IterationMetric.Ticks);
+            metrics.GetDetailMetrics().Single().Name.Should().Be(DetailMetric.Ticks);
         }
 
         [Test]
-        public void TraceMetrics_Add_IterationMetric_AddCustom()
+        public void TraceMetrics_Add_DetailMetric_AddCustom()
         {
 
             var metrics = new TraceMetrics();
-            metrics.Add(new IterationMetric("custom"));
+            metrics.Add(new DetailMetric("custom"));
 
-            metrics.GetIterationMetrics().Should().BeEmpty();
+            metrics.GetDetailMetrics().Should().BeEmpty();
         }
 
         [Test]
-        public void TraceMetrics_Add_IterationMetric_AddNewCustom()
+        public void TraceMetrics_Add_DetailMetric_AddNewCustom()
         {
-            var type = new IterationMetric("custom");
+            var type = new DetailMetric("custom");
 
             var metrics = new TraceMetrics();
-            metrics.Add(new IterationMetricFactory(type, MetricCategory.Duration, r => string.Empty));
+            metrics.Add(new DetailMetricFactory(type, MetricCategory.Duration, r => string.Empty));
 
-            metrics.GetIterationMetrics().Single().Name.Should().Be(type);
+            metrics.GetDetailMetrics().Single().Name.Should().Be(type);
         }
     }
 }

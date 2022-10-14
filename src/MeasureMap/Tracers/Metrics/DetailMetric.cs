@@ -4,74 +4,74 @@ namespace MeasureMap.Tracers.Metrics
     /// <summary>
     /// Enumeration of all default Metrics of a IterationResult
     /// </summary>
-    public class IterationMetric : Enumeration
+    public class DetailMetric : Enumeration
     {
         /// <summary>
         /// 
         /// </summary>
         /// <param name="name"></param>
-        public IterationMetric(string name) : base(name)
+        public DetailMetric(string name) : base(name)
         {
         }
 
         /// <summary>
         /// AfterExecution
         /// </summary>
-        public static readonly IterationMetric AfterExecution = new("AfterExecution");
+        public static readonly DetailMetric AfterExecution = new("AfterExecution");
 
         /// <summary>
         /// AfterGarbageCollection
         /// </summary>
-        public static readonly IterationMetric AfterGarbageCollection = new("AfterGarbageCollection");
+        public static readonly DetailMetric AfterGarbageCollection = new("AfterGarbageCollection");
 
         /// <summary>
         /// Duration
         /// </summary>
-        public static readonly IterationMetric Duration = new("Duration");
+        public static readonly DetailMetric Duration = new("Duration");
 
         /// <summary>
         /// Initial size
         /// </summary>
-        public static readonly IterationMetric InitialSize = new("Initial size");
+        public static readonly DetailMetric InitialSize = new("Initial size");
 
         /// <summary>
         /// Ticks
         /// </summary>
-        public static readonly IterationMetric Ticks = new("Ticks");
+        public static readonly DetailMetric Ticks = new("Ticks");
 
         /// <summary>
         /// Nanoseconds
         /// </summary>
-        public static readonly IterationMetric Nanoseconds = new("Nanoseconds");
+        public static readonly DetailMetric Nanoseconds = new("Nanoseconds");
 
         /// <summary>
         /// Microseconds
         /// </summary>
-        public static readonly IterationMetric Microseconds = new("Microseconds");
+        public static readonly DetailMetric Microseconds = new("Microseconds");
 
         /// <summary>
         /// Milliseconds
         /// </summary>
-        public static readonly IterationMetric Milliseconds = new("Milliseconds");
+        public static readonly DetailMetric Milliseconds = new("Milliseconds");
 
         /// <summary>
         /// TimeStamp
         /// </summary>
-        public static readonly IterationMetric TimeStamp = new("TimeStamp");
+        public static readonly DetailMetric TimeStamp = new("TimeStamp");
 
         /// <summary>
         /// Iteration
         /// </summary>
-        public static readonly IterationMetric Iteration = new("Iteration");
+        public static readonly DetailMetric Iteration = new("Iteration");
 
         /// <summary>
         /// ThreadId
         /// </summary>
-        public static readonly IterationMetric ThreadId = new("ThreadId");
+        public static readonly DetailMetric ThreadId = new("ThreadId");
 
         /// <summary>
         /// ProcessId
         /// </summary>
-        public static readonly IterationMetric ProcessId = new("ProcessId");
+        public static readonly DetailMetric ProcessId = new("ProcessId");
     }
 }
