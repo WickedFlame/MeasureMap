@@ -5,7 +5,7 @@ namespace MeasureMap.Tracers.Metrics
     /// <summary>
     /// A metric resolver fof <see cref="IResult"/>
     /// </summary>
-    public class ProfileThreadMetricFactory : BaseMetric<ProfileThreadMetric, IResult>, IProfileThreadResultMetric
+    public class ThreadMetricFactory : BaseMetric<ThreadMetric, IResult>, IThreadMetric
     {
         private readonly Func<IResult, object> _metric;
 
@@ -16,7 +16,7 @@ namespace MeasureMap.Tracers.Metrics
         /// <param name="category"></param>
         /// <param name="metric"></param>
         /// <param name="align"></param>
-        public ProfileThreadMetricFactory(ProfileThreadMetric type, MetricCategory category, Func<IResult, object> metric, TextAlign align = TextAlign.Left)
+        public ThreadMetricFactory(ThreadMetric type, MetricCategory category, Func<IResult, object> metric, TextAlign align = TextAlign.Left)
             : base(type, category, align)
         {
             _metric = metric;

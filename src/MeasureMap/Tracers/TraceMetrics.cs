@@ -12,10 +12,10 @@ namespace MeasureMap.Tracers
     {
         private static readonly MetricsCollection<IterationMetric, IIterationMetric> DefaultIterationMetrics = new IterationMetricsCollection();
         private static readonly MetricsCollection<ProfilerMetric, IProfilerMetric> DefaultProfilerMetrics = new ProfilerMetricsCollection();
-        private static readonly MetricsCollection<ProfileThreadMetric, IProfileThreadResultMetric> DefaultThreadMetrics = new ProfileThreadMetricsCollection();
+        private static readonly MetricsCollection<ThreadMetric, IThreadMetric> DefaultThreadMetrics = new ThreadMetricsCollection();
 
         private readonly List<IProfilerMetric> _profilerMetrics = new();
-        private readonly List<IProfileThreadResultMetric> _threadMetrics = new();
+        private readonly List<IThreadMetric> _threadMetrics = new();
         private readonly List<IIterationMetric> _iterationMetrics = new();
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a default <see cref="ProfileThreadMetric"/> to the output. This is used for thread details of Profiers
+        /// Add a default <see cref="ThreadMetric"/> to the output. This is used for thread details of Profiers
         /// </summary>
         /// <param name="type"></param>
-        public TraceMetrics Add(ProfileThreadMetric type)
+        public TraceMetrics Add(ThreadMetric type)
         {
             if (!DefaultThreadMetrics.Contains(type))
             {
@@ -75,10 +75,10 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Add a custom <see cref="IProfileThreadResultMetric"/>. This is used for thread details of Profiers
+        /// Add a custom <see cref="IThreadMetric"/>. This is used for thread details of Profiers
         /// </summary>
         /// <param name="metric"></param>
-        public TraceMetrics Add(IProfileThreadResultMetric metric)
+        public TraceMetrics Add(IThreadMetric metric)
         {
             _threadMetrics.Add(metric);
 
@@ -122,10 +122,10 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Get the registered <see cref="IProfileThreadResultMetric"/>
+        /// Get the registered <see cref="IThreadMetric"/>
         /// </summary>
         /// <returns></returns>
-        public IProfileThreadResultMetric[] GetProfileThreadMetrics()
+        public IThreadMetric[] GetThreadMetrics()
         {
             return _threadMetrics.ToArray();
         }

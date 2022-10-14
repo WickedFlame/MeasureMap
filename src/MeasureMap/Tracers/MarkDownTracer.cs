@@ -46,7 +46,7 @@ namespace MeasureMap.Tracers
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Thread");
 
-                var metrics = options.Metrics.GetProfileThreadMetrics();
+                var metrics = options.Metrics.GetThreadMetrics();
 
                 var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
                 writer.WriteLine($"| {headers} |");

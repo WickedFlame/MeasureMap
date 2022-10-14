@@ -22,12 +22,12 @@ namespace MeasureMap.Tracers.Metrics
             Add(ProfilerMetric.MemoryEndSize);
             Add(ProfilerMetric.MemoryIncrease);
 
-            Add(ProfileThreadMetric.ThreadId);
-            Add(ProfileThreadMetric.Iterations);
-            Add(ProfileThreadMetric.AverageTime);
-            Add(ProfileThreadMetric.Slowest);
-            Add(ProfileThreadMetric.Fastest);
-            Add(ProfileThreadMetric.Throughput);
+            Add(ThreadMetric.ThreadId);
+            Add(ThreadMetric.Iterations);
+            Add(ThreadMetric.AverageTime);
+            Add(ThreadMetric.Slowest);
+            Add(ThreadMetric.Fastest);
+            Add(ThreadMetric.Throughput);
 
             Add(IterationMetric.ThreadId);
             Add(IterationMetric.Iteration);
