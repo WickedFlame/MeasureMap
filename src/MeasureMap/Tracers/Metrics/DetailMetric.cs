@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace MeasureMap.Tracers.Metrics
 {
     /// <summary>
@@ -12,6 +14,24 @@ namespace MeasureMap.Tracers.Metrics
         /// <param name="name"></param>
         public DetailMetric(string name) : base(name)
         {
+        }
+
+        /// <summary>
+        /// Create a new <see cref="IDetailMetric"/> used for tracing <see cref="IIterationResult"/> data
+        /// </summary>
+        /// <param name="metric"></param>
+        /// <param name="factory"></param>
+        /// <returns></returns>
+        public static IDetailMetric Create(DetailMetric metric, Func<IIterationResult, object> factory)
+            => new DetailMetricFactory(metric, MetricCategory.Duration, factory);
+
+        /// <summary>
+        /// Create a <see cref="DetailMetric"/> from a string
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator DetailMetric(string value)
+        {
+            return new DetailMetric(value);
         }
 
         /// <summary>

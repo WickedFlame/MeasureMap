@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace MeasureMap.Tracers.Metrics
 {
     /// <summary>
@@ -12,6 +14,24 @@ namespace MeasureMap.Tracers.Metrics
         /// <param name="name"></param>
         public ProfilerMetric(string name) : base(name)
         {
+        }
+
+        /// <summary>
+        /// Create a new <see cref="IProfilerMetric"/> used for tracing <see cref="IProfilerResult"/> data
+        /// </summary>
+        /// <param name="metric"></param>
+        /// <param name="factory"></param>
+        /// <returns></returns>
+        public static IProfilerMetric Create(ProfilerMetric metric, Func<IProfilerResult, object> factory)
+            => new ProfilerMetricFactory(metric, MetricCategory.Duration, factory);
+
+        /// <summary>
+        /// Create a <see cref="ProfilerMetric"/> from a string
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator ProfilerMetric(string value)
+        {
+            return new ProfilerMetric(value);
         }
 
         // Warmup

@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace MeasureMap.Tracers.Metrics
 {
     /// <summary>
@@ -14,6 +16,24 @@ namespace MeasureMap.Tracers.Metrics
         /// <param name="name"></param>
         public ThreadMetric(string name) : base(name)
         {
+        }
+
+        /// <summary>
+        /// Create a new <see cref="IThreadMetric"/> used for tracing <see cref="IResult"/> data
+        /// </summary>
+        /// <param name="metric"></param>
+        /// <param name="factory"></param>
+        /// <returns></returns>
+        public static IThreadMetric Create(ThreadMetric metric, Func<IResult, object> factory) 
+            => new ThreadMetricFactory(metric, MetricCategory.Duration, factory);
+
+        /// <summary>
+        /// Create a <see cref="ThreadMetric"/> from a string
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator ThreadMetric(string value)
+        {
+            return new ThreadMetric(value);
         }
 
         /// <summary>
