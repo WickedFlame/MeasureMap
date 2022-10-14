@@ -6,7 +6,6 @@ namespace MeasureMap.Tracers.Metrics.DefaultMetrics
         public DetailMetricsCollection()
         {
             Add(DetailMetric.AfterExecution, new DetailMetricFactory(DetailMetric.AfterExecution, MetricCategory.Duration, r => r.AfterExecution, TextAlign.Right));
-            Add(DetailMetric.AfterGarbageCollection, new DetailMetricFactory(DetailMetric.AfterGarbageCollection, MetricCategory.Duration, r => r.AfterGarbageCollection, TextAlign.Right));
             Add(DetailMetric.Duration, new DetailMetricFactory(DetailMetric.Duration, MetricCategory.Duration, r => r.Duration, TextAlign.Right));
             Add(DetailMetric.InitialSize, new DetailMetricFactory(DetailMetric.InitialSize, MetricCategory.Duration, r => r.InitialSize, TextAlign.Right));
             Add(DetailMetric.Ticks, new DetailMetricFactory(DetailMetric.Ticks, MetricCategory.Duration, r => r.Ticks, TextAlign.Right));

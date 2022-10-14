@@ -52,8 +52,8 @@ namespace MeasureMap
                 result.Add(iteration);
             });
 
-            ForceGarbageCollector();
             result.EndSize = GC.GetTotalMemory(true);
+            ForceGarbageCollector();
 
             return result;
         }

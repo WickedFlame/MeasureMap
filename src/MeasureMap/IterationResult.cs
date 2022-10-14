@@ -34,12 +34,7 @@ namespace MeasureMap
         /// The memory size after execution
         /// </summary>
         public long AfterExecution { get; set; }
-
-        /// <summary>
-        /// The memory size after GC
-        /// </summary>
-        public long AfterGarbageCollection { get; set; }
-
+        
         /// <summary>
         /// The initial memory size
         /// </summary>

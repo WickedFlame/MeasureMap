@@ -18,12 +18,7 @@ namespace MeasureMap.Tracers.Metrics
         /// AfterExecution
         /// </summary>
         public static readonly DetailMetric AfterExecution = new("AfterExecution");
-
-        /// <summary>
-        /// AfterGarbageCollection
-        /// </summary>
-        public static readonly DetailMetric AfterGarbageCollection = new("AfterGarbageCollection");
-
+        
         /// <summary>
         /// Duration
         /// </summary>
