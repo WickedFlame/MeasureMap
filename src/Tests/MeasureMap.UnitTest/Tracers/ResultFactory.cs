@@ -40,9 +40,6 @@ namespace MeasureMap.UnitTest.Tracers
                         ThreadId = t + 1,
                         Iteration = i + 1,
                         TimeStamp = new System.DateTime(2012, 12, 21, 1, 1, 1, 1).AddTicks(i + 1),
-                        Duration = TimeSpan.FromTicks(ticks),
-
-                        //TODO: remove ticks. take all from duration
                         Ticks = ticks
                     });
                 }

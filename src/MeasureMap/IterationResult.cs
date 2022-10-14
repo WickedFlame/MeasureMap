@@ -23,7 +23,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the Milliseconds that the iteration took to run the Task
         /// </summary>
-        public TimeSpan Duration { get; set; }
+        public TimeSpan Duration => TimeSpan.FromTicks(Ticks);
 
         /// <summary>
         /// The timestamp of when the iteration was run

@@ -21,7 +21,6 @@ namespace MeasureMap
             sw.Stop();
 
             result.Ticks = sw.ElapsedTicks;
-            result.Duration = sw.Elapsed;
 
             return result;
         }
