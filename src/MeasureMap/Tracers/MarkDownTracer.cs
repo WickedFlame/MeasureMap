@@ -41,14 +41,13 @@ namespace MeasureMap.Tracers
                 }
             }
 
-            if (options.TraceThreadDetail)
+            if (options.TraceDetail > TraceDetail.Minimal)
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Thread");
 
                 var metrics = options.Metrics.GetProfileThreadMetrics();
 
-                //var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, 16)));
                 var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
                 writer.WriteLine($"| {headers} |");
 
@@ -58,7 +57,6 @@ namespace MeasureMap.Tracers
                 {
                     // reverse the alignment
                     var align = metric.TextAlign == TextAlign.Right ? TextAlign.Left : TextAlign.Right;
-                    //writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, 16, '-')} |");
                     writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, metric.Name.TraceLength(), '-')} |");
                 }
 
@@ -70,7 +68,6 @@ namespace MeasureMap.Tracers
 
                     foreach (var metric in metrics)
                     {
-                        //writer.Write($" {metric.GetMetric(thread).Pad(metric.TextAlign, 16)} |");
                         writer.Write($" {metric.GetMetric(thread).Pad(metric.TextAlign, metric.Name.TraceLength())} |");
                     }
 
@@ -78,7 +75,7 @@ namespace MeasureMap.Tracers
                 }
             }
 
-            if (options.TraceFullStack)
+            if (options.TraceDetail >= TraceDetail.DetailPerThread)
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Iteration and Thread");

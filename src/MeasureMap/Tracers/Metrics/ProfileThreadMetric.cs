@@ -72,7 +72,6 @@ namespace MeasureMap.Tracers.Metrics
         /// </summary>
         public static readonly ProfileThreadMetric Throughput = new("Throughput");
 
-
         /// <summary>
         /// Memory Initial size
         /// </summary>

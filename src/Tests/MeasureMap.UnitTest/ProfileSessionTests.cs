@@ -189,7 +189,7 @@ namespace MeasureMap.UnitTest
             var options = new MeasureMap.Tracers.TraceOptions
             {
                 ResultWriter = writer,
-                TraceFullStack = true
+                TraceDetail = TraceDetail.FullDetail
             };
 
             ProfilerSession.StartSession()
@@ -214,7 +214,7 @@ namespace MeasureMap.UnitTest
             var options = new MeasureMap.Tracers.TraceOptions
             {
                 ResultWriter = writer,
-                TraceFullStack = true
+                TraceDetail = TraceDetail.FullDetail
             };
 
             ProfilerSession.StartSession()

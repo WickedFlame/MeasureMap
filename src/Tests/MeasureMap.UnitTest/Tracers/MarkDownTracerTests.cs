@@ -21,13 +21,14 @@ namespace MeasureMap.UnitTest.Tracers
         }
 
         [Test]
-        public void MarkDownTracer_ProfilerResult_Detailed()
+        [UpdateSnapshot]
+        public void MarkDownTracer_ProfilerResult_Profile()
         {
             var writer = new StringResultWriter();
 
             var options = new TraceOptions()
             {
-                TraceThreadDetail = true
+                TraceDetail = TraceDetail.Minimal
             };
 
             var tracer = new MarkDownTracer();
@@ -37,13 +38,13 @@ namespace MeasureMap.UnitTest.Tracers
         }
 
         [Test]
-        public void MarkDownTracer_ProfilerResult_TraceFullStack()
+        public void MarkDownTracer_ProfilerResult_DetailPerThread()
         {
             var writer = new StringResultWriter();
             
             var options = new TraceOptions()
             {
-                TraceFullStack = true
+                TraceDetail = TraceDetail.DetailPerThread
             };
             var tracer = new MarkDownTracer();
             tracer.Trace(ResultFactory.CreateResult(), writer, options);
@@ -52,14 +53,13 @@ namespace MeasureMap.UnitTest.Tracers
         }
 
         [Test]
-        public void MarkDownTracer_ProfilerResult_Detailed_TraceFullStack()
+        public void MarkDownTracer_ProfilerResult_FullDetail()
         {
             var writer = new StringResultWriter();
 
             var options = new TraceOptions()
             {
-                TraceThreadDetail = true,
-                TraceFullStack = true
+                TraceDetail = TraceDetail.FullDetail
             };
             var tracer = new MarkDownTracer();
             tracer.Trace(ResultFactory.CreateResult(), writer, options);
