@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## vNext
 ### Added
+- 
+ 
+### Changed
+- 
+ 
+### Fixed
+- 
+ 
+## v2.0.2
+### Added
 - Added Benchmarks and samples oh how to use the BenchmarkRunner
 - SetDuration on BenchmarkRunner
 - Factories to easily create trace metrics
