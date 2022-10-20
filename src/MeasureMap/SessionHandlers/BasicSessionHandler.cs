@@ -1,6 +1,7 @@
 ﻿
 using MeasureMap.Threading;
 using System;
+using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
@@ -25,8 +26,8 @@ namespace MeasureMap
                 var worker = new Worker(threads);
                 return worker.Run(task, settings);
             });
-
-            System.Diagnostics.Trace.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Info] [{nameof(BasicSessionHandler)}] Start thread {thread.Id}");
+            
+            settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(BasicSessionHandler));
 
             runnerThreads.WaitAll();
             threads.WaitAll();

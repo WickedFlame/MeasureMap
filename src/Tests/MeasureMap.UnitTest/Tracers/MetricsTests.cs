@@ -2,6 +2,7 @@
 using MeasureMap.Tracers.Metrics;
 using TraceOptions = MeasureMap.Tracers.TraceOptions;
 using Polaroider;
+using MeasureMap.Tracers;
 
 namespace MeasureMap.UnitTest.Tracers
 {
@@ -29,7 +30,7 @@ namespace MeasureMap.UnitTest.Tracers
             var options = new TraceOptions
             {
                 ResultWriter = new StringResultWriter(),
-                TraceThreadDetail = true,
+                TraceDetail = TraceDetail.DetailPerThread,
                 Metrics = ProfilerTraceMetrics.GetDefaultTraceMetrics()
             };
 
@@ -46,8 +47,7 @@ namespace MeasureMap.UnitTest.Tracers
             var options = new TraceOptions
             {
                 ResultWriter = new StringResultWriter(),
-                TraceThreadDetail = true,
-                TraceFullStack = true,
+                TraceDetail = TraceDetail.FullDetail,
                 Metrics = ProfilerTraceMetrics.GetDefaultTraceMetrics()
             };
 

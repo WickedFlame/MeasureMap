@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
 
 namespace MeasureMap
@@ -7,13 +8,26 @@ namespace MeasureMap
     /// <summary>
     /// Settings for the profiler
     /// </summary>
-    public class ProfilerSettings
+    public class ProfilerSettings : IProfilerSettings
     {
         private readonly Dictionary<string, Action<ProfilerSettings, ProfilerSettings>> _changes = new Dictionary<string, Action<ProfilerSettings, ProfilerSettings>>();
 
         private int _iterations = 1;
         private bool _runWarmup = true;
-        private TimeSpan _duration;
+        private TimeSpan _duration = TimeSpan.Zero;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ProfilerSettings()
+        {
+            Logger = Diagnostics.Logger.Setup();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ILogger"/>
+        /// </summary>
+        public ILogger Logger { get; }
 
         /// <summary>
         /// Gets or sets the amount of iterations that the Task will be run

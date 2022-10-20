@@ -138,7 +138,8 @@ namespace MeasureMap
             _processingPipeline.SetNext(_task);
 
             var threads = _executor is MultyThreadSessionHandler handler ? handler.ThreadCount : 1;
-            System.Diagnostics.Trace.WriteLine($"MeasureMap - Running {Settings.Iterations} Iterations on {threads} Threads");
+
+            Settings.Logger.Write($"Running {Settings.Iterations} Iterations on {threads} Threads", LogLevel.Debug, "ProfilerSession");
 
             var profiles = _sessionPipeline.Execute(_processingPipeline, _settings);
             

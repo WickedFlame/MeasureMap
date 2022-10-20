@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Threading;
+using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
 namespace MeasureMap
@@ -11,8 +14,9 @@ namespace MeasureMap
 	{
 		private readonly int _threadCount;
 		private readonly WorkerThreadList _threads;
+        private ILogger _logger;
 
-		/// <summary>
+        /// <summary>
 		/// Creates a new threaded task executor
 		/// </summary>
 		/// <param name="threadCount">The amount of threads to run the task</param>
@@ -35,7 +39,9 @@ namespace MeasureMap
 		/// <returns>The resulting collection of the executions</returns>
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
+			var sw = Stopwatch.StartNew();
             var threads = new ThreadList();
+            _logger = settings.Logger;
 
 			lock (_threads)
 			{
@@ -48,11 +54,13 @@ namespace MeasureMap
 						return p;
 					});
 
-					System.Diagnostics.Trace.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [Info] [{nameof(MultyThreadSessionHandler)}] Start thread {thread.Id}");
+					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
 				}
 			}
 
-			while (CountOpenThreads() > 0)
+            settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultyThreadSessionHandler));
+
+            while (CountOpenThreads() > 0)
 			{
 				_threads.WaitAll();
 			}
@@ -86,7 +94,11 @@ namespace MeasureMap
 			{
 				foreach (var thread in _threads.ToList())
 				{
-					System.Diagnostics.Trace.WriteLine($"MeasureMap - End thread {thread.Id}");
+                    if (_logger != null)
+                    {
+                        _logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+                    }
+
 					thread.Dispose();
 					_threads.Remove(thread);
 				}

@@ -10,7 +10,6 @@ namespace MeasureMap.Runners
     public class TimedTaskExecution : ITaskExecution
     {
         private readonly long _interval;
-        private readonly Logger _logger;
         private readonly Stopwatch _stopWatch;
 
         /// <summary>
@@ -20,9 +19,7 @@ namespace MeasureMap.Runners
         public TimedTaskExecution(TimeSpan interval)
         {
             _interval = interval.Ticks;
-            _logger = Logger.Setup();
-            _stopWatch = new Stopwatch();
-            _stopWatch.Start();
+            _stopWatch = Stopwatch.StartNew();
         }
 
         /// <summary>
@@ -43,7 +40,7 @@ namespace MeasureMap.Runners
                 //
             }
 
-            _logger.Write($"Elapsed {_stopWatch.Elapsed.TotalMilliseconds}", LogLevel.Info, "TimedExecution");
+            context.Logger.Write($"Elapsed {_stopWatch.Elapsed.TotalMilliseconds}", LogLevel.Debug, "TimedExecution");
 
             // reset the time for the next execution
             _stopWatch.Restart();

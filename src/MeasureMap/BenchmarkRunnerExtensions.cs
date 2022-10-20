@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MeasureMap.Diagnostics;
+using System;
 
 namespace MeasureMap
 {
@@ -21,6 +22,19 @@ namespace MeasureMap
             }
 
             runner.Settings.Iterations = iterations;
+
+            return runner;
+        }
+
+        /// <summary>
+        /// Sets the duration that the profileing session should run the task for
+        /// </summary>
+        /// <param name="runner">The benchmark runner</param>
+        /// <param name="duration">The iterations to run the task</param>
+        /// <returns>The current profiling session</returns>
+        public static BenchmarkRunner SetDuration(this BenchmarkRunner runner, TimeSpan duration)
+        {
+            runner.Settings.Duration = duration;
 
             return runner;
         }
@@ -50,5 +64,17 @@ namespace MeasureMap
 
 	        return runner;
         }
-	}
+
+        /// <summary>
+        /// Defines the minimal <see cref="LogLevel"/>. All higher levels are writen to the log
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner SetMinLogLevel(this BenchmarkRunner runner, LogLevel level)
+        {
+            runner.Settings.Logger.MinLogLevel = level;
+            return runner;
+        }
+    }
 }

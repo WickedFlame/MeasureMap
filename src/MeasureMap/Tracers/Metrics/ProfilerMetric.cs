@@ -1,8 +1,10 @@
 ﻿
+using System;
+
 namespace MeasureMap.Tracers.Metrics
 {
     /// <summary>
-    /// Enumeration of all default Metrics of a ProfilerResult
+    /// Metric definition for Profilers and Benchmarks
     /// </summary>
     public class ProfilerMetric : Enumeration
     {
@@ -12,6 +14,24 @@ namespace MeasureMap.Tracers.Metrics
         /// <param name="name"></param>
         public ProfilerMetric(string name) : base(name)
         {
+        }
+
+        /// <summary>
+        /// Create a new <see cref="IProfilerMetric"/> used for tracing <see cref="IProfilerResult"/> data
+        /// </summary>
+        /// <param name="metric"></param>
+        /// <param name="factory"></param>
+        /// <returns></returns>
+        public static IProfilerMetric Create(ProfilerMetric metric, Func<IProfilerResult, object> factory)
+            => new ProfilerMetricFactory(metric, MetricCategory.Duration, factory);
+
+        /// <summary>
+        /// Create a <see cref="ProfilerMetric"/> from a string
+        /// </summary>
+        /// <param name="value"></param>
+        public static implicit operator ProfilerMetric(string value)
+        {
+            return new ProfilerMetric(value);
         }
 
         // Warmup
@@ -35,12 +55,12 @@ namespace MeasureMap.Tracers.Metrics
         public static readonly ProfilerMetric Iterations = new("Iterations");
 
         /// <summary>
-        /// Duration
+        /// Returns the timespan that the Session took for all tasks to run
         /// </summary>
         public static readonly ProfilerMetric Duration = new("Duration");
 
         /// <summary>
-        /// Total Time
+        /// Returns the total sum of all times of all loops
         /// </summary>
         public static readonly ProfilerMetric TotalTime = new("Total Time");
 

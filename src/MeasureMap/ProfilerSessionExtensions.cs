@@ -1,4 +1,5 @@
 ﻿using System;
+using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
 
 namespace MeasureMap
@@ -244,6 +245,24 @@ namespace MeasureMap
         public static ProfilerSession Setup(this ProfilerSession session, Action setup)
         {
             return session.AddMiddleware(new PreExecutionSessionHandler(setup));
+        }
+
+        /// <summary>
+        /// Defines the minimal <see cref="LogLevel"/>. All higher levels are writen to the log
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="level"></param>
+        /// <returns></returns>
+        public static ProfilerSession SetMinLogLevel(this ProfilerSession session, LogLevel level)
+        {
+            session.Settings.Logger.MinLogLevel = level;
+            return session;
+        }
+
+        internal static ProfilerSession AppendSettings(this ProfilerSession session, ProfilerSettings settings)
+        {
+            session.SetMinLogLevel(settings.Logger.MinLogLevel);
+            return session;
         }
     }
 }

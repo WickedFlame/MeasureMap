@@ -42,79 +42,64 @@ namespace MeasureMap.UnitTest.Tracers
             metrics.GetProfilerMetrics().Single().Name.Should().Be(type);
         }
 
-
-
-
-
-
-
-
-
         [Test]
-        public void TraceMetrics_Add_ProfileThreadMetric()
+        public void TraceMetrics_Add_ThreadMetric()
         {
             var metrics = new TraceMetrics();
-            metrics.Add(ProfileThreadMetric.Throughput);
+            metrics.Add(ThreadMetric.Throughput);
 
-            metrics.GetProfileThreadMetrics().Single().Name.Should().Be(ProfileThreadMetric.Throughput);
+            metrics.GetThreadMetrics().Single().Name.Should().Be(ThreadMetric.Throughput);
         }
 
         [Test]
-        public void TraceMetrics_Add_ProfileThreadMetric_AddCustom()
+        public void TraceMetrics_Add_ThreadMetric_AddCustom()
         {
 
             var metrics = new TraceMetrics();
-            metrics.Add(new ProfileThreadMetric("custom"));
+            metrics.Add(new ThreadMetric("custom"));
 
-            metrics.GetProfileThreadMetrics().Should().BeEmpty();
+            metrics.GetThreadMetrics().Should().BeEmpty();
         }
 
         [Test]
-        public void TraceMetrics_Add_ProfileThreadMetric_AddNewCustom()
+        public void TraceMetrics_Add_ThreadMetric_AddNewCustom()
         {
-            var type = new ProfileThreadMetric("custom");
+            var type = new ThreadMetric("custom");
 
             var metrics = new TraceMetrics();
-            metrics.Add(new ProfileThreadMetricFactory(type, MetricCategory.Duration, r => string.Empty));
+            metrics.Add(new ThreadMetricFactory(type, MetricCategory.Duration, r => string.Empty));
 
-            metrics.GetProfileThreadMetrics().Single().Name.Should().Be(type);
-        }
-
-
-
-
-
-
-
-
-        [Test]
-        public void TraceMetrics_Add_IterationMetric()
-        {
-            var metrics = new TraceMetrics();
-            metrics.Add(IterationMetric.Ticks);
-
-            metrics.GetIterationMetrics().Single().Name.Should().Be(IterationMetric.Ticks);
+            metrics.GetThreadMetrics().Single().Name.Should().Be(type);
         }
 
         [Test]
-        public void TraceMetrics_Add_IterationMetric_AddCustom()
+        public void TraceMetrics_Add_DetailMetric()
         {
-
             var metrics = new TraceMetrics();
-            metrics.Add(new IterationMetric("custom"));
+            metrics.Add(DetailMetric.Ticks);
 
-            metrics.GetIterationMetrics().Should().BeEmpty();
+            metrics.GetDetailMetrics().Single().Name.Should().Be(DetailMetric.Ticks);
         }
 
         [Test]
-        public void TraceMetrics_Add_IterationMetric_AddNewCustom()
+        public void TraceMetrics_Add_DetailMetric_AddCustom()
         {
-            var type = new IterationMetric("custom");
 
             var metrics = new TraceMetrics();
-            metrics.Add(new IterationMetricFactory(type, MetricCategory.Duration, r => string.Empty));
+            metrics.Add(new DetailMetric("custom"));
 
-            metrics.GetIterationMetrics().Single().Name.Should().Be(type);
+            metrics.GetDetailMetrics().Should().BeEmpty();
+        }
+
+        [Test]
+        public void TraceMetrics_Add_DetailMetric_AddNewCustom()
+        {
+            var type = new DetailMetric("custom");
+
+            var metrics = new TraceMetrics();
+            metrics.Add(new DetailMetricFactory(type, MetricCategory.Duration, r => string.Empty));
+
+            metrics.GetDetailMetrics().Single().Name.Should().Be(type);
         }
     }
 }

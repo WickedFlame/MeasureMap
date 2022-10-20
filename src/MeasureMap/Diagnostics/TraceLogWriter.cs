@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Diagnostics;
+
 namespace MeasureMap.Diagnostics
 {
     /// <summary>
@@ -9,7 +11,7 @@ namespace MeasureMap.Diagnostics
         /// <inheritdoc />
         public void Write(string message, LogLevel level, string source = null)
         {
-            System.Diagnostics.Trace.WriteLine($"[{source}] [{level}] {message}");
+            ConsoleWriter.WriteLine($"[{DateTime.Now:o}] [MeasureMap] [{source}] [{level}] {message}");
         }
     }
 }

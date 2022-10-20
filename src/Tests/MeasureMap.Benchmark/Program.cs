@@ -1,32 +1,29 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using MeasureMap.Benchmark;
 
-using MeasureMap;
+var bm = "BenchmarkUsingMultipleThreads";
+//var bm = "BenchmarkSample";
+//var bm = "WorkerThreadListBenchmarks";
+//var bm =  "ThroughputBenchmarks";
+//var bm =  "BenchmarkSample";
 
-var benchmark = new BenchmarkRunner();
-benchmark.SetIterations(10);
-benchmark.Task("Setup 1 Thread", () =>
+switch (bm)
 {
-    ProfilerSession.StartSession()
-        .SetThreads(1)
-        .Task(c2 =>
-        {
-            // do nothing
-        })
-        .RunSession();
-}).SetThreads(10);
-
-benchmark.Task("Setup 10 Threads", () =>
-{
-    ProfilerSession.StartSession()
-        .SetThreads(1)
-        .Task(c2 =>
-        {
-            // do nothing
-        })
-        .RunSession();
-}).SetThreads(10);
-
-benchmark.RunSessions()
-    .Trace(new MeasureMap.Benchmark.TraceMetrics());
+    case nameof(BenchmarkSample):
+        new BenchmarkSample().RunBenchmarks();
+        break;
+    case nameof(BenchmarkUsingMultipleThreads):
+        new BenchmarkUsingMultipleThreads().RunBenchmarks();
+        break;
+    case nameof(StartSessionBenchmarks):
+        new StartSessionBenchmarks().RunBenchmarks();
+        break;
+    case nameof(WorkerThreadListBenchmarks):
+        new WorkerThreadListBenchmarks().RunBenchmarks();
+        break;
+    case nameof(ThroughputBenchmarks):
+        new ThroughputBenchmarks().RunBenchmarks();
+        break;
+}
 
 
+Console.ReadLine();

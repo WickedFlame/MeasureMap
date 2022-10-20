@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
@@ -13,16 +12,6 @@ namespace MeasureMap
     /// </summary>
     public class WarmupSessionHandler : SessionHandler, IWarmupSessionHandler
     {
-        private readonly Logger _logger;
-
-        /// <summary>
-        /// Creates an instance of the WarmupSessionHandler
-        /// </summary>
-        public WarmupSessionHandler()
-        {
-            _logger = Logger.Setup();
-        }
-
         /// <summary>
         /// Executes the task
         /// </summary>
@@ -31,14 +20,12 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
-            var stopwatch = new Stopwatch();
-
             // warmup
-            _logger.Write($"Warmup: Running Task once for warmup on Performance Analysis Benchmark");
+            settings.Logger.Write($"Running Task once for warmup on Performance Analysis Benchmark", source: nameof(WarmupSessionHandler));
 
-            stopwatch.Start();
+            var stopwatch = Stopwatch.StartNew();
 
-            task.Run(new ExecutionContext());
+            task.Run(new ExecutionContext(settings));
 
             stopwatch.Stop();
 

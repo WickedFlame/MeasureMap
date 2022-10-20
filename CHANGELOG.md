@@ -6,10 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## vNext
 ### Added
+- Added Benchmarks and samples oh how to use the BenchmarkRunner
+- SetDuration on BenchmarkRunner
+- Factories to easily create trace metrics
+- Benchmarks to test MeasureMap features
+- Samples to show how to use MeasureMap
  
 ### Changed
+- Traces are now writen to the Logger
+- Refactored Trace
+- Duration is calculated from ticks
+- TraceOptions uses TraceDetail enum to define the granularity of the traces
  
 ### Fixed
+- ProfilerSettings are now passed to all elements of a session
  
 ## v2.0.1
 ### Added

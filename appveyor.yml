@@ -29,6 +29,8 @@ for:
     build_script:
       - nuke Release --isrc true --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
 
+    test: off
+
   - 
     # branches to build
     branches:
@@ -47,6 +49,8 @@ for:
 
     build_script:
       - nuke Release --isrc false --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
+
+    test: off
 
 artifacts:
   - path: src\MeasureMap\bin\Release\netstandard2.1\MeasureMap.dll

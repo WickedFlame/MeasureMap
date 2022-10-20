@@ -34,19 +34,5 @@ namespace MeasureMap.UnitTest.TaskHandlers
 
             Assert.That(result.AfterExecution > 0);
         }
-
-        [Test]
-        public void MemoryCollectionTaskHandler_AfterGarbageCollection()
-        {
-            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
-
-            var handler = new MemoryCollectionTaskHandler();
-            handler.SetNext(task);
-
-
-            var result = handler.Run(new ExecutionContext());
-
-            Assert.That(result.AfterGarbageCollection > 0);
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using MeasureMap.Tracers.Metrics;
 
 namespace MeasureMap.Tracers
@@ -40,14 +41,13 @@ namespace MeasureMap.Tracers
                 }
             }
 
-            if (options.TraceThreadDetail)
+            if (options.TraceDetail > TraceDetail.Minimal)
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Thread");
 
-                var metrics = options.Metrics.GetProfileThreadMetrics();
+                var metrics = options.Metrics.GetThreadMetrics();
 
-                //var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, 16)));
                 var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
                 writer.WriteLine($"| {headers} |");
 
@@ -57,7 +57,6 @@ namespace MeasureMap.Tracers
                 {
                     // reverse the alignment
                     var align = metric.TextAlign == TextAlign.Right ? TextAlign.Left : TextAlign.Right;
-                    //writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, 16, '-')} |");
                     writer.Write($" {GetAlignment(metric.TextAlign).Pad(align, metric.Name.TraceLength(), '-')} |");
                 }
 
@@ -69,7 +68,6 @@ namespace MeasureMap.Tracers
 
                     foreach (var metric in metrics)
                     {
-                        //writer.Write($" {metric.GetMetric(thread).Pad(metric.TextAlign, 16)} |");
                         writer.Write($" {metric.GetMetric(thread).Pad(metric.TextAlign, metric.Name.TraceLength())} |");
                     }
 
@@ -77,11 +75,11 @@ namespace MeasureMap.Tracers
                 }
             }
 
-            if (options.TraceFullStack)
+            if (options.TraceDetail >= TraceDetail.DetailPerThread)
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Iteration and Thread");
-                var metrics = options.Metrics.GetIterationMetrics();
+                var metrics = options.Metrics.GetDetailMetrics();
                 var headers = string.Join(" | ", metrics.Select(m => m.Name.Pad(m.TextAlign, m.Name.TraceLength())));
                 writer.WriteLine($"| {headers} |");
 
@@ -125,11 +123,19 @@ namespace MeasureMap.Tracers
                 return;
             }
 
-            writer.WriteLine($" Iterations: {result.Iterations}");
+            if(result.Iterations > 1)
+            {
+                writer.WriteLine($" Iterations: {result.Iterations}");
+            }
+
+            if (result.Duration > TimeSpan.Zero)
+            {
+                writer.WriteLine($" Duration: {result.Duration}");
+            }
 
             writer.WriteLine("## Summary");
             
-            var keylength = result.Keys.OrderByDescending(k => k).First().Length;
+            var keylength = result.Keys.Select(k => k.Length).OrderByDescending(k => k).First();
             keylength = keylength < 4 ? 4 : keylength;
 
             var metrics = options.Metrics.GetProfilerMetrics();

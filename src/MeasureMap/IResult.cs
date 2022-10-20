@@ -9,6 +9,16 @@ namespace MeasureMap
     public interface IResult
     {
         /// <summary>
+        /// Gets the id of the thread that the task was run in
+        /// </summary>
+        int ThreadId { get; }
+
+        /// <summary>
+        /// The iterations that were run
+        /// </summary>
+        IEnumerable<IIterationResult> Iterations { get; }
+
+        /// <summary>
         /// Collection of all retun values
         /// </summary>
         IDictionary<string, object> ResultValues { get; }
@@ -30,9 +40,19 @@ namespace MeasureMap
         TimeSpan AverageTime { get; }
 
         /// <summary>
+        /// Gets the total time for all iterations
+        /// </summary>
+        TimeSpan TotalTime { get; }
+
+        /// <summary>
         /// Gets the fastest iterations
         /// </summary>
         IIterationResult Fastest { get; }
+
+        /// <summary>
+        /// Gets the slowest iterations
+        /// </summary>
+        IIterationResult Slowest { get; }
 
         /// <summary>
         /// The increase in memory size
@@ -48,25 +68,5 @@ namespace MeasureMap
         /// The memory size after measure
         /// </summary>
         long EndSize { get; }
-
-        /// <summary>
-        /// The iterations that were run
-        /// </summary>
-        IEnumerable<IIterationResult> Iterations { get; }
-
-        /// <summary>
-        /// Gets the slowest iterations
-        /// </summary>
-        IIterationResult Slowest { get; }
-
-        /// <summary>
-        /// Gets the total time for all iterations
-        /// </summary>
-        TimeSpan TotalTime { get; }
-
-        /// <summary>
-        /// Gets the id of the thread that the task was run in
-        /// </summary>
-        int ThreadId { get; }
     }
 }

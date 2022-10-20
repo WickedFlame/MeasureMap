@@ -17,6 +17,7 @@ namespace MeasureMap
         public static ProfilerSession Task(this BenchmarkRunner runner, string name, Action task)
         {
             var session = ProfilerSession.StartSession()
+                .AppendSettings(runner.Settings)
                 .Task(task);
 
             runner.AddSession(name, session);
@@ -34,6 +35,7 @@ namespace MeasureMap
         public static ProfilerSession Task<T>(this BenchmarkRunner runner, string name, Func<T, T> task)
         {
             var session = ProfilerSession.StartSession()
+                .AppendSettings(runner.Settings)
                 .Task(task);
 
             runner.AddSession(name, session);
@@ -52,6 +54,7 @@ namespace MeasureMap
         public static ProfilerSession Task<T>(this BenchmarkRunner runner, string name, Func<T, T> task, T parameter)
         {
             var session = ProfilerSession.StartSession()
+                .AppendSettings(runner.Settings)
                 .Task(task, parameter);
 
             runner.AddSession(name, session);
@@ -69,6 +72,7 @@ namespace MeasureMap
         public static ProfilerSession Task(this BenchmarkRunner runner, string name, Action<IExecutionContext> task)
         {
             var session = ProfilerSession.StartSession()
+                .AppendSettings(runner.Settings)
                 .Task(task);
 
             runner.AddSession(name, session);
@@ -86,6 +90,7 @@ namespace MeasureMap
         public static ProfilerSession Task<T>(this BenchmarkRunner runner, string name, Func<IExecutionContext, T> task)
         {
             var session = ProfilerSession.StartSession()
+                .AppendSettings(runner.Settings)
                 .Task(task);
 
             runner.AddSession(name, session);

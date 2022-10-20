@@ -33,7 +33,7 @@ namespace MeasureMap.Tracers
         }
 
         /// <summary>
-        /// Get the tracelength of a string. This is used for getting the length of <see cref="ProfilerMetric"/>, <see cref="ProfileThreadMetric"/> and <see cref="IterationMetric"/>
+        /// Get the tracelength of a string. This is used for getting the length of <see cref="ProfilerMetric"/>, <see cref="ThreadMetric"/> and <see cref="DetailMetric"/>
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
@@ -46,6 +46,8 @@ namespace MeasureMap.Tracers
                 "Fastest" => 16,
                 "Slowest" => 16,
                 "Throughput" => 14,
+                "Total Time" => 16,
+                "Duration" => 16,
                 _ => value != null ? value.Length : 0
             };
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MeasureMap
 {
@@ -13,6 +14,11 @@ namespace MeasureMap
         /// <param name="name">The name of the result</param>
         /// <param name="result">The result</param>
         void Add(string name, IProfilerResult result);
+
+        /// <summary>
+        /// Gets the configured duration that the benchmarktests were run for
+        /// </summary>
+        TimeSpan Duration { get; }
 
         /// <summary>
         /// Gets the amount of iterations that the benchmarktests were run
