@@ -40,7 +40,6 @@ namespace MeasureMap
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
 			var sw = Stopwatch.StartNew();
-            var threads = new ThreadList();
             _logger = settings.Logger;
 
 			lock (_threads)
@@ -49,7 +48,7 @@ namespace MeasureMap
 				{
 					var thread = _threads.StartNew(i, () =>
 					{
-						var worker = new Worker(threads);
+						var worker = new Worker();
 						var p = worker.Run(task, settings);
 						return p;
 					});
@@ -66,8 +65,6 @@ namespace MeasureMap
 			}
 
 			var results = _threads.Select(s => s.Result);
-
-            threads.WaitAll();
 
 			var collectîon = new ProfilerResult();
 			collectîon.ResultValues.Add(ResultValueType.Threads, _threadCount);

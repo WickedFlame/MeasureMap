@@ -1,6 +1,4 @@
-﻿
-using MeasureMap.Threading;
-using System;
+﻿using MeasureMap.Threading;
 using MeasureMap.Diagnostics;
 
 namespace MeasureMap
@@ -19,18 +17,16 @@ namespace MeasureMap
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
             var runnerThreads = new WorkerThreadList();
-            var threads = new ThreadList();
             
             var thread = runnerThreads.StartNew(0, () =>
             {
-                var worker = new Worker(threads);
+                var worker = new Worker();
                 return worker.Run(task, settings);
             });
             
             settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(BasicSessionHandler));
 
             runnerThreads.WaitAll();
-            threads.WaitAll();
 
             return new ProfilerResult
             {

@@ -26,8 +26,6 @@ namespace MeasureMap.UnitTest.Runners
             var exec = new TimedTaskExecution(TimeSpan.FromSeconds(1));
             exec.Execute(context, c => called = true);
 
-            context.Threads.WaitAll();
-
             called.Should().BeTrue();
         }
 
@@ -41,8 +39,6 @@ namespace MeasureMap.UnitTest.Runners
             var exec = new TimedTaskExecution(TimeSpan.FromMilliseconds(5));
             exec.Execute(context, c => called++);
             exec.Execute(context, c => called++);
-
-            context.Threads.WaitAll();
 
             called.Should().Be(2);
         }
