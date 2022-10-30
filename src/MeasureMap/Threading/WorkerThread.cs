@@ -4,13 +4,18 @@ using System.Threading;
 namespace MeasureMap.Threading
 {
     /// <summary>
-    /// 
+    /// Worker that uses <see cref="System.Threading.Thread"/> to run Benchmarks
     /// </summary>
-    public class WorkerThread : IDisposable
+    public class WorkerThread : IWorkerThread
     {
         private readonly Thread _thread;
         private readonly ManualResetEventSlim _event;
         private bool _disposed;
+
+        /// <summary>
+        /// Gets the factory for creating a new WorkerThread
+        /// </summary>
+        public static Func<int, Func<Result>, IWorkerThread> Factory => (i, e) => new WorkerThread(i, e);
 
         /// <summary>
         /// Create a new Thread

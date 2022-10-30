@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
@@ -45,13 +44,13 @@ namespace MeasureMap
 			lock (_threads)
 			{
 				for (int i = 0; i < _threadCount; i++)
-				{
-					var thread = _threads.StartNew(i, () =>
-					{
-						var worker = new Worker();
-						var p = worker.Run(task, settings);
-						return p;
-					});
+                {
+                    var thread = _threads.StartNew(i, () =>
+                    {
+                        var worker = new Worker();
+                        var p = worker.Run(task, settings);
+                        return p;
+                    }, settings.GetThreadFactory());
 
 					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
 				}

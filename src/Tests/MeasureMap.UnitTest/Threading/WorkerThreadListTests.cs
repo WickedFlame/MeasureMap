@@ -11,10 +11,19 @@ namespace MeasureMap.UnitTest.Threading
     public class WorkerThreadListTests
     {
         [Test]
-        public void WorkerThreadList_StartNew()
+        public void WorkerThreadList_StartNew_Thread()
         {
             var list = new WorkerThreadList();
-            var thread = list.StartNew(1, () => new Result());
+            var thread = list.StartNew(1, () => new Result(), WorkerThread.Factory);
+
+            thread.Should().NotBeNull();
+        }
+
+        [Test]
+        public void WorkerThreadList_StartNew_Task()
+        {
+            var list = new WorkerThreadList();
+            var thread = list.StartNew(1, () => new Result(), WorkerTask.Factory);
 
             thread.Should().NotBeNull();
         }
@@ -23,7 +32,16 @@ namespace MeasureMap.UnitTest.Threading
         public void WorkerThreadList_StartNew_Added()
         {
             var list = new WorkerThreadList();
-            var thread = list.StartNew(1, () => new Result());
+            var thread = list.StartNew(1, () => new Result(), WorkerThread.Factory);
+
+            list.Single().Should().BeSameAs(thread);
+        }
+
+        [Test]
+        public void WorkerThreadList_StartNew_Task_Added()
+        {
+            var list = new WorkerThreadList();
+            var thread = list.StartNew(1, () => new Result(), WorkerTask.Factory);
 
             list.Single().Should().BeSameAs(thread);
         }
@@ -82,6 +100,25 @@ namespace MeasureMap.UnitTest.Threading
         }
 
         [Test]
+        public void WorkerThreadList_Task_WaitAll()
+        {
+            var thread = new WorkerTask(1, () =>
+            {
+                System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+                return new Result();
+            });
+            var list = new WorkerThreadList
+            {
+                thread
+            };
+            thread.Start();
+
+            list.WaitAll();
+
+            list.Should().OnlyContain(t => !t.IsAlive);
+        }
+
+        [Test]
         public void WorkerThreadList_WaitAll_MultipleTreads()
         {
             var list = new WorkerThreadList();
@@ -89,12 +126,32 @@ namespace MeasureMap.UnitTest.Threading
             {
                 System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1)).Wait();
                 return new Result();
-            }).Start();
+            }, WorkerThread.Factory).Start();
             list.StartNew(1, () =>
             {
                 System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1)).Wait();
                 return new Result();
-            }).Start();
+            }, WorkerThread.Factory).Start();
+
+            list.WaitAll();
+
+            list.Should().OnlyContain(t => !t.IsAlive);
+        }
+
+        [Test]
+        public void WorkerThreadList_WaitAll_MultipleTasks()
+        {
+            var list = new WorkerThreadList();
+            list.StartNew(1, () =>
+            {
+                System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+                return new Result();
+            }, WorkerTask.Factory).Start();
+            list.StartNew(1, () =>
+            {
+                System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(1)).Wait();
+                return new Result();
+            }, WorkerTask.Factory).Start();
 
             list.WaitAll();
 

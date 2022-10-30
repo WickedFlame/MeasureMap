@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
+using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -15,6 +16,7 @@ namespace MeasureMap
         private int _iterations = 1;
         private bool _runWarmup = true;
         private TimeSpan _duration = TimeSpan.Zero;
+        private ThreadBehaviour _threadBehaviour = ThreadBehaviour.Thread;
 
         /// <summary>
         /// 
@@ -67,6 +69,16 @@ namespace MeasureMap
             {
                 _runWarmup = value;
                 AddChange("runwarmup", s => s.RunWarmup, (s, v) => s.RunWarmup = v);
+            }
+        }
+
+        public ThreadBehaviour ThreadBehaviour
+        {
+            get => _threadBehaviour;
+            set
+            {
+                _threadBehaviour = value;
+                AddChange("threadBehaviour", s => s.ThreadBehaviour, (s, v) => s.ThreadBehaviour = v);
             }
         }
 

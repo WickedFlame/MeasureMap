@@ -632,6 +632,14 @@ namespace MeasureMap.UnitTest
                 .SetMinLogLevel(level).Settings.Logger.MinLogLevel.Should().Be(level);
         }
 
+        [TestCase(ThreadBehaviour.Task)]
+        [TestCase(ThreadBehaviour.Thread)]
+        public void ProfileSession_SetThreadBehaviour(ThreadBehaviour behaviour)
+        {
+            ProfilerSession.StartSession()
+                .SetThreadBehaviour(behaviour).Settings.ThreadBehaviour.Should().Be(behaviour);
+        }
+
         private void Task()
         {
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.002));

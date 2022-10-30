@@ -22,7 +22,7 @@ namespace MeasureMap
             {
                 var worker = new Worker();
                 return worker.Run(task, settings);
-            });
+            }, settings.GetThreadFactory());
             
             settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(BasicSessionHandler));
 

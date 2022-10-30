@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
 
@@ -262,6 +264,18 @@ namespace MeasureMap
         internal static ProfilerSession AppendSettings(this ProfilerSession session, ProfilerSettings settings)
         {
             session.SetMinLogLevel(settings.Logger.MinLogLevel);
+            return session;
+        }
+
+        /// <summary>
+        /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="ProfilerSession"/>
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="behaviour"></param>
+        /// <returns></returns>
+        public static ProfilerSession SetThreadBehaviour(this ProfilerSession session, ThreadBehaviour behaviour)
+        {
+            session.Settings.ThreadBehaviour = behaviour;
             return session;
         }
     }

@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## vNext
 ### Added
-- 
+- ThreadBehaviour to define how a thread is created
  
 ### Changed
 - 

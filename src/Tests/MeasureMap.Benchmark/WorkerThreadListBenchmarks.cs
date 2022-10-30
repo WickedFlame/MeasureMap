@@ -16,7 +16,7 @@ namespace MeasureMap.Benchmark
             var benchmark = new BenchmarkRunner();
             benchmark.SetIterations(10);
 
-            benchmark.Task("StartNew Thread", ctx => threads.StartNew(ctx.Get<int>(ContextKeys.Iteration), () => new Result()));
+            benchmark.Task("StartNew Thread", ctx => threads.StartNew(ctx.Get<int>(ContextKeys.Iteration), () => new Result(), WorkerThread.Factory));
 
             benchmark.RunSessions()
                 .Trace(new TraceMetrics());
