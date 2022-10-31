@@ -27,7 +27,7 @@ for:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Release --isrc true --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
+      - nuke Release --isrc true --buildno "%APPVEYOR_BUILD_NUMBER%"
 
     test: off
 
@@ -48,7 +48,7 @@ for:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Release --isrc false --version "%base_version%" --buildno "%APPVEYOR_BUILD_NUMBER%"
+      - nuke Release --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%"
 
     test: off
 
