@@ -172,10 +172,7 @@ namespace MeasureMap
         /// <param name="disposing"></param>
         protected virtual void Dispose(bool disposing)
         {
-            if (_executor is MultyThreadSessionHandler handler)
-            {
-                handler.DisposeThreads();
-            }
+            _executor.Dispose();
         }
     }
 }

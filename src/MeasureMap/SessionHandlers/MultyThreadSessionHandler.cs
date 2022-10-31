@@ -9,7 +9,7 @@ namespace MeasureMap
     /// <summary>
     /// A multy threaded task session handler
     /// </summary>
-    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler, IDisposable
+    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
 	{
 		private readonly int _threadCount;
 		private readonly WorkerThreadList _threads;

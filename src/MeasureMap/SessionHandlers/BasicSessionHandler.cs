@@ -1,10 +1,11 @@
-﻿using MeasureMap.Threading;
+﻿using System;
+using MeasureMap.Threading;
 using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
     /// <summary>
-    /// A single threaded task session handler
+    /// A single threaded task session handler. Runs all tasks in a separate thread.
     /// </summary>
     public class BasicSessionHandler : SessionHandler, IThreadSessionHandler
     {
@@ -32,6 +33,24 @@ namespace MeasureMap
             {
                 thread.Result
             };
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            // nothing to dispose
         }
     }
 }
