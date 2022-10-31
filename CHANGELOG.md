@@ -7,12 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## vNext
 ### Added
 - ThreadBehaviour to define how a thread is created
+- Allow benchmarks to be run on the MainThread
  
 ### Changed
-- 
+- Added IDisposable to IThreadSessionHandler
  
 ### Fixed
 - 
+ 
+## v2.1.0
+### Added
+- ThreadBehaviour to define how a thread is created
+- Allow benchmarks to be run on the MainThread
+ 
+### Changed
+- Added IDisposable to IThreadSessionHandler
  
 ## v2.0.2
 ### Added
