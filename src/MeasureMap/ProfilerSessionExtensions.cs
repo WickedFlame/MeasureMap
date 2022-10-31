@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
 
@@ -76,6 +74,20 @@ namespace MeasureMap
         public static ProfilerSession Task<T>(this ProfilerSession session, Func<IExecutionContext, T> task)
         {
             session.Task(new OutputTask<T>(task));
+
+            return session;
+        }
+
+        /// <summary>
+        /// Sets the amount of threads that the profiling sessions should run in.
+        /// All iterations are run on every thread.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="thredCount">The amount of threads that the task is run on</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession SetThreads(this ProfilerSession session, int thredCount)
+        {
+            session.SetExecutionHandler(new MultyThreadSessionHandler(thredCount));
 
             return session;
         }

@@ -73,11 +73,10 @@ namespace MeasureMap
         /// Sets the amount of threads that the profiling sessions should run in.
         /// All iterations are run on every thread.
         /// </summary>
-        /// <param name="thredCount">The amount of threads that the task is run on</param>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession SetThreads(int thredCount)
+        public ProfilerSession SetExecutionHandler(IThreadSessionHandler handler)
         {
-            _executor = new MultyThreadSessionHandler(thredCount);
+            _executor = handler;
 
             return this;
         }

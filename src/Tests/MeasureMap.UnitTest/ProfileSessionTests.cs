@@ -9,6 +9,7 @@ using MeasureMap.Runners;
 using Polaroider;
 using MeasureMap.UnitTest.Tracers;
 using MeasureMap.Tracers;
+using Moq;
 
 namespace MeasureMap.UnitTest
 {
@@ -638,6 +639,20 @@ namespace MeasureMap.UnitTest
         {
             ProfilerSession.StartSession()
                 .SetThreadBehaviour(behaviour).Settings.ThreadBehaviour.Should().Be(behaviour);
+        }
+
+        [Test]
+        public void ProfileSession_SetExecutionHandler()
+        {
+            var mock = new Mock<IThreadSessionHandler>();
+            mock.Setup(x => x.Execute(It.IsAny<ITask>(), It.IsAny<ProfilerSettings>())).Returns(() => new ProfilerResult());
+
+            ProfilerSession.StartSession()
+                .SetExecutionHandler(mock.Object)
+                .Task(() => { })
+                .RunSession();
+
+            mock.Verify(x => x.Execute(It.IsAny<ITask>(), It.IsAny<ProfilerSettings>()));
         }
 
         private void Task()
