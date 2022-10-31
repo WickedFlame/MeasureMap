@@ -22,7 +22,6 @@ namespace MeasureMap
         /// </summary>
         public ExecutionContext(IProfilerSettings settings)
         {
-            Threads = new ThreadList();
             Settings = settings;
         }
 
@@ -30,12 +29,7 @@ namespace MeasureMap
         /// The data store for the context
         /// </summary>
         public IDictionary<string, object> SessionData { get; } = new Dictionary<string, object>();
-
-        /// <summary>
-        /// Gets a list containing all threads that are associated with this run
-        /// </summary>
-        public IThreadList Threads { get; set; }
-
+        
         /// <summary>
         /// Gets the settings associated with the session
         /// </summary>
@@ -140,10 +134,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static IExecutionContext Clone(this IExecutionContext context)
         {
-            var child = new ExecutionContext(context.Settings)
-            {
-                Threads = context.Threads
-            };
+            var child = new ExecutionContext(context.Settings);
 
             foreach(var item in context.SessionData)
             {

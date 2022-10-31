@@ -8,22 +8,11 @@ namespace MeasureMap
     /// </summary>
     public class Worker
     {
-        private readonly IThreadList _threads;
-
         /// <summary>
         /// Creates a new instance of the worker
         /// </summary>
-        public Worker() : this(new ThreadList())
+        public Worker()
         {
-        }
-
-        /// <summary>
-        /// Creates a new instance of the worker
-        /// </summary>
-        /// <param name="threads"></param>
-        public Worker(IThreadList threads)
-        {
-            _threads = threads ?? throw new ArgumentNullException(nameof(threads));
         }
 
         /// <summary>
@@ -39,10 +28,7 @@ namespace MeasureMap
             ForceGarbageCollector();
             
             result.InitialSize = GC.GetTotalMemory(true);
-            var context = new ExecutionContext(settings)
-            {
-                Threads = _threads
-            };
+            var context = new ExecutionContext(settings);
 
             var runner = settings.Runner;
             runner.Run(settings, context, c =>

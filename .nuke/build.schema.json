@@ -7,7 +7,7 @@
       "type": "object",
       "properties": {
         "BuildNo": {
-          "type": "string",
+          "type": "integer",
           "description": "The Buildnumber provided by the CI"
         },
         "Configuration": {
@@ -73,6 +73,10 @@
         "Root": {
           "type": "string",
           "description": "Root directory during build execution"
+        },
+        "RunTests": {
+          "type": "boolean",
+          "description": "Run UnitTests on build"
         },
         "Skip": {
           "type": "array",

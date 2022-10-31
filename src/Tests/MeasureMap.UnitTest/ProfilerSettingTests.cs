@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
 using MeasureMap.Runners;
+using MeasureMap.Threading;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
@@ -95,6 +96,36 @@ namespace MeasureMap.UnitTest
             settings.Duration = TimeSpan.FromSeconds(1);
 
             settings.Runner.Should().NotBeSameAs(runner);
+        }
+
+        [Test]
+        public void ProfilerSettings_GetThreadFactory_Default()
+        {
+            var settings = new ProfilerSettings();
+
+            settings.GetThreadFactory().Invoke(1, () => new Result()).Should().BeOfType<WorkerThread>();
+        }
+
+        [Test]
+        public void ProfilerSettings_GetThreadFactory_Thread()
+        {
+            var settings = new ProfilerSettings
+            {
+                ThreadBehaviour = ThreadBehaviour.Thread
+            };
+
+            settings.GetThreadFactory().Invoke(1, () => new Result()).Should().BeOfType<WorkerThread>();
+        }
+
+        [Test]
+        public void ProfilerSettings_GetThreadFactory_Task()
+        {
+            var settings = new ProfilerSettings
+            {
+                ThreadBehaviour = ThreadBehaviour.Task
+            };
+
+            settings.GetThreadFactory().Invoke(1, () => new Result()).Should().BeOfType<WorkerTask>();
         }
     }
 }

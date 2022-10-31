@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
+using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -15,6 +16,7 @@ namespace MeasureMap
         private int _iterations = 1;
         private bool _runWarmup = true;
         private TimeSpan _duration = TimeSpan.Zero;
+        private ThreadBehaviour _threadBehaviour = ThreadBehaviour.Thread;
 
         /// <summary>
         /// 
@@ -71,6 +73,19 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Defines the way threads are created
+        /// </summary>
+        public ThreadBehaviour ThreadBehaviour
+        {
+            get => _threadBehaviour;
+            set
+            {
+                _threadBehaviour = value;
+                AddChange("threadBehaviour", s => s.ThreadBehaviour, (s, v) => s.ThreadBehaviour = v);
+            }
+        }
+
+        /// <summary>
         /// Gets the <see cref="ITaskRunner"/> that is used to run the tasks
         /// </summary>
         public ITaskRunner Runner { get; private set; } = new IterationRunner();
@@ -82,13 +97,15 @@ namespace MeasureMap
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
         {
-            _changes[property] = (origSet, newSet) => action(origSet, func(newSet));
+            _changes[property] = (toSet, fromSet) => action(toSet, func(fromSet));
         }
 
         internal void MergeChangesTo(ProfilerSettings settings)
         {
             foreach (var action in _changes.Values)
             {
+                // settings = to
+                // this = from
                 action(settings, this);
             }
         }

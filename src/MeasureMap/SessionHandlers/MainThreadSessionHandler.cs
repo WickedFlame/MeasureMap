@@ -1,13 +1,12 @@
 ﻿using System;
-using MeasureMap.Threading;
 using MeasureMap.Diagnostics;
 
 namespace MeasureMap
 {
     /// <summary>
-    /// A single threaded task session handler. Runs all tasks in a separate thread.
+    /// Runs all tasks in the main thread. This can only be used when running on one thread. Multithreaded handling cannot be run on the main thread
     /// </summary>
-    public class BasicSessionHandler : SessionHandler, IThreadSessionHandler
+    public class MainThreadSessionHandler : SessionHandler, IThreadSessionHandler
     {
         /// <summary>
         /// Executes the task
@@ -17,21 +16,14 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
-            var runnerThreads = new WorkerThreadList();
-            
-            var thread = runnerThreads.StartNew(0, () =>
-            {
-                var worker = new Worker();
-                return worker.Run(task, settings);
-            }, settings.GetThreadFactory());
-            
-            settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(BasicSessionHandler));
+            settings.Logger.Write($"Start on mainthread", LogLevel.Debug, nameof(BasicSessionHandler));
 
-            runnerThreads.WaitAll();
-
+            var worker = new Worker();
+            var result = worker.Run(task, settings);
+            
             return new ProfilerResult
             {
-                thread.Result
+                result
             };
         }
 

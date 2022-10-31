@@ -38,5 +38,26 @@ namespace MeasureMap.UnitTest
                 .SetIterations(10);
             runner.Settings.Runner.Should().BeOfType<IterationRunner>();
         }
+
+        [TestCase(ThreadBehaviour.Task)]
+        [TestCase(ThreadBehaviour.Thread)]
+        public void BenchmarkRunner_SetThreadBehaviour(ThreadBehaviour behaviour)
+        {
+            new BenchmarkRunner()
+                .SetThreadBehaviour(behaviour).Settings.ThreadBehaviour.Should().Be(behaviour);
+        }
+
+        [TestCase(ThreadBehaviour.Task)]
+        [TestCase(ThreadBehaviour.Thread)]
+        public void BenchmarkRunner_Run_ThreadBehaviour(ThreadBehaviour behaviour)
+        {
+            var runner = new BenchmarkRunner()
+                .SetThreadBehaviour(behaviour);
+
+            var session = runner.Task("test", () => { });
+            runner.RunSessions();
+
+            session.Settings.ThreadBehaviour.Should().Be(behaviour);
+        }
     }
 }

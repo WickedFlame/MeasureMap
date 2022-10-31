@@ -9,24 +9,20 @@ namespace MeasureMap.Threading
     /// <summary>
     /// Represents a list of WorkerThreads
     /// </summary>
-    public class WorkerThreadList : IEnumerable<WorkerThread>
+    public class WorkerThreadList : IEnumerable<IWorkerThread>
     {
-        private readonly List<WorkerThread> _threads = new List<WorkerThread>();
+        private readonly List<IWorkerThread> _threads = new List<IWorkerThread>();
 
         /// <summary>
         /// Start a new thread and add it to the list
         /// </summary>
         /// <param name="index"></param>
         /// <param name="execution"></param>
+        /// <param name="threadFactory"></param>
         /// <returns></returns>
-        public WorkerThread StartNew(int index, Func<Result> execution)
+        public IWorkerThread StartNew(int index, Func<Result> execution, Func<int, Func<Result>, IWorkerThread> threadFactory)
         {
-            var thread = new WorkerThread(index, () =>
-            {
-                var result = execution.Invoke();
-
-                return result;
-            });
+            var thread = threadFactory.Invoke(index, execution);
 
             Add(thread);
             
@@ -39,7 +35,7 @@ namespace MeasureMap.Threading
         /// Add a task to the threadlist
         /// </summary>
         /// <param name="thread"></param>
-        public void Add(WorkerThread thread)
+        public void Add(IWorkerThread thread)
         {
             lock (_threads)
             {
@@ -51,7 +47,7 @@ namespace MeasureMap.Threading
         /// Remove a task from the threadlist
         /// </summary>
         /// <param name="thread"></param>
-        public void Remove(WorkerThread thread)
+        public void Remove(IWorkerThread thread)
         {
             lock (_threads)
             {
@@ -84,7 +80,7 @@ namespace MeasureMap.Threading
             }
         }
 
-        private WorkerThread[] GetTaskArray()
+        private IWorkerThread[] GetTaskArray()
         {
             lock (_threads)
             {
@@ -97,7 +93,7 @@ namespace MeasureMap.Threading
         /// </summary>
         /// <returns></returns>
         /// <exception cref="NotImplementedException"></exception>
-        public IEnumerator<WorkerThread> GetEnumerator()
+        public IEnumerator<IWorkerThread> GetEnumerator()
         {
             return _threads.GetEnumerator();
         }

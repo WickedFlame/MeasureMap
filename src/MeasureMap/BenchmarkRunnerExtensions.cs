@@ -76,5 +76,18 @@ namespace MeasureMap
             runner.Settings.Logger.MinLogLevel = level;
             return runner;
         }
+
+        /// <summary>
+        /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="BenchmarkRunner"/>.<br></br>
+        /// Using <see cref="ThreadBehaviour.RunOnMainThread"/> overwrites the ThreadingHandler defined in each ProfilerSession that is run in the Benchmark.
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <param name="behaviour"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner SetThreadBehaviour(this BenchmarkRunner runner, ThreadBehaviour behaviour)
+        {
+            runner.Settings.ThreadBehaviour = behaviour;
+            return runner;
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
 using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
@@ -10,7 +9,7 @@ namespace MeasureMap
     /// <summary>
     /// A multy threaded task session handler
     /// </summary>
-    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler, IDisposable
+    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
 	{
 		private readonly int _threadCount;
 		private readonly WorkerThreadList _threads;
@@ -40,19 +39,18 @@ namespace MeasureMap
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
 			var sw = Stopwatch.StartNew();
-            var threads = new ThreadList();
             _logger = settings.Logger;
 
 			lock (_threads)
 			{
 				for (int i = 0; i < _threadCount; i++)
-				{
-					var thread = _threads.StartNew(i, () =>
-					{
-						var worker = new Worker(threads);
-						var p = worker.Run(task, settings);
-						return p;
-					});
+                {
+                    var thread = _threads.StartNew(i, () =>
+                    {
+                        var worker = new Worker();
+                        var p = worker.Run(task, settings);
+                        return p;
+                    }, settings.GetThreadFactory());
 
 					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
 				}
@@ -66,8 +64,6 @@ namespace MeasureMap
 			}
 
 			var results = _threads.Select(s => s.Result);
-
-            threads.WaitAll();
 
 			var collectîon = new ProfilerResult();
 			collectîon.ResultValues.Add(ResultValueType.Threads, _threadCount);

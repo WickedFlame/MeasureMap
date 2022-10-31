@@ -55,19 +55,5 @@ namespace MeasureMap.UnitTest
             Assert.That(result.EndSize > 0, () => "EndSize is smaller than 0");
             Assert.That(result.Increase != 0, () => "Increase is 0");
         }
-
-        [Test]
-        public void MeasureMap_Worker_ThreadList()
-        {
-            Action task = () => new Worker(new ThreadList());
-            task.Should().NotThrow();
-        }
-
-        [Test]
-        public void MeasureMap_Worker_ThreadList_Null()
-        {
-            Action task = () => new Worker(null);
-            task.Should().Throw<ArgumentNullException>();
-        }
     }
 }

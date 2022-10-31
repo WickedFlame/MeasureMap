@@ -48,12 +48,5 @@ namespace MeasureMap.UnitTest
 
             Assert.That(value == 0);
         }
-
-        [Test]
-        public void ExecutionContext_ThreadList_Default()
-        {
-            var context = new ExecutionContext();
-            context.Threads.Should().NotBeNull();
-        }
     }
 }
