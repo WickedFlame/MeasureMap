@@ -635,6 +635,7 @@ namespace MeasureMap.UnitTest
 
         [TestCase(ThreadBehaviour.Task)]
         [TestCase(ThreadBehaviour.Thread)]
+        [TestCase(ThreadBehaviour.RunOnMainThread)]
         public void ProfileSession_SetThreadBehaviour(ThreadBehaviour behaviour)
         {
             ProfilerSession.StartSession()

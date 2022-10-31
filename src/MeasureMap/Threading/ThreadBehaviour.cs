@@ -14,6 +14,11 @@ namespace MeasureMap
         /// <summary>
         /// Use System.Threading.Tasks.Task to run benchmarks
         /// </summary>
-        Task
+        Task,
+
+        /// <summary>
+        /// All tasks will be run on the main thread. This option is ignored when using multiple threads.
+        /// </summary>
+        RunOnMainThread
     }
 }

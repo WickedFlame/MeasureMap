@@ -72,6 +72,9 @@ namespace MeasureMap
             }
         }
 
+        /// <summary>
+        /// Defines the way threads are created
+        /// </summary>
         public ThreadBehaviour ThreadBehaviour
         {
             get => _threadBehaviour;
@@ -94,13 +97,15 @@ namespace MeasureMap
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
         {
-            _changes[property] = (origSet, newSet) => action(origSet, func(newSet));
+            _changes[property] = (toSet, fromSet) => action(toSet, func(fromSet));
         }
 
         internal void MergeChangesTo(ProfilerSettings settings)
         {
             foreach (var action in _changes.Values)
             {
+                // settings = to
+                // this = from
                 action(settings, this);
             }
         }

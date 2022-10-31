@@ -93,6 +93,24 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="ProfilerSession"/>
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="behaviour"></param>
+        /// <returns></returns>
+        public static ProfilerSession SetThreadBehaviour(this ProfilerSession session, ThreadBehaviour behaviour)
+        {
+            session.Settings.ThreadBehaviour = behaviour;
+
+            if (behaviour == ThreadBehaviour.RunOnMainThread)
+            {
+                session.SetExecutionHandler(new MainThreadSessionHandler());
+            }
+
+            return session;
+        }
+
+        /// <summary>
         /// Sets the amount of iterations that the profileing session should run the task
         /// </summary>
         /// <param name="session">The current session</param>
@@ -154,6 +172,13 @@ namespace MeasureMap
         public static ProfilerSession SetSettings(this ProfilerSession session, ProfilerSettings settings)
         {
             settings.MergeChangesTo(session.Settings);
+            
+            if(session.Settings.ThreadBehaviour != ThreadBehaviour.Thread)
+            {
+                // ensure the ThreadBehaviour is set when using the new settings
+                // this is only set when using the default ThreadBehaviour in a ProfilerSession
+                session.SetThreadBehaviour(session.Settings.ThreadBehaviour);
+            }
 
             return session;
         }
@@ -276,18 +301,6 @@ namespace MeasureMap
         internal static ProfilerSession AppendSettings(this ProfilerSession session, ProfilerSettings settings)
         {
             session.SetMinLogLevel(settings.Logger.MinLogLevel);
-            return session;
-        }
-
-        /// <summary>
-        /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="ProfilerSession"/>
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="behaviour"></param>
-        /// <returns></returns>
-        public static ProfilerSession SetThreadBehaviour(this ProfilerSession session, ThreadBehaviour behaviour)
-        {
-            session.Settings.ThreadBehaviour = behaviour;
             return session;
         }
     }

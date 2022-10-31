@@ -78,7 +78,8 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="BenchmarkRunner"/>
+        /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="BenchmarkRunner"/>.<br></br>
+        /// Using <see cref="ThreadBehaviour.RunOnMainThread"/> overwrites the ThreadingHandler defined in each ProfilerSession that is run in the Benchmark.
         /// </summary>
         /// <param name="runner"></param>
         /// <param name="behaviour"></param>
