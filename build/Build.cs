@@ -38,13 +38,16 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
 
     [Parameter("Version to be injected in the Build")]
-    public string Version { get; set; } = $"2.0.2";
+    public string Version { get; set; } = $"2.1.0";
 
     [Parameter("The Buildnumber provided by the CI")]
-    public string BuildNo = "1";
+    public int BuildNo = 6;
 
     [Parameter("Is RC Version")]
     public bool IsRc = false;
+
+    [Parameter("Run UnitTests on build")]
+    public bool RunTests = true;
 
     AbsolutePath SourceDirectory => RootDirectory / "src";
 
@@ -89,6 +92,11 @@ class Build : NukeBuild
         .DependsOn(Compile)
         .Executes(() =>
         {
+            if (!RunTests)
+            {
+                return;
+            }
+
             DotNetTest(s => s
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
@@ -131,6 +139,6 @@ class Build : NukeBuild
         });
 
     string PackageVersion 
-        => IsRc ? int.Parse(BuildNo) < 10 ? $"{Version}-RC0{BuildNo}" : $"{Version}-RC{BuildNo}" : Version;
+        => IsRc ? BuildNo < 10 ? $"{Version}-RC0{BuildNo}" : $"{Version}-RC{BuildNo}" : Version;
 
 }
