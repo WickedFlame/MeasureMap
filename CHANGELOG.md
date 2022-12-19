@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added IDisposable to IThreadSessionHandler
  
 ### Fixed
-- 
+- Markdowntracer traced all data when using DetailPerThread
  
 ## v2.1.0
 ### Added
