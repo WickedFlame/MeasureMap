@@ -99,6 +99,19 @@ namespace MeasureMap
         /// Trace the output of a Profiler
         /// </summary>
         /// <param name="result"></param>
+        /// <param name="factory"></param>
+        public static void Trace(this IProfilerResult result, Action<TraceOptions> factory)
+        {
+            var options = TraceOptions.Default.Clone();
+            factory.Invoke(options);
+
+            result.Trace(options);
+        }
+
+        /// <summary>
+        /// Trace the output of a Profiler
+        /// </summary>
+        /// <param name="result"></param>
         /// <param name="tracer"></param>
         public static void Trace(this IProfilerResult result, ITracer tracer)
         {

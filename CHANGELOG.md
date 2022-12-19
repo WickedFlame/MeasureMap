@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ThreadBehaviour to define how a thread is created
 - Allow benchmarks to be run on the MainThread
 - OnExecuted to run a delegate after each task run
+- Trace - Edit TraceOptions as delegate
  
 ### Changed
 - Added IDisposable to IThreadSessionHandler

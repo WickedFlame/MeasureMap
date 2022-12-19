@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
+using FluentAssertions;
 using MeasureMap.Tracers;
 using NUnit.Framework;
 using Polaroider;
@@ -121,6 +123,33 @@ namespace MeasureMap.UnitTest.Tracers
             result.Trace(options);
 
             ((StringResultWriter)options.ResultWriter).Value.MatchSnapshot();
+        }
+
+        [Test]
+        public void Tracer_Profiler_Options_Delegate()
+        {
+            TraceOptions options = null;
+
+            var result = ResultFactory.CreateResult();
+
+            result.Trace(o =>
+            {
+                o.ResultWriter = new StringResultWriter();
+                o.Tracer = new MarkDownTracer();
+                options = o;
+            });
+
+            ((StringResultWriter)options.ResultWriter).Value.MatchSnapshot();
+        }
+
+        [Test]
+        public void Tracer_Profiler_Options_Delegate_Simple()
+        {
+            var result = ResultFactory.CreateResult();
+
+            Action action = () => result.Trace(o => o.TraceDetail = TraceDetail.DetailPerThread);
+
+            action.Should().NotThrow();
         }
     }
 
