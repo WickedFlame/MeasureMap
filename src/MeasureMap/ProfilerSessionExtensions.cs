@@ -1,6 +1,7 @@
 ﻿using System;
 using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
+using MeasureMap.TaskHandlers;
 
 namespace MeasureMap
 {
@@ -295,6 +296,18 @@ namespace MeasureMap
         public static ProfilerSession SetMinLogLevel(this ProfilerSession session, LogLevel level)
         {
             session.Settings.Logger.MinLogLevel = level;
+            return session;
+        }
+
+        /// <summary>
+        /// Add a delegate that is run after the task is executed. It is possible to add multiple delegates by calling this method multiple times
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="execution"></param>
+        /// <returns></returns>
+        public static ProfilerSession OnExecuted(this ProfilerSession session, Action<IIterationResult> execution)
+        {
+            session.ProcessingPipeline.SetNext(new OnExecutedTaskHandler(execution));
             return session;
         }
 

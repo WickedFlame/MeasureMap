@@ -656,6 +656,59 @@ namespace MeasureMap.UnitTest
             mock.Verify(x => x.Execute(It.IsAny<ITask>(), It.IsAny<ProfilerSettings>()));
         }
 
+        [Test]
+        public void ProfileSession_OnExecuted()
+        {
+            var calls = 0;
+
+            ProfilerSession.StartSession()
+                .SetIterations(5)
+                .RunWarmup(false)
+                .OnExecuted(r => calls++)
+                .Task(() => { })
+                .RunSession();
+
+            calls.Should().Be(5);
+        }
+
+        [Test]
+        public void ProfileSession_OnExecuted_Warmup()
+        {
+            var calls = 0;
+
+            ProfilerSession.StartSession()
+                .OnExecuted(r => calls++)
+                .Task(() => { })
+                .RunSession();
+
+            calls.Should().Be(2);
+        }
+
+        [Test]
+        public void ProfileSession_OnExecuted_IIterationResult()
+        {
+            ProfilerSession.StartSession()
+                .OnExecuted(r => r.Should().BeAssignableTo<IterationResult>())
+                .Task(() => { })
+                .RunSession();
+        }
+
+        [Test]
+        public void ProfileSession_OnExecuted_MultipleRegistrations()
+        {
+            var first = 0;
+            var second = 0;
+
+            ProfilerSession.StartSession()
+                .OnExecuted(r => first++)
+                .OnExecuted(r => second++)
+                .Task(() => { })
+                .RunSession();
+
+            first.Should().Be(2);
+            second.Should().Be(2);
+        }
+
         private void Task()
         {
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(0.002));
