@@ -75,7 +75,7 @@ namespace MeasureMap.Tracers
                 }
             }
 
-            if (options.TraceDetail >= TraceDetail.DetailPerThread)
+            if (options.TraceDetail > TraceDetail.DetailPerThread)
             {
                 writer.WriteLine(string.Empty);
                 writer.WriteLine("## Details per Iteration and Thread");

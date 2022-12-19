@@ -4,16 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
-## vNext
+## v2.2.0
 ### Added
 - ThreadBehaviour to define how a thread is created
 - Allow benchmarks to be run on the MainThread
+- OnExecuted to run a delegate after each task run
+- Trace - Edit TraceOptions as delegate
  
 ### Changed
 - Added IDisposable to IThreadSessionHandler
  
 ### Fixed
-- 
+- Markdowntracer traced all data when using DetailPerThread
  
 ## v2.1.0
 ### Added

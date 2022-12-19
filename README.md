@@ -1,9 +1,9 @@
 # MeasureMap
 .NET Benchmarking made simple
 
-[![Build Status](https://img.shields.io/travis/com/WickedFlame/MeasureMap/master.svg?label=Travis-CI&style=for-the-badge)](https://app.travis-ci.com/github/WickedFlame/MeasureMap)
 [![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/master?label=Master&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
 [![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/dev?label=Dev&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev)
+  
 [![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=for-the-badge&label=Latest)](https://www.nuget.org/packages/measuremap/)
 [![NuGet Version](https://img.shields.io/nuget/vpre/measuremap.svg?style=for-the-badge&label=RC)](https://www.nuget.org/packages/measuremap/)
   
@@ -11,11 +11,15 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=coverage)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
   
-Measuremap is a lightweight assembly that allows profiling and benchmarking code.
+Measuremap allows profiling and benchmarking from simple code fragmets to full applications.
   
 Visit [https://wickedflame.github.io/MeasureMap/](https://wickedflame.github.io/MeasureMap/) for the full documentation.
-
+  
+MeasureMap uses the builder pattern and a fluent API to make benchmarking as simple as possible.
+  
 ## Profiling
+Profiles are initiated with ProfilerSession.StartSession().
+  
 ```csharp
 var result = ProfilerSession.StartSession()
 	.Task(() => 
@@ -34,6 +38,9 @@ Assert.IsTrue(result.AverageMilliseconds < 20);
 
 
 ## Benchmarking
+Benchmarks are a collection of ProfilerSessions. 
+These are initiated and started with the BenchmarkRunner.
+  
 ```csharp
 var sha256 = SHA256.Create();
 var md5 = MD5.Create();

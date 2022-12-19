@@ -11,7 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C302527D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3BE4645D-C5EB-4675-AEE2-68BFE6AC84EB}"
 	ProjectSection(SolutionItems) = preProject
-		.travis.yml = .travis.yml
 		appveyor.yml = appveyor.yml
 		.github\workflows\build.yml = .github\workflows\build.yml
 		CHANGELOG.md = CHANGELOG.md
@@ -21,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{364A83BE-EC1F-42DA-ACCB-69DE17631CF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureMap.Benchmark", "src\Tests\MeasureMap.Benchmark\MeasureMap.Benchmark.csproj", "{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeasureMap.Benchmark", "src\Tests\MeasureMap.Benchmark\MeasureMap.Benchmark.csproj", "{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
