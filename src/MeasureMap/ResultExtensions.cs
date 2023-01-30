@@ -30,10 +30,10 @@ namespace MeasureMap
         /// <returns></returns>
         public static double Throughput(this IResult result)
         {
-            var elapsed = result.Elapsed();
-            if (elapsed == TimeSpan.MinValue)
+            var elapsed = result.TotalTime;
+            if (elapsed == TimeSpan.Zero)
             {
-                elapsed = result.TotalTime;
+                elapsed = result.Elapsed();
             }
 
             return Math.Round(result.Iterations.Count() / elapsed.TotalSeconds, 5);
