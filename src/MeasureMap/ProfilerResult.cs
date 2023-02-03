@@ -104,14 +104,12 @@ namespace MeasureMap
         /// For multithreaded profiles this gets the ThreadId of the first result.
         /// Use the enumerator of the <see cref="IProfilerResult"/> to get the ThreadIds of all threads used
         /// </summary>
-        public int ThreadId
-        {
-            get
-            {
-                var first = this.FirstOrDefault();
-                return first != null ? first.ThreadId : 0;
-            }
-        }
+        public int ThreadId => this.FirstOrDefault()?.ThreadId ?? 0;
+
+        /// <summary>
+        /// Gets the number of the thread created by MeasureMap. This is not the same as the ThreadId
+        /// </summary>
+        public int ThreadNumber => this.FirstOrDefault()?.ThreadNumber ?? 0;
 
         /// <summary>
         /// The initial memory size

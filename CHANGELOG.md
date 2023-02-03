@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
+## vNext
+### Added
+- ThreadNumber is emitted in the result
+  
 ## v2.2.1
 ### Fixed
 - Throughput was not calculated correctly when using multiple threads

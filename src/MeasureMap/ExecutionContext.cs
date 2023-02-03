@@ -161,6 +161,11 @@ namespace MeasureMap
         public const string ThreadId = "threadid";
 
         /// <summary>
+        /// The number of the thread that is created by MeasureMap. This is not the same as the ThreadId
+        /// </summary>
+        public const string ThreadNumber = "threadnumber";
+
+        /// <summary>
         /// ProcessId
         /// </summary>
         public const string ProcessId = "processid";

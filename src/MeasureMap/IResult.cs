@@ -14,6 +14,11 @@ namespace MeasureMap
         int ThreadId { get; }
 
         /// <summary>
+        /// Gets the number of the thread created by MeasureMap. This is not the same as the ThreadId
+        /// </summary>
+        int ThreadNumber { get; }
+
+        /// <summary>
         /// The iterations that were run
         /// </summary>
         IEnumerable<IIterationResult> Iterations { get; }

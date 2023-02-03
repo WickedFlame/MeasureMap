@@ -45,10 +45,14 @@ namespace MeasureMap
 			{
 				for (int i = 0; i < _threadCount; i++)
                 {
-                    var thread = _threads.StartNew(i, () =>
+                    var thread = _threads.StartNew(i, idx =>
                     {
+                        var context = new ExecutionContext(settings);
+                        context.Set(ContextKeys.ThreadNumber, idx);
+
                         var worker = new Worker();
-                        var p = worker.Run(task, settings);
+                        var p = worker.Run(task, context);
+
                         return p;
                     }, settings.GetThreadFactory());
 

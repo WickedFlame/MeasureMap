@@ -103,7 +103,7 @@ namespace MeasureMap.UnitTest
         {
             var settings = new ProfilerSettings();
 
-            settings.GetThreadFactory().Invoke(1, () => new Result()).Should().BeOfType<WorkerThread>();
+            settings.GetThreadFactory().Invoke(1, _ => new Result()).Should().BeOfType<WorkerThread>();
         }
 
         [Test]
@@ -114,7 +114,7 @@ namespace MeasureMap.UnitTest
                 ThreadBehaviour = ThreadBehaviour.Thread
             };
 
-            settings.GetThreadFactory().Invoke(1, () => new Result()).Should().BeOfType<WorkerThread>();
+            settings.GetThreadFactory().Invoke(1, _ => new Result()).Should().BeOfType<WorkerThread>();
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace MeasureMap.UnitTest
                 ThreadBehaviour = ThreadBehaviour.Task
             };
 
-            settings.GetThreadFactory().Invoke(1, () => new Result()).Should().BeOfType<WorkerTask>();
+            settings.GetThreadFactory().Invoke(1, _ => new Result()).Should().BeOfType<WorkerTask>();
         }
     }
 }

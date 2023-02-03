@@ -8,41 +8,49 @@ using Moq;
 
 namespace MeasureMap.UnitTest.Threading
 {
-    public class WorkerThreadTests
+    public class WorkerTaskTests
     {
         [Test]
-        public void WorkerThread_ctor()
+        public void WorkerTask_ctor()
         {
-            new WorkerThread(1, _ => new Result()).Should().NotBeNull();
+            new WorkerTask(1, _ => new Result()).Should().NotBeNull();
         }
 
         [Test]
-        public void WorkerThread_IsAlive()
+        public void WorkerTask_IsAlive_Initial()
         {
-            var thread = new WorkerThread(1, _ => new Result());
+            var thread = new WorkerTask(1, _ => new Result());
+            thread.IsAlive.Should().BeFalse();
+        }
+
+        [Test]
+        public void WorkerTask_IsAlive()
+        {
+            var thread = new WorkerTask(1, _ => new Result());
+            thread.Start();
             thread.IsAlive.Should().BeTrue();
         }
 
         [Test]
-        public void WorkerThread_IsAlive_AfterExecute()
+        public void WorkerTask_IsAlive_AfterExecute()
         {
-            var thread = new WorkerThread(1, _ => new Result());
+            var thread = new WorkerTask(1, _ => new Result());
             thread.Start();
             thread.WaitHandle.WaitOne();
             thread.IsAlive.Should().BeFalse();
         }
 
         [Test]
-        public void WorkerThread_WaitHandle()
+        public void WorkerTask_WaitHandle()
         {
-            var thread = new WorkerThread(1, _ => new Result());
+            var thread = new WorkerTask(1, _ => new Result());
             thread.WaitHandle.WaitOne(0).Should().BeFalse();
         }
 
         [Test]
-        public void WorkerThread_WaitHandle_AfterExecute()
+        public void WorkerTask_WaitHandle_AfterExecute()
         {
-            var thread = new WorkerThread(1, _ => new Result());
+            var thread = new WorkerTask(1, _ => new Result());
             thread.Start();
             thread.WaitHandle.WaitOne();
 
@@ -50,34 +58,43 @@ namespace MeasureMap.UnitTest.Threading
         }
 
         [Test]
-        public void WorkerThread_Id()
+        public void WorkerTask_Id_Initial()
         {
-            var thread = new WorkerThread(1, _ => new Result());
+            var thread = new WorkerTask(1, _ => new Result());
+            thread.Id.Should().Be(0);
+        }
+
+        [Test]
+        public void WorkerTask_Id()
+        {
+            var thread = new WorkerTask(1, _ => new Result());
+            thread.Start();
+
             thread.Id.Should().BeGreaterThan(0);
         }
 
         [Test]
-        public void WorkerThread_Dispose()
+        public void WorkerTask_Dispose()
         {
-            var thread = new WorkerThread(1, _ => new Result());
+            var thread = new WorkerTask(1, _ => new Result());
             Action action = () => thread.Dispose();
 
             action.Should().NotThrow();
         }
 
         [Test]
-        public void WorkerThread_Dispose_ThreadEnded()
+        public void WorkerTask_Dispose_ThreadEnded()
         {
-            var thread = new WorkerThread(1, _ => new Result());
+            var thread = new WorkerTask(1, _ => new Result());
             Action action = () => thread.Dispose();
             thread.Start();
             action.Should().NotThrow();
         }
 
         [Test]
-        public void WorkerThread_Dispose_Started()
+        public void WorkerTask_Dispose_Started()
         {
-            var thread = new WorkerThread(1, _ =>
+            var thread = new WorkerTask(1, _ =>
             {
                 System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(1)).Wait();
                 return new Result();
@@ -88,9 +105,9 @@ namespace MeasureMap.UnitTest.Threading
         }
 
         [Test]
-        public void WorkerThread_Start_MultipleTimes()
+        public void WorkerTask_Start_MultipleTimes()
         {
-            var thread = new WorkerThread(1, _ =>
+            var thread = new WorkerTask(1, _ =>
             {
                 System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(1)).Wait();
                 return new Result();
@@ -104,9 +121,9 @@ namespace MeasureMap.UnitTest.Threading
         }
 
         [Test]
-        public void WorkerThread_Start_EndedThread()
+        public void WorkerTask_Start_EndedThread()
         {
-            var thread = new WorkerThread(1, _ =>
+            var thread = new WorkerTask(1, _ =>
             {
                 return new Result();
             });
@@ -124,10 +141,10 @@ namespace MeasureMap.UnitTest.Threading
         }
 
         [Test]
-        public void WorkerThread_Result()
+        public void WorkerTask_Result()
         {
             var result = new Result();
-            var thread = new WorkerThread(1, _ => result);
+            var thread = new WorkerTask(1, _ => result);
             thread.Start();
             thread.WaitHandle.WaitOne();
 
@@ -135,9 +152,9 @@ namespace MeasureMap.UnitTest.Threading
         }
 
         [Test]
-        public void WorkerThread_ThreadNumberInResult()
+        public void WorkerTask_ThreadNumberInResult()
         {
-            var thread = new WorkerThread(1, nbr => new Result { ThreadNumber = nbr });
+            var thread = new WorkerTask(1, nbr => new Result { ThreadNumber = nbr });
             thread.Start();
             thread.WaitHandle.WaitOne();
 
@@ -145,10 +162,10 @@ namespace MeasureMap.UnitTest.Threading
         }
 
         [Test]
-        public void WorkerThread_ThreadNumberIsPassed()
+        public void WorkerTask_ThreadNumberIsPassed()
         {
             var action = new Mock<Func<int, IResult>>();
-            var thread = new WorkerThread(1, action.Object);
+            var thread = new WorkerTask(1, action.Object);
             thread.Start();
             thread.WaitHandle.WaitOne();
 

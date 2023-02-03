@@ -14,7 +14,7 @@ namespace MeasureMap.Runners
         /// <param name="settings"></param>
         /// <param name="context"></param>
         /// <param name="action"></param>
-        public void Run(ProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action)
+        public void Run(IProfilerSettings settings, IExecutionContext context, Action<IExecutionContext> action)
         {
             settings.Logger.Write($"Running Task for {settings.Iterations} iterations for Perfomance Analysis Benchmark", source: nameof(IterationRunner));
 

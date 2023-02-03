@@ -15,14 +15,14 @@ namespace MeasureMap.Threading
         /// <summary>
         /// Gets the factory for creating a new WorkerThread
         /// </summary>
-        public static Func<int, Func<Result>, IWorkerThread> Factory => (i, e) => new WorkerThread(i, e);
+        public static Func<int, Func<int, IResult>, IWorkerThread> Factory => (i, e) => new WorkerThread(i, e);
 
         /// <summary>
         /// Create a new Thread
         /// </summary>
         /// <param name="index"></param>
         /// <param name="action"></param>
-        public WorkerThread(int index, Func<Result> action)
+        public WorkerThread(int index, Func<int, IResult> action)
         {
             _event = new ManualResetEventSlim();
 
@@ -30,7 +30,7 @@ namespace MeasureMap.Threading
             {
                 try
                 {
-                    Result = action();
+                    Result = action(index);
                 }
                 catch
                 {
@@ -56,7 +56,7 @@ namespace MeasureMap.Threading
         /// <summary>
         /// Get the final result of the thread
         /// </summary>
-        public Result Result { get; private set; }
+        public IResult Result { get; private set; }
 
         /// <summary>
         /// Get the Id of the thread
