@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using FluentAssertions;
 using MeasureMap.Runners;
 using NUnit.Framework;
+using Polaroider;
 
 namespace MeasureMap.UnitTest
 {
@@ -58,6 +60,29 @@ namespace MeasureMap.UnitTest
             runner.RunSessions();
 
             session.Settings.ThreadBehaviour.Should().Be(behaviour);
+        }
+
+        [Test]
+        public void BenchmarkRunner_LogToConsole()
+        {
+            var stdOut = Console.Out;
+
+            var consoleOut = new StringWriter();
+            Console.SetOut(consoleOut);
+
+            var runner = new BenchmarkRunner()
+                //.LogToConsole()
+                .SetMinLogLevel(MeasureMap.Diagnostics.LogLevel.Debug)
+                .Task("one", ctx =>
+                {
+                    ctx.Logger.Write("Test");
+                });
+
+            runner.RunSession();
+
+            consoleOut.ToString().TrimEnd().MatchSnapshot();
+
+            Console.SetOut(stdOut);
         }
     }
 }

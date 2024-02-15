@@ -18,5 +18,12 @@ namespace MeasureMap.Diagnostics
         /// Defines the minimal <see cref="LogLevel"/>. All higher levels are writen to the log
         /// </summary>
         LogLevel MinLogLevel { get; set; }
+
+        /// <summary>
+        /// Add a <see cref="ILogWriter"/> to the logger
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <returns></returns>
+        ILogger AddWriter(ILogWriter writer);
     }
 }
