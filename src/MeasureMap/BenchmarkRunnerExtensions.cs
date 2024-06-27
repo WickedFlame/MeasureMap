@@ -89,5 +89,19 @@ namespace MeasureMap
             runner.Settings.ThreadBehaviour = behaviour;
             return runner;
         }
+
+
+        /// <summary>
+        /// Writes all logs to the console output
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner LogToConsole(this BenchmarkRunner runner)
+        {
+            var writer = new Diagnostics.TraceLogWriter();
+            runner.Settings.Logger.AddWriter(writer);
+            GlobalConfiguration.LogWriters.Add(writer);
+            return runner;
+        }
     }
 }
