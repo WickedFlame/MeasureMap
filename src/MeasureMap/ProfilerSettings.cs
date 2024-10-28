@@ -95,6 +95,21 @@ namespace MeasureMap
         /// </summary>
         public ITaskExecution Execution { get; internal set; } = new SimpleTaskExecution();
 
+        /// <summary>
+        /// Gets the factory to create a <see cref="IExecutionContext"/>
+        /// </summary>
+        public Func<ProfilerSettings, IExecutionContext> ExecutionContextFactory { get; internal set; } = s => new ExecutionContext(s);
+
+        public IExecutionContext GetContext()
+        {
+            if(ExecutionContextFactory == null)
+            {
+                return new ExecutionContext(this);
+            }
+
+            return ExecutionContextFactory(this);
+        }
+
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
         {
             _changes[property] = (toSet, fromSet) => action(toSet, func(fromSet));

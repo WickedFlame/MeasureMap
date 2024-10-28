@@ -103,5 +103,17 @@ namespace MeasureMap
             GlobalConfiguration.LogWriters.Add(writer);
             return runner;
         }
+
+        /// <summary>
+        /// Create the <see cref="IExecutionContext"/> for the session. The context is created unique for each thread
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="factory"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner CreateExecutionContext(this BenchmarkRunner runner, Func<ProfilerSettings, IExecutionContext> factory)
+        {
+            runner.Settings.ExecutionContextFactory = factory;
+            return runner;
+        }
     }
 }

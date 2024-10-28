@@ -47,7 +47,7 @@ namespace MeasureMap
                 {
                     var thread = _threads.StartNew(i, idx =>
                     {
-                        var context = new ExecutionContext(settings);
+                        var context = settings.GetContext();
                         context.Set(ContextKeys.ThreadNumber, idx);
 
                         var worker = new Worker();

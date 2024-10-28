@@ -311,6 +311,18 @@ namespace MeasureMap
             return session;
         }
 
+        /// <summary>
+        /// Create the <see cref="IExecutionContext"/> for the session. The context is created unique for each thread
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="factory"></param>
+        /// <returns></returns>
+        public static ProfilerSession CreateExecutionContext(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> factory)
+        {
+            session.Settings.ExecutionContextFactory = factory;
+            return session;
+        }
+
         internal static ProfilerSession AppendSettings(this ProfilerSession session, ProfilerSettings settings)
         {
             session.SetMinLogLevel(settings.Logger.MinLogLevel);

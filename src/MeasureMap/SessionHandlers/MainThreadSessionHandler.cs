@@ -17,9 +17,9 @@ namespace MeasureMap
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
             settings.Logger.Write($"Start on mainthread", LogLevel.Debug, nameof(BasicSessionHandler));
-            
+
             var worker = new Worker();
-            var result = worker.Run(task, new ExecutionContext(settings));
+            var result = worker.Run(task, settings.GetContext());
             
             return new ProfilerResult
             {
