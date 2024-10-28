@@ -27,7 +27,7 @@ namespace MeasureMap.UnitTest
         {
             var session = ProfilerSession.StartSession();
 
-            Assert.IsNotNull(session);
+            session.Should().NotBeNull();
         }
 
         [Test]
@@ -486,7 +486,7 @@ namespace MeasureMap.UnitTest
             var session = ProfilerSession.StartSession()
                 .Task(c => { });
 
-            Assert.IsInstanceOf<SimpleTaskExecution>(session.Settings.Execution);
+            session.Settings.Execution.Should().BeOfType<SimpleTaskExecution>();
         }
 
         [Test]
@@ -496,7 +496,7 @@ namespace MeasureMap.UnitTest
                 .Task(c => { })
                 .SetInterval(TimeSpan.FromSeconds(.5));
 
-            Assert.IsInstanceOf<TimedTaskExecution>(session.Settings.Execution);
+            session.Settings.Execution.Should().BeOfType<TimedTaskExecution>();
         }
 
         [Test]
@@ -595,7 +595,6 @@ namespace MeasureMap.UnitTest
                 .Task(c =>
                 {
                     var i = c.Get<int>(ContextKeys.Iteration);
-                    Trace.WriteLine(DateTime.Now);
                     return i;
                 })
                 .SetIterations(10)
