@@ -19,7 +19,7 @@ namespace MeasureMap
             settings.Logger.Write($"Start on mainthread", LogLevel.Debug, nameof(BasicSessionHandler));
 
             var worker = new Worker();
-            var result = worker.Run(task, settings.GetContext());
+            var result = worker.Run(task, settings.OnStart());
             
             return new ProfilerResult
             {

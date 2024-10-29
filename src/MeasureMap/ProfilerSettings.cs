@@ -96,18 +96,22 @@ namespace MeasureMap
         public ITaskExecution Execution { get; internal set; } = new SimpleTaskExecution();
 
         /// <summary>
-        /// Gets the factory to create a <see cref="IExecutionContext"/>
+        /// Gets the event that is executed at the start of each thread run. Is also used to create a <see cref="IExecutionContext"/>
         /// </summary>
-        public Func<ProfilerSettings, IExecutionContext> ExecutionContextFactory { get; internal set; } = s => new ExecutionContext(s);
+        public Func<ProfilerSettings, IExecutionContext> OnStartEvent { get; internal set; } = s => new ExecutionContext(s);
 
-        public IExecutionContext GetContext()
+        /// <summary>
+        /// Execute the OnStartEvent
+        /// </summary>
+        /// <returns></returns>
+        public IExecutionContext OnStart()
         {
-            if(ExecutionContextFactory == null)
+            if(OnStartEvent == null)
             {
                 return new ExecutionContext(this);
             }
 
-            return ExecutionContextFactory(this);
+            return OnStartEvent(this);
         }
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)

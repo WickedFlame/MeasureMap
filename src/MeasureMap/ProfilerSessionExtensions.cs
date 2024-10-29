@@ -312,14 +312,14 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Create the <see cref="IExecutionContext"/> for the session. The context is created unique for each thread
+        /// Event that is executed at the start of each thread run
         /// </summary>
         /// <param name="session"></param>
         /// <param name="factory"></param>
         /// <returns></returns>
-        public static ProfilerSession CreateExecutionContext(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> factory)
+        public static ProfilerSession OnStart(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> factory)
         {
-            session.Settings.ExecutionContextFactory = factory;
+            session.Settings.OnStartEvent = factory;
             return session;
         }
 

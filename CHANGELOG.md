@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - ThreadNumber is emitted in the result
 - Extension to log to the console 
-- Factory to create the IExecutionContext per Thread
+- OnStart Event that is run when starting the threads to create the IExecutionContext per Thread
   
 ## v2.2.1
 ### Fixed

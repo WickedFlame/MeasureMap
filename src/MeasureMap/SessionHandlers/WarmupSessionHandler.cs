@@ -25,7 +25,7 @@ namespace MeasureMap
 
             var stopwatch = Stopwatch.StartNew();
 
-            task.Run(settings.GetContext());
+            task.Run(settings.OnStart());
 
             stopwatch.Stop();
 

@@ -22,7 +22,7 @@ namespace MeasureMap
             var thread = runnerThreads.StartNew(0, _ =>
             {
                 var worker = new Worker();
-                return worker.Run(task, settings.GetContext());
+                return worker.Run(task, settings.OnStart());
             }, settings.GetThreadFactory());
             
             settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(BasicSessionHandler));

@@ -105,14 +105,14 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Create the <see cref="IExecutionContext"/> for the session. The context is created unique for each thread
+        /// Event that is executed at the start of each thread run
         /// </summary>
         /// <param name="session"></param>
         /// <param name="factory"></param>
         /// <returns></returns>
-        public static BenchmarkRunner CreateExecutionContext(this BenchmarkRunner runner, Func<ProfilerSettings, IExecutionContext> factory)
+        public static BenchmarkRunner OnStart(this BenchmarkRunner runner, Func<ProfilerSettings, IExecutionContext> factory)
         {
-            runner.Settings.ExecutionContextFactory = factory;
+            runner.Settings.OnStartEvent = factory;
             return runner;
         }
     }
