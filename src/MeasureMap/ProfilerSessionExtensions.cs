@@ -300,14 +300,14 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Add a delegate that is run after the task is executed. It is possible to add multiple delegates by calling this method multiple times
+        /// Add a delegate that is run after the task is executed. It is possible to add multiple delegates by calling this method multiple times. This does the same as PostExecute with the difference that it is run async
         /// </summary>
         /// <param name="session"></param>
         /// <param name="execution"></param>
         /// <returns></returns>
         public static ProfilerSession OnExecuted(this ProfilerSession session, Action<IIterationResult> execution)
         {
-            session.ProcessingPipeline.SetNext(new OnExecutedTaskHandler(execution));
+            session.AddMiddleware(new OnExecutedTaskHandler(execution));
             return session;
         }
 
