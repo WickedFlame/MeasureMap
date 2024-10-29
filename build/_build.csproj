@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <PackageReference Include="Nuke.Common" Version="8.1.2" />
+    <PackageReference Include="dotnet-sonarscanner" Version="9.0.0">
+      <ExcludeAssets>all</ExcludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

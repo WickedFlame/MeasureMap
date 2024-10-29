@@ -18,6 +18,10 @@
       "type": "boolean",
       "description": "Is RC Version"
     },
+    "ProjectName": {
+      "type": "string",
+      "description": "Full name of the Project. This is defined in parameters.json"
+    },
     "RunTests": {
       "type": "boolean",
       "description": "Run UnitTests on build"
@@ -25,6 +29,14 @@
     "Solution": {
       "type": "string",
       "description": "Path to a solution file that is automatically loaded"
+    },
+    "SonarServer": {
+      "type": "string",
+      "description": "URL of the SonarQube Server"
+    },
+    "SonarToken": {
+      "type": "string",
+      "description": "Login Token of the SonarQube Server"
     },
     "Version": {
       "type": "string",
@@ -60,6 +72,7 @@
         "Deploy",
         "Release",
         "Restore",
+        "Sonar",
         "Test"
       ]
     },
