@@ -47,11 +47,13 @@ namespace MeasureMap
                 {
                     var thread = _threads.StartNew(i, idx =>
                     {
-                        var context = settings.OnStart();
-                        context.Set(ContextKeys.ThreadNumber, idx);
+                        var ctx = settings.OnStartPipeline();
+                        ctx.Set(ContextKeys.ThreadNumber, idx);
 
                         var worker = new Worker();
-                        var p = worker.Run(task, context);
+                        var p = worker.Run(task, ctx);
+
+						settings.OnEndPipeline(ctx);
 
                         return p;
                     }, settings.GetThreadFactory());

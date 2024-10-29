@@ -42,23 +42,23 @@ namespace MeasureMap.UnitTest
         }
 
         [Test]
-        public void BenchmarkRunner_OnStart()
+        public void BenchmarkRunner_OnStartPipeline()
         {
             var context = new ExecutionContext();
 
             var runner = new BenchmarkRunner()
-                .OnStart(s => context);
+                .OnStartPipeline(s => context);
 
-            runner.Settings.OnStartEvent(runner.Settings).Should().BeSameAs(context);
+            runner.Settings.OnStartPipelineEvent(runner.Settings).Should().BeSameAs(context);
         }
 
         [Test]
-        public void BenchmarkRunner_OnStart_Factory_OnStart_Settings()
+        public void BenchmarkRunner_OnStartPipeline_Factory_OnStartPipeline_Settings()
         {
             var runner = new BenchmarkRunner()
-                .OnStart(s => new ExecutionContext(s));
+                .OnStartPipeline(s => new ExecutionContext(s));
 
-            runner.Settings.OnStart().Settings.Should().BeSameAs(runner.Settings);
+            runner.Settings.OnStartPipeline().Settings.Should().BeSameAs(runner.Settings);
         }
 
         [TestCase(ThreadBehaviour.Task)]

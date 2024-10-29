@@ -315,11 +315,23 @@ namespace MeasureMap
         /// Event that is executed at the start of each thread run
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="factory"></param>
+        /// <param name="@event"></param>
         /// <returns></returns>
-        public static ProfilerSession OnStart(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> factory)
+        public static ProfilerSession OnStartPipeline(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> @event)
         {
-            session.Settings.OnStartEvent = factory;
+            session.Settings.OnStartPipelineEvent = @event;
+            return session;
+        }
+
+        /// <summary>
+        /// Event that is executed at the end of each thread run
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="event"></param>
+        /// <returns></returns>
+        public static ProfilerSession OnEndPipeline(this ProfilerSession session, Action<IExecutionContext> @event)
+        {
+            session.Settings.OnEndPipelineEvent = @event;
             return session;
         }
 

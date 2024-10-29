@@ -18,9 +18,13 @@ namespace MeasureMap
         {
             settings.Logger.Write($"Start on mainthread", LogLevel.Debug, nameof(BasicSessionHandler));
 
+            var ctx = settings.OnStartPipeline();
+
             var worker = new Worker();
-            var result = worker.Run(task, settings.OnStart());
-            
+            var result = worker.Run(task, ctx);
+
+            settings.OnEndPipeline(ctx);
+
             return new ProfilerResult
             {
                 result

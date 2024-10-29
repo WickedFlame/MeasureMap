@@ -110,9 +110,21 @@ namespace MeasureMap
         /// <param name="session"></param>
         /// <param name="factory"></param>
         /// <returns></returns>
-        public static BenchmarkRunner OnStart(this BenchmarkRunner runner, Func<ProfilerSettings, IExecutionContext> factory)
+        public static BenchmarkRunner OnStartPipeline(this BenchmarkRunner runner, Func<ProfilerSettings, IExecutionContext> factory)
         {
-            runner.Settings.OnStartEvent = factory;
+            runner.Settings.OnStartPipelineEvent = factory;
+            return runner;
+        }
+
+        /// <summary>
+        /// Event that is executed at the end of each thread run
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <param name="event"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner OnEndPipeline(this BenchmarkRunner runner, Action<IExecutionContext> @event)
+        {
+            runner.Settings.OnEndPipelineEvent = @event;
             return runner;
         }
     }

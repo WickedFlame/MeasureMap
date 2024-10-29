@@ -98,20 +98,39 @@ namespace MeasureMap
         /// <summary>
         /// Gets the event that is executed at the start of each thread run. Is also used to create a <see cref="IExecutionContext"/>
         /// </summary>
-        public Func<ProfilerSettings, IExecutionContext> OnStartEvent { get; internal set; } = s => new ExecutionContext(s);
+        public Func<ProfilerSettings, IExecutionContext> OnStartPipelineEvent { get; internal set; } = s => new ExecutionContext(s);
 
         /// <summary>
-        /// Execute the OnStartEvent
+        /// Gets the event that is executed at the end of each thread run
+        /// </summary>
+        public Action<IExecutionContext> OnEndPipelineEvent { get; internal set; } = e => { };
+
+        /// <summary>
+        /// Execute the OnStartPipeline event
         /// </summary>
         /// <returns></returns>
-        public IExecutionContext OnStart()
+        public IExecutionContext OnStartPipeline()
         {
-            if(OnStartEvent == null)
+            if(OnStartPipelineEvent == null)
             {
                 return new ExecutionContext(this);
             }
 
-            return OnStartEvent(this);
+            return OnStartPipelineEvent(this);
+        }
+
+        /// <summary>
+        /// Execute the OnEndPipeline event
+        /// </summary>
+        /// <param name="context"></param>
+        public void OnEndPipeline(IExecutionContext context)
+        {
+            if (OnEndPipelineEvent == null)
+            {
+                return;
+            }
+
+            OnEndPipelineEvent(context);
         }
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)

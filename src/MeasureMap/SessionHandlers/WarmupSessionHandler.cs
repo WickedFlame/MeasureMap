@@ -25,9 +25,12 @@ namespace MeasureMap
 
             var stopwatch = Stopwatch.StartNew();
 
-            task.Run(settings.OnStart());
+            var ctx = settings.OnStartPipeline();
+
+            task.Run(ctx);
 
             stopwatch.Stop();
+            settings.OnEndPipeline(ctx);
 
             var result = base.Execute(task, settings);
 

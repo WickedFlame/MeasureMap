@@ -2,15 +2,15 @@
 
 namespace Measuremap.IntegrationTest
 {
-    public class OnStartTests
+    public class OnStartPipelineTests
     {
         [Test]
-        public void OnStart_MultyThreadSessionHandler()
+        public void OnStartPipeline_MultyThreadSessionHandler()
         {
             var context = new ExecutionContext();
 
             ProfilerSession.StartSession()
-                .OnStart(s => context)
+                .OnStartPipeline(s => context)
                 .Task(c => c.Should().BeSameAs(context))
                 .SetThreads(1)
                 .RunWarmup(false)
@@ -18,25 +18,25 @@ namespace Measuremap.IntegrationTest
         }
 
         [Test]
-        public void OnStart_Warmup()
+        public void OnStartPipeline_Warmup()
         {
             var context = new ExecutionContext();
 
             ProfilerSession.StartSession()
-                .OnStart(s => context)
+                .OnStartPipeline(s => context)
                 .Task(c => c.Should().BeSameAs(context))
                 .SetThreads(1)
                 .RunSession();
         }
 
         [Test]
-        public void OnStart_MainThreadSessionHandler()
+        public void OnStartPipeline_MainThreadSessionHandler()
         {
             var context = new ExecutionContext();
             context.Set("test", 1);
 
             ProfilerSession.StartSession()
-                .OnStart(s => context)
+                .OnStartPipeline(s => context)
                 .Task(c => c.Get<int>("test").Should().Be(1))
                 .SetThreadBehaviour(ThreadBehaviour.RunOnMainThread)
                 .RunWarmup(false)
@@ -45,12 +45,12 @@ namespace Measuremap.IntegrationTest
         }
 
         [Test]
-        public void OnStart_Basic()
+        public void OnStartPipeline_Basic()
         {
             var context = new ExecutionContext();
 
             ProfilerSession.StartSession()
-                .OnStart(s => context)
+                .OnStartPipeline(s => context)
                 .Task(c => c.Should().BeSameAs(context))
                 .RunWarmup(false)
                 .SetIterations(1)

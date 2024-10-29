@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - ThreadNumber is emitted in the result
 - Extension to log to the console 
-- OnStart Event that is run when starting the threads to create the IExecutionContext per Thread
+- OnStartPipeline Event that is run when starting the threads to create the IExecutionContext per Thread
+- OnEndPipeline Event that is run after the pipeline per thread is finished
   
 ## v2.2.1
 ### Fixed
