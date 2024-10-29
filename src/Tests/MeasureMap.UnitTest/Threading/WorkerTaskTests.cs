@@ -37,6 +37,9 @@ namespace MeasureMap.UnitTest.Threading
             var thread = new WorkerTask(1, _ => new Result());
             thread.Start();
             thread.WaitHandle.WaitOne();
+
+            System.Threading.Tasks.Task.Delay(TimeSpan.FromMilliseconds(10)).Wait();
+
             thread.IsAlive.Should().BeFalse();
         }
 
