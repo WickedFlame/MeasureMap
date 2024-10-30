@@ -86,6 +86,11 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Gets an indicator if the current run is a warmup run
+        /// </summary>
+        public bool IsWarmup { get; internal set; } = false;
+
+        /// <summary>
         /// Gets the <see cref="ITaskRunner"/> that is used to run the tasks
         /// </summary>
         public ITaskRunner Runner { get; private set; } = new IterationRunner();

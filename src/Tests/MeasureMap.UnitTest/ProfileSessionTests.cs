@@ -663,7 +663,7 @@ namespace MeasureMap.UnitTest
             ProfilerSession.StartSession()
                 .SetIterations(5)
                 .RunWarmup(false)
-                .Task(() => { })
+                .Task(() => System.Threading.Tasks.Task.Delay(50).Wait())
                 .OnExecuted(r => calls++)
                 .RunSession();
 
@@ -679,7 +679,7 @@ namespace MeasureMap.UnitTest
 
             ProfilerSession.StartSession()
                 .OnExecuted(r => calls++)
-                .Task(() => { })
+                .Task(() => System.Threading.Tasks.Task.Delay(50).Wait())
                 .RunSession();
 
             calls.Should().Be(2);
@@ -703,7 +703,7 @@ namespace MeasureMap.UnitTest
             ProfilerSession.StartSession()
                 .OnExecuted(r => first++)
                 .OnExecuted(r => second++)
-                .Task(() => { })
+                .Task(() => System.Threading.Tasks.Task.Delay(50).Wait())
                 .RunSession();
 
             first.Should().Be(2);

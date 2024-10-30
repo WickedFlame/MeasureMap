@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Extension to log to the console 
 - OnStartPipeline Event that is run when starting the threads to create the IExecutionContext per Thread
 - OnEndPipeline Event that is run after the pipeline per thread is finished
+- Settings contain a IsWarmup flag to indicate if the run is a warmup run
   
 ## v2.2.1
 ### Fixed

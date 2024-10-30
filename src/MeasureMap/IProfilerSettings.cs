@@ -25,6 +25,11 @@ namespace MeasureMap
         bool RunWarmup { get; }
 
         /// <summary>
+        /// Gets an indicator if the current run is a warmup run
+        /// </summary>
+        bool IsWarmup { get; }
+
+        /// <summary>
         /// Gets the <see cref="ITaskRunner"/> that is used to run the tasks
         /// </summary>
         ITaskRunner Runner { get; }

@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -78,6 +79,20 @@ namespace MeasureMap.UnitTest.SessionHandlers
                 .RunSession();
 
             Assert.That(count == 10);
+        }
+
+        [Test]
+        public void WarmupSessionHandler_IsWarmup()
+        {
+            var isWarmup = false;
+
+            var settings = new ProfilerSettings { Iterations = 1 };
+            var task = new ContextTask(ex => isWarmup = ex.Settings.IsWarmup);
+            var handler = new WarmupSessionHandler();
+
+            handler.Execute(task, settings);
+
+            isWarmup.Should().BeTrue();
         }
     }
 }
