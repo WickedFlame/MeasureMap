@@ -15,7 +15,7 @@ Measuremap allows profiling and benchmarking from simple code fragmets to full a
   
 Visit [https://wickedflame.github.io/MeasureMap/](https://wickedflame.github.io/MeasureMap/) for the full documentation.
   
-MeasureMap uses the builder pattern and a fluent API to make benchmarking as simple as possible.
+MeasureMap uses the builder pattern and a fluent API to make profiling or benchmarking as simple as possible.
   
 ## Profiling
 Profiles are initiated with ProfilerSession.StartSession().
