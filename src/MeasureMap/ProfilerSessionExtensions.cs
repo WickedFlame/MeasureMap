@@ -315,7 +315,7 @@ namespace MeasureMap
         /// Event that is executed at the start of each thread run
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="@event"></param>
+        /// <param name="event"></param>
         /// <returns></returns>
         public static ProfilerSession OnStartPipeline(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> @event)
         {
