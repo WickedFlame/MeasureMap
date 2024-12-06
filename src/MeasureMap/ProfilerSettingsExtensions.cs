@@ -28,7 +28,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static IExecutionContext CreateContext(this ProfilerSettings settings)
+        public static IExecutionContext CreateContext(this IProfilerSettings settings)
         {
             return new ExecutionContext(settings);
         }
