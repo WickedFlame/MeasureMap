@@ -127,5 +127,13 @@ namespace MeasureMap.UnitTest
 
             settings.GetThreadFactory().Invoke(1, _ => new Result()).Should().BeOfType<WorkerTask>();
         }
+
+        [Test]
+        public void ProfilerSettings_CreateContext()
+        {
+            var settings = new ProfilerSettings();
+
+            settings.CreateContext().Should().BeOfType<ExecutionContext>();
+        }
     }
 }

@@ -56,5 +56,18 @@ namespace Measuremap.IntegrationTest
                 .SetIterations(1)
                 .RunSession();
         }
+
+        [Test]
+        public void OnStartPipeline_Settings_CreateContext()
+        {
+            IExecutionContext context = null;
+
+            ProfilerSession.StartSession()
+                .OnStartPipeline(s => context = s.CreateContext())
+                .Task(c => c.Should().NotBeNull().And.BeSameAs(context))
+                .RunWarmup(false)
+                .SetIterations(1)
+                .RunSession();
+        }
     }
 }
