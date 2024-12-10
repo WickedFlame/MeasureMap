@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
 namespace MeasureMap
 {
-    /// <summary>
-    /// A multy threaded task session handler
-    /// </summary>
-    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
+	/// <summary>
+	/// A multy threaded task session handler
+	/// </summary>
+	public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
 	{
 		private readonly int _threadCount;
 		private readonly WorkerThreadList _threads;
-        private ILogger _logger;
+		private ILogger _logger;
 
-        /// <summary>
+		/// <summary>
 		/// Creates a new threaded task executor
 		/// </summary>
 		/// <param name="threadCount">The amount of threads to run the task</param>
@@ -37,34 +38,44 @@ namespace MeasureMap
 		/// <param name="settings">The settings for the profiler</param>
 		/// <returns>The resulting collection of the executions</returns>
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
-        {
+		{
 			var sw = Stopwatch.StartNew();
-            _logger = settings.Logger;
+			_logger = settings.Logger;
+
+			var threadWaitHandle = new ManualResetEvent(false);
 
 			lock (_threads)
 			{
 				for (int i = 0; i < _threadCount; i++)
-                {
-                    var thread = _threads.StartNew(i, idx =>
-                    {
-                        var ctx = settings.OnStartPipeline();
-                        ctx.Set(ContextKeys.ThreadNumber, idx);
+				{
+					var thread = _threads.StartNew(i, idx =>
+					{
+						var ctx = settings.OnStartPipeline();
+						ctx.Set(ContextKeys.ThreadNumber, idx);
 
-                        var worker = new Worker();
-                        var p = worker.Run(task, ctx);
+						threadWaitHandle.Set();
+						
+						while (i < _threadCount)
+						{
+							settings.Logger.Write($"Waiting for all threads to start. Current ThreadCount {i} of {_threadCount}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+							threadWaitHandle.WaitOne();
+						}
+
+						var worker = new Worker();
+						var p = worker.Run(task, ctx);
 
 						settings.OnEndPipeline(ctx);
 
-                        return p;
-                    }, settings.GetThreadFactory());
+						return p;
+					}, settings.GetThreadFactory());
 
 					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
 				}
 			}
 
-            settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultyThreadSessionHandler));
+			settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultyThreadSessionHandler));
 
-            while (CountOpenThreads() > 0)
+			while (CountOpenThreads() > 0)
 			{
 				_threads.WaitAll();
 			}
@@ -96,10 +107,10 @@ namespace MeasureMap
 			{
 				foreach (var thread in _threads.ToList())
 				{
-                    if (_logger != null)
-                    {
-                        _logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
-                    }
+					if (_logger != null)
+					{
+						_logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+					}
 
 					thread.Dispose();
 					_threads.Remove(thread);
@@ -119,18 +130,18 @@ namespace MeasureMap
 		/// Dispose
 		/// </summary>
 		public void Dispose()
-        {
-            Dispose(true);
+		{
+			Dispose(true);
 			GC.SuppressFinalize(this);
-        }
+		}
 
 		/// <summary>
 		/// Dispose
 		/// </summary>
 		/// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            DisposeThreads();
+		protected virtual void Dispose(bool disposing)
+		{
+			DisposeThreads();
 		}
 	}
 }
