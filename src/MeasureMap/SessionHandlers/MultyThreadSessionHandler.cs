@@ -53,12 +53,20 @@ namespace MeasureMap
 						var ctx = settings.OnStartPipeline();
 						ctx.Set(ContextKeys.ThreadNumber, idx);
 
-						threadWaitHandle.Set();
-						
-						while (i < _threadCount)
+						if (i == _threadCount)
 						{
+							//
+							// Release all waiting threads to start work after all thrads are started
+							threadWaitHandle.Set();
+						}
+						
+						if (i < _threadCount)
+						{
+							//
+							// Wait at max 5 Sec to continue
+							// Thread creation can delay the whole process too long
 							settings.Logger.Write($"Waiting for all threads to start. Current ThreadCount {i} of {_threadCount}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
-							threadWaitHandle.WaitOne();
+							threadWaitHandle.WaitOne(5000, true);
 						}
 
 						var worker = new Worker();
