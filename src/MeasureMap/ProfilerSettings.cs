@@ -121,6 +121,8 @@ namespace MeasureMap
                 return new ExecutionContext(this);
             }
 
+            Logger.Write("Starting Pipeline with OnStartPieline Event", LogLevel.Debug);
+
             return OnStartPipelineEvent(this);
         }
 
