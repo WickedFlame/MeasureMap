@@ -18,6 +18,15 @@ namespace MeasureMap.UnitTest
         }
 
         [Test]
+        public void ExecutionContext_Set_Key_CaseInsensitive()
+        {
+            var context = new ExecutionContext();
+            context.Set("SomeKey", 1);
+
+            context.SessionData.Keys.First().Should().Be("somekey");
+        }
+
+        [Test]
         public void ExecutionContext_Get()
         {
             var context = new ExecutionContext();
@@ -47,6 +56,24 @@ namespace MeasureMap.UnitTest
             var value = context.Get<int>("somevalue");
 
             Assert.That(value == 0);
+        }
+
+        [Test]
+        public void ExecutionContext_Get_Key_CaseInsensitive()
+        {
+            var context = new ExecutionContext();
+            context.SessionData.Add("somekey", 4);
+
+            context.Get("SomeKey").Should().Be(4);
+        }
+
+        [Test]
+        public void ExecutionContext_Get_Generic_Key_CaseInsensitive()
+        {
+            var context = new ExecutionContext();
+            context.SessionData.Add("somekey", 4);
+
+           context.Get<int>("SomeKey").Should().Be(4);
         }
     }
 }

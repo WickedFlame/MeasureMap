@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - OnEndPipeline Event that is run after the pipeline per thread is finished
 - Settings contain a IsWarmup flag to indicate if the run is a warmup run
 - CreateContext Extensionmethod on Settings to create a new IExecutionContext based on the Settings
+
+## Fixed
+- Get from the IExecutionContext needed the Key to be lowercase
   
 ## v2.2.1
 ### Fixed

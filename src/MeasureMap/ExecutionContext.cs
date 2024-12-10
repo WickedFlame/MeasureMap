@@ -54,6 +54,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static object Get(this IExecutionContext context, string key)
         {
+            key = key.ToLower();
             if (context.SessionData.ContainsKey(key))
             {
                 var tmp = context.SessionData[key];
@@ -70,6 +71,7 @@ namespace MeasureMap
         /// <param name="key">The key of the stored value</param>
         public static T Get<T>(this IExecutionContext context, string key)
         {
+            key = key.ToLower();
             if (context.SessionData.ContainsKey(key))
             {
                 var tmp = context.SessionData[key];
