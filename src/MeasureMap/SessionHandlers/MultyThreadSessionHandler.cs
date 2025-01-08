@@ -13,7 +13,8 @@ namespace MeasureMap
 	public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
 	{
 		private readonly int _threadCount;
-		private readonly WorkerThreadList _threads;
+        private readonly TimeSpan _rampupTime;
+        private readonly WorkerThreadList _threads;
 		private ILogger _logger;
 
 		/// <summary>
@@ -21,15 +22,26 @@ namespace MeasureMap
 		/// </summary>
 		/// <param name="threadCount">The amount of threads to run the task</param>
 		public MultyThreadSessionHandler(int threadCount)
+			: this(threadCount, TimeSpan.Zero)
 		{
-			_threadCount = threadCount;
-			_threads = new WorkerThreadList();
 		}
 
-		/// <summary>
-		/// Gets the amount of threads that the task is run in
-		/// </summary>
-		public int ThreadCount => _threadCount;
+        /// <summary>
+        /// Creates a new threaded task executor
+        /// </summary>
+        /// <param name="threadCount">The amount of threads to run the task</param>
+		/// <param name="rampupTime">The time it takes to setup all threads</param>
+        public MultyThreadSessionHandler(int threadCount, TimeSpan rampupTime)
+        {
+            _threadCount = threadCount;
+			_rampupTime = rampupTime;
+            _threads = new WorkerThreadList();
+        }
+
+        /// <summary>
+        /// Gets the amount of threads that the task is run in
+        /// </summary>
+        public int ThreadCount => _threadCount;
 
 		/// <summary>
 		/// Executes the task
@@ -44,11 +56,17 @@ namespace MeasureMap
 
 			var threadWaitHandle = new ManualResetEvent(false);
 
+            //The ramp-up time is the amount of time to get to the full number of virtual users for the load test. If the number of virtual users is 20, and the ramp-up time is 120 seconds, then it takes 120 seconds to get to all 20 virtual users
+			var rampup = _rampupTime > TimeSpan.Zero ? _rampupTime.TotalSeconds / _threadCount : 0;
+
 			lock (_threads)
 			{
-				for (int i = 0; i < _threadCount; i++)
+				for (var i = 0; i < _threadCount; i++)
 				{
-					var thread = _threads.StartNew(i, idx =>
+					System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(rampup)).Wait();
+                    settings.Logger.Write($"Start Thread {i} of {_threadCount}", LogLevel.Info, nameof(MultyThreadSessionHandler));
+
+                    var thread = _threads.StartNew(i, idx =>
 					{
 						var ctx = settings.OnStartPipeline();
 						ctx.Set(ContextKeys.ThreadNumber, idx);
@@ -59,7 +77,7 @@ namespace MeasureMap
 							// Release all waiting threads to start work after all thrads are started
 							threadWaitHandle.Set();
 						}
-						
+
 						if (i < _threadCount)
 						{
 							//

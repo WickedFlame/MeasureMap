@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - CreateContext Extensionmethod on Settings to create a new IExecutionContext based on the Settings
 - Write debug log when the OnPipelineStart event gets executed
 - Ensure that all threads are setup and created before the first task is run
+- Added Rampup to start threads delayed
 
 ## Fixed
 - Get from the IExecutionContext needed the Key to be lowercase

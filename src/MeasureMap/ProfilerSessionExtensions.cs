@@ -94,6 +94,21 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Sets the amount of threads that the profiling sessions should run in.
+        /// All iterations are run on every thread.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="thredCount">The amount of threads that the task is run on</param>
+        /// <param name="rampupTime">The time it takes to setup all threads</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession SetThreads(this ProfilerSession session, int thredCount, TimeSpan rampupTime)
+        {
+            session.SetExecutionHandler(new MultyThreadSessionHandler(thredCount, rampupTime));
+
+            return session;
+        }
+
+        /// <summary>
         /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="ProfilerSession"/>
         /// </summary>
         /// <param name="session"></param>
