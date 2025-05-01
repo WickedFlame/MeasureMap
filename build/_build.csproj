@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuke.Common" Version="9.0.3" />
-    <PackageReference Include="dotnet-sonarscanner" Version="9.0.0">
+    <PackageReference Include="Nuke.Common" Version="9.0.4" />
+    <PackageReference Include="dotnet-sonarscanner" Version="10.1.2">
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
   </ItemGroup>
