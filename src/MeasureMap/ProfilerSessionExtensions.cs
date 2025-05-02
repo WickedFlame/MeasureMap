@@ -94,6 +94,21 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Sets the amount of threads that the profiling sessions should run in.
+        /// All iterations are run on every thread.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="thredCount">The amount of threads that the task is run on</param>
+        /// <param name="rampupTime">The time it takes to setup all threads</param>
+        /// <returns>The current profiling session</returns>
+        public static ProfilerSession SetThreads(this ProfilerSession session, int thredCount, TimeSpan rampupTime)
+        {
+            session.SetExecutionHandler(new MultyThreadSessionHandler(thredCount, rampupTime));
+
+            return session;
+        }
+
+        /// <summary>
         /// Set the <see cref="ThreadBehaviour"/> to the settings of the <see cref="ProfilerSession"/>
         /// </summary>
         /// <param name="session"></param>
@@ -300,14 +315,38 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Add a delegate that is run after the task is executed. It is possible to add multiple delegates by calling this method multiple times
+        /// Add a delegate that is run after the task is executed. It is possible to add multiple delegates by calling this method multiple times. This does the same as PostExecute with the difference that it is run async
         /// </summary>
         /// <param name="session"></param>
         /// <param name="execution"></param>
         /// <returns></returns>
         public static ProfilerSession OnExecuted(this ProfilerSession session, Action<IIterationResult> execution)
         {
-            session.ProcessingPipeline.SetNext(new OnExecutedTaskHandler(execution));
+            session.AddMiddleware(new OnExecutedTaskHandler(execution));
+            return session;
+        }
+
+        /// <summary>
+        /// Event that is executed at the start of each thread run
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="event"></param>
+        /// <returns></returns>
+        public static ProfilerSession OnStartPipeline(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> @event)
+        {
+            session.Settings.OnStartPipelineEvent = @event;
+            return session;
+        }
+
+        /// <summary>
+        /// Event that is executed at the end of each thread run
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="event"></param>
+        /// <returns></returns>
+        public static ProfilerSession OnEndPipeline(this ProfilerSession session, Action<IExecutionContext> @event)
+        {
+            session.Settings.OnEndPipelineEvent = @event;
             return session;
         }
 

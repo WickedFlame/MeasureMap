@@ -18,7 +18,7 @@ namespace MeasureMap.UnitTest
             var task = new Task(() => i++);
 
             var worker = new Worker();
-            var result = worker.Run(task, new ProfilerSettings { Iterations = 10 });
+            var result = worker.Run(task, new ExecutionContext(new ProfilerSettings { Iterations = 10 }));
 
             Assert.That(result.Iterations.Count() == 10);
             Assert.That(i == 10);
@@ -33,7 +33,7 @@ namespace MeasureMap.UnitTest
             handler.SetNext(task);
 
             var worker = new Worker();
-            var result = worker.Run(handler, new ProfilerSettings { Iterations = 10 });
+            var result = worker.Run(handler, new ExecutionContext(new ProfilerSettings { Iterations = 10 }));
 
             Assert.That(result.AverageTicks > 0);
             Assert.That(result.AverageTime.Ticks > 0);
@@ -49,7 +49,7 @@ namespace MeasureMap.UnitTest
             var task = new Task(() => i++);
 
             var worker = new Worker();
-            var result = worker.Run(task, new ProfilerSettings { Iterations = 10 });
+            var result = worker.Run(task, new ExecutionContext(new ProfilerSettings { Iterations = 10 }));
 
             Assert.That(result.InitialSize > 0, () => "InitialSize is smaller than 0");
             Assert.That(result.EndSize > 0, () => "EndSize is smaller than 0");

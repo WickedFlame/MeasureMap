@@ -14,3 +14,5 @@ _Resharper.*
 .vs
 .idea
 .nuke/temp
+.sonarqube
+**/coverage.net8.0.opencover.xml

@@ -13,7 +13,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static Func<int, Func<Result>, IWorkerThread> GetThreadFactory(this ProfilerSettings settings)
+        public static Func<int, Func<int, Result>, IWorkerThread> GetThreadFactory(this ProfilerSettings settings)
         {
             return settings.ThreadBehaviour switch
             {
@@ -21,6 +21,16 @@ namespace MeasureMap
                 ThreadBehaviour.Task => WorkerTask.Factory,
                 _ => WorkerThread.Factory
             };
+        }
+
+        /// <summary>
+        /// Create a new ExecutionContext based on the Settings. This can be used in the OnStartPipeline Event to create the IExecutionContext for the Pipeline
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static IExecutionContext CreateContext(this IProfilerSettings settings)
+        {
+            return new ExecutionContext(settings);
         }
     }
 }

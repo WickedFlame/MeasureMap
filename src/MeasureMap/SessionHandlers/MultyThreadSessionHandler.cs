@@ -1,34 +1,47 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
 namespace MeasureMap
 {
-    /// <summary>
-    /// A multy threaded task session handler
-    /// </summary>
-    public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
+	/// <summary>
+	/// A multy threaded task session handler
+	/// </summary>
+	public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
 	{
 		private readonly int _threadCount;
-		private readonly WorkerThreadList _threads;
-        private ILogger _logger;
+        private readonly TimeSpan _rampupTime;
+        private readonly WorkerThreadList _threads;
+		private ILogger _logger;
 
-        /// <summary>
+		/// <summary>
 		/// Creates a new threaded task executor
 		/// </summary>
 		/// <param name="threadCount">The amount of threads to run the task</param>
 		public MultyThreadSessionHandler(int threadCount)
+			: this(threadCount, TimeSpan.Zero)
 		{
-			_threadCount = threadCount;
-			_threads = new WorkerThreadList();
 		}
 
-		/// <summary>
-		/// Gets the amount of threads that the task is run in
-		/// </summary>
-		public int ThreadCount => _threadCount;
+        /// <summary>
+        /// Creates a new threaded task executor
+        /// </summary>
+        /// <param name="threadCount">The amount of threads to run the task</param>
+		/// <param name="rampupTime">The time it takes to setup all threads</param>
+        public MultyThreadSessionHandler(int threadCount, TimeSpan rampupTime)
+        {
+            _threadCount = threadCount;
+			_rampupTime = rampupTime;
+            _threads = new WorkerThreadList();
+        }
+
+        /// <summary>
+        /// Gets the amount of threads that the task is run in
+        /// </summary>
+        public int ThreadCount => _threadCount;
 
 		/// <summary>
 		/// Executes the task
@@ -37,28 +50,58 @@ namespace MeasureMap
 		/// <param name="settings">The settings for the profiler</param>
 		/// <returns>The resulting collection of the executions</returns>
 		public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
-        {
+		{
 			var sw = Stopwatch.StartNew();
-            _logger = settings.Logger;
+			_logger = settings.Logger;
+
+			var threadWaitHandle = new ManualResetEvent(false);
+
+            //The ramp-up time is the amount of time to get to the full number of virtual users for the load test. If the number of virtual users is 20, and the ramp-up time is 120 seconds, then it takes 120 seconds to get to all 20 virtual users
+			var rampup = _rampupTime > TimeSpan.Zero ? _rampupTime.TotalSeconds / _threadCount : 0;
 
 			lock (_threads)
 			{
-				for (int i = 0; i < _threadCount; i++)
-                {
-                    var thread = _threads.StartNew(i, () =>
-                    {
-                        var worker = new Worker();
-                        var p = worker.Run(task, settings);
-                        return p;
-                    }, settings.GetThreadFactory());
+				for (var i = 0; i < _threadCount; i++)
+				{
+					System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(rampup)).Wait();
+                    settings.Logger.Write($"Start Thread {i} of {_threadCount}", LogLevel.Info, nameof(MultyThreadSessionHandler));
+
+                    var thread = _threads.StartNew(i, idx =>
+					{
+						var ctx = settings.OnStartPipeline();
+						ctx.Set(ContextKeys.ThreadNumber, idx);
+
+						if (i == _threadCount)
+						{
+							//
+							// Release all waiting threads to start work after all thrads are started
+							threadWaitHandle.Set();
+						}
+
+						if (i < _threadCount)
+						{
+							//
+							// Wait at max 5 Sec to continue
+							// Thread creation can delay the whole process too long
+							settings.Logger.Write($"Waiting for all threads to start. Current ThreadCount {i} of {_threadCount}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+							threadWaitHandle.WaitOne(5000, true);
+						}
+
+						var worker = new Worker();
+						var p = worker.Run(task, ctx);
+
+						settings.OnEndPipeline(ctx);
+
+						return p;
+					}, settings.GetThreadFactory());
 
 					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
 				}
 			}
 
-            settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultyThreadSessionHandler));
+			settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultyThreadSessionHandler));
 
-            while (CountOpenThreads() > 0)
+			while (CountOpenThreads() > 0)
 			{
 				_threads.WaitAll();
 			}
@@ -90,10 +133,10 @@ namespace MeasureMap
 			{
 				foreach (var thread in _threads.ToList())
 				{
-                    if (_logger != null)
-                    {
-                        _logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
-                    }
+					if (_logger != null)
+					{
+						_logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+					}
 
 					thread.Dispose();
 					_threads.Remove(thread);
@@ -113,18 +156,18 @@ namespace MeasureMap
 		/// Dispose
 		/// </summary>
 		public void Dispose()
-        {
-            Dispose(true);
+		{
+			Dispose(true);
 			GC.SuppressFinalize(this);
-        }
+		}
 
 		/// <summary>
 		/// Dispose
 		/// </summary>
 		/// <param name="disposing"></param>
-        protected virtual void Dispose(bool disposing)
-        {
-            DisposeThreads();
+		protected virtual void Dispose(bool disposing)
+		{
+			DisposeThreads();
 		}
 	}
 }

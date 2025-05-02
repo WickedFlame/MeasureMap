@@ -86,6 +86,11 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Gets an indicator if the current run is a warmup run
+        /// </summary>
+        public bool IsWarmup { get; internal set; } = false;
+
+        /// <summary>
         /// Gets the <see cref="ITaskRunner"/> that is used to run the tasks
         /// </summary>
         public ITaskRunner Runner { get; private set; } = new IterationRunner();
@@ -94,6 +99,46 @@ namespace MeasureMap
         /// Gets the <see cref="ITaskExecution"/> that defines how the tasks are run
         /// </summary>
         public ITaskExecution Execution { get; internal set; } = new SimpleTaskExecution();
+
+        /// <summary>
+        /// Gets the event that is executed at the start of each thread run. Is also used to create a <see cref="IExecutionContext"/>
+        /// </summary>
+        public Func<ProfilerSettings, IExecutionContext> OnStartPipelineEvent { get; internal set; } = s => new ExecutionContext(s);
+
+        /// <summary>
+        /// Gets the event that is executed at the end of each thread run
+        /// </summary>
+        public Action<IExecutionContext> OnEndPipelineEvent { get; internal set; } = e => { };
+
+        /// <summary>
+        /// Execute the OnStartPipeline event
+        /// </summary>
+        /// <returns></returns>
+        public IExecutionContext OnStartPipeline()
+        {
+            if(OnStartPipelineEvent == null)
+            {
+                return new ExecutionContext(this);
+            }
+
+            Logger.Write("Starting Pipeline with OnStartPieline Event", LogLevel.Debug);
+
+            return OnStartPipelineEvent(this);
+        }
+
+        /// <summary>
+        /// Execute the OnEndPipeline event
+        /// </summary>
+        /// <param name="context"></param>
+        public void OnEndPipeline(IExecutionContext context)
+        {
+            if (OnEndPipelineEvent == null)
+            {
+                return;
+            }
+
+            OnEndPipelineEvent(context);
+        }
 
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
         {

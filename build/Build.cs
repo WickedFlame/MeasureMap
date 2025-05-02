@@ -1,19 +1,16 @@
-using System;
-using System.IO;
-using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
-using Nuke.Common.Execution;
 using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
+using Nuke.Common.Tools.Coverlet;
 using Nuke.Common.Tools.DotNet;
+using Nuke.Common.Tools.SonarScanner;
 using Nuke.Common.Utilities.Collections;
-using static Nuke.Common.EnvironmentInfo;
-using static Nuke.Common.IO.FileSystemTasks;
-using static Nuke.Common.IO.PathConstruction;
+using System.IO;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
+using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
 
 [ShutdownDotNetAfterServerBuild]
 class Build : NukeBuild
@@ -38,7 +35,7 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
 
     [Parameter("Version to be injected in the Build")]
-    public string Version { get; set; } = $"2.2.1";
+    public string Version { get; set; } = $"2.3.0";
 
     [Parameter("The Buildnumber provided by the CI")]
     public int BuildNo = 1;
@@ -57,13 +54,22 @@ class Build : NukeBuild
 
     AbsolutePath DeployPath => (AbsolutePath)"C:" / "Projects" / "NuGet Store";
 
+    [Parameter("Full name of the Project. This is defined in parameters.json")]
+    readonly string ProjectName;
+
+    [Parameter("URL of the SonarQube Server")]
+    public string SonarServer = "https://sonarcloud.io";
+
+    [Parameter("Login Token of the SonarQube Server")]
+    public string SonarToken = "";
+
     Target Clean => _ => _
         .Before(Restore)
         .Executes(() =>
         {
-            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(DeleteDirectory);
-            EnsureCleanDirectory(ArtifactsDirectory);
+            SourceDirectory.GlobDirectories("**/bin", "**/obj").ForEach(d => d.DeleteDirectory());
+            TestsDirectory.GlobDirectories("**/bin", "**/obj").ForEach(d => d.DeleteDirectory());
+            ArtifactsDirectory.CreateOrCleanDirectory();
         });
 
     Target Restore => _ => _
@@ -105,20 +111,18 @@ class Build : NukeBuild
         });
 
     Target Release => _ => _
-        //.DependsOn(Clean)
-        //.DependsOn(Compile)
         .DependsOn(Test)
         .Executes(() =>
         {
             // copy to artifacts folder
             foreach (var file in Directory.GetFiles(RootDirectory, $"*.{PackageVersion}.nupkg", SearchOption.AllDirectories))
             {
-                CopyFile(file, ArtifactsDirectory / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+                ((AbsolutePath) file).CopyToDirectory(ArtifactsDirectory, ExistsPolicy.FileOverwrite);
             }
 
             foreach (var file in Directory.GetFiles(RootDirectory, $"*.{PackageVersion}.snupkg", SearchOption.AllDirectories))
             {
-                CopyFile(file, ArtifactsDirectory / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+                ((AbsolutePath) file).CopyToDirectory(ArtifactsDirectory, ExistsPolicy.FileOverwrite);
             }
         });
 
@@ -129,13 +133,49 @@ class Build : NukeBuild
             // copy to local store
             foreach (var file in Directory.GetFiles(ArtifactsDirectory, $"*.{PackageVersion}.nupkg", SearchOption.AllDirectories))
             {
-                CopyFile(file, DeployPath / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+                ((AbsolutePath) file).CopyToDirectory(DeployPath, ExistsPolicy.FileOverwrite);
             }
 
             foreach (var file in Directory.GetFiles(ArtifactsDirectory, $"*.{PackageVersion}.snupkg", SearchOption.AllDirectories))
             {
-                CopyFile(file, DeployPath / Path.GetFileName(file), FileExistsPolicy.Overwrite);
+                ((AbsolutePath) file).CopyToDirectory(DeployPath, ExistsPolicy.FileOverwrite);
             }
+        });
+
+    Target Sonar => _ => _
+        .DependsOn(Restore)
+        .Executes(() =>
+        {
+            Serilog.Log.Write(Serilog.Events.LogEventLevel.Information, $"start sonar for {ProjectName}");
+
+            SonarScannerBegin(s => s
+                .SetProjectKey("WickedFlame_MeasureMap")
+                .SetName(ProjectName)
+                .SetOrganization("wickedflame")
+                .SetFramework("net8.0")
+                .SetServer(SonarServer)
+                .SetLogin(SonarToken)
+                .SetOpenCoverPaths("Tests/**/coverage.opencover.xml"));
+
+            DotNetBuild(s => s
+                .SetProjectFile(Solution)
+                .SetConfiguration(Configuration.Debug)
+                .EnableNoRestore());
+
+            DotNetTest(s => s
+                .SetProjectFile(Solution)
+                .SetConfiguration(Configuration.Debug)
+                .SetNoBuild(true)
+                .EnableNoRestore()
+                .EnableCollectCoverage()
+                //.SetFramework("net8.0")
+                .SetCoverletOutputFormat(CoverletOutputFormat.opencover));
+
+            Serilog.Log.Write(Serilog.Events.LogEventLevel.Information, "end sonar");
+
+            SonarScannerEnd(s => s
+                .SetFramework("net8.0")
+                .SetLogin(SonarToken));
         });
 
     string PackageVersion 

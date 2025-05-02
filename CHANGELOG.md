@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
+## vNext
+### Added
+- ThreadNumber is emitted in the result
+- Extension to log to the console 
+- OnStartPipeline Event that is run when starting the threads to create the IExecutionContext per Thread
+- OnEndPipeline Event that is run after the pipeline per thread is finished
+- Settings contain a IsWarmup flag to indicate if the run is a warmup run
+- CreateContext Extensionmethod on Settings to create a new IExecutionContext based on the Settings
+- Write debug log when the OnPipelineStart event gets executed
+- Ensure that all threads are setup and created before the first task is run
+- Added Rampup to start threads delayed
+
+## Fixed
+- Get from the IExecutionContext needed the Key to be lowercase
+  
 ## v2.2.1
 ### Fixed
 - Throughput was not calculated correctly when using multiple threads

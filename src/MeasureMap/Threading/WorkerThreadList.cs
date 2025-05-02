@@ -11,7 +11,7 @@ namespace MeasureMap.Threading
     /// </summary>
     public class WorkerThreadList : IEnumerable<IWorkerThread>
     {
-        private readonly List<IWorkerThread> _threads = new List<IWorkerThread>();
+        private readonly List<IWorkerThread> _threads = new ();
 
         /// <summary>
         /// Start a new thread and add it to the list
@@ -20,7 +20,7 @@ namespace MeasureMap.Threading
         /// <param name="execution"></param>
         /// <param name="threadFactory"></param>
         /// <returns></returns>
-        public IWorkerThread StartNew(int index, Func<Result> execution, Func<int, Func<Result>, IWorkerThread> threadFactory)
+        public IWorkerThread StartNew(int index, Func<int, Result> execution, Func<int, Func<int, Result>, IWorkerThread> threadFactory)
         {
             var thread = threadFactory.Invoke(index, execution);
 

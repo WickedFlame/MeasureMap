@@ -1,6 +1,7 @@
 ﻿using MeasureMap.Benchmark;
 
-var bm = "ThreadBehaviourBenchmarks";
+var bm = "RampupBenchmarks";
+//var bm = "ThreadBehaviourBenchmarks";
 //var bm = "BenchmarkUsingMultipleThreads";
 //var bm = "BenchmarkSample";
 //var bm = "WorkerThreadListBenchmarks";
@@ -26,6 +27,9 @@ switch (bm)
         break;
     case nameof(ThreadBehaviourBenchmarks):
         new ThreadBehaviourBenchmarks().RunBenchmarks();
+        break;
+    case nameof(RampupBenchmarks):
+        new RampupBenchmarks().RunBenchmarks();
         break;
 }
 

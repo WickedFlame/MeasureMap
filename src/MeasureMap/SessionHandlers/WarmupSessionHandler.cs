@@ -25,9 +25,15 @@ namespace MeasureMap
 
             var stopwatch = Stopwatch.StartNew();
 
-            task.Run(new ExecutionContext(settings));
+            settings.IsWarmup = true;
+            var ctx = settings.OnStartPipeline();
+
+            task.Run(ctx);
 
             stopwatch.Stop();
+            settings.OnEndPipeline(ctx);
+
+            settings.IsWarmup = false;
 
             var result = base.Execute(task, settings);
 

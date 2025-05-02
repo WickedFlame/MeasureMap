@@ -17,7 +17,7 @@ namespace MeasureMap.UnitTest
         {
             var session = ProfilerSession.StartSession();
 
-            Assert.IsNotNull(session);
+            session.Should().NotBeNull();
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace MeasureMap.UnitTest
             // TODO: is it neccesary to run the session just to check if a task is set???
             session.RunSession();
 
-            Assert.IsNotNull(session);
+            session.Should().NotBeNull();
         }
 
         [Test]
@@ -76,7 +76,7 @@ namespace MeasureMap.UnitTest
                 .SetIterations(100)
                 .RunSession();
 
-            Assert.IsTrue(result.Increase > 0, result.Increase.ToString());
+            result.Increase.Should().BeGreaterThan(0);
         }
     }
 }

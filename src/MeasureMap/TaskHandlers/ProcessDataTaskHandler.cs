@@ -26,6 +26,7 @@ namespace MeasureMap
             result.ThreadId = threadId;
             result.ProcessId = processId;
             result.Iteration = iteration;
+            result.ThreadNumber = context.Get<int>(ContextKeys.ThreadNumber);
 
             return result;
         }

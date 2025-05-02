@@ -12,7 +12,7 @@ namespace MeasureMap.Threading
         private System.Threading.Tasks.Task _task;
         private readonly ManualResetEventSlim _event;
         private bool _disposed;
-        private readonly Func<Result> _action;
+        private readonly Func<int, IResult> _action;
         private readonly int _index;
 
         private readonly CancellationTokenSource _cancellationToken;
@@ -20,14 +20,14 @@ namespace MeasureMap.Threading
         /// <summary>
         /// Gets the factory for creating a new WorkerTask
         /// </summary>
-        public static Func<int, Func<Result>, IWorkerThread> Factory => (i, e) => new WorkerTask(i, e);
+        public static Func<int, Func<int, IResult>, IWorkerThread> Factory => (i, e) => new WorkerTask(i, e);
 
         /// <summary>
         /// Create a new Thread
         /// </summary>
         /// <param name="index"></param>
         /// <param name="action"></param>
-        public WorkerTask(int index, Func<Result> action)
+        public WorkerTask(int index, Func<int, IResult> action)
         {
             _event = new ManualResetEventSlim();
             _cancellationToken = new CancellationTokenSource();
@@ -40,7 +40,7 @@ namespace MeasureMap.Threading
         /// <summary>
         /// Get the final result of the thread
         /// </summary>
-        public Result Result { get; private set; }
+        public IResult Result { get; private set; }
 
         /// <summary>
         /// Get the Id of the thread
@@ -69,7 +69,7 @@ namespace MeasureMap.Threading
             {
                 try
                 {
-                    Result = _action();
+                    Result = _action(_index);
                 }
                 catch
                 {

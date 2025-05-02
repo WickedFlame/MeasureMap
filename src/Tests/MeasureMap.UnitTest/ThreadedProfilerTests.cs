@@ -23,7 +23,7 @@ namespace MeasureMap.UnitTest
                 .SetThreadBehaviour(behaviour)
                 .RunSession();
 
-            Assert.IsInstanceOf<ProfilerResult>(result);
+            result.Should().BeOfType<ProfilerResult>();
 
             Assert.That(((ProfilerResult)result).Count() == 1);
             Assert.That(result.Iterations.Count() == 10);

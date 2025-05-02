@@ -1,5 +1,4 @@
 ﻿using System;
-using MeasureMap.Threading;
 
 namespace MeasureMap
 {
@@ -19,23 +18,22 @@ namespace MeasureMap
         /// Runs the provided task for the iteration count
         /// </summary>
         /// <param name="task">The task that has to be run</param>
-        /// <param name="settings">The settings for the profiler</param>
+        /// <param name="context">The executioncontext that is passed to the tasks</param>
         /// <returns></returns>
-        public Result Run(ITask task, ProfilerSettings settings)
+        public Result Run(ITask task, IExecutionContext context)
         {
             var result = new Result();
 
             ForceGarbageCollector();
-            
+
             result.InitialSize = GC.GetTotalMemory(true);
-            var context = new ExecutionContext(settings);
 
-            var runner = settings.Runner;
-            runner.Run(settings, context, c =>
+            var runner = context.Settings.Runner;
+            runner.Run(context.Settings, context, c =>
             {
-                var iteration = task.Run(c);
+                var iterationResult = task.Run(c);
 
-                result.Add(iteration);
+                result.Add(iterationResult);
             });
 
             result.EndSize = GC.GetTotalMemory(true);

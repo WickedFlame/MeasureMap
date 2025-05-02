@@ -11,7 +11,7 @@ namespace MeasureMap.Threading
         /// <summary>
         /// Get the final result of the thread
         /// </summary>
-        Result Result { get; }
+        IResult Result { get; }
 
         /// <summary>
         /// Get the Id of the thread

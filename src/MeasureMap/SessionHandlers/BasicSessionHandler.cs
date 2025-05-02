@@ -19,10 +19,16 @@ namespace MeasureMap
         {
             var runnerThreads = new WorkerThreadList();
             
-            var thread = runnerThreads.StartNew(0, () =>
+            var thread = runnerThreads.StartNew(0, _ =>
             {
+                var ctx = settings.OnStartPipeline();
+
                 var worker = new Worker();
-                return worker.Run(task, settings);
+                var result = worker.Run(task, ctx);
+
+                settings.OnEndPipeline(ctx);
+
+                return result;
             }, settings.GetThreadFactory());
             
             settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(BasicSessionHandler));
