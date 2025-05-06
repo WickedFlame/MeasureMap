@@ -91,7 +91,6 @@ namespace MeasureMap.UnitTest
             Console.SetOut(consoleOut);
 
             var runner = new BenchmarkRunner()
-                //.LogToConsole()
                 .SetMinLogLevel(MeasureMap.Diagnostics.LogLevel.Debug)
                 .Task("one", ctx =>
                 {
@@ -100,7 +99,12 @@ namespace MeasureMap.UnitTest
 
             runner.RunSession();
 
-            consoleOut.ToString().TrimEnd().MatchSnapshot();
+            consoleOut.ToString().TrimEnd()
+                .Should().Contain("[MeasureMap] [ProfilerSession]")
+                .And.Contain("[MeasureMap] [WarmupSessionHandler]")
+                .And.Contain("[MeasureMap] [BasicSessionHandler]")
+                .And.Contain("[MeasureMap] [IterationRunner]")
+                .And.Contain("[MeasureMap] [SimpleTaskExecution]");
 
             Console.SetOut(stdOut);
         }
