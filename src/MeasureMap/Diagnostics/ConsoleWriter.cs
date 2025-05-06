@@ -23,8 +23,24 @@ namespace MeasureMap.Diagnostics
                 consoleOpen = false;
             }
 
-            _write = consoleOpen ? s => Console.Write(s) : s => Trace.Write(s);
-            _writeLine = consoleOpen ? s => Console.WriteLine(s) : s => Trace.WriteLine(s);
+            _write = s =>
+            {
+                if (!consoleOpen)
+                {
+                    Debug.Write(s);
+                }
+
+                Console.Write(s);
+            };
+            _writeLine = s =>
+            {
+                if (!consoleOpen)
+                {
+                    Debug.WriteLine(s);
+                }
+
+                Console.WriteLine(s);
+            };
         }
 
         private static readonly Action<string> _write;
