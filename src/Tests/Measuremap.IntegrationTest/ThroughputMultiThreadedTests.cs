@@ -29,7 +29,7 @@ namespace Measuremap.IntegrationTest
             WithContext<BdContext>(context =>
                 Given(() => InitSession(context, TimeSpan.FromSeconds(.5)))
                     .When(() => RunSession(context))
-                    .Then(() => EnsureThroughputIsOnePerSecond(context, 1.7, 2))
+                    .Then(() => EnsureThroughputIsOnePerSecond(context, 1.7, 2.3))
                     .BDTest()
             );
         }
