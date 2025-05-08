@@ -24,8 +24,8 @@ namespace MeasureMap.Tracers.Metrics.DefaultMetrics
             Add(ProfilerMetric.AverageMicroseconds, new ProfilerMetricFactory(ProfilerMetric.AverageMicroseconds, MetricCategory.Duration, r => $"{r.AverageTicks.ToMicroseconds()} μs", TextAlign.Right));
             Add(ProfilerMetric.AverageMilliseconds, new ProfilerMetricFactory(ProfilerMetric.AverageMilliseconds, MetricCategory.Duration, r => $"{r.AverageTicks.ToMilliseconds()} ms", TextAlign.Right));
             Add(ProfilerMetric.AverageTicks, new ProfilerMetricFactory(ProfilerMetric.AverageTicks, MetricCategory.Duration, r => r.AverageTicks, TextAlign.Right));
-            Add(ProfilerMetric.Fastest, new ProfilerMetricFactory(ProfilerMetric.Fastest, MetricCategory.Duration, r => TimeSpan.FromTicks(r.Fastest.Ticks), TextAlign.Right));
-            Add(ProfilerMetric.Slowest, new ProfilerMetricFactory(ProfilerMetric.Slowest, MetricCategory.Duration, r => TimeSpan.FromTicks(r.Slowest.Ticks), TextAlign.Right));
+            Add(ProfilerMetric.Fastest, new ProfilerMetricFactory(ProfilerMetric.Fastest, MetricCategory.Duration, r => TimeSpan.FromMilliseconds(r.Fastest.Ticks.ToMilliseconds()), TextAlign.Right));
+            Add(ProfilerMetric.Slowest, new ProfilerMetricFactory(ProfilerMetric.Slowest, MetricCategory.Duration, r => TimeSpan.FromMilliseconds(r.Slowest.Ticks.ToMilliseconds()), TextAlign.Right));
 
             Add(ProfilerMetric.MemoryInitialSize, new ProfilerMetricFactory(ProfilerMetric.MemoryInitialSize, MetricCategory.Memory, r => r.InitialSize, TextAlign.Right));
             Add(ProfilerMetric.MemoryEndSize, new ProfilerMetricFactory(ProfilerMetric.MemoryEndSize, MetricCategory.Memory, r => r.EndSize, TextAlign.Right));

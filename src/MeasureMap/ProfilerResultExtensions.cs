@@ -35,8 +35,8 @@ namespace MeasureMap
             sb.AppendLine($"\t\tAverage Time:\t\t\t{profilerResult.AverageTime}");
             sb.AppendLine($"\t\tAverage Milliseconds:\t\t{profilerResult.AverageMilliseconds()}");
             sb.AppendLine($"\t\tAverage Ticks:\t\t\t{profilerResult.AverageTicks}");
-            sb.AppendLine($"\t\tFastest:\t\t\t{TimeSpan.FromTicks(profilerResult.Fastest.Ticks)}");
-            sb.AppendLine($"\t\tSlowest:\t\t\t{TimeSpan.FromTicks(profilerResult.Slowest.Ticks)}");
+            sb.AppendLine($"\t\tFastest:\t\t\t{TimeSpan.FromMilliseconds(profilerResult.Fastest.Ticks.ToMilliseconds())}");
+            sb.AppendLine($"\t\tSlowest:\t\t\t{TimeSpan.FromMilliseconds(profilerResult.Slowest.Ticks.ToMilliseconds())}");
             sb.AppendLine($"\tMemory ==========================================");
             sb.AppendLine($"\t\tMemory Initial size:\t\t{profilerResult.InitialSize}");
             sb.AppendLine($"\t\tMemory End size:\t\t{profilerResult.EndSize}");
