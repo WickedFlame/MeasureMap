@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 
 namespace MeasureMap
 {
@@ -56,6 +60,28 @@ namespace MeasureMap
             }
 
             return results;
+        }
+
+        public IBenchmarkResult RunSession<T>()
+        {
+
+            var instance = Activator.CreateInstance<T>();
+
+            var methods = typeof(T).GetMethods();
+            foreach(var method in methods)
+            {
+                if(method.GetCustomAttribute<BenchmarkAttribute>() != null)
+                {
+
+                    var session = ProfilerSession.StartSession()
+                        .AppendSettings(Settings)
+                        .Task(() => method.Invoke(instance, null));
+
+                    AddSession(method.Name, session);
+                }
+            }
+
+            return RunSessions();
         }
     }
 }
