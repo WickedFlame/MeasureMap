@@ -17,6 +17,7 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
 
             result.Should().NotBeNull();
             result.Keys.Should().Contain("Test_1");
+            result.Keys.Should().Contain("Test_2");
 
             result.Trace();
         }
@@ -44,7 +45,7 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
             System.Threading.Thread.Sleep(10);
         }
 
-        //[Benchmark]
+        [Benchmark]
         public void Test_2(IExecutionContext ctx)
         {
             // Simulate some work

@@ -70,12 +70,22 @@ namespace MeasureMap
             var methods = typeof(T).GetMethods();
             foreach(var method in methods)
             {
-                if(method.GetCustomAttribute<BenchmarkAttribute>() != null)
+                if (method.GetCustomAttribute<BenchmarkAttribute>() != null)
                 {
 
                     var session = ProfilerSession.StartSession()
-                        .AppendSettings(Settings)
-                        .Task(() => method.Invoke(instance, null));
+                        .AppendSettings(Settings);
+
+                    if (method.GetParameters().Any(p => p.ParameterType == typeof(IExecutionContext)))
+                    {
+                        session.Task(ctx => method.Invoke(instance, [ctx]));
+                    }
+                    else
+                    {
+
+                        session.Task(() => method.Invoke(instance, null));
+                    }
+
 
                     AddSession(method.Name, session);
                 }

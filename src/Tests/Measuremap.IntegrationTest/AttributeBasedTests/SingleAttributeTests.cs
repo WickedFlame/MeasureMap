@@ -8,7 +8,7 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
         public void SingleAttribute_Benchmark()
         {
             var runner = new BenchmarkRunner();
-            var result = runner.RunSession<WorkflowBenchmark>();
+            var result = runner.RunSession<SingleAttribute>();
 
             result.Should().NotBeNull();
             result.Keys.Should().Contain("Test_1");

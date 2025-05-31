@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFrameworks>net8.0</TargetFrameworks>
         <ImplicitUsings>disable</ImplicitUsings>
+      <LangVersion>latest</LangVersion>
 
         <IsPackable>false</IsPackable>
         <LangVersion>latest</LangVersion>
