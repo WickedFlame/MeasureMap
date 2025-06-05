@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
-## vNext
+## v2.4.0
 ### Added
 - ThreadNumber is emitted in the result
 - Extension to log to the console 
