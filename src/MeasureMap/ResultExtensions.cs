@@ -20,7 +20,7 @@ namespace MeasureMap
                 return (TimeSpan)result.ResultValues[ResultValueType.Elapsed];
             }
 
-            return TimeSpan.FromTicks(result.Iterations.Sum(i => i.Ticks));
+            return TimeSpan.FromMilliseconds(result.Iterations.Sum(i => i.Ticks).ToMilliseconds());
         }
 
         /// <summary>

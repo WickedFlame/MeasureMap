@@ -86,16 +86,16 @@ namespace MeasureMap
         /// <summary>
         /// Gets the average time each iteration took
         /// </summary>
-        public TimeSpan AverageTime => TimeSpan.FromTicks(AverageTicks);
+        public TimeSpan AverageTime => TimeSpan.FromMilliseconds(AverageTicks.ToMilliseconds());
 
         /// <summary>
-        /// Gets the total time for all iterations
+        /// Gets the sum of all times for all iterations
         /// </summary>
         public TimeSpan TotalTime
         {
             get
             {
-                return TimeSpan.FromTicks(Iterations.Select(i => i.Ticks).Sum());
+                return TimeSpan.FromMilliseconds(Iterations.Select(i => i.Ticks).Sum().ToMilliseconds());
             }
         }
 

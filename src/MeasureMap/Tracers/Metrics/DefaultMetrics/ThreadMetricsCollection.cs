@@ -16,8 +16,8 @@ namespace MeasureMap.Tracers.Metrics.DefaultMetrics
             Add(ThreadMetric.AverageMicroseconds, new ThreadMetricFactory(ThreadMetric.AverageMicroseconds, MetricCategory.Duration, r => $"{r.AverageTicks.ToMicroseconds()} μs", TextAlign.Right));
             Add(ThreadMetric.AverageMilliseconds, new ThreadMetricFactory(ThreadMetric.AverageMilliseconds, MetricCategory.Duration, r => $"{r.AverageTicks.ToMilliseconds()} ms", TextAlign.Right));
             Add(ThreadMetric.AverageTicks, new ThreadMetricFactory(ThreadMetric.AverageTicks, MetricCategory.Duration, r => r.AverageTicks, TextAlign.Right));
-            Add(ThreadMetric.Fastest, new ThreadMetricFactory(ThreadMetric.Fastest, MetricCategory.Duration, r => TimeSpan.FromTicks(r.Fastest.Ticks), TextAlign.Right));
-            Add(ThreadMetric.Slowest, new ThreadMetricFactory(ThreadMetric.Slowest, MetricCategory.Duration, r => TimeSpan.FromTicks(r.Slowest.Ticks), TextAlign.Right));
+            Add(ThreadMetric.Fastest, new ThreadMetricFactory(ThreadMetric.Fastest, MetricCategory.Duration, r => TimeSpan.FromMilliseconds(r.Fastest.Ticks.ToMilliseconds()), TextAlign.Right));
+            Add(ThreadMetric.Slowest, new ThreadMetricFactory(ThreadMetric.Slowest, MetricCategory.Duration, r => TimeSpan.FromMilliseconds(r.Slowest.Ticks.ToMilliseconds()), TextAlign.Right));
             Add(ThreadMetric.MemoryInitialSize, new ThreadMetricFactory(ThreadMetric.MemoryInitialSize, MetricCategory.Memory, r => r.InitialSize, TextAlign.Right));
             Add(ThreadMetric.MemoryEndSize, new ThreadMetricFactory(ThreadMetric.MemoryEndSize, MetricCategory.Memory, r => r.EndSize, TextAlign.Right));
             Add(ThreadMetric.MemoryIncrease, new ThreadMetricFactory(ThreadMetric.MemoryIncrease, MetricCategory.Memory, r => r.Increase, TextAlign.Right));

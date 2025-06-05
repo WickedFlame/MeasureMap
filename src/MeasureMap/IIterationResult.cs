@@ -42,6 +42,8 @@ namespace MeasureMap
         /// </summary>
         long Ticks { get; set; }
 
+        long ElapsedMilliseconds { get; set; }
+
         /// <summary>
         /// The initial memory size
         /// </summary>
