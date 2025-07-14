@@ -85,6 +85,8 @@ namespace MeasureMap
                 this.SetIterations(iterationAttr.Iterations);
             }
             
+            var threadsAttr = typeof(T).GetCustomAttribute<ThreadsAttribute>();
+            
             var methods = typeof(T).GetMethods();
             foreach(var method in methods)
             {
@@ -111,6 +113,10 @@ namespace MeasureMap
                         });
                     }
 
+                    if (threadsAttr != null)
+                    {
+                        session.SetThreads(threadsAttr.Threads);
+                    }
                     
 
                     if (method.GetParameters().Any(p => p.ParameterType == typeof(IExecutionContext)))
