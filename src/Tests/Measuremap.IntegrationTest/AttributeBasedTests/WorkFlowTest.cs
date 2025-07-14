@@ -20,7 +20,7 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
 
     //[BenchmarkIterations(10)]
     //[BenchmarkThreads(10)]
-    //[BenchmarkDuration(10)]
+    [Duration(10)]
     //[DisableWarmup]
     public class  WorkflowBenchmark
     {

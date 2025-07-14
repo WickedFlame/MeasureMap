@@ -73,6 +73,13 @@ namespace MeasureMap
             var tmp2 = typeof(T).GetMethods().FirstOrDefault(m => m.GetCustomAttribute<OnEndPipelineAttribute>() != null);
             Action onEnd = tmp2 != null ? () => tmp2.Invoke(instance, null) : null;
             
+            var durationAttr = typeof(T).GetCustomAttribute<DurationAttribute>();
+            var clsDuration = durationAttr != null ? durationAttr.Duration : 0;
+            if (clsDuration > 0)
+            {
+                this.SetDuration(TimeSpan.FromSeconds(clsDuration));
+            }
+            
             var methods = typeof(T).GetMethods();
             foreach(var method in methods)
             {
@@ -98,6 +105,8 @@ namespace MeasureMap
                             onEnd.Invoke();
                         });
                     }
+
+                    
 
                     if (method.GetParameters().Any(p => p.ParameterType == typeof(IExecutionContext)))
                     {
