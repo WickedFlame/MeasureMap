@@ -2,7 +2,7 @@
 
 namespace Measuremap.IntegrationTest.AttributeBasedTests
 {
-    public class DurationAttributeTests
+    public class IterationsAttributeTests
     {
         [SetUp]
         public void Setup()
@@ -13,14 +13,14 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
         public void SingleAttribute_Benchmark()
         {
             var runner = new BenchmarkRunner();
-            var result = runner.RunSession<DurationAttributeClass>();
+            var result = runner.RunSession<IterationsAttributeClass>();
 
-            result.Duration.Should().BeGreaterThanOrEqualTo(TimeSpan.FromSeconds(10));
+            result.Iterations.Should().Be(10);
         }
     }
 
-    [Duration(10)]
-    public class DurationAttributeClass
+    [Iterations(10)]
+    public class IterationsAttributeClass
     {
         [Benchmark]
         public void Test_1()

@@ -18,7 +18,7 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
         }
     }
 
-    //[BenchmarkIterations(10)]
+    [Iterations(10)]
     //[BenchmarkThreads(10)]
     [Duration(10)]
     //[DisableWarmup]

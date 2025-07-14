@@ -74,10 +74,15 @@ namespace MeasureMap
             Action onEnd = tmp2 != null ? () => tmp2.Invoke(instance, null) : null;
             
             var durationAttr = typeof(T).GetCustomAttribute<DurationAttribute>();
-            var clsDuration = durationAttr != null ? durationAttr.Duration : 0;
-            if (clsDuration > 0)
+            if (durationAttr != null)
             {
-                this.SetDuration(TimeSpan.FromSeconds(clsDuration));
+                this.SetDuration(TimeSpan.FromSeconds(durationAttr.Duration));
+            }
+
+            var iterationAttr = typeof(T).GetCustomAttribute<IterationsAttribute>();
+            if (iterationAttr != null)
+            {
+                this.SetIterations(iterationAttr.Iterations);
             }
             
             var methods = typeof(T).GetMethods();
