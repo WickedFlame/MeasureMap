@@ -1,9 +1,4 @@
 ﻿using MeasureMap;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Measuremap.IntegrationTest.AttributeBasedTests
 {
@@ -26,14 +21,15 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
     //[BenchmarkIterations(10)]
     //[BenchmarkThreads(10)]
     //[BenchmarkDuration(10)]
+    //[DisableWarmup]
     public class  WorkflowBenchmark
     {
-        //[Measuremap.OnStartPipeline]
+        [OnStartPipeline]
         public void Setup()
         {
         }
 
-        //[Measuremap.OnEndPipeline]
+        [OnEndPipeline]
         public void End()
         {
         }

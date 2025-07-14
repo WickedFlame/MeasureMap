@@ -67,6 +67,12 @@ namespace MeasureMap
 
             var instance = Activator.CreateInstance<T>();
 
+            var tmp = typeof(T).GetMethods().FirstOrDefault(m => m.GetCustomAttribute<OnStartPipelineAttribute>() != null);
+            Action onStart = tmp != null ? () => tmp.Invoke(instance, null) : null;
+            
+            var tmp2 = typeof(T).GetMethods().FirstOrDefault(m => m.GetCustomAttribute<OnEndPipelineAttribute>() != null);
+            Action onEnd = tmp2 != null ? () => tmp2.Invoke(instance, null) : null;
+            
             var methods = typeof(T).GetMethods();
             foreach(var method in methods)
             {
@@ -75,6 +81,23 @@ namespace MeasureMap
 
                     var session = ProfilerSession.StartSession()
                         .AppendSettings(Settings);
+
+                    if (onStart != null)
+                    {
+                        session.OnStartPipeline(s =>
+                        {
+                            onStart.Invoke();
+                            return new ExecutionContext();
+                        });
+                    }
+
+                    if (onEnd != null)
+                    {
+                        session.OnEndPipeline(e =>
+                        {
+                            onEnd.Invoke();
+                        });
+                    }
 
                     if (method.GetParameters().Any(p => p.ParameterType == typeof(IExecutionContext)))
                     {
@@ -85,8 +108,7 @@ namespace MeasureMap
 
                         session.Task(() => method.Invoke(instance, null));
                     }
-
-
+                    
                     AddSession(method.Name, session);
                 }
             }
