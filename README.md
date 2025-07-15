@@ -11,7 +11,7 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=coverage)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
   
-Measuremap allows profiling and benchmarking from simple code fragmets to full applications.
+MeasureMap allows profiling and benchmarking from simple code fragmets to full applications.
   
 Visit [https://wickedflame.github.io/MeasureMap/](https://wickedflame.github.io/MeasureMap/) for the full documentation.
   

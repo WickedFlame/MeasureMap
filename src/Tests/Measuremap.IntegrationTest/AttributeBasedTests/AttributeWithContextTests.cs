@@ -1,6 +1,6 @@
 ﻿using MeasureMap;
 
-namespace Measuremap.IntegrationTest.AttributeBasedTests
+namespace MeasureMap.IntegrationTest.AttributeBasedTests
 {
     public class AttributeWithContextTests
     {

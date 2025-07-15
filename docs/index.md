@@ -5,7 +5,7 @@ layout: "default"
 
 .NET Benchmarking made simple  
   
-Measuremap is a lightweight assembly that allows profiling and benchmarking code.
+MeasureMap is a lightweight assembly that allows profiling and benchmarking code.
   
 ## Profiling
 The Profiler is used to test the performance of code.  

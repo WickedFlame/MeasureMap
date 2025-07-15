@@ -3,7 +3,7 @@ using BDTest.Test;
 using FluentAssertions;
 using MeasureMap;
 
-namespace Measuremap.IntegrationTest
+namespace MeasureMap.IntegrationTest
 {
     [SingleThreaded]
     [Category("Integration")]

@@ -1,6 +1,6 @@
 ﻿using MeasureMap;
 
-namespace Measuremap.IntegrationTest
+namespace MeasureMap.IntegrationTest
 {
     public class OnStartPipelineTests
     {

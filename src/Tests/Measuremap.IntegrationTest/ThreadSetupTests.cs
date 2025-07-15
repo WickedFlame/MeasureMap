@@ -1,7 +1,7 @@
 ﻿using MeasureMap;
 using Polaroider;
 
-namespace Measuremap.IntegrationTest
+namespace MeasureMap.IntegrationTest
 {
     public class ThreadSetupTests
     {

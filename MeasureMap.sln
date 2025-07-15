@@ -22,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.cspr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeasureMap.Benchmark", "src\Tests\MeasureMap.Benchmark\MeasureMap.Benchmark.csproj", "{5BA1A434-30F8-4233-B4C1-A668AB50BC4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Measuremap.IntegrationTest", "src\Tests\Measuremap.IntegrationTest\Measuremap.IntegrationTest.csproj", "{87489D06-D595-4C03-91D1-3AA85D0E039B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasureMap.IntegrationTest", "src\Tests\MeasureMap.IntegrationTest\MeasureMap.IntegrationTest.csproj", "{87489D06-D595-4C03-91D1-3AA85D0E039B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
