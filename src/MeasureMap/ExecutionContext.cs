@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
@@ -74,8 +75,19 @@ namespace MeasureMap
             key = key.ToLower();
             if (context.SessionData.ContainsKey(key))
             {
-                var tmp = context.SessionData[key];
-                return (T)tmp;
+                try
+                {
+                    var tmp = context.SessionData[key];
+                    return (T)tmp;
+                }
+                catch (InvalidCastException)
+                {
+                    return default(T);
+                }
+                catch (NullReferenceException)
+                {
+                    return default(T);
+                }
             }
 
             return default(T);

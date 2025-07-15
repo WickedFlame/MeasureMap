@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## v3.0.0
 ### Added
 - Benchmarks can be declared in a class. Methods to measure are defined with the help of attributes.
+
+### Fixed
+- Get null value from ExecutionContext caused an exception
+
 ## v2.4.0
 ### Added
 - ThreadNumber is emitted in the result
