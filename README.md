@@ -1,5 +1,5 @@
 # MeasureMap
-.NET Benchmarking made simple
+Profiling and Benchmarking .NET Code made simple
 
 [![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/master?label=Master&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
 [![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/dev?label=Dev&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev)
@@ -11,14 +11,14 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=WickedFlame_MeasureMap&metric=coverage)](https://sonarcloud.io/summary/new_code?id=WickedFlame_MeasureMap)
   
-MeasureMap allows profiling and benchmarking from simple code fragmets to full applications.
+MeasureMap allows profiling and benchmarking from simple code fragments to full applications.
   
 Visit [https://wickedflame.github.io/MeasureMap/](https://wickedflame.github.io/MeasureMap/) for the full documentation.
   
 MeasureMap uses the builder pattern and a fluent API to make profiling or benchmarking as simple as possible.
   
 ## Profiling
-Profiles are initiated with ProfilerSession.StartSession().
+The Builder for profiling is initiated with the ProfilerSession when running the StartSession method.
   
 ```csharp
 var result = ProfilerSession.StartSession()
@@ -35,12 +35,17 @@ result.Trace();
 
 Assert.IsTrue(result.AverageMilliseconds < 20);
 ```
-
+RunSession executes the profiler for the registered Task.
 
 ## Benchmarking
-Benchmarks are a collection of ProfilerSessions. 
-These are initiated and started with the BenchmarkRunner.
+Benchmarks are basically just multiple Profiler-Sessions that are run in one Session.  
+The Benchmarks are registered to and executed by the BenchmarkRunner.
   
+Benchmarks can be run in two ways
+- FluentAPI
+- Attributes
+
+### FluentAPI
 ```csharp
 var sha256 = SHA256.Create();
 var md5 = MD5.Create();
@@ -57,10 +62,56 @@ var result = runner.RunSessions();
 
 result.Trace();
 ```
+### Attributes
+```csharp
+[Iterations(10)]
+[Threads(10)]
+//[Duration(10)]
+public class  WorkflowBenchmark
+{
+    [OnStartPipeline]
+    public void Setup()
+    {
+    }
+
+    [OnEndPipeline]
+    public void End()
+    {
+    }
+
+    [Benchmark]
+    public void Test_1()
+    {
+        // Simulate some work
+        System.Threading.Thread.Sleep(10);
+    }
+
+    [Benchmark]
+    public void Test_2(IExecutionContext ctx)
+    {
+        // Simulate some work
+        System.Threading.Thread.Sleep(100);
+    }
+}
+```
+```csharp
+[Test]
+public void WorkflowTest_Benchmark()
+{
+    var runner = new BenchmarkRunner();
+    var result = runner.RunSession<WorkflowBenchmark>();
+    result.Trace();
+}
+```
+
+## Tracing the Result
+The result is by default traced as Markdown  
+```
 ### MeasureMap Benchmark
  Iterations:		10
 #### Summary
-| Name | Avg Time | Avg Ticks | Total | Fastest | Slowest | Memory Increase |
-|--- |---: |---: |---: |---: |---: |---: |
-| sha256 | 00:00:00.0000924 | 924 | 00:00:00.0009243 | 776 | 1471 | 1392 |
-| Md5 | 00:00:00.0000485 | 485 | 00:00:00.0004858 | 409 | 534 | 1392 |
+| Name   | Avg Time         | Avg Ticks | Total            | Fastest | Slowest | Memory Increase |
+|------- |----------------: |---------: |----------------: |-------: |-------: |---------------: |
+| sha256 | 00:00:00.0000924 | 924       | 00:00:00.0009243 | 776     | 1471    | 1392            |
+| Md5    | 00:00:00.0000485 | 485       | 00:00:00.0004858 | 409     | 534     | 1392            |
+```
