@@ -1,10 +1,6 @@
-﻿using FluentAssertions;
-using NUnit.Framework;
-using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 
-namespace MeasureMap.UnitTest
+namespace MeasureMap.IntegrationTest
 {
     [TestFixture]
     public class ThreadedProfilerTests
