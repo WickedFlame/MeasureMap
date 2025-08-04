@@ -67,10 +67,12 @@ result.Trace();
 [Iterations(10)]
 [Threads(10)]
 //[Duration(10)]
+[RunWarmup(false)]
 public class  WorkflowBenchmark
 {
-    private SHA256 _sha256;
-    private MD5 _md5;
+    private readonly SHA256 _sha256;
+    private readonly MD5 _md5;
+    private readonly byte[] _data;
     
     public WorkflowBenchmark()
     {
@@ -78,7 +80,7 @@ public class  WorkflowBenchmark
         _md5 = MD5.Create();
 
         _data = new byte[10000];
-        new Random(42).NextBytes(data);
+        new Random(42).NextBytes(_data);
     }
     
     [OnStartPipeline]

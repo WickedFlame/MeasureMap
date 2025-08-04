@@ -38,6 +38,19 @@ namespace MeasureMap
 
             return runner;
         }
+        
+        /// <summary>
+        /// Defines if the tasks are initially run as a warmup. Defaults to true
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <param name="run"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner RunWarmup(this BenchmarkRunner runner, bool run)
+        {
+            runner.Settings.RunWarmup = run;
+
+            return runner;
+        }
 
         /// <summary>
         /// Sets the amount of iterations that the profileing session should run the task
@@ -107,7 +120,7 @@ namespace MeasureMap
         /// <summary>
         /// Event that is executed at the start of each thread run
         /// </summary>
-        /// <param name="session"></param>
+        /// <param name="runner"></param>
         /// <param name="factory"></param>
         /// <returns></returns>
         public static BenchmarkRunner OnStartPipeline(this BenchmarkRunner runner, Func<ProfilerSettings, IExecutionContext> factory)

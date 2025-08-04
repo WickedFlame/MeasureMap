@@ -108,5 +108,14 @@ namespace MeasureMap.UnitTest
 
             Console.SetOut(stdOut);
         }
+        
+        [Test]
+        public void BenchmarkRunner_RunWarmup()
+        {
+            var runner = new BenchmarkRunner()
+                .RunWarmup(false);
+
+            runner.Settings.RunWarmup.Should().BeFalse();
+        }
     }
 }

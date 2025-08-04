@@ -20,7 +20,8 @@ public class AttributeSessionBuilder<T> where T : class, new()
         new IterationsBuilderElement(),
         new OnStartPipelineBuilderElement(),
         new OnEndPipelineBuilderElement(),
-        new ThreadsBuilderElement()
+        new ThreadsBuilderElement(),
+        new RunWarmupBuilderElement()
     ];
 
     /// <summary>
