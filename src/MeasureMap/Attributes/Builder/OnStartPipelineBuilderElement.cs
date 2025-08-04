@@ -44,7 +44,7 @@ public class OnStartPipelineBuilderElement : IBenchmarkBuilderElement
         session.OnStartPipeline(s =>
         {
             _action.Invoke();
-            return new ExecutionContext();
+            return s.CreateContext();
         });
     }
 }
