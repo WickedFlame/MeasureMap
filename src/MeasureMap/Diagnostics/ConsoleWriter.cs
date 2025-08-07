@@ -27,7 +27,7 @@ namespace MeasureMap.Diagnostics
             {
                 if (!consoleOpen)
                 {
-                    Debug.Write(s);
+                    Trace.Write(s);
                 }
 
                 Console.Write(s);
@@ -36,7 +36,7 @@ namespace MeasureMap.Diagnostics
             {
                 if (!consoleOpen)
                 {
-                    Debug.WriteLine(s);
+                    Trace.WriteLine(s);
                 }
 
                 Console.WriteLine(s);
