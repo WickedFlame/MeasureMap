@@ -1,6 +1,7 @@
 ﻿using System;
 using MeasureMap.Threading;
 using MeasureMap.Diagnostics;
+using MeasureMap.RunnerHandlers;
 
 namespace MeasureMap
 {
@@ -9,6 +10,9 @@ namespace MeasureMap
     /// </summary>
     public class BasicSessionHandler : SessionHandler, IThreadSessionHandler
     {
+
+        public IPipelineRunnerFactory RunnerFactory { get; set; } = new DefaultPipelineRunnerFactory();
+
         /// <summary>
         /// Executes the task
         /// </summary>
@@ -19,14 +23,10 @@ namespace MeasureMap
         {
             var runnerThreads = new WorkerThreadList();
             
-            var thread = runnerThreads.StartNew(0, _ =>
+            var thread = runnerThreads.StartNew(0, i =>
             {
-                var ctx = settings.OnStartPipeline();
-
-                var worker = new Worker();
-                var result = worker.Run(task, ctx);
-
-                settings.OnEndPipeline(ctx);
+                var runner = RunnerFactory.Create(i, settings);
+                var result = runner.Run(task);
 
                 return result;
             }, settings.GetThreadFactory());

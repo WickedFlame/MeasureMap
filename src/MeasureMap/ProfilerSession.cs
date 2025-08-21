@@ -129,7 +129,11 @@ namespace MeasureMap
                 _sessionPipeline.SetNext(new WarmupSessionHandler());
             }
 
+            //
+            // The executor has to be the last element added to the session pipeline
+            // The executor runs the processing pipeline
             _sessionPipeline.SetNext(_executor);
+
 
             _processingPipeline.SetNext(new ProcessDataTaskHandler());
             _processingPipeline.SetNext(new MemoryCollectionTaskHandler());

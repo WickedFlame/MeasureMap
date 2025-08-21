@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using MeasureMap.Diagnostics;
+using MeasureMap.RunnerHandlers;
 using MeasureMap.Threading;
 
 namespace MeasureMap
@@ -35,8 +36,10 @@ namespace MeasureMap
         {
             _threadCount = threadCount;
 			_rampupTime = rampupTime;
-            _threads = new WorkerThreadList();
+            _threads = [];
         }
+
+        public IPipelineRunnerFactory RunnerFactory { get; set; } = new DefaultPipelineRunnerFactory();
 
         /// <summary>
         /// Gets the amount of threads that the task is run in
@@ -68,9 +71,6 @@ namespace MeasureMap
 
                     var thread = _threads.StartNew(i, idx =>
 					{
-						var ctx = settings.OnStartPipeline();
-						ctx.Set(ContextKeys.ThreadNumber, idx);
-
 						if (idx == _threadCount)
 						{
 							//
@@ -87,12 +87,15 @@ namespace MeasureMap
 							threadWaitHandle.WaitOne(5000, true);
 						}
 
-						var worker = new Worker();
-						var p = worker.Run(task, ctx);
 
-						settings.OnEndPipeline(ctx);
 
-						return p;
+                        var runner = RunnerFactory.Create(idx, settings);
+                        var result = runner.Run(task);
+
+
+
+
+                        return result;
 					}, settings.GetThreadFactory());
 
 					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));

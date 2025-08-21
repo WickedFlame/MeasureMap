@@ -132,8 +132,9 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfilesSessionExtension_AfterPostExecuteTask_MultiplePrePost()
         {
-            var session = ProfilerSession.StartSession()
-                .PreExecute(c => Assert.That(c.SessionData.Count <= 1))
+            ProfilerSession.StartSession()
+                // Iteration and ThreadNumber
+                .PreExecute(c => Assert.That(c.SessionData.Count <= 2))
                 .PreExecute(c =>
                 {
                     c.Set("pre", "before");

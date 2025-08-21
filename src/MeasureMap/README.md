@@ -118,3 +118,31 @@ The result is by default traced as Markdown
 | sha256 | 00:00:00.0000924 | 924       | 00:00:00.0009243 | 776     | 1471    | 1392            |
 | md5    | 00:00:00.0000485 | 485       | 00:00:00.0004858 | 409     | 534     | 1392            |
 ```
+
+
+# Workflow
+
+## SessionPipeline (SessionHandler / ISessionHandler)
+Run once per Session
+* ElapsedTimeSessionHandler
+* PreExecutionSessionHandler
+* WarmupSessionHandler
+* BasicSessionHandler / MainThreadSessionHandler / MultyThreadSessionHandler
+### To be defined...
+Run once per Thread
+* OnStartPipeline (Event)
+* Worker
+* OnEndPipeline (Event)
+#### ProcessingPipeline (TaskHandler / ITaskMiddleware)
+Run once every Iteration
+* ProcessDataTaskHandler (ITaskMiddleware)
+* MemoryCollectionTaskHandler (ITaskMiddleware)
+* ElapsedTimeTaskHandler (ITaskMiddleware)
+* _task (ITask)
+
+
+Factory that creates a instance per thread for:
+* OnStartPipeline (Event)
+* Run Worker
+* OnEndPipeline (Event)
+PipelineRunner ?

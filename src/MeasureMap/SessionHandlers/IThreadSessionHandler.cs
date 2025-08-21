@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MeasureMap.RunnerHandlers;
+using System;
 
 namespace MeasureMap
 {
@@ -7,5 +8,6 @@ namespace MeasureMap
     /// </summary>
     public interface IThreadSessionHandler : ISessionHandler, IDisposable
     {
+        IPipelineRunnerFactory RunnerFactory { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using MeasureMap.Diagnostics;
+using MeasureMap.RunnerHandlers;
 
 namespace MeasureMap
 {
@@ -8,6 +9,8 @@ namespace MeasureMap
     /// </summary>
     public class MainThreadSessionHandler : SessionHandler, IThreadSessionHandler
     {
+        public IPipelineRunnerFactory RunnerFactory { get; set; } = new DefaultPipelineRunnerFactory();
+
         /// <summary>
         /// Executes the task
         /// </summary>
@@ -18,12 +21,8 @@ namespace MeasureMap
         {
             settings.Logger.Write($"Start on mainthread", LogLevel.Debug, nameof(BasicSessionHandler));
 
-            var ctx = settings.OnStartPipeline();
-
-            var worker = new Worker();
-            var result = worker.Run(task, ctx);
-
-            settings.OnEndPipeline(ctx);
+            var runner = RunnerFactory.Create(0, settings);
+            var result = runner.Run(task);
 
             return new ProfilerResult
             {

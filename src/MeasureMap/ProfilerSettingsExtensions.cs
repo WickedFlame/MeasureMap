@@ -13,7 +13,7 @@ namespace MeasureMap
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
-        public static Func<int, Func<int, Result>, IWorkerThread> GetThreadFactory(this ProfilerSettings settings)
+        public static Func<int, Func<int, IResult>, IWorkerThread> GetThreadFactory(this ProfilerSettings settings)
         {
             return settings.ThreadBehaviour switch
             {
