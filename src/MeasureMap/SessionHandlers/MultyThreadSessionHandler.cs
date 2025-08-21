@@ -90,7 +90,7 @@ namespace MeasureMap
 
 
                         var runner = RunnerFactory.Create(idx, settings);
-                        var result = runner.Run(task);
+                        var result = runner.Run(task, settings.CreateContext());
 
 
 

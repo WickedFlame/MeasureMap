@@ -26,7 +26,7 @@ namespace MeasureMap
             var thread = runnerThreads.StartNew(0, i =>
             {
                 var runner = RunnerFactory.Create(i, settings);
-                var result = runner.Run(task);
+                var result = runner.Run(task, settings.CreateContext());
 
                 return result;
             }, settings.GetThreadFactory());

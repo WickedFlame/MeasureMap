@@ -2,6 +2,6 @@
 {
     public interface IPipelineRunnerFactory
     {
-        IPipelineRunner Create(int threadNumber, ProfilerSettings settings);
+        IRunnerMiddleware Create(int threadNumber, ProfilerSettings settings);
     }
 }

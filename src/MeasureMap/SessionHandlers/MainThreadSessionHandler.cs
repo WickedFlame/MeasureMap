@@ -22,7 +22,7 @@ namespace MeasureMap
             settings.Logger.Write($"Start on mainthread", LogLevel.Debug, nameof(BasicSessionHandler));
 
             var runner = RunnerFactory.Create(0, settings);
-            var result = runner.Run(task);
+            var result = runner.Run(task, settings.CreateContext());
 
             return new ProfilerResult
             {

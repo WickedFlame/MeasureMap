@@ -1,10 +1,11 @@
 ﻿
 namespace MeasureMap.RunnerHandlers
 {
-    public class DefaultPipelineRunner : IPipelineRunner
+    public class DefaultPipelineRunner : IRunnerMiddleware
     {
         private readonly int _threadNumber;
         private readonly ProfilerSettings _settings;
+        private IRunnerMiddleware _next;
 
         public DefaultPipelineRunner(int threadNumber, ProfilerSettings settings)
         {
@@ -12,15 +13,38 @@ namespace MeasureMap.RunnerHandlers
             _settings = settings;
         }
 
-        public IResult Run(ITask task)
+        /// <summary>
+        /// Set the next execution item
+        /// </summary>
+        /// <param name="next">The next handler for the thread pipeline</param>
+        public void SetNext(IRunnerMiddleware next)
         {
-            var ctx = _settings.OnStartPipeline();
-            ctx.Set(ContextKeys.ThreadNumber, _threadNumber);
+            if (_next != null)
+            {
+                _next.SetNext(next);
+                return;
+            }
 
-            var worker = new Worker();
-            var result = worker.Run(task, ctx);
+            _next = next;
+        }
 
-            _settings.OnEndPipeline(ctx);
+        /// <summary>
+        /// Run the pipeline
+        /// </summary>
+        /// <param name="task">The task to run</param>
+        /// <param name="context"></param>
+        /// <returns>The resulting collection of the executions</returns>
+        public IResult Run(ITask task, IExecutionContext context)
+        {
+            //var ctx = _settings.OnStartPipeline();
+            //ctx.Set(ContextKeys.ThreadNumber, _threadNumber);
+
+            //var worker = new Worker();
+            //var result = worker.Run(task, ctx);
+
+            //_settings.OnEndPipeline(ctx);
+
+            var result = _next.Run(task, context);
 
             return result;
         }

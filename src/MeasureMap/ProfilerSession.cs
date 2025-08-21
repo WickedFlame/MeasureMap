@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MeasureMap.Diagnostics;
+using MeasureMap.RunnerHandlers;
 
 namespace MeasureMap
 {
@@ -19,6 +20,7 @@ namespace MeasureMap
 
         private readonly ISessionHandler _sessionPipeline;
         private readonly ProcessingPipeline _processingPipeline;
+        private readonly List<IRunnerMiddleware> _runnerPipeline;
         private readonly ProfilerSettings _settings;
 
         private ProfilerSession()
@@ -31,6 +33,8 @@ namespace MeasureMap
             _sessionPipeline.SetNext(new ElapsedTimeSessionHandler());
 
             _processingPipeline = new ProcessingPipeline();
+
+            _runnerPipeline = [];
         }
 
         /// <summary>
@@ -59,6 +63,8 @@ namespace MeasureMap
         /// Gets the processing pipeline containing the middleware that get executed for every iteration. The task is executed at the top of the executionchain.
         /// </summary>
         public ITaskMiddleware ProcessingPipeline => _processingPipeline;
+
+        public List<IRunnerMiddleware> RunnerPipeline => _runnerPipeline;
 
         /// <summary>
         /// Creates a new Session for profiling performance
@@ -134,6 +140,9 @@ namespace MeasureMap
             // The executor runs the processing pipeline
             _sessionPipeline.SetNext(_executor);
 
+
+            //_executor.se
+            //_executor.RunnerFactory = 
 
             _processingPipeline.SetNext(new ProcessDataTaskHandler());
             _processingPipeline.SetNext(new MemoryCollectionTaskHandler());

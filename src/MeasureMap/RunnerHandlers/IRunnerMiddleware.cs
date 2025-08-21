@@ -9,11 +9,11 @@
         void SetNext(IRunnerMiddleware next);
 
         /// <summary>
-        /// Executes the task
+        /// Run the pipeline
         /// </summary>
         /// <param name="task">The task to run</param>
-        /// <param name="settings">The settings for the profiler</param>
+        /// <param name="context"></param>
         /// <returns>The resulting collection of the executions</returns>
-        IResult Execute(ITask task);
+        IResult Run(ITask task, IExecutionContext context);
     }
 }
