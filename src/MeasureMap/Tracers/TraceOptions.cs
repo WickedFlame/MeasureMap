@@ -24,18 +24,6 @@ namespace MeasureMap.Tracers
         public IResultWriter ResultWriter { get; set; } = new TraceResultWriter();
         
         /// <summary>
-        /// Trace the detail of all threads that are used
-        /// </summary>
-        [Obsolete("Use TraceDetail instead of this")]
-        public bool TraceThreadDetail { get; set; }
-
-        /// <summary>
-        /// Trace all results of all iterations to the output
-        /// </summary>
-        [Obsolete("Use TraceDetail instead of this")]
-        public bool TraceFullStack { get; set; }
-
-        /// <summary>
         /// Set the level of tracedetail. Defaults to <see cref="TraceDetail.Minimal"/>
         /// </summary>
         public TraceDetail TraceDetail { get; set; } = TraceDetail.Minimal;

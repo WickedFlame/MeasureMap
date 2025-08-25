@@ -14,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Removed On OnStartPipeline and OnEndPipeline Benchmark because these are per profiler session and not per benchmark
+### Breaking changes
+- Removed deprecated Method AddCondition
+- Removed deprecated Property SessionHandler
+- Removed deprecated Property TaskHandler
+- Removed deprecated Property AverageMilliseconds
+- Removed deprecated Method Trace
+- Removed deprecated Interface ITaskHandler
 
 ## v2.4.0
 ### Added

@@ -42,21 +42,9 @@ namespace MeasureMap
         public ProfilerSettings Settings => _settings;
 
         /// <summary>
-        /// Gets the chain of handlers that get executed before the task execution
-        /// </summary>
-        [Obsolete("Use SessionPipeline")]
-        public ISessionHandler SessionHandler => _sessionPipeline;
-
-        /// <summary>
         /// Gets the chain of handlers that get executed before the execution of the ProcessingPipeline
         /// </summary>
         public ISessionHandler SessionPipeline => _sessionPipeline;
-
-        /// <summary>
-        /// Gets the chain of handlers that get executed when running every task
-        /// </summary>
-        [Obsolete("Use ProcessingPipeline")]
-        public ITaskMiddleware TaskHandler => _processingPipeline;
 
         /// <summary>
         /// Gets the processing pipeline containing the middleware that get executed for every iteration. The task is executed at the top of the executionchain.
@@ -97,14 +85,6 @@ namespace MeasureMap
 
             return this;
         }
-
-        /// <summary>
-        /// Adds a condition to the profiling session
-        /// </summary>
-        /// <param name="condition">The condition that will be checked</param>
-        /// <returns>The current profiling session</returns>
-        [Obsolete("Use Assert", false)]
-        public ProfilerSession AddCondition(Func<IResult, bool> condition) => Assert(condition);
 
         /// <summary>
         /// Adds a condition to the profiling session
