@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
-using MeasureMap.RunnerHandlers;
 using MeasureMap.Threading;
 
 namespace MeasureMap
@@ -39,7 +39,7 @@ namespace MeasureMap
             _threads = [];
         }
 
-        public IPipelineRunnerFactory RunnerFactory { get; set; } = new DefaultPipelineRunnerFactory();
+        public IContextStackBuilder RunnerFactory { get; set; } = new DefaultContextStackBuilder();
 
         /// <summary>
         /// Gets the amount of threads that the task is run in

@@ -17,7 +17,7 @@ namespace MeasureMap.UnitTest
                     e.Should().BeSameAs(context);
                 });
 
-            session.RunnerPipeline.Create(0, new ProfilerSettings()).Run(Mock.Of<ITask>(), context);
+            session.ContextStack.Create(0, new ProfilerSettings()).Run(Mock.Of<ITask>(), context);
 
             run.Should().BeTrue();
         }
@@ -35,7 +35,7 @@ namespace MeasureMap.UnitTest
                     e.Should().BeSameAs(context);
                 });
 
-            session.RunnerPipeline.Create(0, new ProfilerSettings()).Run(Mock.Of<ITask>(), context);
+            session.ContextStack.Create(0, new ProfilerSettings()).Run(Mock.Of<ITask>(), context);
             run.Should().BeTrue();
         }
     }

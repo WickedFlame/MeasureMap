@@ -1,12 +1,15 @@
-﻿namespace MeasureMap.RunnerHandlers
+﻿namespace MeasureMap.ContextStack
 {
-    public interface IRunnerMiddleware
+    /// <summary>
+    /// Middleware for the Context Stack
+    /// </summary>
+    public interface IContextMiddleware
     {
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next handler for the thread pipeline</param>
-        void SetNext(IRunnerMiddleware next);
+        void SetNext(IContextMiddleware next);
 
         /// <summary>
         /// Run the pipeline

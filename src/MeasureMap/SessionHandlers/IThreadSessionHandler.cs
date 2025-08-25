@@ -1,4 +1,4 @@
-﻿using MeasureMap.RunnerHandlers;
+﻿using MeasureMap.ContextStack;
 using System;
 
 namespace MeasureMap
@@ -8,6 +8,6 @@ namespace MeasureMap
     /// </summary>
     public interface IThreadSessionHandler : ISessionHandler, IDisposable
     {
-        IPipelineRunnerFactory RunnerFactory { get; set; }
+        IContextStackBuilder RunnerFactory { get; set; }
     }
 }

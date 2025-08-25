@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
-using MeasureMap.RunnerHandlers;
 
 namespace MeasureMap
 {
@@ -20,7 +20,7 @@ namespace MeasureMap
 
         private readonly ISessionHandler _sessionPipeline;
         private readonly ProcessingPipeline _processingPipeline;
-        private readonly IPipelineRunnerFactory _runnerPipeline;
+        private readonly IContextStackBuilder _contextStack = new DefaultContextStackBuilder();
 
         private readonly ProfilerSettings _settings;
 
@@ -34,8 +34,6 @@ namespace MeasureMap
             _sessionPipeline.SetNext(new ElapsedTimeSessionHandler());
 
             _processingPipeline = new ProcessingPipeline();
-
-            _runnerPipeline = new DefaultPipelineRunnerFactory();
         }
 
         /// <summary>
@@ -65,7 +63,7 @@ namespace MeasureMap
         /// </summary>
         public ITaskMiddleware ProcessingPipeline => _processingPipeline;
 
-        public IPipelineRunnerFactory RunnerPipeline => _runnerPipeline;
+        public IContextStackBuilder ContextStack => _contextStack;
 
         /// <summary>
         /// Creates a new Session for profiling performance
@@ -133,13 +131,13 @@ namespace MeasureMap
 
             if(_settings.RunWarmup)
             {
-                _sessionPipeline.SetNext(new WarmupSessionHandler(RunnerPipeline));
+                _sessionPipeline.SetNext(new WarmupSessionHandler(ContextStack));
             }
 
             //
             // The executor has to be the last element added to the session pipeline
             // The executor runs the processing pipeline
-            _executor.RunnerFactory = RunnerPipeline;
+            _executor.RunnerFactory = ContextStack;
             _sessionPipeline.SetNext(_executor);
 
 

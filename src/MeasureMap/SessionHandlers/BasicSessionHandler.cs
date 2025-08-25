@@ -1,7 +1,7 @@
 ﻿using System;
 using MeasureMap.Threading;
 using MeasureMap.Diagnostics;
-using MeasureMap.RunnerHandlers;
+using MeasureMap.ContextStack;
 
 namespace MeasureMap
 {
@@ -11,7 +11,7 @@ namespace MeasureMap
     public class BasicSessionHandler : SessionHandler, IThreadSessionHandler
     {
 
-        public IPipelineRunnerFactory RunnerFactory { get; set; } = new DefaultPipelineRunnerFactory();
+        public IContextStackBuilder RunnerFactory { get; set; } = new DefaultContextStackBuilder();
 
         /// <summary>
         /// Executes the task

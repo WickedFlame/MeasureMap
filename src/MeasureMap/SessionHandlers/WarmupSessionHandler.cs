@@ -1,4 +1,4 @@
-﻿using MeasureMap.RunnerHandlers;
+﻿using MeasureMap.ContextStack;
 using System.Diagnostics;
 
 namespace MeasureMap
@@ -16,16 +16,16 @@ namespace MeasureMap
     public class WarmupSessionHandler : SessionHandler, IWarmupSessionHandler
     {
         public WarmupSessionHandler() 
-            : this(new DefaultPipelineRunnerFactory())
+            : this(new DefaultContextStackBuilder())
         {
         }
 
-        public WarmupSessionHandler(IPipelineRunnerFactory runnerFactory)
+        public WarmupSessionHandler(IContextStackBuilder runnerFactory)
         {
             RunnerFactory = runnerFactory;
         }
 
-        public IPipelineRunnerFactory RunnerFactory { get; }
+        public IContextStackBuilder RunnerFactory { get; }
 
         /// <summary>
         /// Executes the task

@@ -30,7 +30,7 @@ public class OnEndPipelineBuilderElementTests
         _builder.Initialize(new OnEndPipelineWithAttr());
         _builder.Append(_runner);
 
-        var runner = _runner.RunnerPipeline.Create(0, new ProfilerSettings());
+        var runner = _runner.ContextStack.Create(0, new ProfilerSettings());
         runner.Run(Mock.Of<ITask>(), new ExecutionContext());
 
         OnEndPipelineWithAttr.Called.Should().BeTrue();

@@ -1,6 +1,6 @@
 ﻿using System;
+using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
-using MeasureMap.RunnerHandlers;
 
 namespace MeasureMap
 {
@@ -9,7 +9,7 @@ namespace MeasureMap
     /// </summary>
     public class MainThreadSessionHandler : SessionHandler, IThreadSessionHandler
     {
-        public IPipelineRunnerFactory RunnerFactory { get; set; } = new DefaultPipelineRunnerFactory();
+        public IContextStackBuilder RunnerFactory { get; set; } = new DefaultContextStackBuilder();
 
         /// <summary>
         /// Executes the task

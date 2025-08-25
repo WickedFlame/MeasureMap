@@ -1,6 +1,6 @@
 ﻿using System;
+using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
-using MeasureMap.RunnerHandlers;
 using MeasureMap.Runners;
 using MeasureMap.TaskHandlers;
 
@@ -226,6 +226,18 @@ namespace MeasureMap
         }
 
         /// <summary>
+		/// Add the middleware to the processing pipeline
+		/// </summary>
+		/// <param name="session">The current session</param>
+		/// <param name="middleware">The middleware to add</param>
+		/// <returns></returns>
+		public static ProfilerSession AddMiddleware(this ProfilerSession session, Func<int, ProfilerSettings, IContextMiddleware> middleware)
+        {
+            session.ContextStack.Add(middleware);
+            return session;
+        }
+
+        /// <summary>
         /// Add the middleware to the session pipeline
         /// </summary>
         /// <param name="session">The current session</param>
@@ -335,7 +347,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession OnStartPipeline(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> @event)
         {
-            session.RunnerPipeline.Add((i,s) => new OnStartPipelineRunner(i, s, @event));
+            session.AddMiddleware((i,s) => new OnStartPipelineContextHandler(i, s, @event));
             return session;
         }
 
@@ -347,7 +359,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession OnEndPipeline(this ProfilerSession session, Action<IExecutionContext> @event)
         {
-            session.RunnerPipeline.Add((i,s) => new OnEndPipelineRunner(@event));
+            session.AddMiddleware((i,s) => new OnEndPipelineContextHandler(@event));
             return session;
         }
 

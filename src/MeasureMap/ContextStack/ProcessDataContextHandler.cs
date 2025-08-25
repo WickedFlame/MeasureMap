@@ -1,13 +1,12 @@
-﻿using MeasureMap.RunnerHandlers;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 
 namespace MeasureMap.ContextStack
 {
-    public class ProcessDataContextHandler : IRunnerMiddleware
+    public class ProcessDataContextHandler : IContextMiddleware
     {
-        private IRunnerMiddleware _next;
+        private IContextMiddleware _next;
 
-        public void SetNext(IRunnerMiddleware next)
+        public void SetNext(IContextMiddleware next)
         {
             if (_next != null)
             {
