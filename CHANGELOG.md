@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Get null value from ExecutionContext caused an exception
 
+### Breaking changes
+- Removed deprecated Method AddCondition
+- Removed deprecated Property SessionHandler
+- Removed deprecated Property TaskHandler
+- Removed deprecated Property AverageMilliseconds
+- Removed deprecated Method Trace
+- Removed deprecated Interface ITaskHandler
+
 ## v2.4.0
 ### Added
 - ThreadNumber is emitted in the result

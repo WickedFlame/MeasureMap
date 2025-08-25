@@ -1,16 +1,5 @@
-﻿
-using System;
-
-namespace MeasureMap
+﻿namespace MeasureMap
 {
-    /// <summary>
-    /// Obsolete middleware
-    /// </summary>
-    [Obsolete("Use ITaskMiddleware instead", false)]
-    public interface ITaskHandler : ITaskMiddleware
-    {
-    }
-
     /// <summary>
     /// Represents a task handler that can be chained together with further task handlers
     /// </summary>

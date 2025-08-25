@@ -29,12 +29,6 @@ namespace MeasureMap
         IDictionary<string, object> ResultValues { get; }
 
         /// <summary>
-        /// Gets the average Milliseconds that all iterations took to run the task
-        /// </summary>
-        [Obsolete("Use Extensionmethods AverageTicks.ToMilliSeconds()")]
-        double AverageMilliseconds { get; }
-
-        /// <summary>
         /// Gets the average Ticks that all iterations took to run the task
         /// </summary>
         long AverageTicks { get; }
