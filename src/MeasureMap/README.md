@@ -123,26 +123,22 @@ The result is by default traced as Markdown
 # Workflow
 
 ## SessionPipeline (SessionHandler / ISessionHandler)
+SessionStack
 Run once per Session
 * ElapsedTimeSessionHandler
 * PreExecutionSessionHandler
 * WarmupSessionHandler
 * BasicSessionHandler / MainThreadSessionHandler / MultyThreadSessionHandler
-### To be defined...
-Run once per Thread
-* OnStartPipeline (Event)
-* Worker
-* OnEndPipeline (Event)
+### ContextStack (IContextMiddleware)
+The ContextStack is run once per Thread. The DefaultContextStackBuilder creates a new instance of the stack for each Thread.
+* OnStartPipelineContextHandler
+* OnEndPipelineContextHandler
+* ProcessDataContextHandler
+* WorkerContextHandler
 #### ProcessingPipeline (TaskHandler / ITaskMiddleware)
+IterationStack
 Run once every Iteration
 * ProcessDataTaskHandler (ITaskMiddleware)
 * MemoryCollectionTaskHandler (ITaskMiddleware)
 * ElapsedTimeTaskHandler (ITaskMiddleware)
 * _task (ITask)
-
-
-Factory that creates a instance per thread for:
-* OnStartPipeline (Event)
-* Run Worker
-* OnEndPipeline (Event)
-PipelineRunner ?
