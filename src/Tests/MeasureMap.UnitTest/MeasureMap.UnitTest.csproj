@@ -30,6 +30,14 @@
         <PackageReference Include="Polaroider" Version="2.3.0" />
     </ItemGroup>
 
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+    <Using Include="Moq" />
+    <Using Include="FluentAssertions" />
+    <Using Remove="System.IO" />
+    <Using Remove="System.Threading" />
+  </ItemGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\..\MeasureMap\MeasureMap.csproj" />
     </ItemGroup>

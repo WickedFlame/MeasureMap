@@ -110,36 +110,6 @@ namespace MeasureMap
         /// </summary>
         public Action<IExecutionContext> OnEndPipelineEvent { get; internal set; } = e => { };
 
-        /// <summary>
-        /// Execute the OnStartPipeline event
-        /// </summary>
-        /// <returns></returns>
-        public IExecutionContext OnStartPipeline()
-        {
-            if(OnStartPipelineEvent == null)
-            {
-                return new ExecutionContext(this);
-            }
-
-            Logger.Write("Starting Pipeline with OnStartPieline Event", LogLevel.Debug);
-
-            return OnStartPipelineEvent(this);
-        }
-
-        /// <summary>
-        /// Execute the OnEndPipeline event
-        /// </summary>
-        /// <param name="context"></param>
-        public void OnEndPipeline(IExecutionContext context)
-        {
-            if (OnEndPipelineEvent == null)
-            {
-                return;
-            }
-
-            OnEndPipelineEvent(context);
-        }
-
         private void AddChange<T>(string property, Func<ProfilerSettings, T> func, Action<ProfilerSettings, T> action)
         {
             _changes[property] = (toSet, fromSet) => action(toSet, func(fromSet));

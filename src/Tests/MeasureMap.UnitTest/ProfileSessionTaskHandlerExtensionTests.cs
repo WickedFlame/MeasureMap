@@ -133,8 +133,8 @@ namespace MeasureMap.UnitTest
         public void ProfilesSessionExtension_AfterPostExecuteTask_MultiplePrePost()
         {
             ProfilerSession.StartSession()
-                // Iteration and ThreadNumber
-                .PreExecute(c => Assert.That(c.SessionData.Count <= 2))
+                // Iteration, processid, threadid and ThreadNumber
+                .PreExecute(c => Assert.That(c.SessionData.Count == 3))
                 .PreExecute(c =>
                 {
                     c.Set("pre", "before");

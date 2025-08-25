@@ -3,15 +3,7 @@ namespace MeasureMap.RunnerHandlers
 {
     public class DefaultPipelineRunner : IRunnerMiddleware
     {
-        private readonly int _threadNumber;
-        private readonly ProfilerSettings _settings;
         private IRunnerMiddleware _next;
-
-        public DefaultPipelineRunner(int threadNumber, ProfilerSettings settings)
-        {
-            _threadNumber = threadNumber;
-            _settings = settings;
-        }
 
         /// <summary>
         /// Set the next execution item
@@ -36,17 +28,7 @@ namespace MeasureMap.RunnerHandlers
         /// <returns>The resulting collection of the executions</returns>
         public IResult Run(ITask task, IExecutionContext context)
         {
-            //var ctx = _settings.OnStartPipeline();
-            //ctx.Set(ContextKeys.ThreadNumber, _threadNumber);
-
-            //var worker = new Worker();
-            //var result = worker.Run(task, ctx);
-
-            //_settings.OnEndPipeline(ctx);
-
-            var result = _next.Run(task, context);
-
-            return result;
+            return _next.Run(task, context);
         }
     }
 }

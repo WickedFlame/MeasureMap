@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace MeasureMap
+﻿namespace MeasureMap
 {
     /// <summary>
     /// Taskhandler that reads the current process and thread for each profiling task execution
@@ -14,18 +12,11 @@ namespace MeasureMap
         /// <returns>The resulting collection of the executions</returns>
         public override IIterationResult Run(IExecutionContext context)
         {
-            var iteration = context.Get<int>(ContextKeys.Iteration);
-            var threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;
-            var processId = Process.GetCurrentProcess().Id;
-
-            context.Set(ContextKeys.ThreadId, threadId);
-            context.Set(ContextKeys.ProcessId, processId);
-
             var result = base.Run(context);
 
-            result.ThreadId = threadId;
-            result.ProcessId = processId;
-            result.Iteration = iteration;
+            result.ThreadId = context.Get<int>(ContextKeys.ThreadId);
+            result.ProcessId = context.Get<int>(ContextKeys.ProcessId);
+            result.Iteration = context.Get<int>(ContextKeys.Iteration);
             result.ThreadNumber = context.Get<int>(ContextKeys.ThreadNumber);
 
             return result;

@@ -1,5 +1,6 @@
 ﻿using System;
 using MeasureMap.Diagnostics;
+using MeasureMap.RunnerHandlers;
 using MeasureMap.Runners;
 using MeasureMap.TaskHandlers;
 
@@ -334,7 +335,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession OnStartPipeline(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> @event)
         {
-            session.Settings.OnStartPipelineEvent = @event;
+            session.RunnerPipeline.Add((i,s) => new OnStartPipelineRunner(i, s, @event));
             return session;
         }
 
@@ -346,7 +347,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession OnEndPipeline(this ProfilerSession session, Action<IExecutionContext> @event)
         {
-            session.Settings.OnEndPipelineEvent = @event;
+            session.RunnerPipeline.Add((i,s) => new OnEndPipelineRunner(@event));
             return session;
         }
 

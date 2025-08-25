@@ -20,7 +20,7 @@ namespace MeasureMap.UnitTest.SessionHandlers
             var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
             var handler = new WarmupSessionHandler();
 
-            var result = handler.Execute(task, new ProfilerSettings { Iterations = 10 });
+            var result = handler.Execute(task, new ProfilerSettings { Iterations = 1 });
 
             Assert.That(result.Warmup().Ticks > 0);
         }

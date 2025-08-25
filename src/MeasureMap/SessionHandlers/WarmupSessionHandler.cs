@@ -1,17 +1,32 @@
-﻿using System.Diagnostics;
+﻿using MeasureMap.RunnerHandlers;
+using System.Diagnostics;
 
 namespace MeasureMap
 {
     /// <summary>
     /// Warmup for the task
     /// </summary>
-    public interface IWarmupSessionHandler : ISessionHandler { }
+    public interface IWarmupSessionHandler : ISessionHandler
+    {
+    }
 
     /// <summary>
     /// Warmup for the task
     /// </summary>
     public class WarmupSessionHandler : SessionHandler, IWarmupSessionHandler
     {
+        public WarmupSessionHandler() 
+            : this(new DefaultPipelineRunnerFactory())
+        {
+        }
+
+        public WarmupSessionHandler(IPipelineRunnerFactory runnerFactory)
+        {
+            RunnerFactory = runnerFactory;
+        }
+
+        public IPipelineRunnerFactory RunnerFactory { get; }
+
         /// <summary>
         /// Executes the task
         /// </summary>
@@ -25,15 +40,12 @@ namespace MeasureMap
 
             var stopwatch = Stopwatch.StartNew();
 
-            settings.IsWarmup = true;
-            var ctx = settings.OnStartPipeline();
-
-            task.Run(ctx);
+            var ws = new ProfilerSettings { Iterations = 1, IsWarmup = true };
+            
+            var runner = RunnerFactory.Create(0, ws);
+            runner.Run(task, ws.CreateContext());
 
             stopwatch.Stop();
-            settings.OnEndPipeline(ctx);
-
-            settings.IsWarmup = false;
 
             var result = base.Execute(task, settings);
 

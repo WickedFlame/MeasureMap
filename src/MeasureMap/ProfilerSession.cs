@@ -20,7 +20,8 @@ namespace MeasureMap
 
         private readonly ISessionHandler _sessionPipeline;
         private readonly ProcessingPipeline _processingPipeline;
-        private readonly List<IRunnerMiddleware> _runnerPipeline;
+        private readonly IPipelineRunnerFactory _runnerPipeline;
+
         private readonly ProfilerSettings _settings;
 
         private ProfilerSession()
@@ -34,7 +35,7 @@ namespace MeasureMap
 
             _processingPipeline = new ProcessingPipeline();
 
-            _runnerPipeline = [];
+            _runnerPipeline = new DefaultPipelineRunnerFactory();
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace MeasureMap
         /// </summary>
         public ITaskMiddleware ProcessingPipeline => _processingPipeline;
 
-        public List<IRunnerMiddleware> RunnerPipeline => _runnerPipeline;
+        public IPipelineRunnerFactory RunnerPipeline => _runnerPipeline;
 
         /// <summary>
         /// Creates a new Session for profiling performance
@@ -132,12 +133,13 @@ namespace MeasureMap
 
             if(_settings.RunWarmup)
             {
-                _sessionPipeline.SetNext(new WarmupSessionHandler());
+                _sessionPipeline.SetNext(new WarmupSessionHandler(RunnerPipeline));
             }
 
             //
             // The executor has to be the last element added to the session pipeline
             // The executor runs the processing pipeline
+            _executor.RunnerFactory = RunnerPipeline;
             _sessionPipeline.SetNext(_executor);
 
 

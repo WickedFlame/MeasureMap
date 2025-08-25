@@ -1,23 +1,28 @@
-﻿using System;
+﻿using MeasureMap.ContextStack;
+using System;
+using System.Collections.Generic;
 
 namespace MeasureMap.RunnerHandlers
 {
     public class DefaultPipelineRunnerFactory : IPipelineRunnerFactory
     {
+        private readonly List<Func<int, ProfilerSettings, IRunnerMiddleware>> _pipeline = [];
+
+        public void Add(Func<int, ProfilerSettings, IRunnerMiddleware> middleware)
+        {
+            _pipeline.Add(middleware);
+        }
+
         public IRunnerMiddleware Create(int threadNumber, ProfilerSettings settings)
         {
-            var runner = new DefaultPipelineRunner(threadNumber, settings);
+            var runner = new DefaultPipelineRunner();
             
-            if(settings.OnStartPipeline != null)
+            foreach(var middleware in _pipeline)
             {
-                runner.SetNext(new OnStartPipelineRunner(threadNumber, settings.OnStartPipeline));
+                runner.SetNext(middleware.Invoke(threadNumber, settings));
             }
 
-            if(settings.OnEndPipelineEvent != null)
-            {
-                runner.SetNext(new OnEndPipelineRunner(settings.OnEndPipelineEvent));
-            }
-
+            runner.SetNext(new ProcessDataContextHandler());
             runner.SetNext(new WorkerPipelineRunner());
 
             return runner;
@@ -44,11 +49,13 @@ namespace MeasureMap.RunnerHandlers
     {
         private IRunnerMiddleware _next;
         private readonly int _threadNumber;
-        private readonly Func<IExecutionContext> _onStartPipeline;
+        private readonly ProfilerSettings _settings;
+        private readonly Func<ProfilerSettings, IExecutionContext> _onStartPipeline;
 
-        public OnStartPipelineRunner(int threadNumber, Func<IExecutionContext> onStartPipeline)
+        public OnStartPipelineRunner(int threadNumber, ProfilerSettings settings, Func<ProfilerSettings, IExecutionContext> onStartPipeline)
         {
             _threadNumber = threadNumber;
+            _settings = settings;
             _onStartPipeline = onStartPipeline;
         }
 
@@ -65,11 +72,15 @@ namespace MeasureMap.RunnerHandlers
 
         public IResult Run(ITask task, IExecutionContext context)
         {
-            var ctx = _onStartPipeline();
-            ctx.Set(ContextKeys.ThreadNumber, _threadNumber);
-            context.Set(ContextKeys.ThreadNumber, _threadNumber);
+            var ctx = _onStartPipeline(_settings);
+            if(ctx == null)
+            {
+                ctx = context;
+            }
 
-            var result = _next != null ? _next.Run(task, ctx != null ? ctx : context) : null;
+            ctx.Set(ContextKeys.ThreadNumber, _threadNumber);
+            
+            var result = _next != null ? _next.Run(task, ctx) : null;
 
             return result;
         }
