@@ -2,14 +2,17 @@
 using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
 
-namespace MeasureMap
+namespace MeasureMap.SessionStack
 {
     /// <summary>
     /// Runs all tasks in the main thread. This can only be used when running on one thread. Multithreaded handling cannot be run on the main thread
     /// </summary>
-    public class MainThreadSessionHandler : SessionHandler, IThreadSessionHandler
+    public class MainThreadSessionHandler : SessionHandler, ISessionExecutor
     {
-        public IContextStackBuilder RunnerFactory { get; set; } = new DefaultContextStackBuilder();
+        /// <summary>
+        /// Gets or sets the <see cref="IContextStackBuilder"/> to create the ContextStack that runs the task
+        /// </summary>
+        public IContextStackBuilder StackBuilder { get; set; } = new DefaultContextStackBuilder();
 
         /// <summary>
         /// Executes the task
@@ -21,7 +24,7 @@ namespace MeasureMap
         {
             settings.Logger.Write($"Start on mainthread", LogLevel.Debug, nameof(BasicSessionHandler));
 
-            var runner = RunnerFactory.Create(0, settings);
+            var runner = StackBuilder.Create(0, settings);
             var result = runner.Run(task, settings.CreateContext());
 
             return new ProfilerResult

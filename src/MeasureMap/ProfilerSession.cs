@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
+using MeasureMap.SessionStack;
 
 namespace MeasureMap
 {
@@ -16,9 +17,9 @@ namespace MeasureMap
     {
         private readonly List<Func<IResult, bool>> _assertions;
         private ITask _task;
-        private IThreadSessionHandler _executor;
+        private ISessionExecutor _executor;
 
-        private readonly ISessionHandler _sessionPipeline;
+        private readonly ISessionMiddleware _sessionPipeline;
         private readonly ProcessingPipeline _processingPipeline;
         private readonly IContextStackBuilder _contextStack = new DefaultContextStackBuilder();
 
@@ -44,7 +45,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the chain of handlers that get executed before the execution of the ProcessingPipeline
         /// </summary>
-        public ISessionHandler SessionPipeline => _sessionPipeline;
+        public ISessionMiddleware SessionPipeline => _sessionPipeline;
 
         /// <summary>
         /// Gets the processing pipeline containing the middleware that get executed for every iteration. The task is executed at the top of the executionchain.
@@ -67,7 +68,7 @@ namespace MeasureMap
         /// All iterations are run on every thread.
         /// </summary>
         /// <returns>The current profiling session</returns>
-        public ProfilerSession SetExecutionHandler(IThreadSessionHandler handler)
+        public ProfilerSession SetExecutionHandler(ISessionExecutor handler)
         {
             _executor = handler;
 
@@ -117,7 +118,7 @@ namespace MeasureMap
             //
             // The executor has to be the last element added to the session pipeline
             // The executor runs the processing pipeline
-            _executor.RunnerFactory = ContextStack;
+            _executor.StackBuilder = ContextStack;
             _sessionPipeline.SetNext(_executor);
 
 
@@ -129,7 +130,7 @@ namespace MeasureMap
             _processingPipeline.SetNext(new ElapsedTimeTaskHandler());
             _processingPipeline.SetNext(_task);
 
-            var threads = _executor is MultyThreadSessionHandler handler ? handler.ThreadCount : 1;
+            var threads = _executor is MultiThreadSessionHandler handler ? handler.ThreadCount : 1;
 
             Settings.Logger.Write($"Running {Settings.Iterations} Iterations on {threads} Threads", LogLevel.Debug, "ProfilerSession");
 

@@ -3,15 +3,17 @@ using MeasureMap.Threading;
 using MeasureMap.Diagnostics;
 using MeasureMap.ContextStack;
 
-namespace MeasureMap
+namespace MeasureMap.SessionStack
 {
     /// <summary>
     /// A single threaded task session handler. Runs all tasks in a separate thread.
     /// </summary>
-    public class BasicSessionHandler : SessionHandler, IThreadSessionHandler
+    public class BasicSessionHandler : SessionHandler, ISessionExecutor
     {
-
-        public IContextStackBuilder RunnerFactory { get; set; } = new DefaultContextStackBuilder();
+        /// <summary>
+        /// Gets or sets the <see cref="IContextStackBuilder"/> to create the ContextStack that runs the task
+        /// </summary>
+        public IContextStackBuilder StackBuilder { get; set; } = new DefaultContextStackBuilder();
 
         /// <summary>
         /// Executes the task
@@ -25,7 +27,7 @@ namespace MeasureMap
             
             var thread = runnerThreads.StartNew(0, i =>
             {
-                var runner = RunnerFactory.Create(i, settings);
+                var runner = StackBuilder.Create(i, settings);
                 var result = runner.Run(task, settings.CreateContext());
 
                 return result;

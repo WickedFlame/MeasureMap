@@ -1,16 +1,22 @@
-﻿
+﻿using System;
+
 namespace MeasureMap
 {
+    [Obsolete("Use ISessionMiddleware")]
+    public interface ISessionHandler : ISessionMiddleware
+    { 
+    }
+
     /// <summary>
     /// Chain of responsibility for executing tasks
     /// </summary>
-    public interface ISessionHandler
+    public interface ISessionMiddleware
     {
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next handler for the session</param>
-        void SetNext(ISessionHandler next);
+        void SetNext(ISessionMiddleware next);
 
         /// <summary>
         /// Executes the task

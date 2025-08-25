@@ -1,23 +1,22 @@
-﻿using FluentAssertions;
-using Moq;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using MeasureMap.ContextStack;
+using MeasureMap.SessionStack;
 
-namespace MeasureMap.UnitTest.SessionHandlers
+namespace MeasureMap.UnitTest.SessionStack
 {
-    [TestFixture]
     public class WarmupSessionHandlerTests
     {
+        private IWarmupSessionHandler _handler;
+
+        [SetUp]
+        public void Setup()
+        {
+            _handler = new WarmupSessionHandler();
+        }
+
         [Test]
         public void WarmupSessionHandler_Execute()
         {
-            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new Task(() => { });
             var handler = new WarmupSessionHandler();
 
             var result = handler.Execute(task, new ProfilerSettings { Iterations = 1 });
@@ -26,18 +25,24 @@ namespace MeasureMap.UnitTest.SessionHandlers
         }
 
         [Test]
+        public void MultiThreadSessionHandler_StackBuilder()
+        {
+            _handler.StackBuilder.Should().BeOfType<DefaultContextStackBuilder>();
+        }
+
+        [Test]
         public void WarmupSessionHandler_Execute_EnsureBaseIsCalled()
         {
-            var next = new Mock<ISessionHandler>();
+            var next = new Mock<ISessionMiddleware>();
             next.Setup(exp => exp.Execute(It.IsAny<ITask>(), It.IsAny<ProfilerSettings>())).Returns(() => new ProfilerResult());
 
             var settings = new ProfilerSettings { Iterations = 10 };
 
-            var task = new Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.5)));
+            var task = new Task(() => { });
             var handler = new WarmupSessionHandler();
             handler.SetNext(next.Object);
 
-            var result = handler.Execute(task, settings);
+            handler.Execute(task, settings);
 
             next.Verify(exp => exp.Execute(task, settings), Times.Once);
         }
@@ -50,7 +55,7 @@ namespace MeasureMap.UnitTest.SessionHandlers
             var task = new Mock<ITask>();
             var handler = new WarmupSessionHandler();
 
-            var result = handler.Execute(task.Object, settings);
+            handler.Execute(task.Object, settings);
 
             task.Verify(exp => exp.Run(It.IsAny<IExecutionContext>()), Times.Once);
         }

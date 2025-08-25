@@ -6,12 +6,12 @@ using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
 using MeasureMap.Threading;
 
-namespace MeasureMap
+namespace MeasureMap.SessionStack
 {
 	/// <summary>
 	/// A multy threaded task session handler
 	/// </summary>
-	public class MultyThreadSessionHandler : SessionHandler, IThreadSessionHandler
+	public class MultiThreadSessionHandler : SessionHandler, ISessionExecutor
 	{
 		private readonly int _threadCount;
         private readonly TimeSpan _rampupTime;
@@ -22,7 +22,7 @@ namespace MeasureMap
 		/// Creates a new threaded task executor
 		/// </summary>
 		/// <param name="threadCount">The amount of threads to run the task</param>
-		public MultyThreadSessionHandler(int threadCount)
+		public MultiThreadSessionHandler(int threadCount)
 			: this(threadCount, TimeSpan.Zero)
 		{
 		}
@@ -32,14 +32,17 @@ namespace MeasureMap
         /// </summary>
         /// <param name="threadCount">The amount of threads to run the task</param>
 		/// <param name="rampupTime">The time it takes to setup all threads</param>
-        public MultyThreadSessionHandler(int threadCount, TimeSpan rampupTime)
+        public MultiThreadSessionHandler(int threadCount, TimeSpan rampupTime)
         {
             _threadCount = threadCount;
 			_rampupTime = rampupTime;
             _threads = [];
         }
 
-        public IContextStackBuilder RunnerFactory { get; set; } = new DefaultContextStackBuilder();
+        /// <summary>
+        /// Gets or sets the <see cref="IContextStackBuilder"/> to create the ContextStack that runs the task
+        /// </summary>
+        public IContextStackBuilder StackBuilder { get; set; } = new DefaultContextStackBuilder();
 
         /// <summary>
         /// Gets the amount of threads that the task is run in
@@ -67,7 +70,7 @@ namespace MeasureMap
 				for (var i = 0; i < _threadCount; i++)
 				{
 					System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(rampup)).Wait();
-                    settings.Logger.Write($"Start Thread {i} of {_threadCount}", LogLevel.Info, nameof(MultyThreadSessionHandler));
+                    settings.Logger.Write($"Start Thread {i} of {_threadCount}", LogLevel.Info, nameof(MultiThreadSessionHandler));
 
                     var thread = _threads.StartNew(i, idx =>
 					{
@@ -83,26 +86,19 @@ namespace MeasureMap
 							//
 							// Wait at max 5 Sec to continue
 							// Thread creation can delay the whole process too long
-							settings.Logger.Write($"Waiting for all threads to start. Current ThreadCount {idx} of {_threadCount}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+							settings.Logger.Write($"Waiting for all threads to start. Current ThreadCount {idx} of {_threadCount}", LogLevel.Debug, nameof(MultiThreadSessionHandler));
 							threadWaitHandle.WaitOne(5000, true);
 						}
 
-
-
-                        var runner = RunnerFactory.Create(idx, settings);
-                        var result = runner.Run(task, settings.CreateContext());
-
-
-
-
-                        return result;
+                        var runner = StackBuilder.Create(idx, settings);
+                        return runner.Run(task, settings.CreateContext());
 					}, settings.GetThreadFactory());
 
-					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultiThreadSessionHandler));
 				}
 			}
 
-			settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultyThreadSessionHandler));
+			settings.Logger.Write($"Starting {_threadCount} threads took {sw.ElapsedTicks.ToMilliseconds()} ms", LogLevel.Info, nameof(MultiThreadSessionHandler));
 
 			while (CountOpenThreads() > 0)
 			{
@@ -138,7 +134,7 @@ namespace MeasureMap
 				{
 					if (_logger != null)
 					{
-						_logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultyThreadSessionHandler));
+						_logger.Write($"End thread {thread.Id}", LogLevel.Debug, nameof(MultiThreadSessionHandler));
 					}
 
 					thread.Dispose();

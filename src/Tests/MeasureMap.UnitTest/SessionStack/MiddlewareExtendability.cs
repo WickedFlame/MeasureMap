@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
+using MeasureMap.SessionStack;
 using NUnit.Framework;
 
-namespace MeasureMap.UnitTest.SessionHandlers
+namespace MeasureMap.UnitTest.SessionStack
 {
     [TestFixture]
     public class MiddlewareExtendability

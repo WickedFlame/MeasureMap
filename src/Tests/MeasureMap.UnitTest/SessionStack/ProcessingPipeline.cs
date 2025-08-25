@@ -4,7 +4,7 @@ using System.Text;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace MeasureMap.UnitTest.SessionHandlers
+namespace MeasureMap.UnitTest.SessionStack
 {
     public class ProcessingPipeline
     {

@@ -1,15 +1,8 @@
 ﻿using MeasureMap.ContextStack;
 using System.Diagnostics;
 
-namespace MeasureMap
+namespace MeasureMap.SessionStack
 {
-    /// <summary>
-    /// Warmup for the task
-    /// </summary>
-    public interface IWarmupSessionHandler : ISessionHandler
-    {
-    }
-
     /// <summary>
     /// Warmup for the task
     /// </summary>
@@ -22,10 +15,13 @@ namespace MeasureMap
 
         public WarmupSessionHandler(IContextStackBuilder runnerFactory)
         {
-            RunnerFactory = runnerFactory;
+            StackBuilder = runnerFactory;
         }
 
-        public IContextStackBuilder RunnerFactory { get; }
+        /// <summary>
+        /// Gets or sets the <see cref="IContextStackBuilder"/> to create the ContextStack that runs the task
+        /// </summary>
+        public IContextStackBuilder StackBuilder { get; }
 
         /// <summary>
         /// Executes the task
@@ -42,7 +38,7 @@ namespace MeasureMap
 
             var ws = new ProfilerSettings { Iterations = 1, IsWarmup = true };
             
-            var runner = RunnerFactory.Create(0, ws);
+            var runner = StackBuilder.Create(0, ws);
             runner.Run(task, ws.CreateContext());
 
             stopwatch.Stop();

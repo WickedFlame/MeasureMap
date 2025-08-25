@@ -1,18 +1,18 @@
 ﻿
-namespace MeasureMap
+namespace MeasureMap.SessionStack
 {
     /// <summary>
     /// Baseclass for Chain of responsibility for executing tasks
     /// </summary>
-    public abstract class SessionHandler : ISessionHandler
+    public abstract class SessionHandler : ISessionMiddleware
     {
-        private ISessionHandler _next;
+        private ISessionMiddleware _next;
 
         /// <summary>
         /// Set the next execution item
         /// </summary>
         /// <param name="next">The next handler for the session</param>
-        public void SetNext(ISessionHandler next)
+        public void SetNext(ISessionMiddleware next)
         {
             _next = next;
         }

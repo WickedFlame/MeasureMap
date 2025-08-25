@@ -2,6 +2,7 @@
 using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
 using MeasureMap.Runners;
+using MeasureMap.SessionStack;
 using MeasureMap.TaskHandlers;
 
 namespace MeasureMap
@@ -89,7 +90,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession SetThreads(this ProfilerSession session, int thredCount)
         {
-            session.SetExecutionHandler(new MultyThreadSessionHandler(thredCount));
+            session.SetExecutionHandler(new MultiThreadSessionHandler(thredCount));
 
             return session;
         }
@@ -104,7 +105,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession SetThreads(this ProfilerSession session, int threadCount, TimeSpan rampupTime)
         {
-            session.SetExecutionHandler(new MultyThreadSessionHandler(threadCount, rampupTime));
+            session.SetExecutionHandler(new MultiThreadSessionHandler(threadCount, rampupTime));
 
             return session;
         }
@@ -226,7 +227,7 @@ namespace MeasureMap
         }
 
         /// <summary>
-		/// Add the middleware to the processing pipeline
+		/// Add the middleware to the context stack
 		/// </summary>
 		/// <param name="session">The current session</param>
 		/// <param name="middleware">The middleware to add</param>
@@ -238,12 +239,12 @@ namespace MeasureMap
         }
 
         /// <summary>
-        /// Add the middleware to the session pipeline
+        /// Add the middleware to the session stack
         /// </summary>
         /// <param name="session">The current session</param>
         /// <param name="middleware">The middleware to add</param>
         /// <returns></returns>
-        public static ProfilerSession AddMiddleware(this ProfilerSession session, ISessionHandler middleware)
+        public static ProfilerSession AddMiddleware(this ProfilerSession session, ISessionMiddleware middleware)
         {
             session.SessionPipeline.SetNext(middleware);
             return session;

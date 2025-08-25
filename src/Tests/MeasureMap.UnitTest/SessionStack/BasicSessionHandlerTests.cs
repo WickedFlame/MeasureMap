@@ -1,8 +1,6 @@
-﻿using FluentAssertions;
-using Moq;
-using NUnit.Framework;
+﻿using MeasureMap.SessionStack;
 
-namespace MeasureMap.UnitTest.SessionHandlers
+namespace MeasureMap.UnitTest.SessionStack
 {
     public class BasicSessionHandlerTests
     {
@@ -11,7 +9,7 @@ namespace MeasureMap.UnitTest.SessionHandlers
         {
             var handler = new BasicSessionHandler();
 
-            var result = handler.Execute(new Mock<ITask>().Object, new ProfilerSettings());
+            var result = handler.Execute(Mock.Of<ITask>(), new ProfilerSettings());
 
             result.Should().NotBeNull();
         }

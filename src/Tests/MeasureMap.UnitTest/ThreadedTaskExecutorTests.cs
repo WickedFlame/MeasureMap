@@ -1,11 +1,7 @@
-﻿using NUnit.Framework;
+﻿using MeasureMap.SessionStack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
-using MeasureMap.Diagnostics;
 
 namespace MeasureMap.UnitTest
 {
@@ -20,7 +16,7 @@ namespace MeasureMap.UnitTest
         {
             var iterations = new List<int>();
             var cnt = 0;
-            var executor = new MultyThreadSessionHandler(1);
+            var executor = new MultiThreadSessionHandler(1);
             var results = executor.Execute(new Task(() =>
             {
                 lock (_lockObject)
@@ -39,7 +35,7 @@ namespace MeasureMap.UnitTest
         {
             var iterations = new List<int>();
             var cnt = 0;
-            var executor = new MultyThreadSessionHandler(10);
+            var executor = new MultiThreadSessionHandler(10);
             var results = executor.Execute(new Task(() =>
             {
                 lock (_lockObject)
