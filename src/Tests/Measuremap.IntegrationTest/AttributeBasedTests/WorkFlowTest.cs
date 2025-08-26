@@ -21,7 +21,7 @@ namespace MeasureMap.IntegrationTest.AttributeBasedTests
     [Iterations(10)]
     [Threads(10)]
     [Duration(10)]
-    //[DisableWarmup]
+    [RunWarmup(false)]
     public class  WorkflowBenchmark
     {
         [OnStartPipeline]
