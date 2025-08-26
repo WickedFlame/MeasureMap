@@ -1,10 +1,9 @@
-﻿
-namespace MeasureMap
+﻿namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// Base task handler containing logic for calling the next task in the chain
     /// </summary>
-    public abstract class TaskHandler : ITaskMiddleware
+    public abstract class IterationHandler : IIterationMiddleware
     {
         private ITask _next;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using FluentAssertions;
+using MeasureMap.IterationStack;
 using NUnit.Framework;
 
 namespace MeasureMap.UnitTest.SessionStack
@@ -25,7 +26,7 @@ namespace MeasureMap.UnitTest.SessionStack
             calls.Should().Be(6);
         }
 
-        public class CustomMiddleware : ITaskMiddleware
+        public class CustomMiddleware : IIterationMiddleware
         {
             private readonly Action _delegate;
             private ITask _next;

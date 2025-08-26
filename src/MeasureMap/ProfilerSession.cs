@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
+using MeasureMap.IterationStack;
 using MeasureMap.SessionStack;
 
 namespace MeasureMap
@@ -50,7 +51,7 @@ namespace MeasureMap
         /// <summary>
         /// Gets the processing pipeline containing the middleware that get executed for every iteration. The task is executed at the top of the executionchain.
         /// </summary>
-        public ITaskMiddleware ProcessingPipeline => _processingPipeline;
+        public IIterationMiddleware ProcessingPipeline => _processingPipeline;
 
         public IContextStackBuilder ContextStack => _contextStack;
 
@@ -125,9 +126,9 @@ namespace MeasureMap
             //_executor.se
             //_executor.RunnerFactory = 
 
-            _processingPipeline.SetNext(new ProcessDataTaskHandler());
-            _processingPipeline.SetNext(new MemoryCollectionTaskHandler());
-            _processingPipeline.SetNext(new ElapsedTimeTaskHandler());
+            _processingPipeline.SetNext(new ProcessDataIterationHandler());
+            _processingPipeline.SetNext(new MemoryCollectionIterationHandler());
+            _processingPipeline.SetNext(new ElapsedTimeIterationHandler());
             _processingPipeline.SetNext(_task);
 
             var threads = _executor is MultiThreadSessionHandler handler ? handler.ThreadCount : 1;

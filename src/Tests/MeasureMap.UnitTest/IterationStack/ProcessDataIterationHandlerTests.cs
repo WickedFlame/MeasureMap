@@ -1,12 +1,13 @@
-﻿
-namespace MeasureMap.UnitTest.TaskHandlers
+﻿using MeasureMap.IterationStack;
+
+namespace MeasureMap.UnitTest.IterationStack
 {
-    public class ProcessDataTaskHandlerTests
+    public class ProcessDataIterationHandlerTests
     {
         [Test]
         public void ProcessDataTaskHandler_Result()
         {
-            var handler = new ProcessDataTaskHandler();
+            var handler = new ProcessDataIterationHandler();
 
             var context = new ExecutionContext();
             context.Set(ContextKeys.ThreadId, 2);

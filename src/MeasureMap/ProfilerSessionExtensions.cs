@@ -1,9 +1,9 @@
 ﻿using System;
 using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
+using MeasureMap.IterationStack;
 using MeasureMap.Runners;
 using MeasureMap.SessionStack;
-using MeasureMap.TaskHandlers;
 
 namespace MeasureMap
 {
@@ -220,7 +220,7 @@ namespace MeasureMap
 		/// <param name="session">The current session</param>
 		/// <param name="middleware">The middleware to add</param>
 		/// <returns></returns>
-		public static ProfilerSession AddMiddleware(this ProfilerSession session, ITaskMiddleware middleware)
+		public static ProfilerSession AddMiddleware(this ProfilerSession session, IIterationMiddleware middleware)
         {
             session.ProcessingPipeline.SetNext(middleware);
             return session;
@@ -258,7 +258,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PreExecute(this ProfilerSession session, Action task)
         {
-            return session.AddMiddleware(new PreExecutionTaskHandler(task));
+            return session.AddMiddleware(new PreExecutionIterationHandler(task));
         }
 
         /// <summary>
@@ -269,7 +269,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PreExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
-            return session.AddMiddleware(new PreExecutionTaskHandler(task));
+            return session.AddMiddleware(new PreExecutionIterationHandler(task));
         }
 
         /// <summary>
@@ -280,7 +280,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PostExecute(this ProfilerSession session, Action task)
         {
-            return session.AddMiddleware(new PostExecutionTaskHandler(task));
+            return session.AddMiddleware(new PostExecutionIterationHandler(task));
         }
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace MeasureMap
         /// <returns>The current profiling session</returns>
         public static ProfilerSession PostExecute(this ProfilerSession session, Action<IExecutionContext> task)
         {
-            return session.AddMiddleware(new PostExecutionTaskHandler(task));
+            return session.AddMiddleware(new PostExecutionIterationHandler(task));
         }
 
         /// <summary>
@@ -302,7 +302,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession AddDelay(this ProfilerSession session, TimeSpan duration)
         {
-            return session.AddMiddleware(new DelayTaskHandler(duration));
+            return session.AddMiddleware(new DelayIterationHandler(duration));
         }
 
         /// <summary>
@@ -336,7 +336,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession OnExecuted(this ProfilerSession session, Action<IIterationResult> execution)
         {
-            session.AddMiddleware(new OnExecutedTaskHandler(execution));
+            session.AddMiddleware(new OnExecutedIterationHandler(execution));
             return session;
         }
 

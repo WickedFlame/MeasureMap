@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace MeasureMap
+namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// Taskhandler that measures the memory before and after each profiling task execution
     /// </summary>
-    public class MemoryCollectionTaskHandler : TaskHandler
+    public class MemoryCollectionIterationHandler : IterationHandler
     {
         /// <summary>
         /// Executes the task

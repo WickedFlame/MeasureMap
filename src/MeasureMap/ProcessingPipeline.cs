@@ -1,10 +1,12 @@
 ﻿
+using MeasureMap.IterationStack;
+
 namespace MeasureMap
 {
     /// <summary>
     /// Chain of responnsibility Manager for running tasks
     /// </summary>
-    public class ProcessingPipeline : ITaskMiddleware
+    public class ProcessingPipeline : IIterationMiddleware
     {
         private ITask _root;
         private ITask _last;
@@ -22,7 +24,7 @@ namespace MeasureMap
             }
             else
             {
-                if(_last is ITaskMiddleware last)
+                if(_last is IIterationMiddleware last)
                 {
                     last.SetNext(next);
                     _last = next;

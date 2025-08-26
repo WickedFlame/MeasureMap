@@ -1,9 +1,9 @@
-﻿namespace MeasureMap
+﻿namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// Taskhandler that reads the current process and thread for each profiling task execution
     /// </summary>
-    public class ProcessDataTaskHandler : TaskHandler
+    public class ProcessDataIterationHandler : IterationHandler
     {
         /// <summary>
         /// Executes the task

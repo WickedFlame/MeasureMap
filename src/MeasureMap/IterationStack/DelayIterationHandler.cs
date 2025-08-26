@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 
-namespace MeasureMap
+namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// TaskHandler that delays the execution of the task
     /// </summary>
-    public class DelayTaskHandler : TaskHandler
+    public class DelayIterationHandler : IterationHandler
     {
         private readonly TimeSpan _duration;
         private readonly WaitHandle _waitHandle;
@@ -15,7 +15,7 @@ namespace MeasureMap
         /// Creates a new taskhandler for delaying executions
         /// </summary>
         /// <param name="duration">The duration with which the task is paused by</param>
-        public DelayTaskHandler(TimeSpan duration)
+        public DelayIterationHandler(TimeSpan duration)
         {
             _duration = duration;
             _waitHandle = new ManualResetEvent(false);

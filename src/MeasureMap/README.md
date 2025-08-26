@@ -121,10 +121,10 @@ The result is by default traced as Markdown
 
 
 # Workflow
-
-## SessionPipeline (SessionHandler / ISessionHandler)
-SessionStack
-Run once per Session
+The Workflow of MeasureMap is setup in three stacks or pipelines.  
+The items in each stack are processed one after another. Handlers have logic that is executed before or after the followin or child handler is processed.
+## SessionStack (ISessionMiddleware)
+The SessionStack is run once per Session
 * ElapsedTimeSessionHandler
 * PreExecutionSessionHandler
 * WarmupSessionHandler
@@ -135,9 +135,8 @@ The ContextStack is run once per Thread. The DefaultContextStackBuilder creates 
 * OnEndPipelineContextHandler
 * ProcessDataContextHandler
 * WorkerContextHandler
-#### ProcessingPipeline (TaskHandler / ITaskMiddleware)
-IterationStack
-Run once every Iteration
+#### IterationStack (IIterationMiddleware)
+The IterationStack is run once for every Iteration.
 * ProcessDataTaskHandler (ITaskMiddleware)
 * MemoryCollectionTaskHandler (ITaskMiddleware)
 * ElapsedTimeTaskHandler (ITaskMiddleware)

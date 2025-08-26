@@ -1,4 +1,4 @@
-﻿namespace MeasureMap.ContextStack
+﻿namespace MeasureMap
 {
     /// <summary>
     /// Middleware for the Context Stack

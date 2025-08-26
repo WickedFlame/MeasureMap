@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a task handler that can be chained together with further task handlers
     /// </summary>
-    public interface ITaskMiddleware : ITask
+    public interface IIterationMiddleware : ITask
     {
         /// <summary>
         /// Set the next execution item

@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace MeasureMap.TaskHandlers
+namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// TaskHandler that executes a delegate after the taskrun
     /// </summary>
-    public class OnExecutedTaskHandler : TaskHandler
+    public class OnExecutedIterationHandler : IterationHandler
     {
         private readonly Action<IIterationResult> _execution;
 
@@ -13,7 +13,7 @@ namespace MeasureMap.TaskHandlers
         /// 
         /// </summary>
         /// <param name="execution"></param>
-        public OnExecutedTaskHandler(Action<IIterationResult> execution)
+        public OnExecutedIterationHandler(Action<IIterationResult> execution)
         {
             _execution = execution;
         }

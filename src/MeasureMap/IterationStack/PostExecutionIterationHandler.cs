@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace MeasureMap
+namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// Taskhandler that executes a task after each profiling task execution
     /// </summary>
-    public class PostExecutionTaskHandler : TaskHandler
+    public class PostExecutionIterationHandler : IterationHandler
     {
         private readonly ITask _task;
 
@@ -13,7 +13,7 @@ namespace MeasureMap
         /// Creates a new taskhandler
         /// </summary>
         /// <param name="task">Task to execute after each profiling task execution</param>
-        public PostExecutionTaskHandler(Action task)
+        public PostExecutionIterationHandler(Action task)
         {
             _task = new Task(task);
         }
@@ -22,7 +22,7 @@ namespace MeasureMap
         /// Creates a new taskhandler
         /// </summary>
         /// <param name="task">Task to execute after each profiling task execution</param>
-        public PostExecutionTaskHandler(Action<IExecutionContext> task)
+        public PostExecutionIterationHandler(Action<IExecutionContext> task)
         {
             _task = new ContextTask(task);
         }

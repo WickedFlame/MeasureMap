@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics;
 
-namespace MeasureMap
+namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// Taskhandler that measures the elapsed time for each profiling task execution
     /// </summary>
-    public class ElapsedTimeTaskHandler : TaskHandler
+    public class ElapsedTimeIterationHandler : IterationHandler
     {
         /// <summary>
         /// Executes the task
@@ -21,7 +21,6 @@ namespace MeasureMap
             sw.Stop();
 
             result.Ticks = sw.ElapsedTicks;
-            result.ElapsedMilliseconds = sw.ElapsedMilliseconds;
 
             return result;
         }
