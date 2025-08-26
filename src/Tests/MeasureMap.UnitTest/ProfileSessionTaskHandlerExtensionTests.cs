@@ -1,12 +1,4 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace MeasureMap.UnitTest
+﻿namespace MeasureMap.UnitTest
 {
     [TestFixture]
     public class ProfilesSessionTaskHandlerExtensionTests
@@ -16,12 +8,12 @@ namespace MeasureMap.UnitTest
         {
             bool initialized = false;
 
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .PreExecute(() => initialized = true)
-                .Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.05)))
+                .Task(() => { })
                 .RunSession();
 
-            Assert.That(initialized);
+            initialized.Should().BeTrue();
         }
 
         [Test]
@@ -30,7 +22,7 @@ namespace MeasureMap.UnitTest
             string current = null;
             string last = null;
 
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .PreExecute(() => current = "before")
                 .Task(() =>
                 {
@@ -39,21 +31,21 @@ namespace MeasureMap.UnitTest
                 })
                 .RunSession();
 
-            Assert.That(current == "task");
-            Assert.That(last == "before");
+            current.Should().Be("task");
+            last.Should().Be("before");
         }
 
         [Test]
         public void ProfilesSessionExtension_PostExecuteTask()
         {
-            bool initialized = false;
+            var initialized = false;
 
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .PostExecute(() => initialized = true)
-                .Task(() => Thread.Sleep(TimeSpan.FromSeconds(0.05)))
+                .Task(() => { })
                 .RunSession();
 
-            Assert.That(initialized);
+            initialized.Should().BeTrue();
         }
 
         [Test]
@@ -62,7 +54,7 @@ namespace MeasureMap.UnitTest
             string current = null;
             string last = null;
 
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .PostExecute(() =>
                 {
                     last = current;
@@ -71,8 +63,8 @@ namespace MeasureMap.UnitTest
                 .Task(() => current = "task")
                 .RunSession();
 
-            Assert.That(current == "after");
-            Assert.That(last == "task");
+            current.Should().Be("after");
+            last.Should().Be("task");
         }
 
         [Test]
@@ -82,7 +74,7 @@ namespace MeasureMap.UnitTest
             string two = null;
             string three = null;
 
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .PreExecute(() => three = "before")
                 .PostExecute(() =>
                 {
@@ -97,33 +89,33 @@ namespace MeasureMap.UnitTest
                 })
                 .RunSession();
 
-            Assert.That(three == "after");
-            Assert.That(two == "task");
-            Assert.That(one == "before");
+            three.Should().Be("after");
+            two.Should().Be("task");
+            one.Should().Be("before");
         }
 
         [Test]
         public void ProfilesSessionExtension_AfterPostExecuteTask_EnsureContext()
         {
-            var session = ProfilerSession.StartSession()
+            ProfilerSession.StartSession()
                 .PostExecute(c => c.Clear())
                 .PreExecute(c =>
                 {
                     c.Set("pre", "before");
-                    Assert.That(c.Get<string>("post") == null);
-                    Assert.That(c.Get<string>("task") == null);
+                    c.Get<string>("post").Should().BeNull();
+                    c.Get<string>("task").Should().BeNull();
                 })
                 .Task(c =>
                 {
                     c.Set("task", "Task");
-                    Assert.That(c.Get<string>("pre") == "before");
-                    Assert.That(c.Get<string>("post") == null);
+                    c.Get<string>("pre").Should().Be("before");
+                    c.Get<string>("post").Should().BeNull();
                 })
                 .PostExecute(c =>
                 {
                     c.Set("post", "after");
-                    Assert.That(c.Get<string>("pre") == "before");
-                    Assert.That(c.Get<string>("task") == "Task");
+                    c.Get<string>("pre").Should().Be("before");
+                    c.Get<string>("task").Should().Be("Task");
                 })
                 .SetIterations(10)
                 .RunSession();
@@ -132,30 +124,31 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfilesSessionExtension_AfterPostExecuteTask_MultiplePrePost()
         {
-            var session = ProfilerSession.StartSession()
-                .PreExecute(c => Assert.That(c.SessionData.Count <= 1))
+            ProfilerSession.StartSession()
+                // Iteration, processid, threadid and ThreadNumber
+                .PreExecute(c => c.SessionData.Count.Should().Be(3))
                 .PreExecute(c =>
                 {
                     c.Set("pre", "before");
-                    Assert.That(c.Get<string>("post") == null);
-                    Assert.That(c.Get<string>("task") == null);
+                    c.Get<string>("post").Should().BeNull();
+                    c.Get<string>("task").Should().BeNull();
                 })
                 .PostExecute(c =>
                 {
-                    Assert.That(c.SessionData.Count > 0);
+                    c.SessionData.Count.Should().BeGreaterThan(0);
                     c.Clear();
                 })
                 .PostExecute(c =>
                 {
                     c.Set("post", "after");
-                    Assert.That(c.Get<string>("pre") == "before");
-                    Assert.That(c.Get<string>("task") == "Task");
+                    c.Get<string>("pre").Should().Be("before");
+                    c.Get<string>("task").Should().Be("Task");
                 })
                 .Task(c =>
                 {
                     c.Set("task", "Task");
-                    Assert.That(c.Get<string>("pre") == "before");
-                    Assert.That(c.Get<string>("post") == null);
+                    c.Get<string>("pre").Should().Be("before");
+                    c.Get<string>("post").Should().BeNull();
                 })
                 .SetIterations(10)
                 .RunSession();

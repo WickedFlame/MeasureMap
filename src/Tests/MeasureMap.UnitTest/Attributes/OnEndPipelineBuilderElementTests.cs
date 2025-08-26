@@ -1,7 +1,5 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using MeasureMap.Attributes.Builder;
-using NUnit.Framework;
 
 namespace MeasureMap.UnitTest.Attributes;
 
@@ -32,9 +30,9 @@ public class OnEndPipelineBuilderElementTests
         _builder.Initialize(new OnEndPipelineWithAttr());
         _builder.Append(_runner);
 
-        _runner.Settings.OnEndPipelineEvent.Should().NotBeNull();
-        
-        _runner.Settings.OnEndPipelineEvent(new ExecutionContext());
+        var runner = _runner.ContextStack.Create(0, new ProfilerSettings());
+        runner.Run(Mock.Of<ITask>(), new ExecutionContext());
+
         OnEndPipelineWithAttr.Called.Should().BeTrue();
     }
     

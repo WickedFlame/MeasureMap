@@ -1,6 +1,4 @@
-﻿using MeasureMap;
-using Polaroider;
-
+﻿
 namespace MeasureMap.IntegrationTest
 {
     public class ThreadSetupTests
@@ -17,7 +15,7 @@ namespace MeasureMap.IntegrationTest
 
             ProfilerSession.StartSession()
                 .SetThreads(10)
-                .SetIterations(20)
+                .SetIterations(1)
                 .RunWarmup(false)
                 .OnStartPipeline(s =>
                 {
@@ -30,9 +28,8 @@ namespace MeasureMap.IntegrationTest
                 })
                 .RunSession();
 
-            //
-            // it's enaough to only check the firs 20
-            log.Take(20).MatchSnapshot();
+            log.Count(x => x == "Setup").Should().Be(10);
+            log.Count(x => x == "Action").Should().Be(10);
         }
     }
 }

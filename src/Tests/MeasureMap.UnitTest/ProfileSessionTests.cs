@@ -1,15 +1,12 @@
-﻿using System;
+﻿using MeasureMap.Diagnostics;
+using MeasureMap.Runners;
+using MeasureMap.SessionStack;
+using MeasureMap.Tracers;
+using MeasureMap.UnitTest.Tracers;
+using System;
 using System.Diagnostics;
-using NUnit.Framework;
 using System.Linq;
 using System.Text.RegularExpressions;
-using FluentAssertions;
-using MeasureMap.Diagnostics;
-using MeasureMap.Runners;
-using Polaroider;
-using MeasureMap.UnitTest.Tracers;
-using MeasureMap.Tracers;
-using Moq;
 
 namespace MeasureMap.UnitTest
 {
@@ -644,7 +641,7 @@ namespace MeasureMap.UnitTest
         [Test]
         public void ProfileSession_SetExecutionHandler()
         {
-            var mock = new Mock<IThreadSessionHandler>();
+            var mock = new Mock<ISessionExecutor>();
             mock.Setup(x => x.Execute(It.IsAny<ITask>(), It.IsAny<ProfilerSettings>())).Returns(() => new ProfilerResult());
 
             ProfilerSession.StartSession()

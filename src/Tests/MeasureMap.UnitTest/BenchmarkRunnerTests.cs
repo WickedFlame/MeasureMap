@@ -41,26 +41,6 @@ namespace MeasureMap.UnitTest
             runner.Settings.Runner.Should().BeOfType<IterationRunner>();
         }
 
-        [Test]
-        public void BenchmarkRunner_OnStartPipeline()
-        {
-            var context = new ExecutionContext();
-
-            var runner = new BenchmarkRunner()
-                .OnStartPipeline(s => context);
-
-            runner.Settings.OnStartPipelineEvent(runner.Settings).Should().BeSameAs(context);
-        }
-
-        [Test]
-        public void BenchmarkRunner_OnStartPipeline_Factory_OnStartPipeline_Settings()
-        {
-            var runner = new BenchmarkRunner()
-                .OnStartPipeline(s => new ExecutionContext(s));
-
-            runner.Settings.OnStartPipeline().Settings.Should().BeSameAs(runner.Settings);
-        }
-
         [TestCase(ThreadBehaviour.Task)]
         [TestCase(ThreadBehaviour.Thread)]
         public void BenchmarkRunner_SetThreadBehaviour(ThreadBehaviour behaviour)

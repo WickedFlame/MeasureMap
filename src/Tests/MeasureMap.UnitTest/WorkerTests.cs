@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MeasureMap.IterationStack;
+using System;
 using System.Linq;
-using FluentAssertions;
-using MeasureMap.Diagnostics;
-using MeasureMap.Threading;
-using NUnit.Framework;
 
 namespace MeasureMap.UnitTest
 {
@@ -29,7 +25,7 @@ namespace MeasureMap.UnitTest
         {
             int i = 0;
             var task = new Task(() => i++);
-            var handler = new ElapsedTimeTaskHandler();
+            var handler = new ElapsedTimeIterationHandler();
             handler.SetNext(task);
 
             var worker = new Worker();

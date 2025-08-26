@@ -20,11 +20,15 @@ namespace MeasureMap.IntegrationTest
         [Test]
         public void OnStartPipeline_Warmup()
         {
+            //
+            // the context is cloned in the IterationRunner so it is not same as OnStartPipeline
+            // all properties should be same...
+
             var context = new ExecutionContext();
 
             ProfilerSession.StartSession()
                 .OnStartPipeline(s => context)
-                .Task(c => c.Should().BeSameAs(context))
+                .Task(c => c.Should().BeEquivalentTo(context))
                 .SetThreads(1)
                 .RunSession();
         }

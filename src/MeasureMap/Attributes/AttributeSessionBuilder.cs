@@ -14,16 +14,6 @@ public class AttributeSessionBuilder<T> where T : class, new()
 {
     private readonly BenchmarkRunner _runner;
 
-    private readonly IEnumerable<IBenchmarkBuilderElement> _benchmarkBuilders =
-    [
-        new DurationBuilderElement(),
-        new IterationsBuilderElement(),
-        new OnStartPipelineBuilderElement(),
-        new OnEndPipelineBuilderElement(),
-        new ThreadsBuilderElement(),
-        new RunWarmupBuilderElement()
-    ];
-
     /// <summary>
     /// 
     /// </summary>
@@ -38,17 +28,28 @@ public class AttributeSessionBuilder<T> where T : class, new()
     /// </summary>
     public void BuildSessions()
     {
-        var instance = Activator.CreateInstance<T>();
-
-        foreach (var builder in _benchmarkBuilders)
-        {
-            builder.Initialize<T>(instance);
-            builder.Append(_runner);
-        }
-
         var methods = typeof(T).GetMethods();
         foreach (var method in methods.Where(m => m.GetCustomAttribute<BenchmarkAttribute>() != null))
         {
+
+            IEnumerable<IBenchmarkBuilderElement> _benchmarkBuilders =
+                [
+                    new DurationBuilderElement(),
+                    new IterationsBuilderElement(),
+                    new OnStartPipelineBuilderElement(),
+                    new OnEndPipelineBuilderElement(),
+                    new ThreadsBuilderElement(),
+                    new RunWarmupBuilderElement()
+                ];
+
+            var instance = Activator.CreateInstance<T>();
+
+            foreach (var builder in _benchmarkBuilders)
+            {
+                builder.Initialize<T>(instance);
+                builder.Append(_runner);
+            }
+
             var session = ProfilerSession.StartSession()
                 .AppendSettings(_runner.Settings);
             

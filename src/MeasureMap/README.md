@@ -118,3 +118,26 @@ The result is by default traced as Markdown
 | sha256 | 00:00:00.0000924 | 924       | 00:00:00.0009243 | 776     | 1471    | 1392            |
 | md5    | 00:00:00.0000485 | 485       | 00:00:00.0004858 | 409     | 534     | 1392            |
 ```
+
+
+# Workflow
+The Workflow of MeasureMap is setup in three stacks or pipelines. The stack is made up of an execution chain following the Chain of Responsibility pattern. Each item in the pipeline is connected to the next in the chain.  
+The items in each stack are processed one after another. Handlers have logic that can be executed before or after the next handler in the chain is processed.
+## SessionStack (ISessionMiddleware)
+The SessionStack is run once per Session
+* ElapsedTimeSessionHandler
+* PreExecutionSessionHandler
+* WarmupSessionHandler
+* BasicSessionHandler / MainThreadSessionHandler / MultyThreadSessionHandler
+### ContextStack (IContextMiddleware)
+The ContextStack is run once per Thread. The DefaultContextStackBuilder creates a new instance of the stack for each Thread.
+* OnStartPipelineContextHandler
+* OnEndPipelineContextHandler
+* ProcessDataContextHandler
+* WorkerContextHandler
+#### IterationStack (IIterationMiddleware)
+The IterationStack is run once for every Iteration.
+* ProcessDataTaskHandler (ITaskMiddleware)
+* MemoryCollectionTaskHandler (ITaskMiddleware)
+* ElapsedTimeTaskHandler (ITaskMiddleware)
+* _task (ITask)
