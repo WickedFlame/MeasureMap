@@ -5,29 +5,13 @@ namespace MeasureMap.ContextStack
     /// <summary>
     /// 
     /// </summary>
-    public class OnEndPipelineContextHandler : IContextMiddleware
+    public class OnEndPipelineContextHandler : BaseContextHandler
     {
         private readonly Action<IExecutionContext> _onEndPipelineEvent;
-        private IContextMiddleware _next;
 
         public OnEndPipelineContextHandler(Action<IExecutionContext> onEndPipelineEvent)
         {
             _onEndPipelineEvent = onEndPipelineEvent;
-        }
-
-        /// <summary>
-        /// Set the next execution item
-        /// </summary>
-        /// <param name="next">The next handler for the thread pipeline</param>
-        public void SetNext(IContextMiddleware next)
-        {
-            if (_next != null)
-            {
-                _next.SetNext(next);
-                return;
-            }
-
-            _next = next;
         }
 
         /// <summary>
@@ -36,9 +20,9 @@ namespace MeasureMap.ContextStack
         /// <param name="task">The task to run</param>
         /// <param name="context"></param>
         /// <returns>The resulting collection of the executions</returns>
-        public IResult Run(ITask task, IExecutionContext context)
+        public override IResult Run(ITask task, IExecutionContext context)
         {
-            var result = _next != null ? _next.Run(task, context) : null;
+            var result = base.Run(task, context);
 
             _onEndPipelineEvent(context);
 

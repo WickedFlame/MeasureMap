@@ -2,9 +2,8 @@
 
 namespace MeasureMap.ContextStack
 {
-    public class OnStartPipelineContextHandler : IContextMiddleware
+    public class OnStartPipelineContextHandler : BaseContextHandler
     {
-        private IContextMiddleware _next;
         private readonly int _threadNumber;
         private readonly ProfilerSettings _settings;
         private readonly Func<ProfilerSettings, IExecutionContext> _onStartPipeline;
@@ -17,27 +16,12 @@ namespace MeasureMap.ContextStack
         }
 
         /// <summary>
-        /// Set the next execution item
-        /// </summary>
-        /// <param name="next">The next handler for the thread pipeline</param>
-        public void SetNext(IContextMiddleware next)
-        {
-            if (_next != null)
-            {
-                _next.SetNext(next);
-                return;
-            }
-
-            _next = next;
-        }
-
-        /// <summary>
         /// Run the pipeline
         /// </summary>
         /// <param name="task">The task to run</param>
         /// <param name="context"></param>
         /// <returns>The resulting collection of the executions</returns>
-        public IResult Run(ITask task, IExecutionContext context)
+        public override IResult Run(ITask task, IExecutionContext context)
         {
             var ctx = _onStartPipeline(_settings);
             if (ctx == null)
@@ -47,7 +31,7 @@ namespace MeasureMap.ContextStack
 
             ctx.Set(ContextKeys.ThreadNumber, _threadNumber);
 
-            var result = _next != null ? _next.Run(task, ctx) : null;
+            var result = base.Run(task, ctx);
 
             return result;
         }
