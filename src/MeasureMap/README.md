@@ -121,8 +121,8 @@ The result is by default traced as Markdown
 
 
 # Workflow
-The Workflow of MeasureMap is setup in three stacks or pipelines.  
-The items in each stack are processed one after another. Handlers have logic that is executed before or after the followin or child handler is processed.
+The Workflow of MeasureMap is setup in three stacks or pipelines. The stack is made up of an execution chain following the Chain of Responsibility pattern. Each item in the pipeline is connected to the next in the chain.  
+The items in each stack are processed one after another. Handlers have logic that can be executed before or after the next handler in the chain is processed.
 ## SessionStack (ISessionMiddleware)
 The SessionStack is run once per Session
 * ElapsedTimeSessionHandler

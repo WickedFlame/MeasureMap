@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace MeasureMap
+﻿namespace MeasureMap.SessionStack
 {
     /// <summary>
     /// Chain of responnsibility Manager for executing tasks
     /// </summary>
-    public class TaskExecutionChain : ISessionMiddleware
+    public class SessionStackBuilder : ISessionMiddleware
     {
         private ISessionMiddleware _root;
         private ISessionMiddleware _last;

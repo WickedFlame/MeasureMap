@@ -1,12 +1,9 @@
-﻿
-using MeasureMap.IterationStack;
-
-namespace MeasureMap
+﻿namespace MeasureMap.IterationStack
 {
     /// <summary>
     /// Chain of responnsibility Manager for running tasks
     /// </summary>
-    public class ProcessingPipeline : IIterationMiddleware
+    public class IterationStackBuilder : IIterationMiddleware
     {
         private ITask _root;
         private ITask _last;

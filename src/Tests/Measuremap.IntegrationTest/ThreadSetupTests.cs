@@ -28,7 +28,7 @@ namespace MeasureMap.IntegrationTest
                 })
                 .RunSession();
 
-            System.Threading.Tasks.Task.Delay(100).Wait();
+            System.Threading.Tasks.Task.Delay(50).Wait();
 
             log.Count(x => x == "Setup").Should().Be(10);
             log.Count(x => x == "Action").Should().Be(10);

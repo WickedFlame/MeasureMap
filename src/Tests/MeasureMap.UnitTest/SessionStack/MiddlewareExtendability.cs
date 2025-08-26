@@ -16,7 +16,7 @@ namespace MeasureMap.UnitTest.SessionStack
                 .Task(() => Debug.WriteLine("AddCustomSessionHandler call"))
                 .SetIterations(100);
             
-            session.SessionPipeline.SetNext(handler);
+            session.SessionStack.SetNext(handler);
 
             session.RunSession();
 

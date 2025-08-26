@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using MeasureMap.ContextStack;
 using MeasureMap.Diagnostics;
 using MeasureMap.IterationStack;
@@ -20,8 +21,8 @@ namespace MeasureMap
         private ITask _task;
         private ISessionExecutor _executor;
 
-        private readonly ISessionMiddleware _sessionPipeline;
-        private readonly ProcessingPipeline _processingPipeline;
+        private readonly ISessionMiddleware _sessionStack;
+        private readonly IIterationMiddleware _iterationStack = new IterationStackBuilder();
         private readonly IContextStackBuilder _contextStack = new DefaultContextStackBuilder();
 
         private readonly ProfilerSettings _settings;
@@ -32,10 +33,8 @@ namespace MeasureMap
             _assertions = new List<Func<IResult, bool>>();
             _executor = new BasicSessionHandler();
 
-            _sessionPipeline = new TaskExecutionChain();
-            _sessionPipeline.SetNext(new ElapsedTimeSessionHandler());
-
-            _processingPipeline = new ProcessingPipeline();
+            _sessionStack = new SessionStackBuilder();
+            _sessionStack.SetNext(new ElapsedTimeSessionHandler());
         }
 
         /// <summary>
@@ -43,16 +42,25 @@ namespace MeasureMap
         /// </summary>
         public ProfilerSettings Settings => _settings;
 
+        [Obsolete("Use SessionStack instead")]
+        public ISessionMiddleware SessionPipeline => _sessionStack;
+
         /// <summary>
         /// Gets the chain of handlers that get executed before the execution of the ProcessingPipeline
         /// </summary>
-        public ISessionMiddleware SessionPipeline => _sessionPipeline;
+        public ISessionMiddleware SessionStack => _sessionStack;
+
+        [Obsolete("Use IterationStack instead")]
+        public IIterationMiddleware ProcessingPipeline => _iterationStack;
 
         /// <summary>
         /// Gets the processing pipeline containing the middleware that get executed for every iteration. The task is executed at the top of the executionchain.
         /// </summary>
-        public IIterationMiddleware ProcessingPipeline => _processingPipeline;
+        public IIterationMiddleware IterationStack => _iterationStack;
 
+        /// <summary>
+        /// Gets the ContextStack containing the middleware executed for each thread
+        /// </summary>
         public IContextStackBuilder ContextStack => _contextStack;
 
         /// <summary>
@@ -113,29 +121,29 @@ namespace MeasureMap
 
             if(_settings.RunWarmup)
             {
-                _sessionPipeline.SetNext(new WarmupSessionHandler(ContextStack));
+                _sessionStack.SetNext(new WarmupSessionHandler(ContextStack));
             }
 
             //
             // The executor has to be the last element added to the session pipeline
             // The executor runs the processing pipeline
             _executor.StackBuilder = ContextStack;
-            _sessionPipeline.SetNext(_executor);
+            _sessionStack.SetNext(_executor);
 
 
             //_executor.se
             //_executor.RunnerFactory = 
 
-            _processingPipeline.SetNext(new ProcessDataIterationHandler());
-            _processingPipeline.SetNext(new MemoryCollectionIterationHandler());
-            _processingPipeline.SetNext(new ElapsedTimeIterationHandler());
-            _processingPipeline.SetNext(_task);
+            _iterationStack.SetNext(new ProcessDataIterationHandler());
+            _iterationStack.SetNext(new MemoryCollectionIterationHandler());
+            _iterationStack.SetNext(new ElapsedTimeIterationHandler());
+            _iterationStack.SetNext(_task);
 
             var threads = _executor is MultiThreadSessionHandler handler ? handler.ThreadCount : 1;
 
             Settings.Logger.Write($"Running {Settings.Iterations} Iterations on {threads} Threads", LogLevel.Debug, "ProfilerSession");
 
-            var profiles = _sessionPipeline.Execute(_processingPipeline, _settings);
+            var profiles = _sessionStack.Execute(_iterationStack, _settings);
             
             foreach (var condition in _assertions)
             {

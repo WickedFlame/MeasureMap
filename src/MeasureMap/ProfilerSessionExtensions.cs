@@ -222,7 +222,7 @@ namespace MeasureMap
 		/// <returns></returns>
 		public static ProfilerSession AddMiddleware(this ProfilerSession session, IIterationMiddleware middleware)
         {
-            session.ProcessingPipeline.SetNext(middleware);
+            session.IterationStack.SetNext(middleware);
             return session;
         }
 
@@ -246,7 +246,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession AddMiddleware(this ProfilerSession session, ISessionMiddleware middleware)
         {
-            session.SessionPipeline.SetNext(middleware);
+            session.SessionStack.SetNext(middleware);
             return session;
         }
 
