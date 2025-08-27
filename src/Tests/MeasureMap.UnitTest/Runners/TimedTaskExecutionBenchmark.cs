@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using FluentAssertions;
 using MeasureMap.Runners;
-using NUnit.Framework;
-using MeasureMap;
 
 namespace MeasureMap.UnitTest.Runners
 {

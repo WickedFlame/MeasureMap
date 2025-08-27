@@ -1,10 +1,6 @@
-﻿using FluentAssertions;
-using MeasureMap.Threading;
-using NUnit.Framework;
+﻿using MeasureMap.Threading;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace MeasureMap.UnitTest.Threading
 {

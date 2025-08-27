@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using MeasureMap.Attributes.Builder;
+﻿using MeasureMap.Attributes.Builder;
 
 namespace MeasureMap.UnitTest.Attributes;
 

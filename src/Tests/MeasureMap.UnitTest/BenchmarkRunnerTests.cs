@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using FluentAssertions;
 using MeasureMap.Runners;
-using NUnit.Framework;
-using Polaroider;
 
 namespace MeasureMap.UnitTest
 {

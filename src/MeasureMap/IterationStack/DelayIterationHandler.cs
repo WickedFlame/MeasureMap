@@ -29,10 +29,8 @@ namespace MeasureMap.IterationStack
         public override IIterationResult Run(IExecutionContext context)
         {
             _waitHandle.WaitOne(_duration, false);
-
-            var result = base.Run(context);
-
-            return result;
+            
+            return base.Run(context);
         }
     }
 }

@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentAssertions;
-using MeasureMap.IterationStack;
-using NUnit.Framework;
 
 namespace MeasureMap.UnitTest.SessionStack
 {

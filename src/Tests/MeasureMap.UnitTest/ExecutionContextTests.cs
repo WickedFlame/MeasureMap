@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 
 namespace MeasureMap.UnitTest
 {

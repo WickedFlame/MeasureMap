@@ -1,7 +1,5 @@
 ﻿using System;
-using NUnit.Framework;
 using System.Linq;
-using FluentAssertions;
 using MeasureMap.UnitTest.Tracers;
 
 namespace MeasureMap.UnitTest

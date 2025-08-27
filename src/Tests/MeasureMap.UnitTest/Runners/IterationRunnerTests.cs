@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentAssertions;
-using MeasureMap.Runners;
-using NUnit.Framework;
+﻿using MeasureMap.Runners;
 
 namespace MeasureMap.UnitTest.Runners
 {

@@ -1,7 +1,5 @@
 using BDTest.Attributes;
 using BDTest.Test;
-using FluentAssertions;
-using MeasureMap;
 
 namespace MeasureMap.IntegrationTest
 {

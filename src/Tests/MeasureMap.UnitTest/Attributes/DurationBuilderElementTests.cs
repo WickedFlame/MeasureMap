@@ -1,7 +1,5 @@
 ﻿using System;
-using FluentAssertions;
 using MeasureMap.Attributes.Builder;
-using NUnit.Framework;
 
 namespace MeasureMap.UnitTest.Attributes;
 

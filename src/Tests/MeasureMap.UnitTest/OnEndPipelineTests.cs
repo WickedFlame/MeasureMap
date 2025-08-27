@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-
+﻿
 namespace MeasureMap.UnitTest
 {
     public class OnEndPipelineTests
