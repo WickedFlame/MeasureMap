@@ -2,6 +2,9 @@
 
 namespace MeasureMap
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Obsolete("Use ISessionMiddleware")]
     public interface ISessionHandler : ISessionMiddleware
     { 

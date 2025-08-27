@@ -9,6 +9,10 @@ namespace MeasureMap.ContextStack
     {
         private readonly Action<IExecutionContext> _onEndPipelineEvent;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="onEndPipelineEvent"></param>
         public OnEndPipelineContextHandler(Action<IExecutionContext> onEndPipelineEvent)
         {
             _onEndPipelineEvent = onEndPipelineEvent;

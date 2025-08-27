@@ -8,11 +8,18 @@ namespace MeasureMap.SessionStack
     /// </summary>
     public class WarmupSessionHandler : SessionHandler, IWarmupSessionHandler
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public WarmupSessionHandler() 
             : this(new DefaultContextStackBuilder())
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="runnerFactory"></param>
         public WarmupSessionHandler(IContextStackBuilder runnerFactory)
         {
             StackBuilder = runnerFactory;

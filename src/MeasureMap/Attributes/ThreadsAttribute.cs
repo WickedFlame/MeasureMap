@@ -8,10 +8,17 @@ namespace MeasureMap;
 [AttributeUsage(AttributeTargets.Class)]
 public class ThreadsAttribute : Attribute
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="threads"></param>
     public ThreadsAttribute(int threads)
     {
         Threads = threads;
     }
 
+    /// <summary>
+    /// Gets the amount of threads to run the tests on
+    /// </summary>
     public int Threads { get; }
 }

@@ -2,12 +2,21 @@
 
 namespace MeasureMap.ContextStack
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class OnStartPipelineContextHandler : BaseContextHandler
     {
         private readonly int _threadNumber;
         private readonly ProfilerSettings _settings;
         private readonly Func<ProfilerSettings, IExecutionContext> _onStartPipeline;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="threadNumber"></param>
+        /// <param name="settings"></param>
+        /// <param name="onStartPipeline"></param>
         public OnStartPipelineContextHandler(int threadNumber, ProfilerSettings settings, Func<ProfilerSettings, IExecutionContext> onStartPipeline)
         {
             _threadNumber = threadNumber;
