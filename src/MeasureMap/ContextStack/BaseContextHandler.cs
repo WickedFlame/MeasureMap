@@ -1,5 +1,8 @@
 ﻿namespace MeasureMap.ContextStack
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class BaseContextHandler : IContextMiddleware
     {
         private IContextMiddleware _next;

@@ -42,6 +42,9 @@ namespace MeasureMap
         /// </summary>
         public ProfilerSettings Settings => _settings;
 
+        /// <summary>
+        /// 
+        /// </summary>
         [Obsolete("Use SessionStack instead")]
         public ISessionMiddleware SessionPipeline => _sessionStack;
 
@@ -50,6 +53,9 @@ namespace MeasureMap
         /// </summary>
         public ISessionMiddleware SessionStack => _sessionStack;
 
+        /// <summary>
+        /// 
+        /// </summary>
         [Obsolete("Use IterationStack instead")]
         public IIterationMiddleware ProcessingPipeline => _iterationStack;
 

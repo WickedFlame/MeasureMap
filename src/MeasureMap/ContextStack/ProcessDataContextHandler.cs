@@ -2,6 +2,9 @@
 
 namespace MeasureMap.ContextStack
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ProcessDataContextHandler : BaseContextHandler
     {
         /// <summary>
