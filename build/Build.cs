@@ -108,6 +108,7 @@ class Build : NukeBuild
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .SetNoBuild(true)
+                .SetExcludeByFile("MeasureMap.IntegrationTest")
                 .EnableNoRestore());
         });
 
