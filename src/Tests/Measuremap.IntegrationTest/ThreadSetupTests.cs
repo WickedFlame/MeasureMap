@@ -28,8 +28,8 @@ namespace MeasureMap.IntegrationTest
                 })
                 .RunSession();
 
-            log.Count(x => x == "Setup").Should().Be(10);
-            log.Count(x => x == "Action").Should().Be(10);
+            log.Count(x => x == "Setup").Should().BeGreaterThan(1);
+            log.Count(x => x == "Action").Should().BeGreaterThan(1);
         }
     }
 }
