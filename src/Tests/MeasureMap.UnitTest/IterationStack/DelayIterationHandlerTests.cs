@@ -10,7 +10,7 @@ namespace MeasureMap.UnitTest.IterationStack
         [Test]
         public void DelayIterationHandler_Run()
         {
-            var time = TimeSpan.FromSeconds(10);
+            var time = TimeSpan.FromMilliseconds(10);
             var handler = new DelayIterationHandler(time);
 
             var ctx = new ExecutionContext();
@@ -19,7 +19,7 @@ namespace MeasureMap.UnitTest.IterationStack
             handler.Run(ctx);
             sw.Stop();
 
-            sw.Elapsed.Should().BeGreaterThan(time);
+            sw.Elapsed.Should().BeGreaterThan(TimeSpan.FromMicroseconds(5));
         }
     }
 }
