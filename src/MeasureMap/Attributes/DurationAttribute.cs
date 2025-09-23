@@ -8,10 +8,17 @@ namespace MeasureMap;
 [AttributeUsage(AttributeTargets.Class)]
 public class DurationAttribute : Attribute
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="duration"></param>
     public DurationAttribute(int duration)
     {
         Duration = duration;
     }
 
+    /// <summary>
+    /// Gets the duration
+    /// </summary>
     public int Duration { get; }
 }

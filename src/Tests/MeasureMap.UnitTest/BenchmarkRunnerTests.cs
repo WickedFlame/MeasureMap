@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using FluentAssertions;
 using MeasureMap.Runners;
-using NUnit.Framework;
-using Polaroider;
 
 namespace MeasureMap.UnitTest
 {
@@ -39,26 +36,6 @@ namespace MeasureMap.UnitTest
             var runner = new BenchmarkRunner()
                 .SetIterations(10);
             runner.Settings.Runner.Should().BeOfType<IterationRunner>();
-        }
-
-        [Test]
-        public void BenchmarkRunner_OnStartPipeline()
-        {
-            var context = new ExecutionContext();
-
-            var runner = new BenchmarkRunner()
-                .OnStartPipeline(s => context);
-
-            runner.Settings.OnStartPipelineEvent(runner.Settings).Should().BeSameAs(context);
-        }
-
-        [Test]
-        public void BenchmarkRunner_OnStartPipeline_Factory_OnStartPipeline_Settings()
-        {
-            var runner = new BenchmarkRunner()
-                .OnStartPipeline(s => new ExecutionContext(s));
-
-            runner.Settings.OnStartPipeline().Settings.Should().BeSameAs(runner.Settings);
         }
 
         [TestCase(ThreadBehaviour.Task)]
@@ -107,6 +84,15 @@ namespace MeasureMap.UnitTest
                 .And.Contain("[MeasureMap] [SimpleTaskExecution]");
 
             Console.SetOut(stdOut);
+        }
+        
+        [Test]
+        public void BenchmarkRunner_RunWarmup()
+        {
+            var runner = new BenchmarkRunner()
+                .RunWarmup(false);
+
+            runner.Settings.RunWarmup.Should().BeFalse();
         }
     }
 }

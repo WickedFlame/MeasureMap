@@ -1,7 +1,4 @@
-﻿using FluentAssertions;
-using MeasureMap.Tracers;
-using Moq;
-using NUnit.Framework;
+﻿using MeasureMap.Tracers;
 
 namespace MeasureMap.UnitTest
 {

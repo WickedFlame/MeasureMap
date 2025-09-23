@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using System.Linq;
 using MeasureMap.Tracers;
 using MeasureMap.Tracers.Metrics;
-using NUnit.Framework;
 
 namespace MeasureMap.UnitTest.Tracers
 {

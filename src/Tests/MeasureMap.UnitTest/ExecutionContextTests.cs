@@ -1,6 +1,4 @@
-﻿using NUnit.Framework;
-using System.Linq;
-using FluentAssertions;
+﻿using System.Linq;
 
 namespace MeasureMap.UnitTest
 {
@@ -74,6 +72,24 @@ namespace MeasureMap.UnitTest
             context.SessionData.Add("somekey", 4);
 
            context.Get<int>("SomeKey").Should().Be(4);
+        }
+        
+        [Test]
+        public void ExecutionContext_Get_NullValue()
+        {
+            var context = new ExecutionContext();
+            context.SessionData.Add("somekey", null);
+
+            context.Get<int>("SomeKey").Should().Be(0);
+        }
+        
+        [Test]
+        public void ExecutionContext_Get_InvalidType()
+        {
+            var context = new ExecutionContext();
+            context.SessionData.Add("somekey", "test");
+
+            context.Get<int>("SomeKey").Should().Be(0);
         }
     }
 }

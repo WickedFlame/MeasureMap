@@ -1,6 +1,6 @@
 ﻿using MeasureMap;
 
-namespace Measuremap.IntegrationTest.AttributeBasedTests
+namespace MeasureMap.IntegrationTest.AttributeBasedTests
 {
     public class WorkFlowTest
     {
@@ -21,7 +21,7 @@ namespace Measuremap.IntegrationTest.AttributeBasedTests
     [Iterations(10)]
     [Threads(10)]
     [Duration(10)]
-    //[DisableWarmup]
+    [RunWarmup(false)]
     public class  WorkflowBenchmark
     {
         [OnStartPipeline]

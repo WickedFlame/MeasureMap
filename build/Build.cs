@@ -35,10 +35,10 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
 
     [Parameter("Version to be injected in the Build")]
-    public string Version { get; set; } = $"2.4.0";
+    public string Version { get; set; } = $"3.0.0";
 
     [Parameter("The Buildnumber provided by the CI")]
-    public int BuildNo = 1;
+    public int BuildNo = 16;
 
     [Parameter("Is RC Version")]
     public bool IsRc = false;
@@ -108,6 +108,7 @@ class Build : NukeBuild
                 .SetProjectFile(Solution)
                 .SetConfiguration(Configuration)
                 .SetNoBuild(true)
+                .SetExcludeByFile("MeasureMap.IntegrationTest")
                 .EnableNoRestore());
         });
 

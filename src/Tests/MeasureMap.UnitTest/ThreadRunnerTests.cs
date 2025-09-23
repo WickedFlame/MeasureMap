@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+﻿using MeasureMap.SessionStack;
 using System.Diagnostics;
 using System.Linq;
 
@@ -23,7 +23,7 @@ namespace MeasureMap.UnitTest
         public void MeasureMap_MultyThreadRunner()
         {
             var task = new Task(() => Trace.WriteLine("ThreadRunner test"));
-            var runner = new MultyThreadSessionHandler(10);
+            var runner = new MultiThreadSessionHandler(10);
 
             var result = runner.Execute(task, new ProfilerSettings { Iterations = 10 });
 

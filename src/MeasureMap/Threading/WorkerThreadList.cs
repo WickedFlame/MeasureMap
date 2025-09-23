@@ -20,7 +20,7 @@ namespace MeasureMap.Threading
         /// <param name="execution"></param>
         /// <param name="threadFactory"></param>
         /// <returns></returns>
-        public IWorkerThread StartNew(int index, Func<int, Result> execution, Func<int, Func<int, Result>, IWorkerThread> threadFactory)
+        public IWorkerThread StartNew(int index, Func<int, IResult> execution, Func<int, Func<int, IResult>, IWorkerThread> threadFactory)
         {
             var thread = threadFactory.Invoke(index, execution);
 

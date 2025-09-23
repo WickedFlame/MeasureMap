@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Text;
-using FluentAssertions;
 using MeasureMap.Tracers;
-using NUnit.Framework;
 using Polaroider;
 
 namespace MeasureMap.UnitTest.Tracers

@@ -9,10 +9,17 @@ namespace MeasureMap;
 [AttributeUsage(AttributeTargets.Class)]
 public class IterationsAttribute : Attribute
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="iterations"></param>
     public IterationsAttribute(int iterations)
     {
         Iterations = iterations;
     }
 
+    /// <summary>
+    /// Gets the amount of iterations
+    /// </summary>
     public int Iterations { get; }
 }

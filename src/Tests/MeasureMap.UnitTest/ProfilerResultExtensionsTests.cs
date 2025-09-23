@@ -1,8 +1,5 @@
-﻿using FluentAssertions;
-using MeasureMap.Tracers;
+﻿using MeasureMap.Tracers;
 using MeasureMap.UnitTest.Tracers;
-using Moq;
-using NUnit.Framework;
 using Polaroider;
 
 namespace MeasureMap.UnitTest

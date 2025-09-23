@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentAssertions;
 using MeasureMap.Runners;
-using NUnit.Framework;
 
 namespace MeasureMap.UnitTest.Runners
 {

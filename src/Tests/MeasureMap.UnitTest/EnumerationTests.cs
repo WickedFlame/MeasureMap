@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FluentAssertions;
-using NUnit.Framework;
-
+﻿
 namespace MeasureMap.UnitTest
 {
 #pragma warning disable CS1718

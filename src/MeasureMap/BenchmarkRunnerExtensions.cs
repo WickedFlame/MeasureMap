@@ -38,6 +38,19 @@ namespace MeasureMap
 
             return runner;
         }
+        
+        /// <summary>
+        /// Defines if the tasks are initially run as a warmup. Defaults to true
+        /// </summary>
+        /// <param name="runner"></param>
+        /// <param name="run"></param>
+        /// <returns></returns>
+        public static BenchmarkRunner RunWarmup(this BenchmarkRunner runner, bool run)
+        {
+            runner.Settings.RunWarmup = run;
+
+            return runner;
+        }
 
         /// <summary>
         /// Sets the amount of iterations that the profileing session should run the task
@@ -101,30 +114,6 @@ namespace MeasureMap
             var writer = new Diagnostics.TraceLogWriter();
             runner.Settings.Logger.AddWriter(writer);
             GlobalConfiguration.LogWriters.Add(writer);
-            return runner;
-        }
-
-        /// <summary>
-        /// Event that is executed at the start of each thread run
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="factory"></param>
-        /// <returns></returns>
-        public static BenchmarkRunner OnStartPipeline(this BenchmarkRunner runner, Func<ProfilerSettings, IExecutionContext> factory)
-        {
-            runner.Settings.OnStartPipelineEvent = factory;
-            return runner;
-        }
-
-        /// <summary>
-        /// Event that is executed at the end of each thread run
-        /// </summary>
-        /// <param name="runner"></param>
-        /// <param name="event"></param>
-        /// <returns></returns>
-        public static BenchmarkRunner OnEndPipeline(this BenchmarkRunner runner, Action<IExecutionContext> @event)
-        {
-            runner.Settings.OnEndPipelineEvent = @event;
             return runner;
         }
     }

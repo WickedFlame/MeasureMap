@@ -1,8 +1,4 @@
-﻿using System;
-using NUnit.Framework;
-using System.Linq;
-using FluentAssertions;
-
+﻿
 namespace MeasureMap.UnitTest
 {
     [TestFixture]
