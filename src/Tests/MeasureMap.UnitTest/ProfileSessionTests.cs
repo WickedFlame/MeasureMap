@@ -698,6 +698,7 @@ namespace MeasureMap.UnitTest
             var second = 0;
 
             ProfilerSession.StartSession()
+                .SetThreadBehaviour(ThreadBehaviour.RunOnMainThread)
                 .OnExecuted(r => first++)
                 .OnExecuted(r => second++)
                 .Task(() => { })
