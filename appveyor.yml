@@ -51,6 +51,27 @@ for:
       - nuke Release --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
 
     test: off
+  - 
+    # branches to build
+    branches:
+      # whitelist
+      except:
+        - master
+        - dev
+
+    # Do not build on tags (GitHub only)
+    skip_tags: true
+
+    install:
+      - dotnet tool install Nuke.GlobalTool --global --version 9.0.3 --no-cache
+
+    before_build:
+      - dotnet restore ./build/_build.csproj
+
+    build_script:
+      - nuke Test --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
+
+    test: off
 
 artifacts:
   - path: src\MeasureMap\bin\Release\netstandard2.0\MeasureMap.dll
