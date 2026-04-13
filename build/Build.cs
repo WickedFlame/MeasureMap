@@ -35,10 +35,10 @@ class Build : NukeBuild
     [GitRepository] readonly GitRepository GitRepository;
 
     [Parameter("Version to be injected in the Build")]
-    public string Version { get; set; } = $"3.0.0";
+    public string Version { get; set; } = $"3.0.1";
 
     [Parameter("The Buildnumber provided by the CI")]
-    public int BuildNo = 16;
+    public int BuildNo = 1;
 
     [Parameter("Is RC Version")]
     public bool IsRc = false;
