@@ -11,7 +11,7 @@ namespace MeasureMap
     /// </summary>
     public class ProfilerResult : IProfilerResult
     {
-        private readonly List<IResult> _results = new List<IResult>();
+        private readonly List<IResult> _results = new();
 
         /// <summary>
         /// Creates a profiler result
@@ -130,6 +130,11 @@ namespace MeasureMap
         /// <param name="result"></param>
         public void Add(IResult result)
         {
+            if (result == null)
+            {
+                return;
+            }
+
             _results.Add(result);
             Last = result;
         }
