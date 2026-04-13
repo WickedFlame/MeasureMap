@@ -38,7 +38,7 @@ class Build : NukeBuild
     public string Version { get; set; } = $"3.0.1";
 
     [Parameter("The Buildnumber provided by the CI")]
-    public int BuildNo = 16;
+    public int BuildNo = 1;
 
     [Parameter("Is RC Version")]
     public bool IsRc = false;

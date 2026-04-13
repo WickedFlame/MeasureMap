@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Get null return value from ExecutionContext caused an exception
 
-
+### Changed
+- Updated to .NET10.0
 
 ## v3.0.0
 ### Added
