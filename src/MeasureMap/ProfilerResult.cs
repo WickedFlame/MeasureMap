@@ -36,7 +36,7 @@ namespace MeasureMap
         /// This is a summary of all Iterations over all threads.
         /// Thre results of each thread is accessed through the enumerator
         /// </summary>
-        public IEnumerable<IIterationResult> Iterations => _results.SelectMany(r => r.Iterations);
+        public IEnumerable<IIterationResult> Iterations => _results.SelectMany(r => r.Iterations.Where(i => i != null));
 
         /// <summary>
         /// Gets the fastest iterations
