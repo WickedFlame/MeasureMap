@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Updated to .NET10.0
+- Updated dependencies to latest versions
 
 ## v3.0.0
 ### Added
