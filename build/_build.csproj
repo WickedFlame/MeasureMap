@@ -16,6 +16,7 @@
     <PackageReference Include="dotnet-sonarscanner" Version="11.2.1">
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
+  <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.6" />
   </ItemGroup>
 
 </Project>
