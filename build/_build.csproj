@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.4.0" />
+    <PackageReference Include="NuGet.Packaging" Version="6.12.5" />
     <PackageReference Include="Nuke.Common" Version="10.1.0" />
     <PackageReference Include="dotnet-sonarscanner" Version="11.2.1">
       <ExcludeAssets>all</ExcludeAssets>
