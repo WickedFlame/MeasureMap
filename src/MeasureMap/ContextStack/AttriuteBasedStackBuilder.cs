@@ -14,7 +14,7 @@ namespace MeasureMap.ContextStack
     /// constructor.</typeparam>
     public class AttriuteBasedStackBuilder<T> : IContextStackBuilder where T : class, new()
     {
-        private readonly List<Func<int, ProfilerSettings, IContextMiddleware>> _stack = [];
+        private readonly List<Func<T, int, ProfilerSettings, IContextMiddleware>> _stack = [];
         private readonly Func<T, ITask> _taskFactory;
 
         /// <summary>
@@ -32,18 +32,17 @@ namespace MeasureMap.ContextStack
         /// <param name="middleware"></param>
         public void Add(Func<int, ProfilerSettings, IContextMiddleware> middleware)
         {
-            _stack.Add(middleware);
+            _stack.Add((_, i, s) => middleware(i, s));
         }
 
-
-        private List<Func<T, int, ProfilerSettings, IContextMiddleware>> _middlewareFactories = [];
-        
+        /// <summary>
+        /// Add a new middleware to the Context Stack
+        /// </summary>
+        /// <param name="middlewareFactory"></param>
         public void Add(Func<T, int, ProfilerSettings, IContextMiddleware> middlewareFactory)
         {
-            _middlewareFactories.Add(middlewareFactory);
+            _stack.Add(middlewareFactory);
         }
-
-
 
         /// <summary>
         /// Create a new instance of the Context Stack
@@ -57,15 +56,10 @@ namespace MeasureMap.ContextStack
             var task = _taskFactory(instance);
 
             var runner = new AttributeBasedStackRunner<T>(task);
-            
-            foreach(var middlewareFactory in _middlewareFactories)
+
+            foreach (var middlewareFactory in _stack)
             {
                 runner.SetNext(middlewareFactory(instance, threadNumber, settings));
-            }
-
-            foreach (var middleware in _stack)
-            {
-                runner.SetNext(middleware.Invoke(threadNumber, settings));
             }
 
             runner.SetNext(new ProcessDataContextHandler());
