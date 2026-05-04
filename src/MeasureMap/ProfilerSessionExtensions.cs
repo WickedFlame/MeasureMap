@@ -348,7 +348,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession OnStartPipeline(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> @event)
         {
-            session.AddMiddleware((i,s) => new OnStartPipelineContextHandler(i, s, @event));
+            session.AddMiddleware((i, s) => new OnStartPipelineContextHandler(i, s, @event));
             return session;
         }
 

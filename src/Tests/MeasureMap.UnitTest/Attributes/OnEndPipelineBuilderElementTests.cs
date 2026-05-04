@@ -1,4 +1,5 @@
 ﻿using MeasureMap.Attributes.Builder;
+using MeasureMap.ContextStack;
 
 namespace MeasureMap.UnitTest.Attributes;
 
@@ -12,6 +13,7 @@ public class OnEndPipelineBuilderElementTests
     {
         _builder = new OnEndPipelineBuilderElement();
         _runner = ProfilerSession.StartSession();
+        _runner.SetContextStackBuilder(new AttriuteBasedStackBuilder<OnEndPipelineWithAttr>(o => new Task(() => o.OnEnd())));
 
         OnEndPipelineWithAttr.Called = false;
         OnEndPipelineNoAttr.Called = false;
@@ -26,7 +28,7 @@ public class OnEndPipelineBuilderElementTests
     [Test]
     public void OnEndPipelineBuilderElement_WithAttr()
     {
-        _builder.Initialize(new OnEndPipelineWithAttr());
+        _builder.Initialize<OnEndPipelineWithAttr>();
         _builder.Append(_runner);
 
         var runner = _runner.ContextStack.Create(0, new ProfilerSettings());
@@ -34,11 +36,11 @@ public class OnEndPipelineBuilderElementTests
 
         OnEndPipelineWithAttr.Called.Should().BeTrue();
     }
-    
+
     [Test]
     public void OnEndPipelineBuilderElement_NoAttr()
     {
-        _builder.Initialize(new OnEndPipelineNoAttr());
+        _builder.Initialize<OnEndPipelineNoAttr>();
         _builder.Append(_runner);
 
         _runner.Settings.OnEndPipelineEvent.Should().NotBeNull();
@@ -46,7 +48,7 @@ public class OnEndPipelineBuilderElementTests
         _runner.Settings.OnEndPipelineEvent(new ExecutionContext());
         OnEndPipelineNoAttr.Called.Should().BeFalse();
     }
-    
+
     public class OnEndPipelineWithAttr
     {
         public static bool Called { get; set; } = false;
@@ -57,7 +59,7 @@ public class OnEndPipelineBuilderElementTests
             Called = true;
         }
     }
-    
+
     public class OnEndPipelineNoAttr
     {
         public static bool Called { get; set; } = false;

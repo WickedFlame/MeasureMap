@@ -1,14 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MeasureMap.ContextStack
 {
+    /// <summary>
+    /// Builds a context middleware stack using attribute-based configuration for a specified type.
+    /// </summary>
+    /// <remarks>This builder allows dynamic construction of middleware pipelines for context processing,
+    /// leveraging attributes on the specified type parameter to determine stack behavior. It is typically used to
+    /// compose and execute a sequence of context middleware components in profiling or task execution
+    /// scenarios.</remarks>
+    /// <typeparam name="T">The type of the context object to be used in the stack. Must be a reference type with a parameterless
+    /// constructor.</typeparam>
     public class AttriuteBasedStackBuilder<T> : IContextStackBuilder where T : class, new()
     {
         private readonly List<Func<int, ProfilerSettings, IContextMiddleware>> _stack = [];
         private readonly Func<T, ITask> _taskFactory;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="taskFactory"></param>
         public AttriuteBasedStackBuilder(Func<T, ITask> taskFactory)
         {
             _taskFactory = taskFactory;
@@ -23,6 +35,16 @@ namespace MeasureMap.ContextStack
             _stack.Add(middleware);
         }
 
+
+        private List<Func<T, int, ProfilerSettings, IContextMiddleware>> _middlewareFactories = [];
+        
+        public void Add(Func<T, int, ProfilerSettings, IContextMiddleware> middlewareFactory)
+        {
+            _middlewareFactories.Add(middlewareFactory);
+        }
+
+
+
         /// <summary>
         /// Create a new instance of the Context Stack
         /// </summary>
@@ -36,11 +58,10 @@ namespace MeasureMap.ContextStack
 
             var runner = new AttributeBasedStackRunner<T>(task);
             
-
-
-
-
-
+            foreach(var middlewareFactory in _middlewareFactories)
+            {
+                runner.SetNext(middlewareFactory(instance, threadNumber, settings));
+            }
 
             foreach (var middleware in _stack)
             {
