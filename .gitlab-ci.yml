@@ -5,10 +5,13 @@ stages:
 
 .build:
   stage: build
-  only:
-    - master
+  before_script:
+    - dotnet tool install Nuke.GlobalTool --global --version 9.0.4
+    - export PATH="$PATH:/root/.dotnet/tools"
   script:
-    - nuke ci -isrc ${ISRC} -buildno ${CI_PIPELINE_IID} -version ${Version}
+    - dotnet restore Avalanche.sln
+    - dotnet restore ./build/_build.csproj
+    - nuke release -isrc ${ISRC} -buildno ${CI_PIPELINE_IID} -version ${Version}
   artifacts:
     paths:
       - artifacts/*.nupkg
