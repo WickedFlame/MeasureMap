@@ -62,6 +62,9 @@ result.Trace();
 
 Each benchmark creates an instance of the class that is benchmarked and executes the methods marked with the [Benchmark] attribute.  
 Each method marked with the [Benchmark] attribute is executed as a separate benchmark.  
+OnStartPipeline can return a IExecutionContext that is then injected into the benchmark methods. 
+The returned IExecutionContext and the Parameter ProfilerSettings are both optional.  
+
 
 ```csharp
 [Iterations(10)]
@@ -86,6 +89,12 @@ public class  WorkflowBenchmark
     [OnStartPipeline]
     public void Setup()
     {
+    }
+
+    [OnStartPipeline]
+    public IExecutionContext Setup(ProfilerSettings settings)
+    {
+       settings.CreateContext();
     }
 
     [OnEndPipeline]

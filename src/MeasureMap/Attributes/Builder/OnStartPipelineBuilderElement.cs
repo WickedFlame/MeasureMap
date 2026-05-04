@@ -50,8 +50,9 @@ public class OnStartPipelineBuilderElement : IBenchmarkBuilderElement
 
         stackBuilder.Add((instance, i, s) => new OnStartPipelineContextHandler(i, s, (e) =>
         {
-            var tmp = _method.Invoke(instance, null);
-            return e.CreateContext();
+            var param = _method.GetParameters().Any(p => p.ParameterType == typeof(ProfilerSettings)) ? new object[] { s } : null;
+            var context = _method.Invoke(instance, param) as IExecutionContext;
+            return context ?? e.CreateContext();
         }));
     }
 }

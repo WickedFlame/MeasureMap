@@ -5,11 +5,14 @@ using System.Linq;
 
 namespace MeasureMap.UnitTest.Attributes
 {
+    [SingleThreaded]
     public class ThreadSetupTests
     {
         [Test]
         public void ExecuteTest()
         {
+            Results = [];
+
             var runner = new BenchmarkRunner();
             var result = runner.RunSession<ThreadSetupBenchmark>();
 
@@ -21,7 +24,7 @@ namespace MeasureMap.UnitTest.Attributes
             Results.All(r => r.OnStartCalled && r.OnEndCalled && r.BenchmarkCalls == 10).Should().BeTrue();
         }
 
-        internal static List<BenchmarkTestResult> Results { get; } = [];
+        internal static List<BenchmarkTestResult> Results { get; private set; } = [];
     }
 
     [RunWarmup(false)]
@@ -40,17 +43,12 @@ namespace MeasureMap.UnitTest.Attributes
         }
 
         [OnStartPipeline]
-        public void Setup()
+        public IExecutionContext Setup(ProfilerSettings settings)
         {
-            Debug.WriteLine($"-> { _id } Start Pipeline {_counter}");
+            Debug.WriteLine($"-> {_id} Start Pipeline {_counter}");
             _result.OnStartCalled = true;
+            return settings.CreateContext();
         }
-
-        //[OnStartPipeline]
-        //public IExecutionContext Setup(ProfilerSettings settings)
-        //{
-        //    Debug.WriteLine($"-> {_id} Start Pipeline {_counter}");
-        //}
 
         [OnEndPipeline]
         public void Teardown()
