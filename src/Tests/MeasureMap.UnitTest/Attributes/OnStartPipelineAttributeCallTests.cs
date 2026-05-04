@@ -1,4 +1,6 @@
-﻿namespace MeasureMap.UnitTest.Attributes
+﻿using System;
+
+namespace MeasureMap.UnitTest.Attributes
 {
     [SingleThreaded]
     public class OnStartPipelineAttributeCallTests
@@ -34,6 +36,16 @@
             runner.RunSession<OnStartPipelineCall_WithReturn>();
 
             OnStartPipelineCall_WithReturn.Called.Should().BeTrue();
+        }
+
+        [Test]
+        public void OnStartPipeline_Duplicate()
+        {
+            var runner = new BenchmarkRunner();
+
+            // Expect an exception due to multiple methods with OnStartPipelineAttribute
+            var action = () => runner.RunSession<OnStartPipelineCall_MultipleMethods>();
+            action.Should().Throw<InvalidOperationException>();
         }
     }
 
@@ -80,6 +92,27 @@
         {
             Called = true;
             return settings.CreateContext();
+        }
+
+        [Benchmark]
+        public void Parse()
+        {
+            // do nothing
+        }
+    }
+
+    public class OnStartPipelineCall_MultipleMethods
+    {
+        [OnStartPipeline]
+        public IExecutionContext Setup(ProfilerSettings settings)
+        {
+            return settings.CreateContext();
+        }
+
+        [OnStartPipeline]
+        public void Setup()
+        {
+            // just duplicate method
         }
 
         [Benchmark]

@@ -1,4 +1,5 @@
 ﻿using MeasureMap.ContextStack;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -15,10 +16,18 @@ public class OnStartPipelineBuilderElement : IBenchmarkBuilderElement
     /// Initialize the builder element
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <exception cref="InvalidOperationException">Thrown when multiple methods with <see cref="OnStartPipelineAttribute"/> are found in the type.</exception>
     public void Initialize<T>()
     {
-        _method = typeof(T).GetMethods()
-            .FirstOrDefault(m => m.GetCustomAttribute<OnStartPipelineAttribute>() != null);
+        var methods = typeof(T).GetMethods()
+            .Where(m => m.GetCustomAttribute<OnStartPipelineAttribute>() != null);
+
+        if(methods.Count() > 1)
+        {
+            throw new InvalidOperationException($"Multiple methods with {nameof(OnStartPipelineAttribute)} found in type {typeof(T).FullName}. Only one method can be decorated with this attribute.");
+        }
+
+        _method = methods.FirstOrDefault(m => m.GetCustomAttribute<OnStartPipelineAttribute>() != null);
     }
 
     /// <summary>

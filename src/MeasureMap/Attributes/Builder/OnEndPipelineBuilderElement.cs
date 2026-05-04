@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using static System.Collections.Specialized.BitVector32;
 
 namespace MeasureMap.Attributes.Builder;
 
@@ -17,10 +16,18 @@ public class OnEndPipelineBuilderElement : IBenchmarkBuilderElement
     /// Initialize the builder element
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <exception cref="InvalidOperationException">Thrown when multiple methods with <see cref="OnEndPipelineAttribute"/> are found in the type.</exception>
     public void Initialize<T>()
     {
-        _method = typeof(T).GetMethods()
-            .FirstOrDefault(m => m.GetCustomAttribute<OnEndPipelineAttribute>() != null);
+        var methods = typeof(T).GetMethods()
+            .Where(m => m.GetCustomAttribute<OnEndPipelineAttribute>() != null);
+
+        if (methods.Count() > 1)
+        {
+            throw new InvalidOperationException($"Multiple methods with {nameof(OnEndPipelineAttribute)} found in type {typeof(T).FullName}. Only one method can be decorated with this attribute.");
+        }
+
+        _method = methods.FirstOrDefault();
         
     }
     
