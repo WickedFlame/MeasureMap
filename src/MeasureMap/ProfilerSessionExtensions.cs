@@ -364,6 +364,12 @@ namespace MeasureMap
             return session;
         }
 
+        public static ProfilerSession SetContextStackBuilder(this ProfilerSession session, IContextStackBuilder builder)
+        {
+            session.ContextStack = builder;
+            return session;
+        }
+
         internal static ProfilerSession AppendSettings(this ProfilerSession session, ProfilerSettings settings)
         {
             session.SetMinLogLevel(settings.Logger.MinLogLevel);

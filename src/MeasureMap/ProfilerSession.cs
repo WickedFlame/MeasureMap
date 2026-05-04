@@ -20,11 +20,11 @@ namespace MeasureMap
         private readonly List<Func<IResult, bool>> _assertions;
         private ITask _task;
         private ISessionExecutor _executor;
+        private IContextStackBuilder _contextStack = new DefaultContextStackBuilder();
 
         private readonly ISessionMiddleware _sessionStack;
         private readonly IIterationMiddleware _iterationStack = new IterationStackBuilder();
-        private readonly IContextStackBuilder _contextStack = new DefaultContextStackBuilder();
-
+        
         private readonly ProfilerSettings _settings;
 
         private ProfilerSession()
@@ -67,7 +67,11 @@ namespace MeasureMap
         /// <summary>
         /// Gets the ContextStack containing the middleware executed for each thread
         /// </summary>
-        public IContextStackBuilder ContextStack => _contextStack;
+        public IContextStackBuilder ContextStack
+        {
+            get { return _contextStack; }
+            internal set { _contextStack = value; }
+        }
 
         /// <summary>
         /// Creates a new Session for profiling performance

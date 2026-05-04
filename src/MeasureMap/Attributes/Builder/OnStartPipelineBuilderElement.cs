@@ -19,7 +19,11 @@ public class OnStartPipelineBuilderElement : IBenchmarkBuilderElement
     {
         var tmp = typeof(T).GetMethods()
             .FirstOrDefault(m => m.GetCustomAttribute<OnStartPipelineAttribute>() != null);
-        _action = tmp != null ? () => tmp.Invoke(instance, null) : null;
+
+        if (tmp != null)
+        {
+            _action = () => tmp.Invoke(instance, null);
+        }
     }
     
     /// <summary>
