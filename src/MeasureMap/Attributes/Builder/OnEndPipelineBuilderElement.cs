@@ -1,6 +1,8 @@
-﻿using System;
+﻿using MeasureMap.ContextStack;
+using System;
 using System.Linq;
 using System.Reflection;
+using static System.Collections.Specialized.BitVector32;
 
 namespace MeasureMap.Attributes.Builder;
 
@@ -9,18 +11,17 @@ namespace MeasureMap.Attributes.Builder;
 /// </summary>
 public class OnEndPipelineBuilderElement : IBenchmarkBuilderElement
 {
-    private Action _action;
-    
+    private MethodInfo _method;
+
     /// <summary>
     /// Initialize the builder element
     /// </summary>
-    /// <param name="instance"></param>
     /// <typeparam name="T"></typeparam>
-    public void Initialize<T>(T instance)
+    public void Initialize<T>()
     {
-        var tmp = typeof(T).GetMethods()
+        _method = typeof(T).GetMethods()
             .FirstOrDefault(m => m.GetCustomAttribute<OnEndPipelineAttribute>() != null);
-        _action = tmp != null ? () => tmp.Invoke(instance, null) : null;
+        
     }
     
     /// <summary>
@@ -37,11 +38,19 @@ public class OnEndPipelineBuilderElement : IBenchmarkBuilderElement
     /// <param name="session"></param>
     public void Append(ProfilerSession session)
     {
-        if (_action == null)
+    }
+
+    /// <summary>
+    /// Append elements to the <see cref="IContextStackBuilder"/>
+    /// </summary>
+    /// <param name="stackBuilder"></param>
+    public void Append<T>(AttriuteBasedStackBuilder<T> stackBuilder) where T : class, new()
+    {
+        if(_method == null)
         {
             return;
         }
-        
-        session.OnEndPipeline(e => _action.Invoke());
+
+        stackBuilder.Add((instance, i, s) => new OnEndPipelineContextHandler((e) => _method.Invoke(instance, null)));
     }
 }

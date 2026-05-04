@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MeasureMap.ContextStack;
 using System.Linq;
 using System.Reflection;
 
@@ -9,25 +9,20 @@ namespace MeasureMap.Attributes.Builder;
 /// </summary>
 public class OnStartPipelineBuilderElement : IBenchmarkBuilderElement
 {
-    private Action _action;
-    
+    private MethodInfo _method;
+
     /// <summary>
     /// Initialize the builder element
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public void Initialize<T>(T instance)
+    public void Initialize<T>()
     {
-        var tmp = typeof(T).GetMethods()
+        _method = typeof(T).GetMethods()
             .FirstOrDefault(m => m.GetCustomAttribute<OnStartPipelineAttribute>() != null);
-
-        if (tmp != null)
-        {
-            _action = () => tmp.Invoke(instance, null);
-        }
     }
-    
+
     /// <summary>
-    /// Append settings to the <see cref="BenchmarkRunner"/>
+    /// Append elements to the <see cref="BenchmarkRunner"/>
     /// </summary>
     /// <param name="runner"></param>
     public void Append(BenchmarkRunner runner)
@@ -35,20 +30,28 @@ public class OnStartPipelineBuilderElement : IBenchmarkBuilderElement
     }
 
     /// <summary>
-    /// Append settings to the <see cref="ProfilerSession"/>
+    /// Append elements to the <see cref="ProfilerSession"/>
     /// </summary>
     /// <param name="session"></param>
     public void Append(ProfilerSession session)
     {
-        if (_action == null)
+    }
+
+    /// <summary>
+    /// Append elements to the <see cref="IContextStackBuilder"/>
+    /// </summary>
+    /// <param name="stackBuilder"></param>
+    public void Append<T>(AttriuteBasedStackBuilder<T> stackBuilder) where T : class, new()
+    {
+        if (_method == null)
         {
             return;
         }
-        
-        session.OnStartPipeline(s =>
+
+        stackBuilder.Add((instance, i, s) => new OnStartPipelineContextHandler(i, s, (e) =>
         {
-            _action.Invoke();
-            return s.CreateContext();
-        });
+            var tmp = _method.Invoke(instance, null);
+            return e.CreateContext();
+        }));
     }
 }

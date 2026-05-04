@@ -59,6 +59,10 @@ var result = runner.RunSessions();
 result.Trace();
 ```
 ### Attributes
+
+Each benchmark creates an instance of the class that is benchmarked and executes the methods marked with the [Benchmark] attribute.  
+Each method marked with the [Benchmark] attribute is executed as a separate benchmark.  
+
 ```csharp
 [Iterations(10)]
 [Threads(10)]
