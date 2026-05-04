@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
+## [Unreleased]
+### Fixed
+- Attribute based benchmarks did not create a instance of the benchmark class per thread which caused issues when using instance variables in the benchmark class
+
 ## v3.0.2
 ### Fixed
 - Get null return value from ExecutionContext caused an exception
