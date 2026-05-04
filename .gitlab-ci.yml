@@ -6,10 +6,10 @@ stages:
 .build:
   stage: build
   before_script:
-    - dotnet tool install Nuke.GlobalTool --global --version 9.0.4
+    - dotnet tool install Nuke.GlobalTool --global --version 10.1.0
     - export PATH="$PATH:/root/.dotnet/tools"
   script:
-    - dotnet restore MeasureMap.sln
+    # - dotnet restore MeasureMap.sln
     - dotnet restore ./build/_build.csproj
     - nuke release -isrc ${ISRC} -buildno ${CI_PIPELINE_IID} -version ${Version}
   artifacts:
