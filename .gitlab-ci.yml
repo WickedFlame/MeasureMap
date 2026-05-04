@@ -1,0 +1,29 @@
+image: mcr.microsoft.com/dotnet/sdk:10.0
+
+stages:
+  - build
+
+.build:
+  stage: build
+  only:
+    - master
+  script:
+    - nuke ci -isrc ${ISRC} -buildno ${CI_PIPELINE_IID} -version ${Version}
+  artifacts:
+    paths:
+      - artifacts/*.nupkg
+      - artifacts/*.snupkg
+
+build-dev:
+  only:
+    - dev
+  variables:
+    ISRC: "true"
+  extends: .build
+
+build-master:
+  only:
+    - master
+  variables:
+    ISRC: "false"
+  extends: .build
