@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MeasureMap.Attributes.Builder;
+using MeasureMap.ContextStack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using MeasureMap.Attributes.Builder;
 
 namespace MeasureMap.Attributes;
 
@@ -42,32 +43,39 @@ public class AttributeSessionBuilder<T> where T : class, new()
                     new RunWarmupBuilderElement()
                 ];
 
-            var instance = Activator.CreateInstance<T>();
 
-            foreach (var builder in _benchmarkBuilders)
+            var contextBuilder = new InstanceBasedStackBuilder<T>(CreateTaskFactory(method));
+
+            foreach (var element in _benchmarkBuilders)
             {
-                builder.Initialize<T>(instance);
-                builder.Append(_runner);
+                element.Initialize<T>();
+                element.Append(_runner);
+                element.Append(contextBuilder);
             }
 
             var session = ProfilerSession.StartSession()
+                .SetContextStackBuilder(contextBuilder)
                 .AppendSettings(_runner.Settings);
-            
+
             foreach (var builder in _benchmarkBuilders)
             {
                 builder.Append(session);
             }
-            
-            if (method.GetParameters().Any(p => p.ParameterType == typeof(IExecutionContext)))
-            {
-                session.Task(ctx => method.Invoke(instance, [ctx]));
-            }
-            else
-            {
-                session.Task(() => method.Invoke(instance, null));
-            }
+
+            // add a pseudo task to ensure the session is executed and the context stack is built
+            session.Task(() => { });
 
             _runner.AddSession(method.Name, session);
         }
+    }
+
+    private Func<T, ITask> CreateTaskFactory(MethodInfo method)
+    {
+        if (method.GetParameters().Any(p => p.ParameterType == typeof(IExecutionContext)))
+        {
+            return obj => new ContextTask(ctx => method.Invoke(obj, [ctx]));
+        }
+
+        return obj => new Task(() => method.Invoke(obj, null));
     }
 }

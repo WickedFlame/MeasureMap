@@ -17,7 +17,7 @@ public class IterationsBuilderElementTests
     [Test]
     public void DurationBuilderElement_WithAttr()
     {
-        _builder.Initialize(new IterationsWithAttr());
+        _builder.Initialize<IterationsWithAttr>();
         _builder.Append(_runner);
 
         _runner.Settings.Iterations.Should().Be(10);
@@ -26,7 +26,7 @@ public class IterationsBuilderElementTests
     [Test]
     public void IterationsBuilderElement_NoAttr()
     {
-        _builder.Initialize(new IterationsNoAttr());
+        _builder.Initialize<IterationsNoAttr>();
         _builder.Append(_runner);
 
         _runner.Settings.Iterations.Should().Be(1);

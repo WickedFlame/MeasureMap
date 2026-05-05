@@ -18,7 +18,7 @@ public class DurationBuilderElementTests
     [Test]
     public void DurationBuilderElement_WithAttr()
     {
-        _builder.Initialize(new DurationWithAttr());
+        _builder.Initialize<DurationWithAttr>();
         _builder.Append(_runner);
 
         _runner.Settings.Duration.Should().Be(TimeSpan.FromSeconds(10));
@@ -27,7 +27,7 @@ public class DurationBuilderElementTests
     [Test]
     public void DurationBuilderElement_NoAttr()
     {
-        _builder.Initialize(new DurationNoAttr());
+        _builder.Initialize<DurationNoAttr>();
         _builder.Append(_runner);
 
         _runner.Settings.Duration.Should().Be(TimeSpan.Zero);
