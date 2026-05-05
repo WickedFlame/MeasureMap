@@ -364,6 +364,12 @@ namespace MeasureMap
             return session;
         }
 
+        /// <summary>
+        /// Set the desired <see cref="IContextStackBuilder"/> to the <see cref="ProfilerSession"/>. This is used to build the context stack for each run.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static ProfilerSession SetContextStackBuilder(this ProfilerSession session, IContextStackBuilder builder)
         {
             session.ContextStack = builder;
