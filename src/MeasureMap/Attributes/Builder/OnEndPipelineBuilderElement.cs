@@ -51,7 +51,7 @@ public class OnEndPipelineBuilderElement : IBenchmarkBuilderElement
     /// Append elements to the <see cref="IContextStackBuilder"/>
     /// </summary>
     /// <param name="stackBuilder"></param>
-    public void Append<T>(AttriuteBasedStackBuilder<T> stackBuilder) where T : class, new()
+    public void Append<T>(InstanceBasedStackBuilder<T> stackBuilder) where T : class, new()
     {
         if(_method == null)
         {

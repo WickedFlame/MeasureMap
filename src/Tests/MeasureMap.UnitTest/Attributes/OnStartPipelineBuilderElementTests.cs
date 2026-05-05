@@ -14,7 +14,7 @@ public class OnStartPipelineBuilderElementTests
     {
         _builder = new OnStartPipelineBuilderElement();
         _runner = ProfilerSession.StartSession();
-        _runner.SetContextStackBuilder(new AttriuteBasedStackBuilder<OnStartPipelineWithAttr>(o => new Task(() => o.OnStart())));
+        _runner.SetContextStackBuilder(new InstanceBasedStackBuilder<OnStartPipelineWithAttr>(o => new Task(() => o.OnStart())));
 
         OnStartPipelineWithAttr.Called = false;
         OnStartPipelineNoAttr.Called = false;

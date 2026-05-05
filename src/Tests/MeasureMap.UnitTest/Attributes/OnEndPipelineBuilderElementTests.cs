@@ -13,7 +13,7 @@ public class OnEndPipelineBuilderElementTests
     {
         _builder = new OnEndPipelineBuilderElement();
         _runner = ProfilerSession.StartSession();
-        _runner.SetContextStackBuilder(new AttriuteBasedStackBuilder<OnEndPipelineWithAttr>(o => new Task(() => o.OnEnd())));
+        _runner.SetContextStackBuilder(new InstanceBasedStackBuilder<OnEndPipelineWithAttr>(o => new Task(() => o.OnEnd())));
 
         OnEndPipelineWithAttr.Called = false;
         OnEndPipelineNoAttr.Called = false;

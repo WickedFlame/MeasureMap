@@ -29,5 +29,5 @@ public interface IBenchmarkBuilderElement
     /// Append elements to the <see cref="IContextStackBuilder"/>
     /// </summary>
     /// <param name="stackBuilder"></param>
-    void Append<T>(AttriuteBasedStackBuilder<T> stackBuilder) where T : class, new();
+    void Append<T>(InstanceBasedStackBuilder<T> stackBuilder) where T : class, new();
 }

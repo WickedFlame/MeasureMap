@@ -4,15 +4,12 @@ using System.Collections.Generic;
 namespace MeasureMap.ContextStack
 {
     /// <summary>
-    /// Builds a context middleware stack using attribute-based configuration for a specified type.
+    /// Builds a context middleware stack using instance-based configuration for a specified type.
+    /// Each call to Create will create a new instance of the specified type and use it to configure the middleware stack.
     /// </summary>
-    /// <remarks>This builder allows dynamic construction of middleware pipelines for context processing,
-    /// leveraging attributes on the specified type parameter to determine stack behavior. It is typically used to
-    /// compose and execute a sequence of context middleware components in profiling or task execution
-    /// scenarios.</remarks>
     /// <typeparam name="T">The type of the context object to be used in the stack. Must be a reference type with a parameterless
     /// constructor.</typeparam>
-    public class AttriuteBasedStackBuilder<T> : IContextStackBuilder where T : class, new()
+    public class InstanceBasedStackBuilder<T> : IContextStackBuilder where T : class, new()
     {
         private readonly List<Func<T, int, ProfilerSettings, IContextMiddleware>> _stack = [];
         private readonly Func<T, ITask> _taskFactory;
@@ -21,7 +18,7 @@ namespace MeasureMap.ContextStack
         /// 
         /// </summary>
         /// <param name="taskFactory"></param>
-        public AttriuteBasedStackBuilder(Func<T, ITask> taskFactory)
+        public InstanceBasedStackBuilder(Func<T, ITask> taskFactory)
         {
             _taskFactory = taskFactory;
         }
@@ -55,7 +52,7 @@ namespace MeasureMap.ContextStack
             var instance = Activator.CreateInstance<T>();
             var task = _taskFactory(instance);
 
-            var runner = new AttributeBasedStackRunner<T>(task);
+            var runner = new InstanceBasedStackRunner<T>(task);
 
             foreach (var middlewareFactory in _stack)
             {

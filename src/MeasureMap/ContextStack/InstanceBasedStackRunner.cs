@@ -4,11 +4,11 @@
     /// StackRunner that runs the task based on the Attributes on the benchmark class. Uses <see cref="AttributeSessionBuilder{T}"/> to build the session.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class AttributeBasedStackRunner<T> : BaseContextHandler where T : class, new()
+    public class InstanceBasedStackRunner<T> : BaseContextHandler where T : class, new()
     {
         private readonly ITask _task;
 
-        public AttributeBasedStackRunner(ITask task)
+        public InstanceBasedStackRunner(ITask task)
         {
             _task = task;
         }

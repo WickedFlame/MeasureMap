@@ -44,7 +44,7 @@ public class AttributeSessionBuilder<T> where T : class, new()
                 ];
 
 
-            var contextBuilder = new AttriuteBasedStackBuilder<T>(CreateTaskFactory(method));
+            var contextBuilder = new InstanceBasedStackBuilder<T>(CreateTaskFactory(method));
 
             foreach (var element in _benchmarkBuilders)
             {
