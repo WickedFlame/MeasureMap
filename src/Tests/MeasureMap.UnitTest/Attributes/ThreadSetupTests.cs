@@ -18,6 +18,8 @@ namespace MeasureMap.UnitTest.Attributes
 
             result.Trace();
 
+            result.First().AverageTicks.Should().BeGreaterThan(0);
+
             Results.Should().HaveCount(4);
             Results.Where(r => r.Name == "Parse_1").Should().HaveCount(2);
             Results.Where(r => r.Name == "Parse_2").Should().HaveCount(2);

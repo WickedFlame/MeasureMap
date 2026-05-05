@@ -1,4 +1,6 @@
-﻿namespace MeasureMap.ContextStack
+﻿using MeasureMap.IterationStack;
+
+namespace MeasureMap.ContextStack
 {
     /// <summary>
     /// StackRunner that runs the task based on the Attributes on the benchmark class. Uses <see cref="AttributeSessionBuilder{T}"/> to build the session.
@@ -15,7 +17,17 @@
 
         public override IResult Run(ITask _, IExecutionContext context)
         {
-            return base.Run(_task, context);
+            //
+            // Recreate the iterartionstack to ensure the task is run per thread and not shared between threads.
+            // The task is created per thread and the context is passed to the task.
+
+            var stack = new IterationStackBuilder();
+            stack.SetNext(new ProcessDataIterationHandler());
+            stack.SetNext(new MemoryCollectionIterationHandler());
+            stack.SetNext(new ElapsedTimeIterationHandler());
+            stack.SetNext(_task);
+
+            return base.Run(stack, context);
         }
     }
 }
