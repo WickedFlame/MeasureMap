@@ -1,11 +1,10 @@
 # MeasureMap
 Profiling and Benchmarking .NET Code made simple
-
-[![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/master?label=Master&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
-[![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/dev?label=Dev&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev)
   
-[![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=for-the-badge&label=Latest)](https://www.nuget.org/packages/measuremap/)
-[![NuGet Version](https://img.shields.io/nuget/vpre/measuremap.svg?style=for-the-badge&label=RC)](https://www.nuget.org/packages/measuremap/)
+| What | Badge |
+| --- | --- |
+| Build | [![Build status](https://ci.appveyor.com/api/projects/status/x0u2yu08pq7xye9w/branch/master?svg=true)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master) [![Build status](https://ci.appveyor.com/api/projects/status/x0u2yu08pq7xye9w/branch/dev?svg=true)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev) |
+| Nuget | [![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?svg=true&label=Latest)](https://www.nuget.org/packages/measuremap/) [![NuGet Version](https://img.shields.io/nuget/vpre/measuremap.svg?svg=true&label=RC)](https://www.nuget.org/packages/measuremap/) |
   
 MeasureMap allows profiling and benchmarking from simple code fragments to full applications.
   
