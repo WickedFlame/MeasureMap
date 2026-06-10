@@ -38,7 +38,7 @@ class Build : NukeBuild
     public string Version { get; set; } = $"3.1.0";
 
     [Parameter("The Buildnumber provided by the CI")]
-    public int BuildNo = 3;
+    public int BuildNo = 4;
 
     [Parameter("Is RC Version")]
     public bool IsRc = false;
@@ -120,11 +120,13 @@ class Build : NukeBuild
             foreach (var file in Directory.GetFiles(RootDirectory, $"*.{PackageVersion}.nupkg", SearchOption.AllDirectories))
             {
                 ((AbsolutePath) file).CopyToDirectory(ArtifactsDirectory, ExistsPolicy.FileOverwrite);
+                Serilog.Log.Write(Serilog.Events.LogEventLevel.Information, "Deployed {0} to {1}", file, RootDirectory);
             }
 
             foreach (var file in Directory.GetFiles(RootDirectory, $"*.{PackageVersion}.snupkg", SearchOption.AllDirectories))
             {
                 ((AbsolutePath) file).CopyToDirectory(ArtifactsDirectory, ExistsPolicy.FileOverwrite);
+                Serilog.Log.Write(Serilog.Events.LogEventLevel.Information, "Deployed {0} to {1}", file, RootDirectory);
             }
         });
 

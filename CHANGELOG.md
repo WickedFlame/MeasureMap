@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Attribute based benchmarks did not create a instance of the benchmark class per thread which caused issues when using instance variables in the benchmark class
 
+### Changed
+- Threads are executed simultaneously when the last thread is started
+
 ## v3.0.2
 ### Fixed
 - Get null return value from ExecutionContext caused an exception
