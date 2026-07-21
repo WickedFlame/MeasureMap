@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace MeasureMap.UnitTest
 {
@@ -27,11 +28,11 @@ namespace MeasureMap.UnitTest
         public void ResultExtensions_Throughput_OneSecond()
         {
             var result = new Result();
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(1).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(1).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(1).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(1).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(1).Ticks });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(1) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(1) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(1) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(1) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(1) });
 
             result.Throughput().Should().Be(1);
         }
@@ -40,11 +41,11 @@ namespace MeasureMap.UnitTest
         public void ResultExtensions_Throughput_TwoSecond()
         {
             var result = new Result();
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(2).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(2).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(2).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(2).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(2).Ticks });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(2) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(2) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(2) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(2) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(2) });
 
             result.Throughput().Should().Be(.5);
         }
@@ -53,11 +54,11 @@ namespace MeasureMap.UnitTest
         public void ResultExtensions_Throughput_HalfSecond()
         {
             var result = new Result();
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(.5).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(.5).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(.5).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(.5).Ticks });
-            result.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(.5).Ticks });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(.5) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(.5) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(.5) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(.5) });
+            result.Add(new IterationResult { Ticks = SecondsToTicks(.5) });
 
             result.Throughput().Should().Be(2);
         }
@@ -66,10 +67,10 @@ namespace MeasureMap.UnitTest
         public void ResultExtensions_Throughput_ProfilerResult_OneSecond()
         {
             var res = new Result();
-            res.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(1).Ticks });
+            res.Add(new IterationResult { Ticks = SecondsToTicks(1) });
 
             var res2 = new Result();
-            res2.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(1).Ticks });
+            res2.Add(new IterationResult { Ticks = SecondsToTicks(1) });
 
             var result = new ProfilerResult
             {
@@ -84,10 +85,10 @@ namespace MeasureMap.UnitTest
         public void ResultExtensions_Throughput_ProfilerResult_TwoSecond()
         {
             var res = new Result();
-            res.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(2).Ticks });
+            res.Add(new IterationResult { Ticks = SecondsToTicks(2) });
 
             var res2 = new Result();
-            res2.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(2).Ticks });
+            res2.Add(new IterationResult { Ticks = SecondsToTicks(2) });
 
             var result = new ProfilerResult
             {
@@ -102,10 +103,10 @@ namespace MeasureMap.UnitTest
         public void ResultExtensions_Throughput_ProfilerResult_HalfSecond()
         {
             var res = new Result();
-            res.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(.5).Ticks });
+            res.Add(new IterationResult { Ticks = SecondsToTicks(.5) });
 
             var res2 = new Result();
-            res2.Add(new IterationResult { Ticks = TimeSpan.FromSeconds(.5).Ticks });
+            res2.Add(new IterationResult { Ticks = SecondsToTicks(.5) });
 
             var result = new ProfilerResult
             {
@@ -124,6 +125,13 @@ namespace MeasureMap.UnitTest
             result.ResultValues.Add(ResultValueType.Elapsed, TimeSpan.MinValue);
 
             result.Throughput().Should().Be(500000.0);
+        }
+
+        private static long SecondsToTicks(double seconds)
+        {
+            // IterationResult.Ticks holds Stopwatch ticks in production, so tests must
+            // build ticks from Stopwatch.Frequency to stay platform-independent.
+            return (long)(seconds * Stopwatch.Frequency);
         }
     }
 }
