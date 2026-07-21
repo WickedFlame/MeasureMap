@@ -16,4 +16,4 @@ _Resharper.*
 .nuke/temp
 .sonarqube
 **/coverage.net8.0.opencover.xml
-.fallout
+.fallout/temp
