@@ -18,7 +18,10 @@ namespace MeasureMap.Runners
         /// <param name="interval"></param>
         public TimedTaskExecution(TimeSpan interval)
         {
-            _interval = interval.Ticks;
+            // Stopwatch.ElapsedTicks is measured in Stopwatch.Frequency units, which differs
+            // per platform (e.g. 10 MHz on Windows, 1 GHz on Linux). Convert the interval into
+            // Stopwatch ticks so the comparison is platform-independent.
+            _interval = (long)(interval.TotalSeconds * Stopwatch.Frequency);
             _stopWatch = Stopwatch.StartNew();
         }
 
