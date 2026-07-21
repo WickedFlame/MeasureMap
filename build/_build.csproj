@@ -1,23 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace></RootNamespace>
     <NoWarn>CS0649;CS0169</NoWarn>
-    <NukeRootDirectory>..</NukeRootDirectory>
-    <NukeScriptDirectory>..</NukeScriptDirectory>
-    <NukeTelemetryVersion>1</NukeTelemetryVersion>
+    <FalloutRootDirectory>..</FalloutRootDirectory>
+    <FalloutScriptDirectory>..</FalloutScriptDirectory>
+    <FalloutTelemetryVersion>1</FalloutTelemetryVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Tasks.Core" Version="18.4.0" />
-    <PackageReference Include="NuGet.Packaging" Version="7.3.1" />
-    <PackageReference Include="Nuke.Common" Version="10.1.0" />
+    <PackageReference Include="Fallout.Common" Version="10.3.49" />
     <PackageReference Include="dotnet-sonarscanner" Version="11.2.1">
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.7" />
   </ItemGroup>
 
 </Project>

@@ -1,19 +1,19 @@
-using Nuke.Common;
-using Nuke.Common.CI;
-using Nuke.Common.Git;
-using Nuke.Common.IO;
-using Nuke.Common.ProjectModel;
-using Nuke.Common.Tooling;
-using Nuke.Common.Tools.Coverlet;
-using Nuke.Common.Tools.DotNet;
-using Nuke.Common.Tools.SonarScanner;
-using Nuke.Common.Utilities.Collections;
+using Fallout.Common;
+using Fallout.Common.CI;
+using Fallout.Common.Git;
+using Fallout.Common.IO;
+using Fallout.Common.ProjectModel;
+using Fallout.Common.Tooling;
+using Fallout.Common.Tools.Coverlet;
+using Fallout.Common.Tools.DotNet;
+using Fallout.Common.Tools.SonarScanner;
+using Fallout.Common.Utilities.Collections;
 using System.IO;
-using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Common.Tools.SonarScanner.SonarScannerTasks;
+using static Fallout.Common.Tools.DotNet.DotNetTasks;
+using static Fallout.Common.Tools.SonarScanner.SonarScannerTasks;
 
 [ShutdownDotNetAfterServerBuild]
-class Build : NukeBuild
+class Build : FalloutBuild
 {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper

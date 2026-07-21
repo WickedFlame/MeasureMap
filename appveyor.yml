@@ -24,13 +24,13 @@ for:
       - ps: |
           Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
           & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.105' -InstallDir "$env:ProgramFiles\dotnet"
-      - dotnet tool install Nuke.GlobalTool --global --no-cache
+      - dotnet tool install Fallout.GlobalTool --global --no-cache
 
     before_build:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Release --isrc true --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
+      - fallout Release --isrc true --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
 
     test: off
 
@@ -48,13 +48,13 @@ for:
       - ps: |
           Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
           & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.105' -InstallDir "$env:ProgramFiles\dotnet"
-      - dotnet tool install Nuke.GlobalTool --global --version 9.0.3 --no-cache
+      - dotnet tool install Fallout.GlobalTool --global --no-cache
 
     before_build:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Release --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
+      - fallout Release --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
 
     test: off
   - 
@@ -72,13 +72,13 @@ for:
       - ps: |
           Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
           & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.105' -InstallDir "$env:ProgramFiles\dotnet"
-      - dotnet tool install Nuke.GlobalTool --global --version 9.0.3 --no-cache
+      - dotnet tool install Fallout.GlobalTool --global --no-cache
 
     before_build:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Test --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
+      - fallout Test --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
 
     test: off
 

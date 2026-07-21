@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Threads are executed simultaneously when the last thread is started
+- Moved from Nuke to Fallout
 
 ## v3.0.2
 ### Fixed
