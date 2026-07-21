@@ -15,8 +15,7 @@ namespace MeasureMap.SessionStack
         /// <returns>The resulting collection of the executions</returns>
         public override IProfilerResult Execute(ITask task, ProfilerSettings settings)
         {
-            var sw = new Stopwatch();
-            sw.Start();
+            var sw = Stopwatch.StartNew();
 
             var result = base.Execute(task, settings);
 
