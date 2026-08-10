@@ -38,7 +38,7 @@ class Build : FalloutBuild
     public string Version { get; set; } = $"3.1.0";
 
     [Parameter("The Buildnumber provided by the CI")]
-    public int BuildNo = 4;
+    public int BuildNo = 5;
 
     [Parameter("Is RC Version")]
     public bool IsRc = false;

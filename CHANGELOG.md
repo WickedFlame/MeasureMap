@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Moved from Nuke to Fallout
 - Updated dependencies
 
+### Added
+- Writer benchmarkresult to a string in markdown format
+
 ## v3.0.2
 ### Fixed
 - Get null return value from ExecutionContext caused an exception

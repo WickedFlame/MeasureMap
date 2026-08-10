@@ -8,6 +8,13 @@ namespace MeasureMap
     /// </summary>
     public static class BenchmarkResultExtensions
     {
+        public static string ToMarkdown(this IBenchmarkResult result)
+        {
+            var writer = new StringResultWriter();
+            result.Trace(writer);
+            return writer.Value;
+        }
+
         /// <summary>
         /// Traces the output of a Benchmark Test
         /// </summary>

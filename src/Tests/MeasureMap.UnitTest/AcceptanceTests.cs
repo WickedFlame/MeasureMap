@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using MeasureMap.UnitTest.Tracers;
+using MeasureMap.Tracers;
 
 namespace MeasureMap.UnitTest
 {
