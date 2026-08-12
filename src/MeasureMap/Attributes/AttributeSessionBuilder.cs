@@ -73,9 +73,15 @@ public class AttributeSessionBuilder<T> where T : class, new()
     {
         if (method.GetParameters().Any(p => p.ParameterType == typeof(IExecutionContext)))
         {
-            return obj => new ContextTask(ctx => method.Invoke(obj, [ctx]));
+            //
+            // Bind the method into a compiled open delegate once instead of invoking
+            // it through reflection on every run. MethodInfo.Invoke has a large lazy
+            // one-time cost that would otherwise be charged to the first benchmark.
+            var invoker = (Action<T, IExecutionContext>)Delegate.CreateDelegate(typeof(Action<T, IExecutionContext>), method);
+            return obj => new ContextTask(ctx => invoker(obj, ctx));
         }
 
-        return obj => new Task(() => method.Invoke(obj, null));
+        var action = (Action<T>)Delegate.CreateDelegate(typeof(Action<T>), method);
+        return obj => new Task(() => action(obj));
     }
 }

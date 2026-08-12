@@ -20,6 +20,7 @@ namespace MeasureMap.IntegrationTest.AttributeBasedTests
     }
 
     [Threads(10)]
+    [RunWarmup(false)]
     public class ThreadsAttributeClass
     {
         [Benchmark]

@@ -74,6 +74,17 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Gets the amount of threads that will be used for the execution of the task
+        /// </summary>
+        public int ThreadCount
+        {
+            get
+            {
+                return _executor is MultiThreadSessionHandler handler ? handler.ThreadCount : 1;
+            }
+        }
+
+        /// <summary>
         /// Creates a new Session for profiling performance
         /// </summary>
         /// <returns>A profiler session</returns>
@@ -139,10 +150,6 @@ namespace MeasureMap
             // The executor runs the processing pipeline
             _executor.StackBuilder = ContextStack;
             _sessionStack.SetNext(_executor);
-
-
-            //_executor.se
-            //_executor.RunnerFactory = 
 
             _iterationStack.SetNext(new ProcessDataIterationHandler());
             _iterationStack.SetNext(new MemoryCollectionIterationHandler());

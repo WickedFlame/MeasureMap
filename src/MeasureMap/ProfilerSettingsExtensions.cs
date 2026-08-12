@@ -32,5 +32,24 @@ namespace MeasureMap
         {
             return new ExecutionContext(settings);
         }
+
+        /// <summary>
+        /// Clones the current settings into a new instance. This is useful for creating a new settings instance for the Session Warmup.
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        public static ProfilerSettings Clone(this ProfilerSettings settings)
+        {
+            var clone = new ProfilerSettings
+            {
+                Execution = settings.Execution,
+                OnStartPipelineEvent = settings.OnStartPipelineEvent,
+                OnEndPipelineEvent = settings.OnEndPipelineEvent,
+            };
+
+            settings.MergeChangesTo(clone);
+
+            return clone;
+        }
     }
 }
