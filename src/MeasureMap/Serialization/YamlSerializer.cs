@@ -140,33 +140,9 @@ namespace MeasureMap.Serialization
         /// <param name="fileName"></param>
         public void Serialize(IBenchmarkResult result, string fileName)
         {
-            var items = new BenchmarkModel
-            {
-                Iterations = result.Iterations,
-                Duration = result.Duration
-            };
+            var model = result.ToBenchmarkModel();
 
-            foreach (var key in result.Keys)
-            {
-                var res = result[key];
-                items.Benchmarks.Add(new Benchmark
-                {
-                    Name = key,
-                    ThreadId = res.ThreadId,
-                    ThreadNumber = res.ThreadNumber,
-                    AverageTicks = res.AverageTicks,
-                    AverageMilliseconds = res.AverageTicks.ToMilliseconds(),
-                    AverageTime = res.AverageTime,
-                    TotalTime = res.TotalTime,
-                    Fastest = res.Fastest.Duration,
-                    Slowest = res.Slowest.Duration,
-                    Increase = res.Increase,
-                    InitialSize = res.InitialSize,
-                    EndSize = res.EndSize
-                });
-            }
-
-            var yaml = Serialize(items);
+            var yaml = Serialize(model);
 
             File.WriteAllText(fileName, yaml);
         }

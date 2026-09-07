@@ -90,6 +90,7 @@ namespace MeasureMap
         /// <param name="noiseFloorMilliseconds"></param>
         /// <param name="sourceFilePath"></param>
         /// <returns></returns>
+        [AssertionMethod]
         public static IBenchmarkResult Verify(this IBenchmarkResult result, string fileName = "", double thresholdPercentage = 10, double noiseFloorMilliseconds = 1, [CallerFilePath] string sourceFilePath = "")
         {
             var filePath = fileName.GetSavePath(sourceFilePath);

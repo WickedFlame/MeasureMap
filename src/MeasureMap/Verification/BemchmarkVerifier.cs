@@ -7,8 +7,21 @@ using System.Text;
 
 namespace MeasureMap.Verification
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BemchmarkVerifier
     {
+        /// <summary>
+        /// Verify if the benchmark result is within the threshold of the baseline result.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="last"></param>
+        /// <param name="fileName"></param>
+        /// <param name="thresholdPercentage"></param>
+        /// <param name="noiseFloorMilliseconds"></param>
+        /// <param name="sourceFilePath"></param>
+        /// <exception cref="InvalidOperationException"></exception>
         public void Verify(IBenchmarkResult result, BenchmarkModel last, string fileName = "", double thresholdPercentage = 10, double noiseFloorMilliseconds = 1, [CallerFilePath] string sourceFilePath = "")
         {
             var report = new List<string>();
@@ -16,34 +29,7 @@ namespace MeasureMap.Verification
 
             // the baseline defines the expected order, starting with the fastest benchmark
             var baseline = last.Benchmarks.OrderBy(b => b.AverageMilliseconds).ToList();
-
-
-            var items = new BenchmarkModel
-            {
-                Iterations = result.Iterations,
-                Duration = result.Duration
-            };
-
-            foreach (var key in result.Keys)
-            {
-                var res = result[key];
-                items.Benchmarks.Add(new Benchmark
-                {
-                    Name = key,
-                    ThreadId = res.ThreadId,
-                    ThreadNumber = res.ThreadNumber,
-                    AverageTicks = res.AverageTicks,
-                    AverageMilliseconds = res.AverageTicks.ToMilliseconds(),
-                    AverageTime = res.AverageTime,
-                    TotalTime = res.TotalTime,
-                    Fastest = res.Fastest.Duration,
-                    Slowest = res.Slowest.Duration,
-                    Increase = res.Increase,
-                    InitialSize = res.InitialSize,
-                    EndSize = res.EndSize
-                });
-            }
-
+            var items = result.ToBenchmarkModel();
 
             // the current run is arranged according to the baseline order
             var current = new List<Benchmark>();
