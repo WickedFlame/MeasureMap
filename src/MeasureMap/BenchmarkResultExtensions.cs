@@ -1,5 +1,6 @@
 ﻿using MeasureMap.Tracers;
 using MeasureMap.Tracers.Metrics;
+using MeasureMap.Verification;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -76,6 +77,37 @@ namespace MeasureMap
 
             var serializer = new Serialization.YamlSerializer();
             serializer.Serialize(result, filePath);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Verify the Benchmarkresult against the saved baseline result.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="fileName"></param>
+        /// <param name="thresholdPercentage"></param>
+        /// <param name="noiseFloorMilliseconds"></param>
+        /// <param name="sourceFilePath"></param>
+        /// <returns></returns>
+        public static IBenchmarkResult Verify(this IBenchmarkResult result, string fileName = "", double thresholdPercentage = 10, double noiseFloorMilliseconds = 1, [CallerFilePath] string sourceFilePath = "")
+        {
+            var filePath = fileName.GetSavePath(sourceFilePath);
+            if (!filePath.EndsWith(".benchmark.yml"))
+            {
+                filePath += ".benchmark.yml";
+            }
+
+            result.Save(filePath);
+
+
+            //var last = YamlMap.Serializer.DeserializeFromFile<BenchmarkModel>(filePath);
+            var serializer = new MeasureMap.Serialization.YamlSerializer();
+            var last = serializer.Deserialize(filePath);
+
+
+            var verifier = new BemchmarkVerifier();
+            verifier.Verify(result, last, filePath, thresholdPercentage, noiseFloorMilliseconds);
 
             return result;
         }
