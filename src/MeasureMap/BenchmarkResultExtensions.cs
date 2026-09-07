@@ -55,6 +55,32 @@ namespace MeasureMap
         }
 
         /// <summary>
+        /// Save the Benchmarkresult as a YAML file. The default file name is the name of the source file with the extension .benchmark.yaml
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="fileName"></param>
+        /// <param name="sourceFilePath"></param>
+        /// <returns></returns>
+        public static IBenchmarkResult Save(this IBenchmarkResult result, string fileName = "", [CallerFilePath] string sourceFilePath = "")
+        {
+            var filePath = fileName.GetSavePath(sourceFilePath);
+            if (!filePath.EndsWith(".yml"))
+            {
+                filePath += ".benchmark.yml";
+            }
+
+            if (File.Exists(filePath))
+            {
+                return result;
+            }
+
+            var serializer = new Serialization.YamlSerializer();
+            serializer.Serialize(result, filePath);
+
+            return result;
+        }
+
+        /// <summary>
         /// Traces the output of a Benchmark Test
         /// </summary>
         /// <param name="result"></param>

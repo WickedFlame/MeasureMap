@@ -13,10 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Threads are executed simultaneously when the last thread is started
 - Moved from Nuke to Fallout
 - Updated dependencies
-- Save the benchmark result as a markdown file with the extension .benchmark.md. The default file name is the name of the source file. You can also specify a custom file name and choose to overwrite existing files.
 
 ### Added
 - Writer benchmarkresult to a string in markdown format
+- Save the benchmark result as a markdown file with the extension .benchmark.md. The default file name is the name of the source file. You can also specify a custom file name and choose to overwrite existing files.
+- Save the Benchmarkresult as a YAML file. The default file name is the name of the source file with the extension .benchmark.yaml
 
 ## v3.0.2
 ### Fixed
