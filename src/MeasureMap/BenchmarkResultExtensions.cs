@@ -1,5 +1,7 @@
 ﻿using MeasureMap.Tracers;
 using MeasureMap.Tracers.Metrics;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace MeasureMap
 {
@@ -8,11 +10,48 @@ namespace MeasureMap
     /// </summary>
     public static class BenchmarkResultExtensions
     {
+        /// <summary>
+        /// Gets the Markdown representation of a Benchmark Test
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public static string ToMarkdown(this IBenchmarkResult result)
         {
             var writer = new StringResultWriter();
             result.Trace(writer);
             return writer.Value;
+        }
+
+        /// <summary>
+        /// Saves the Benchmarkresult as a Markdown file. The default file name is the name of the source file with the extension .benchmark.md
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="fileName"></param>
+        /// <param name="sourceFilePath"></param>
+        /// <param name="overwrite"></param>
+        /// <returns></returns>
+        public static IBenchmarkResult SaveMarkdown(this IBenchmarkResult result, string fileName = "", [CallerFilePath] string sourceFilePath = "", bool overwrite = false)
+        {
+            var md = result.ToMarkdown();
+            var filePath = fileName.GetSavePath(sourceFilePath);
+            if (!filePath.EndsWith(".benchmark.md"))
+            {
+                filePath += ".benchmark.md";
+            }
+
+            if (File.Exists(filePath))
+            {
+                if (!overwrite)
+                {
+                    return result;
+                }
+
+                File.Delete(filePath);
+            }
+
+            File.WriteAllText(filePath, md);
+
+            return result;
         }
 
         /// <summary>
@@ -91,6 +130,17 @@ namespace MeasureMap
             options.Metrics ??= BenchmarkTraceMetrics.GetDefaultTraceMetrics();
 
             tracer.Trace(result, writer, options);
+        }
+
+        private static string GetSavePath(this string fileName, [CallerFilePath] string sourceFilePath = "")
+        {
+            var directory = Path.GetDirectoryName(sourceFilePath) ?? string.Empty;
+            if (string.IsNullOrEmpty(fileName))
+            {
+                fileName = Path.GetFileNameWithoutExtension(sourceFilePath);
+            }
+
+            return Path.Combine(directory, fileName);
         }
     }
 }

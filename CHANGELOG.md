@@ -7,11 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Fixed
 - Attribute based benchmarks did not create a instance of the benchmark class per thread which caused issues when using instance variables in the benchmark class
+- Attribute-Based benchmarks sometimes showed first test slow because the JIT compiler was not finished compiling the method. This has been fixed by using a compiled delegate instead of reflection to invoke the benchmark method.
 
 ### Changed
 - Threads are executed simultaneously when the last thread is started
 - Moved from Nuke to Fallout
 - Updated dependencies
+- Save the benchmark result as a markdown file with the extension .benchmark.md. The default file name is the name of the source file. You can also specify a custom file name and choose to overwrite existing files.
 
 ### Added
 - Writer benchmarkresult to a string in markdown format

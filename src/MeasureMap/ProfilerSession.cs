@@ -73,9 +73,6 @@ namespace MeasureMap
             internal set { _contextStack = value; }
         }
 
-        /// <summary>
-        /// Gets the amount of threads that will be used for the execution of the task
-        /// </summary>
         public int ThreadCount
         {
             get
