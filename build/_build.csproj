@@ -11,8 +11,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fallout.Common" Version="10.3.49" />
-    <PackageReference Include="dotnet-sonarscanner" Version="11.2.1">
+    <PackageReference Include="Fallout.Common" Version="10.4.0" />
+    <PackageReference Include="dotnet-sonarscanner" Version="11.3.0">
       <ExcludeAssets>all</ExcludeAssets>
     </PackageReference>
   </ItemGroup>
