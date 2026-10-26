@@ -1,4 +1,5 @@
-﻿using MeasureMap.Serialization;
+﻿using MeasureMap.Diagnostics;
+using MeasureMap.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,6 +84,7 @@ namespace MeasureMap.Verification
                 if (Math.Abs(baselineDelta) < noiseFloorMilliseconds && Math.Abs(currentDelta) < noiseFloorMilliseconds)
                 {
                     report.Add($"{line} [within noise floor]");
+                    ConsoleWriter.WriteLine($"{line} [within noise floor]");
                     continue;
                 }
 
@@ -92,6 +94,11 @@ namespace MeasureMap.Verification
                 if (Math.Abs(difference) > thresholdPercentage)
                 {
                     violations.Add(line);
+                    ConsoleWriter.WriteLine($"{line} [exceeds {thresholdPercentage:F0}% threshold]");
+                }
+                else
+                {
+                    ConsoleWriter.WriteLine($"{line} [ok]");
                 }
             }
 
@@ -113,7 +120,12 @@ namespace MeasureMap.Verification
                     message.AppendLine(line);
                 }
 
+                message.AppendLine("New measurement:");
                 message.AppendLine(result.ToMarkdown());
+
+                message.AppendLine();
+                message.AppendLine("Original baseline:");
+                message.AppendLine(last.ToMarkdown());
 
                 throw new InvalidOperationException(message.ToString());
             }

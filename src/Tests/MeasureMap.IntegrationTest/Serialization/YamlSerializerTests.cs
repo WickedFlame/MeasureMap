@@ -136,9 +136,10 @@ namespace MeasureMap.IntegrationTest.Serialization
         [Test]
         public void YamlSerializer_DeserializeContent_Benchmark()
         {
-            var yaml = new YamlSerializer().Serialize(CreateModel());
+            var serializer = new YamlSerializer();
+            var yaml = serializer.Serialize(CreateModel());
 
-            var model = new YamlSerializer().DeserializeContent(yaml);
+            var model = serializer.DeserializeContent(yaml);
 
             model.Benchmarks.Should().HaveCount(1);
             var benchmark = model.Benchmarks.Single();

@@ -59,7 +59,7 @@ namespace MeasureMap.Serialization
                     continue;
                 }
 
-                var key = trimmed.Substring(0, separator).Trim();
+                var key = trimmed.Substring(0, separator).Trim().ToLower();
                 var value = trimmed.Substring(separator + 1).Trim();
 
                 if (key == "benchmarks")
@@ -76,6 +76,9 @@ namespace MeasureMap.Serialization
 
                 if (current == null)
                 {
+                    //
+                    // Properties of the BenchmarkModel
+
                     switch (key)
                     {
                         case "iterations":
@@ -91,25 +94,28 @@ namespace MeasureMap.Serialization
 
                 switch (key)
                 {
+                    //
+                    // Properties of the Benchmark
+
                     case "name":
                         current.Name = Unquote(value);
                         break;
-                    case "threadId":
+                    case "threadid":
                         current.ThreadId = ParseInt(value);
                         break;
-                    case "threadNumber":
+                    case "threadnumber":
                         current.ThreadNumber = ParseInt(value);
                         break;
-                    case "averageTicks":
+                    case "averageticks":
                         current.AverageTicks = ParseLong(value);
                         break;
-                    case "averageMilliseconds":
+                    case "averagemilliseconds":
                         current.AverageMilliseconds = ParseDouble(value);
                         break;
-                    case "averageTime":
+                    case "averagetime":
                         current.AverageTime = ParseTimeSpan(value);
                         break;
-                    case "totalTime":
+                    case "totaltime":
                         current.TotalTime = ParseTimeSpan(value);
                         break;
                     case "fastest":
@@ -121,10 +127,10 @@ namespace MeasureMap.Serialization
                     case "increase":
                         current.Increase = ParseLong(value);
                         break;
-                    case "initialSize":
+                    case "initialsize":
                         current.InitialSize = ParseLong(value);
                         break;
-                    case "endSize":
+                    case "endsize":
                         current.EndSize = ParseLong(value);
                         break;
                 }
