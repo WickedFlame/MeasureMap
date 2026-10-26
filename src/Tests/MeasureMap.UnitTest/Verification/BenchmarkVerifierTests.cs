@@ -24,10 +24,9 @@ namespace MeasureMap.UnitTest.Verification
         [Test]
         public void Verify_WithinThreshold_DoesNotThrow()
         {
-            // baseline: res1 = 10ms, res2 = 12ms (distance +20%)
-            var baseline = CreateModel(("res1", 10), ("res2", 12));
-            // current: res1 = 10ms, res2 = 12.5ms (distance +25%) -> difference 5% < 10%
-            var result = CreateResult(("res1", 10), ("res2", 12.5));
+            var baseline = CreateModel(("res1", 10), ("res2", 20), ("res3", 30));
+            // current: 200%, 200%, 210% of baseline -> median 200%, res3 differs by 5% < 10%
+            var result = CreateResult(("res1", 20), ("res2", 40), ("res3", 63));
 
             var verifier = new BemchmarkVerifier();
 
@@ -39,10 +38,9 @@ namespace MeasureMap.UnitTest.Verification
         [Test]
         public void Verify_ExceedsThreshold_Throws()
         {
-            // baseline: res1 = 10ms, res2 = 12ms (distance +20%)
-            var baseline = CreateModel(("res1", 10), ("res2", 12));
-            // current: res1 = 10ms, res2 = 20ms (distance +100%) -> difference 80% > 10%
-            var result = CreateResult(("res1", 10), ("res2", 20));
+            var baseline = CreateModel(("res1", 10), ("res2", 20), ("res3", 30));
+            // current: 200%, 200%, 300% of baseline -> median 200%, res3 differs by 50% > 10%
+            var result = CreateResult(("res1", 20), ("res2", 40), ("res3", 90));
 
             var verifier = new BemchmarkVerifier();
 
@@ -55,9 +53,9 @@ namespace MeasureMap.UnitTest.Verification
         [Test]
         public void Verify_ExceedsCustomThreshold_Throws()
         {
-            // baseline distance +20%, current distance +25% -> difference 5%
-            var baseline = CreateModel(("res1", 10), ("res2", 12));
-            var result = CreateResult(("res1", 10), ("res2", 12.5));
+            // current: 200%, 200%, 210% of baseline -> median 200%, res3 differs by 5% > 1%
+            var baseline = CreateModel(("res1", 10), ("res2", 20), ("res3", 30));
+            var result = CreateResult(("res1", 20), ("res2", 40), ("res3", 63));
 
             var verifier = new BemchmarkVerifier();
 
@@ -72,6 +70,34 @@ namespace MeasureMap.UnitTest.Verification
             // baseline distance 0.5ms, current distance 0.6ms - both below the 1ms noise floor
             var baseline = CreateModel(("res1", 10), ("res2", 10.5));
             var result = CreateResult(("res1", 10), ("res2", 10.6));
+
+            var verifier = new BemchmarkVerifier();
+
+            var act = () => verifier.Verify(result, baseline);
+
+            act.Should().NotThrow();
+        }
+
+        [Test]
+        public void Verify_SlowerMachine_DoesNotThrow()
+        {
+            // all benchmarks are uniformly slower -> same percentage of baseline
+            var baseline = CreateModel(("res1", 10), ("res2", 20), ("res3", 30));
+            var result = CreateResult(("res1", 20), ("res2", 40), ("res3", 60));
+
+            var verifier = new BemchmarkVerifier();
+
+            var act = () => verifier.Verify(result, baseline);
+
+            act.Should().NotThrow();
+        }
+
+        [Test]
+        public void Verify_TwoBenchmarks_DoesNotThrow()
+        {
+            // less than 3 benchmarks cannot be verified against the median
+            var baseline = CreateModel(("res1", 10), ("res2", 12));
+            var result = CreateResult(("res1", 10), ("res2", 20));
 
             var verifier = new BemchmarkVerifier();
 

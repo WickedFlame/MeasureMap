@@ -52,36 +52,51 @@ namespace MeasureMap.Verification
             }
 
             var ordered = baseline.Where(b => current.Any(c => c.Name == b.Name)).ToList();
-            if (ordered.Count < 2)
-            {
-                return;
-            }
 
-            // compare the relative distance between two consecutive benchmarks
-            for (var i = 0; i < ordered.Count - 1; i++)
+            // measure each benchmark against its baseline: (100 / baseline) * benchmark
+            var measurements = new List<(Benchmark Previous, Benchmark Current, double Percentage, bool WithinNoise)>();
+            for (var i = 0; i < ordered.Count; i++)
             {
-                var previousFirst = ordered[i];
-                var previousSecond = ordered[i + 1];
-                var currentFirst = current[i];
-                var currentSecond = current[i + 1];
+                var previous = ordered[i];
+                var benchmark = current[i];
 
-                if (previousFirst.AverageMilliseconds <= 0 || currentFirst.AverageMilliseconds <= 0)
+                if (previous.AverageMilliseconds <= 0)
                 {
-                    report.Add($"{previousFirst.Name} -> {previousSecond.Name}: reference is zero, skipped");
+                    report.Add($"{previous.Name}: baseline is zero, skipped");
                     continue;
                 }
 
-                var baselineDelta = previousSecond.AverageMilliseconds - previousFirst.AverageMilliseconds;
-                var currentDelta = currentSecond.AverageMilliseconds - currentFirst.AverageMilliseconds;
+                var percentage = 100 / previous.AverageMilliseconds * benchmark.AverageMilliseconds;
+                var withinNoise = Math.Abs(benchmark.AverageMilliseconds - previous.AverageMilliseconds) < noiseFloorMilliseconds;
+                measurements.Add((previous, benchmark, percentage, withinNoise));
+            }
 
-                var baselinePercentage = baselineDelta / previousFirst.AverageMilliseconds * 100;
-                var currentPercentage = currentDelta / currentFirst.AverageMilliseconds * 100;
-                var difference = currentPercentage - baselinePercentage;
+            var relevant = measurements.Where(m => !m.WithinNoise).Select(m => m.Percentage).OrderBy(p => p).ToList();
+            if (relevant.Count < 3)
+            {
+                // a median of less than 3 values cannot identify a single outlier
+                report.Add($"Not enough benchmarks to verify ({relevant.Count} outside of noise floor, at least 3 required)");
+                ConsoleWriter.WriteLine($"Not enough benchmarks to verify ({relevant.Count} outside of noise floor, at least 3 required)");
+                return;
+            }
 
-                var line = $"{previousFirst.Name} -> {previousSecond.Name}: baseline {baselinePercentage:+0.00;-0.00;0.00}%, current {currentPercentage:+0.00;-0.00;0.00}% (difference {difference:+0.00;-0.00;0.00}%)";
+            // the median percentage represents the overall speed factor of the current machine/run
+            var median = relevant.Count % 2 == 1
+                ? relevant[relevant.Count / 2]
+                : (relevant[relevant.Count / 2 - 1] + relevant[relevant.Count / 2]) / 2;
+
+            report.Add($"Median: {median:0.00}% of baseline");
+            ConsoleWriter.WriteLine($"Median: {median:0.00}% of baseline");
+
+            foreach (var (previous, benchmark, percentage, withinNoise) in measurements)
+            {
+                // relative to the median so the threshold means the same on fast and slow machines
+                var difference = percentage / median * 100 - 100;
+
+                var line = $"{previous.Name}: baseline {previous.AverageMilliseconds:F4} ms, current {benchmark.AverageMilliseconds:F4} ms ({percentage:0.00}% of baseline, difference to median {difference:+0.00;-0.00;0.00}%)";
 
                 // ignore differences that are smaller than the measurement noise of the machine
-                if (Math.Abs(baselineDelta) < noiseFloorMilliseconds && Math.Abs(currentDelta) < noiseFloorMilliseconds)
+                if (withinNoise)
                 {
                     report.Add($"{line} [within noise floor]");
                     ConsoleWriter.WriteLine($"{line} [within noise floor]");
@@ -90,7 +105,7 @@ namespace MeasureMap.Verification
 
                 report.Add(line);
 
-                // the relative distance has to stay within +- threshold of the baseline distance
+                // all benchmarks have to stay within +- threshold of the median percentage
                 if (Math.Abs(difference) > thresholdPercentage)
                 {
                     violations.Add(line);
