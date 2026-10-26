@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Attribute based benchmarks did not create a instance of the benchmark class per thread which caused issues when using instance variables in the benchmark class
 - Attribute-Based benchmarks sometimes showed first test slow because the JIT compiler was not finished compiling the method. This has been fixed by using a compiled delegate instead of reflection to invoke the benchmark method.
+- Verify benchmarks relative to the median of all baseline ratios
+  - Calculate each benchmark as (100 / baseline) * benchmark instead of
+    comparing the distance between consecutive benchmarks
+  - Use the median ratio as the machine speed factor and fail when a
+    benchmark deviates more than the threshold relative to it
 
 ### Changed
 - Threads are executed simultaneously when the last thread is started
