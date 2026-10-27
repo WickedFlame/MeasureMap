@@ -104,8 +104,7 @@ namespace MeasureMap
 
             //var last = YamlMap.Serializer.DeserializeFromFile<BenchmarkModel>(filePath);
             var serializer = new MeasureMap.Serialization.YamlSerializer();
-                var last = serializer.Deserialize(filePath);
-
+            var last = serializer.Deserialize(filePath);
 
             var verifier = new BemchmarkVerifier();
             verifier.Verify(result, last, filePath, thresholdPercentage, noiseFloorMilliseconds);

@@ -23,7 +23,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Writer benchmarkresult to a string in markdown format
 - Save the benchmark result as a markdown file with the extension .benchmark.md. The default file name is the name of the source file. You can also specify a custom file name and choose to overwrite existing files.
 - Save the Benchmarkresult as a YAML file. The default file name is the name of the source file with the extension .benchmark.yaml
-- Experimental: Verify the Benchmarkresult against the saved baseline result.
+- Experimental: Verify the Benchmarkresult against the saved baseline result. The baseline result is saved in a YAML file with the extension .benchmark.yaml.
+- Experimental: VerifyAttribute to mark a benchmark class to be verified against the baseline result. The baseline result is saved in a YAML file with the extension .benchmark.yaml.
 
 ## v3.0.2
 ### Fixed

@@ -76,7 +76,18 @@ namespace MeasureMap.Verification
             {
                 // a median of less than 3 values cannot identify a single outlier
                 report.Add($"Not enough benchmarks to verify ({relevant.Count} outside of noise floor, at least 3 required)");
-                ConsoleWriter.WriteLine($"Not enough benchmarks to verify ({relevant.Count} outside of noise floor, at least 3 required)");
+
+                var message = new StringBuilder();
+                message.AppendLine($"Not enough benchmarks to verify ({relevant.Count} outside of noise floor, at least 3 required)");
+                message.AppendLine();
+                message.AppendLine("New measurement:");
+                message.AppendLine(result.ToMarkdown());
+
+                message.AppendLine();
+                message.AppendLine("Baseline:");
+                message.AppendLine(last.ToMarkdown());
+
+                ConsoleWriter.WriteLine(message.ToString());
                 return;
             }
 
@@ -135,11 +146,12 @@ namespace MeasureMap.Verification
                     message.AppendLine(line);
                 }
 
+                message.AppendLine();
                 message.AppendLine("New measurement:");
                 message.AppendLine(result.ToMarkdown());
 
                 message.AppendLine();
-                message.AppendLine("Original baseline:");
+                message.AppendLine("Baseline:");
                 message.AppendLine(last.ToMarkdown());
 
                 throw new InvalidOperationException(message.ToString());

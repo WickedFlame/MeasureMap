@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Abstract.FileSystem" Version="1.0.8" />
     <PackageReference Include="BDTest" Version="2.3.58" />
     <PackageReference Include="AwesomeAssertions" Version="9.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />

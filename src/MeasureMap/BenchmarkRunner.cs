@@ -1,6 +1,7 @@
 ﻿using MeasureMap.Attributes;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace MeasureMap
 {
@@ -77,12 +78,20 @@ namespace MeasureMap
         /// Run all benchmarks based on the Attributes defined in the benchmark class 
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <param name="callerFilePath">The source file path of the caller. Set automatically by the compiler.</param>
         /// <returns></returns>
-        public IBenchmarkResult RunSession<T>() where T : class, new()
+        public IBenchmarkResult RunSession<T>([CallerFilePath] string callerFilePath = "") where T : class, new()
         {
             var builder = new AttributeSessionBuilder<T>(this);
             builder.BuildSessions();
-            return RunSessions();
+            var result = RunSessions();
+
+            if(typeof(T).GetCustomAttributes(typeof(VerifyAttribute), true).Length > 0)
+            {
+                result.Verify(sourceFilePath: callerFilePath);
+            }
+
+            return result;
         }
 
         private IBenchmarkResult RunBenchmarks(ProfilerSettings settings)
