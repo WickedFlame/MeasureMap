@@ -73,6 +73,9 @@ namespace MeasureMap
             internal set { _contextStack = value; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public int ThreadCount
         {
             get

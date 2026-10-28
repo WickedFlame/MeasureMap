@@ -5,12 +5,24 @@ using System.Text;
 
 namespace MeasureMap.Serialization
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class BenchmarkModel
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public int Iterations { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public TimeSpan Duration { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public List<Benchmark> Benchmarks { get; set; } = [];
 
         /// <summary>
