@@ -11,7 +11,7 @@ stages:
   script:
     # - dotnet restore MeasureMap.sln
     - dotnet restore ./build/_build.csproj
-    - fallout release -isrc ${ISRC} -buildno ${CI_PIPELINE_IID} -version ${Version}
+    - fallout release -isrc ${ISRC} -buildno ${CI_PIPELINE_IID} -version ${Version} -runtests false
   artifacts:
     paths:
       - artifacts/*.nupkg
