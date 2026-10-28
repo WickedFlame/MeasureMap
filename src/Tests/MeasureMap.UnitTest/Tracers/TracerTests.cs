@@ -149,22 +149,13 @@ namespace MeasureMap.UnitTest.Tracers
 
             action.Should().NotThrow();
         }
-    }
 
-    public class StringResultWriter : IResultWriter
-    {
-        private readonly StringBuilder _stringBuilder = new();
-
-        public string Value => _stringBuilder.ToString();
-        
-        public void Write(string value)
+        [Test]
+        public void Tracer_Benchmark_ToMarkdown()
         {
-            _stringBuilder.Append(value);
-        }
-
-        public void WriteLine(string value)
-        {
-            _stringBuilder.AppendLine(value);
+            var result = ResultFactory.CreateBenchmarkResult();
+            var markdown = result.ToMarkdown();
+            markdown.MatchSnapshot();
         }
     }
 }

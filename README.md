@@ -1,11 +1,10 @@
 # MeasureMap
 Profiling and Benchmarking .NET Code made simple
-
-[![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/master?label=Master&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master)
-[![Build status](https://img.shields.io/appveyor/build/chriswalpen/measuremap/dev?label=Dev&logo=appveyor&style=for-the-badge)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev)
   
-[![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?style=for-the-badge&label=Latest)](https://www.nuget.org/packages/measuremap/)
-[![NuGet Version](https://img.shields.io/nuget/vpre/measuremap.svg?style=for-the-badge&label=RC)](https://www.nuget.org/packages/measuremap/)
+| What | Badge |
+| --- | --- |
+| Build | [![Build status](https://ci.appveyor.com/api/projects/status/x0u2yu08pq7xye9w/branch/master?svg=true)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/master) [![Build status](https://ci.appveyor.com/api/projects/status/x0u2yu08pq7xye9w/branch/dev?svg=true)](https://ci.appveyor.com/project/chriswalpen/measuremap/branch/dev) |
+| Nuget | [![NuGet Version](https://img.shields.io/nuget/v/measuremap.svg?svg=true&label=Latest)](https://www.nuget.org/packages/measuremap/) [![NuGet Version](https://img.shields.io/nuget/vpre/measuremap.svg?svg=true&label=RC)](https://www.nuget.org/packages/measuremap/) |
   
 MeasureMap allows profiling and benchmarking from simple code fragments to full applications.
   
@@ -59,6 +58,13 @@ var result = runner.RunSessions();
 result.Trace();
 ```
 ### Attributes
+
+Each benchmark creates an instance of the class that is benchmarked and executes the methods marked with the [Benchmark] attribute.  
+Each method marked with the [Benchmark] attribute is executed as a separate benchmark.  
+OnStartPipeline can return a IExecutionContext that is then injected into the benchmark methods. 
+The returned IExecutionContext and the Parameter ProfilerSettings are both optional.  
+
+
 ```csharp
 [Iterations(10)]
 [Threads(10)]
@@ -82,6 +88,12 @@ public class  WorkflowBenchmark
     [OnStartPipeline]
     public void Setup()
     {
+    }
+
+    [OnStartPipeline]
+    public IExecutionContext Setup(ProfilerSettings settings)
+    {
+       settings.CreateContext();
     }
 
     [OnEndPipeline]
@@ -125,3 +137,30 @@ The result is by default traced as Markdown
 | sha256 | 00:00:00.0000924 | 924       | 00:00:00.0009243 | 776     | 1471    | 1392            |
 | md5    | 00:00:00.0000485 | 485       | 00:00:00.0004858 | 409     | 534     | 1392            |
 ```
+
+
+# Workflow
+The Workflow of MeasureMap is setup in three stacks or pipelines. The stack is made up of an execution chain following the Chain of Responsibility pattern. Each item in the pipeline is connected to the next in the chain.  
+The items in each stack are processed one after another. Handlers have logic that can be executed before or after the next handler in the chain is processed.
+## SessionStack (ISessionMiddleware)
+The SessionStack is run once per Session
+* ElapsedTimeSessionHandler
+* PreExecutionSessionHandler
+* WarmupSessionHandler
+* BasicSessionHandler / MainThreadSessionHandler / MultyThreadSessionHandler  
+
+
+### ContextStack (IContextMiddleware)
+The ContextStack is run once per Thread. The DefaultContextStackBuilder creates a new instance of the stack for each Thread.
+* OnStartPipelineContextHandler
+* OnEndPipelineContextHandler
+* ProcessDataContextHandler
+* WorkerContextHandler  
+
+
+#### IterationStack (IIterationMiddleware)
+The IterationStack is run once for every Iteration.
+* ProcessDataTaskHandler (ITaskMiddleware)
+* MemoryCollectionTaskHandler (ITaskMiddleware)
+* ElapsedTimeTaskHandler (ITaskMiddleware)
+* _task (ITask)

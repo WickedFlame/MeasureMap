@@ -1,4 +1,4 @@
-﻿using System;
+﻿using MeasureMap.ContextStack;
 using System.Reflection;
 
 namespace MeasureMap.Attributes.Builder;
@@ -13,9 +13,8 @@ public class ThreadsBuilderElement : IBenchmarkBuilderElement
     /// <summary>
     /// Initialize the builder element
     /// </summary>
-    /// <param name="instance"></param>
     /// <typeparam name="T"></typeparam>
-    public void Initialize<T>(T instance)
+    public void Initialize<T>()
     {
         var threads = typeof(T).GetCustomAttribute<ThreadsAttribute>();
         if (threads != null)
@@ -25,7 +24,7 @@ public class ThreadsBuilderElement : IBenchmarkBuilderElement
     }
     
     /// <summary>
-    /// Append settings to the <see cref="BenchmarkRunner"/>
+    /// Append elements to the <see cref="BenchmarkRunner"/>
     /// </summary>
     /// <param name="runner"></param>
     public void Append(BenchmarkRunner runner)
@@ -33,7 +32,7 @@ public class ThreadsBuilderElement : IBenchmarkBuilderElement
     }
 
     /// <summary>
-    /// Append settings to the <see cref="ProfilerSession"/>
+    /// Append elements to the <see cref="ProfilerSession"/>
     /// </summary>
     /// <param name="session"></param>
     public void Append(ProfilerSession session)
@@ -42,5 +41,13 @@ public class ThreadsBuilderElement : IBenchmarkBuilderElement
         {
             session.SetThreads(_threads);
         }
+    }
+
+    /// <summary>
+    /// Append elements to the <see cref="IContextStackBuilder"/>
+    /// </summary>
+    /// <param name="stackBuilder"></param>
+    public void Append<T>(InstanceBasedStackBuilder<T> stackBuilder) where T : class, new()
+    {
     }
 }

@@ -60,9 +60,13 @@ namespace MeasureMap.SessionStack
 			var sw = Stopwatch.StartNew();
 			_logger = settings.Logger;
 
-			var threadWaitHandle = new ManualResetEvent(false);
+			//
+			// Barrier that blocks every worker until all of them are ready,
+			// then releases them at the same instant so the logic in all threads
+			// is executed at the same time.
+			using var startBarrier = new Barrier(_threadCount);
 
-            //The ramp-up time is the amount of time to get to the full number of virtual users for the load test. If the number of virtual users is 20, and the ramp-up time is 120 seconds, then it takes 120 seconds to get to all 20 virtual users
+			//The ramp-up time is the amount of time to get to the full number of virtual users for the load test. If the number of virtual users is 20, and the ramp-up time is 120 seconds, then it takes 120 seconds to get to all 20 virtual users
 			var rampup = _rampupTime > TimeSpan.Zero ? _rampupTime.TotalSeconds / _threadCount : 0;
 
 			lock (_threads)
@@ -70,28 +74,19 @@ namespace MeasureMap.SessionStack
 				for (var i = 0; i < _threadCount; i++)
 				{
 					System.Threading.Tasks.Task.Delay(TimeSpan.FromSeconds(rampup)).Wait();
-                    settings.Logger.Write($"Start Thread {i} of {_threadCount}", LogLevel.Info, nameof(MultiThreadSessionHandler));
+					settings.Logger.Write($"Start Thread {i} of {_threadCount}", LogLevel.Info, nameof(MultiThreadSessionHandler));
 
-                    var thread = _threads.StartNew(i, idx =>
+					var thread = _threads.StartNew(i, idx =>
 					{
-						if (idx == _threadCount)
-						{
-							//
-							// Release all waiting threads to start work after all threads are started
-							threadWaitHandle.Set();
-						}
+						//
+						// Signal that this thread is ready and wait until every
+						// other thread has reached the same point. All threads
+						// are released by the Barrier simultaneously, so the
+						// actual work starts at the same time on every thread.
+						startBarrier.SignalAndWait();
 
-						if (idx < _threadCount)
-						{
-							//
-							// Wait at max 5 Sec to continue
-							// Thread creation can delay the whole process too long
-							settings.Logger.Write($"Waiting for all threads to start. Current ThreadCount {idx} of {_threadCount}", LogLevel.Debug, nameof(MultiThreadSessionHandler));
-							threadWaitHandle.WaitOne(5000, true);
-						}
-
-                        var runner = StackBuilder.Create(idx, settings);
-                        return runner.Run(task, settings.CreateContext());
+						var runner = StackBuilder.Create(idx, settings);
+						return runner.Run(task, settings.CreateContext());
 					}, settings.GetThreadFactory());
 
 					settings.Logger.Write($"Start thread {thread.Id}", LogLevel.Debug, nameof(MultiThreadSessionHandler));

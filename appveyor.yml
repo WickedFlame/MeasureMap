@@ -1,13 +1,13 @@
 # http://www.appveyor.com/docs/appveyor-yml
 
 environment:
-  base_version: 3.0.1
+  base_version: 3.1.0
 
 # version format
 version: $(base_version).{build}
 
 image:
-  - Visual Studio 2026
+  - Visual Studio 2022
 
 for:
   - 
@@ -21,13 +21,16 @@ for:
     skip_tags: true
 
     install:
-      - dotnet tool install Nuke.GlobalTool --global --version 9.0.3 --no-cache
+      - ps: |
+          Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
+          & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.105' -InstallDir "$env:ProgramFiles\dotnet"
+      - dotnet tool install Fallout.GlobalTool --global --no-cache
 
     before_build:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Release --isrc true --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
+      - fallout Release --isrc true --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
 
     test: off
 
@@ -42,13 +45,16 @@ for:
     skip_tags: true
 
     install:
-      - dotnet tool install Nuke.GlobalTool --global --version 9.0.3 --no-cache
+      - ps: |
+          Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
+          & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.105' -InstallDir "$env:ProgramFiles\dotnet"
+      - dotnet tool install Fallout.GlobalTool --global --no-cache
 
     before_build:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Release --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
+      - fallout Release --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
 
     test: off
   - 
@@ -63,13 +69,16 @@ for:
     skip_tags: true
 
     install:
-      - dotnet tool install Nuke.GlobalTool --global --version 9.0.3 --no-cache
+      - ps: |
+          Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile "$env:temp\dotnet-install.ps1"
+          & $env:temp\dotnet-install.ps1 -Architecture x64 -Version '10.0.105' -InstallDir "$env:ProgramFiles\dotnet"
+      - dotnet tool install Fallout.GlobalTool --global --no-cache
 
     before_build:
       - dotnet restore ./build/_build.csproj
 
     build_script:
-      - nuke Test --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
+      - fallout Test --isrc false --buildno "%APPVEYOR_BUILD_NUMBER%" --version "%base_version%"
 
     test: off
 

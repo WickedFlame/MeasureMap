@@ -348,7 +348,7 @@ namespace MeasureMap
         /// <returns></returns>
         public static ProfilerSession OnStartPipeline(this ProfilerSession session, Func<ProfilerSettings, IExecutionContext> @event)
         {
-            session.AddMiddleware((i,s) => new OnStartPipelineContextHandler(i, s, @event));
+            session.AddMiddleware((i, s) => new OnStartPipelineContextHandler(i, s, @event));
             return session;
         }
 
@@ -361,6 +361,18 @@ namespace MeasureMap
         public static ProfilerSession OnEndPipeline(this ProfilerSession session, Action<IExecutionContext> @event)
         {
             session.AddMiddleware((i,s) => new OnEndPipelineContextHandler(@event));
+            return session;
+        }
+
+        /// <summary>
+        /// Set the desired <see cref="IContextStackBuilder"/> to the <see cref="ProfilerSession"/>. This is used to build the context stack for each run.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static ProfilerSession SetContextStackBuilder(this ProfilerSession session, IContextStackBuilder builder)
+        {
+            session.ContextStack = builder;
             return session;
         }
 

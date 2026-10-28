@@ -1,4 +1,6 @@
 ﻿using MeasureMap.Attributes.Builder;
+using MeasureMap.ContextStack;
+using static MeasureMap.UnitTest.Attributes.OnEndPipelineBuilderElementTests;
 
 namespace MeasureMap.UnitTest.Attributes;
 
@@ -12,6 +14,7 @@ public class OnStartPipelineBuilderElementTests
     {
         _builder = new OnStartPipelineBuilderElement();
         _runner = ProfilerSession.StartSession();
+        _runner.SetContextStackBuilder(new InstanceBasedStackBuilder<OnStartPipelineWithAttr>(o => new Task(() => o.OnStart())));
 
         OnStartPipelineWithAttr.Called = false;
         OnStartPipelineNoAttr.Called = false;
@@ -26,7 +29,7 @@ public class OnStartPipelineBuilderElementTests
     [Test]
     public void OnStartPipelineBuilderElement_WithAttr()
     {
-        _builder.Initialize(new OnStartPipelineWithAttr());
+        _builder.Initialize<OnStartPipelineWithAttr>();
         _builder.Append(_runner);
 
         var runner = _runner.ContextStack.Create(0, new ProfilerSettings());
@@ -38,7 +41,7 @@ public class OnStartPipelineBuilderElementTests
     [Test]
     public void OnStartPipelineBuilderElement_NoAttr()
     {
-        _builder.Initialize(new OnStartPipelineNoAttr());
+        _builder.Initialize<OnStartPipelineNoAttr>();
         _builder.Append(_runner);
 
         _runner.Settings.OnStartPipelineEvent.Should().NotBeNull();

@@ -20,11 +20,11 @@ namespace MeasureMap
         private readonly List<Func<IResult, bool>> _assertions;
         private ITask _task;
         private ISessionExecutor _executor;
+        private IContextStackBuilder _contextStack = new DefaultContextStackBuilder();
 
         private readonly ISessionMiddleware _sessionStack;
         private readonly IIterationMiddleware _iterationStack = new IterationStackBuilder();
-        private readonly IContextStackBuilder _contextStack = new DefaultContextStackBuilder();
-
+        
         private readonly ProfilerSettings _settings;
 
         private ProfilerSession()
@@ -67,7 +67,22 @@ namespace MeasureMap
         /// <summary>
         /// Gets the ContextStack containing the middleware executed for each thread
         /// </summary>
-        public IContextStackBuilder ContextStack => _contextStack;
+        public IContextStackBuilder ContextStack
+        {
+            get { return _contextStack; }
+            internal set { _contextStack = value; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public int ThreadCount
+        {
+            get
+            {
+                return _executor is MultiThreadSessionHandler handler ? handler.ThreadCount : 1;
+            }
+        }
 
         /// <summary>
         /// Creates a new Session for profiling performance
@@ -135,10 +150,6 @@ namespace MeasureMap
             // The executor runs the processing pipeline
             _executor.StackBuilder = ContextStack;
             _sessionStack.SetNext(_executor);
-
-
-            //_executor.se
-            //_executor.RunnerFactory = 
 
             _iterationStack.SetNext(new ProcessDataIterationHandler());
             _iterationStack.SetNext(new MemoryCollectionIterationHandler());

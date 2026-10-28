@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
+## 3.1.1
+### Fixed
+- Attribute based benchmarks did not create a instance of the benchmark class per thread which caused issues when using instance variables in the benchmark class
+- Attribute-Based benchmarks sometimes showed first test slow because the JIT compiler was not finished compiling the method. This has been fixed by using a compiled delegate instead of reflection to invoke the benchmark method.
+- Verify benchmarks relative to the median of all baseline ratios
+  - Calculate each benchmark as (100 / baseline) * benchmark instead of
+    comparing the distance between consecutive benchmarks
+  - Use the median ratio as the machine speed factor and fail when a
+    benchmark deviates more than the threshold relative to it
+
+### Changed
+- Threads are executed simultaneously when the last thread is started
+- Moved from Nuke to Fallout
+- Updated dependencies
+
+### Added
+- Writer benchmarkresult to a string in markdown format
+- Save the benchmark result as a markdown file with the extension .benchmark.md. The default file name is the name of the source file. You can also specify a custom file name and choose to overwrite existing files.
+- Save the Benchmarkresult as a YAML file. The default file name is the name of the source file with the extension .benchmark.yaml
+- Experimental: Verify the Benchmarkresult against the saved baseline result. The baseline result is saved in a YAML file with the extension .benchmark.yaml.
+- Experimental: VerifyAttribute to mark a benchmark class to be verified against the baseline result. The baseline result is saved in a YAML file with the extension .benchmark.yaml.
+
 ## v3.0.2
 ### Fixed
 - Get null return value from ExecutionContext caused an exception

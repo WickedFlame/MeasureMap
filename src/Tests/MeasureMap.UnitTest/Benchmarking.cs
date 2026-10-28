@@ -89,16 +89,21 @@ namespace MeasureMap.UnitTest
 
             runner.RunSessions();
 
-            Assert.That(cnt == 22);
+            // 30 for warmup
+            // 2x10 for actual runs
+            cnt.Should().Be(50);
+
+            cnt = 0;
 
             runner = new BenchmarkRunner();
             runner.SetSettings(new ProfilerSettings { Iterations = 10, RunWarmup = false });
-            runner.Task("first", c => cnt -= 1);
-            runner.Task("second", c => cnt -= 1);
+            runner.Task("first", c => cnt += 1);
+            runner.Task("second", c => cnt += 1);
 
             runner.RunSessions();
 
-            Assert.That(cnt == 2);
+            // 2x10 for actual runs
+            cnt.Should().Be(20);
         }
 
         [Test]

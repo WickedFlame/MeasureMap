@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MeasureMap.ContextStack;
+using System;
 using System.Linq;
 using System.Reflection;
 
@@ -9,18 +10,25 @@ namespace MeasureMap.Attributes.Builder;
 /// </summary>
 public class OnEndPipelineBuilderElement : IBenchmarkBuilderElement
 {
-    private Action _action;
-    
+    private MethodInfo _method;
+
     /// <summary>
     /// Initialize the builder element
     /// </summary>
-    /// <param name="instance"></param>
     /// <typeparam name="T"></typeparam>
-    public void Initialize<T>(T instance)
+    /// <exception cref="InvalidOperationException">Thrown when multiple methods with <see cref="OnEndPipelineAttribute"/> are found in the type.</exception>
+    public void Initialize<T>()
     {
-        var tmp = typeof(T).GetMethods()
-            .FirstOrDefault(m => m.GetCustomAttribute<OnEndPipelineAttribute>() != null);
-        _action = tmp != null ? () => tmp.Invoke(instance, null) : null;
+        var methods = typeof(T).GetMethods()
+            .Where(m => m.GetCustomAttribute<OnEndPipelineAttribute>() != null);
+
+        if (methods.Count() > 1)
+        {
+            throw new InvalidOperationException($"Multiple methods with {nameof(OnEndPipelineAttribute)} found in type {typeof(T).FullName}. Only one method can be decorated with this attribute.");
+        }
+
+        _method = methods.FirstOrDefault();
+        
     }
     
     /// <summary>
@@ -37,11 +45,19 @@ public class OnEndPipelineBuilderElement : IBenchmarkBuilderElement
     /// <param name="session"></param>
     public void Append(ProfilerSession session)
     {
-        if (_action == null)
+    }
+
+    /// <summary>
+    /// Append elements to the <see cref="IContextStackBuilder"/>
+    /// </summary>
+    /// <param name="stackBuilder"></param>
+    public void Append<T>(InstanceBasedStackBuilder<T> stackBuilder) where T : class, new()
+    {
+        if(_method == null)
         {
             return;
         }
-        
-        session.OnEndPipeline(e => _action.Invoke());
+
+        stackBuilder.Add((instance, i, s) => new OnEndPipelineContextHandler((e) => _method.Invoke(instance, null)));
     }
 }

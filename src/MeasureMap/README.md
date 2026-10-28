@@ -52,6 +52,13 @@ var result = runner.RunSessions();
 result.Trace();
 ```
 ### Attributes
+
+Each benchmark creates an instance of the class that is benchmarked and executes the methods marked with the [Benchmark] attribute.  
+Each method marked with the [Benchmark] attribute is executed as a separate benchmark.  
+OnStartPipeline can return a IExecutionContext that is then injected into the benchmark methods. 
+The returned IExecutionContext and the Parameter ProfilerSettings are both optional.  
+
+
 ```csharp
 [Iterations(10)]
 [Threads(10)]
@@ -75,6 +82,12 @@ public class  WorkflowBenchmark
     [OnStartPipeline]
     public void Setup()
     {
+    }
+
+    [OnStartPipeline]
+    public IExecutionContext Setup(ProfilerSettings settings)
+    {
+       settings.CreateContext();
     }
 
     [OnEndPipeline]
@@ -128,13 +141,17 @@ The SessionStack is run once per Session
 * ElapsedTimeSessionHandler
 * PreExecutionSessionHandler
 * WarmupSessionHandler
-* BasicSessionHandler / MainThreadSessionHandler / MultyThreadSessionHandler
+* BasicSessionHandler / MainThreadSessionHandler / MultyThreadSessionHandler  
+
+
 ### ContextStack (IContextMiddleware)
 The ContextStack is run once per Thread. The DefaultContextStackBuilder creates a new instance of the stack for each Thread.
 * OnStartPipelineContextHandler
 * OnEndPipelineContextHandler
 * ProcessDataContextHandler
-* WorkerContextHandler
+* WorkerContextHandler  
+
+
 #### IterationStack (IIterationMiddleware)
 The IterationStack is run once for every Iteration.
 * ProcessDataTaskHandler (ITaskMiddleware)
