@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
-## [Unreleased]
+## 3.1.1
 ### Fixed
 - Attribute based benchmarks did not create a instance of the benchmark class per thread which caused issues when using instance variables in the benchmark class
 - Attribute-Based benchmarks sometimes showed first test slow because the JIT compiler was not finished compiling the method. This has been fixed by using a compiled delegate instead of reflection to invoke the benchmark method.

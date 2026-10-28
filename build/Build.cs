@@ -35,7 +35,7 @@ class Build : FalloutBuild
     [GitRepository] readonly GitRepository GitRepository;
 
     [Parameter("Version to be injected in the Build")]
-    public string Version { get; set; } = $"3.1.0";
+    public string Version { get; set; } = $"3.1.1";
 
     [Parameter("The Buildnumber provided by the CI")]
     public int BuildNo = 41;
